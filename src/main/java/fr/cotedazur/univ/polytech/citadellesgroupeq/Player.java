@@ -1,8 +1,15 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import java.util.List;
+import java.util.Random;
+
 public class Player {
+
+    public static final Random randomGenerator=new Random();
     private int cash;
     public static final int DEFAULT_CASH=0;
+
+    private Role role;
 
     public Player() {
         this(DEFAULT_CASH);
@@ -10,10 +17,19 @@ public class Player {
 
     public Player(int cash) {
         this.cash=cash;
+        this.role=Role.EMPTY_ROLE;
     }
 
     public int getCash() {
         return cash;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role=role;
     }
 
     public void setCash(int cash) {
@@ -35,5 +51,11 @@ public class Player {
         if(coins >= 0) {
             this.cash+=coins;
         }
+    }
+
+    public int selectRole(List<Role> availableRoles) {
+        int selectedRoleIndex=randomGenerator.nextInt(availableRoles.size());//la sélection est pour l'instant aléatoire
+        setRole(availableRoles.get(selectedRoleIndex));
+        return selectedRoleIndex;
     }
 }
