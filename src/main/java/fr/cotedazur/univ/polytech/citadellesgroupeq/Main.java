@@ -6,16 +6,19 @@ public class Main {
         System.out.println("Main");
 
         GameManager game = new GameManager();
+        int tours=1;
 
         while(!game.isFinished()) {
+            System.out.println("Tour : " + tours++ + "\n--------------\n");
             System.out.println(game.makeAllPlayersSelectRole());
             for(Player player : game.getPlayerTreeSet()) {
                 if(!game.isFinished()) {//actuellement, on s'arrête DES qu'un joueur a 8 cartes. Dans la version finale, il faudra laisser la fin du tour
                     System.out.println(game.playPlayerTurn(player));
                 }
             }
+            System.out.println("--------------");
         }
-        System.out.println("Game done !");
+        System.out.println("Jeu fini !");
     }
 
 }
