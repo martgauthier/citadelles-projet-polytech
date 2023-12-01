@@ -1,23 +1,38 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Player {
+public class Player implements Comparable<Player> {
 
     public static final Random randomGenerator=new Random();
     private int cash;
     public static final int DEFAULT_CASH=0;
+    public static final List<Citadel> DEFAULT_CARDS=Arrays.asList(new Citadel("Temple", 9), new Citadel("Eglise", 8));
+
+    /**
+     * Identification du bot: bot numéro 0 -> id=0, bot numéro 1 -> id=1...
+     */
+    private final int id;
+
+    /**
+     * Cartes que le joueur contient dans sa main. PAS LES CARTES POSÉES DANS SA CITE
+     */
+    private List<Citadel> cards;
 
     private Role role;
 
-    public Player() {
-        this(DEFAULT_CASH);
+    public Player(int id) {
+        this(id, DEFAULT_CASH, DEFAULT_CARDS);
     }
 
-    public Player(int cash) {
+    public Player(int id, int cash, List<Citadel> cards) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
+        this.id=id;
+        this.cards=cards;
     }
 
     public int getCash() {
@@ -53,9 +68,79 @@ public class Player {
         }
     }
 
+
+    /**
+     * Sélectionne un rôle aléatoirement dans la liste availableRoles pour le joueur
+     * @param availableRoles les rôles disponibles
+     * @return l'id dans la liste fournie du rôle sélectionné
+     */
     public int selectRole(List<Role> availableRoles) {
         int selectedRoleIndex=randomGenerator.nextInt(availableRoles.size());//la sélection est pour l'instant aléatoire
         setRole(availableRoles.get(selectedRoleIndex));
         return selectedRoleIndex;
+    }
+
+    /**
+     *
+     * @return les {@link Citadel} que le joueur a dans sa main et qu'il est capable d'acheter
+     */
+    public List<Citadel> getBuyableCards() {
+        return getBuyableCards(getCash());
+    }
+
+    /**
+     *
+     * @param cashAvailable le montant maximal des cartes
+     * @return La liste des cartes de sa main que le joueur est capable de payer
+     */
+    public List<Citadel> getBuyableCards(int cashAvailable) {
+        List<Citadel> buyableCards = new ArrayList<>();
+        for(Citadel card : cards) {
+            if(card.getCost() <= cashAvailable) {
+                buyableCards.add(card);
+            }
+        }
+        return buyableCards;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder("Rôle: ");
+        output.append(role.name()).append("\n");
+        output.append("Cash: ").append(getCash()).append("\n");
+        output.append(getDescriptionOfCards());
+
+        return output.toString();
+    }
+
+    /**
+     *
+     * @return Un {@link String} contenant la liste des cartes dans la main du joueur. PAS CELLES POSEES DANS SA CITE
+     */
+    public String getDescriptionOfCards() {
+        if(!cards.isEmpty()) {
+            StringBuilder output = new StringBuilder("Cartes en main: \n");
+            for (Citadel card : cards) {
+                output.append("\t*").append(card.getName()).append(" : ").append(card.getCost()).append("\n");
+            }
+            return output.toString();
+        }
+        else {
+            return "";
+        }
+    }
+
+
+    @Override
+    public int compareTo(Player o) {
+        return role.compareTo(o.getRole());
+    }
+
+    /**
+     *
+     * @return Voir {@link #id}
+     */
+    public int getId() {
+        return id;
     }
 }

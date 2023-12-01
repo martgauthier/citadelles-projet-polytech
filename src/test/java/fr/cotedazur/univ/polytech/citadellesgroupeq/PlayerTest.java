@@ -9,7 +9,7 @@ class PlayerTest {
     Player bot;
     @BeforeEach
     void setup() {
-        bot = new Player();
+        bot = new Player(0);
     }
 
     @Test
