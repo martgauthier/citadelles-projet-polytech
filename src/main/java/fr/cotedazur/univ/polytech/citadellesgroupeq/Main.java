@@ -1,4 +1,4 @@
-package fr.cotedazur.univ.polytech.startingpoint;
+package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 public class Main {
 

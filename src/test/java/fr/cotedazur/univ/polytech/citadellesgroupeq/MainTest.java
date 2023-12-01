@@ -1,4 +1,4 @@
-package fr.cotedazur.univ.polytech.startingpoint;
+package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
