@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import java.io.IOException;
 import java.util.*;
 
 public class GameManager {
@@ -154,4 +155,36 @@ public class GameManager {
             masterOfTheGameIndex=index;
         }
     }
+
+    /**
+     * Voir {@link #setAvailableRoles(int, List)}
+     * @return
+     */
+    public List<Role> setAvailableRoles(int nombreDeJoueurs) {
+        ArrayList<Role> availableRoles = new ArrayList<>(Arrays.asList(Role.values()));
+        availableRoles.remove(0);//removes EMPTY_ROLE
+        return setAvailableRoles(nombreDeJoueurs,availableRoles);
+    }
+
+    /**
+     * Défini à partir du nombre de joueur n roles aléatoirement
+     * @param nombreDeJoueur
+     * @param availableRoles tous les roles disponibles
+     * @throws IllegalArgumentException Si certains rôles sont EMPTY ou qu'il y a moins de rôles que de joueurs.
+     * @return Une liste de role que le joueur pourra choisir
+     */
+    public List<Role> setAvailableRoles(int nombreDeJoueur, List<Role> availableRoles) throws IllegalArgumentException{
+        if(nombreDeJoueur < 2 || nombreDeJoueur > 7){
+            throw new IllegalArgumentException();
+        }
+        List<Role> newAvailableRoles = new ArrayList<>();
+        for (int i = 0; i <= nombreDeJoueur; i++) {
+            int randomIndex = randomGenerator.nextInt(availableRoles.size());
+            Role randomRole = availableRoles.get(randomIndex);
+            availableRoles.remove(randomRole);
+            newAvailableRoles.add(randomRole);
+        }
+        return newAvailableRoles;
+    }
 }
+

@@ -49,4 +49,11 @@ class GameManagerTest {
             rolesSelected.add(player.getRole());
         }
     }
+
+    @Test
+    void testSetAvailableRoles(){
+        assertThrows(IllegalArgumentException.class, () -> game.setAvailableRoles(8));
+        assertTrue(game.setAvailableRoles(2).size() == 3);
+        assertTrue(game.setAvailableRoles(3).size() == 4);
+    }
 }

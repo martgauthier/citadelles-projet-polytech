@@ -7,6 +7,7 @@ public class Main {
     public static void main(String... args) {
         GameManager game = new GameManager();
         int tours=1;
+        int playersNumbers=2;
 
         while(!game.isFinished()) {
             System.out.println("Tour : " + tours++ + "\n--------------\n");

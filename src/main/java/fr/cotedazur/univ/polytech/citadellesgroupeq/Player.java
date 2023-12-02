@@ -25,9 +25,13 @@ public class Player implements Comparable<Player> {
 
     private Role role;
 
-    public Player(int id) {
-        this(id, DEFAULT_CASH, DEFAULT_CARDS);
-    }
+    /**
+     * public Player(int id) throws IOException {this(id, DEFAULT_CASH);deal2Cards();}
+     * public Player(int id, int cash){
+     *      this(id,cash,new ArrayList<>());}
+     */
+
+    public Player(int id) {this(id, DEFAULT_CASH,DEFAULT_CARDS);}
 
     public Player(int id, int cash, List<Citadel> cards) {
         this.cash=cash;
