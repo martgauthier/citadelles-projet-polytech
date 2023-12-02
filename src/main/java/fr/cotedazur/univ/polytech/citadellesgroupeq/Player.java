@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +40,8 @@ public class Player implements Comparable<Player> {
         return cash;
     }
 
+    public List<Citadel> getCards() {return cards;}
+
     public Role getRole() {
         return role;
     }
@@ -50,6 +53,7 @@ public class Player implements Comparable<Player> {
     public void setCash(int cash) {
         this.cash=(cash >= 0) ? cash : this.cash;
     }
+    public void setCards(List<Citadel> cards) {this.cards = cards;}
 
     public boolean stillHasCash() {
         return (cash > 0);
@@ -101,6 +105,22 @@ public class Player implements Comparable<Player> {
             }
         }
         return buyableCards;
+    }
+
+    /**
+     * Permet de distribuer deux cartes quartiers de manière aléatoire à un joueur
+     *
+     */
+    public void deal2Cards() throws IOException {
+        CitadelsJSONReader citadelsReader = new CitadelsJSONReader();
+        List<Citadel> citadelsList = citadelsReader.getCitadelsList();
+        List<Citadel> dealCards = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            int randomIndex = randomGenerator.nextInt(citadelsList.size());
+            Citadel randomCitadel = citadelsList.get(randomIndex);
+            dealCards.add(randomCitadel);
+        }
+        setCards(dealCards);
     }
 
     @Override
