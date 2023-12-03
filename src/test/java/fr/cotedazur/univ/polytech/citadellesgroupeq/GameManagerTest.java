@@ -28,7 +28,21 @@ class GameManagerTest {
         }
         assertThrows(IllegalArgumentException.class, () -> game.makeAllPlayersSelectRole(FULL_EMPTY_ROLES_LIST));
     }
+    @Test
+    void testMakeAllPlayersSelectRole(){
+        //TODO
+        game.makeAllPlayersSelectRole(CORRECT_ROLES_LIST);
+        int IndexMaster=game.getMasterOfTheGameIndex();
 
+    }
+    @Test
+    void testplayPlayerTurn(){
+        //TODO
+        for(Player player : game.getPlayersList()){
+            RoundSummary summary=new RoundSummary(2,null,null);
+            assertEquals(summary,game.playPlayerTurn(player));
+        }
+    }
     @Test
     void testMasterOfTheGameIndex() {
         game.setMasterOfTheGameIndex(-1);
