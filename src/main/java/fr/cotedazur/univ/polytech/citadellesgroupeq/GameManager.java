@@ -49,9 +49,8 @@ public class GameManager {
      * @return
      */
     public String makeAllPlayersSelectRole() {
-        ArrayList<Role> availableRoles = new ArrayList<>(Arrays.asList(Role.values()));
-        availableRoles.remove(0);//removes EMPTY_ROLE
-        return makeAllPlayersSelectRole(availableRoles);
+        int nombreDeJoueurs = getPlayersList().size();
+        return makeAllPlayersSelectRole(setAvailableRoles(nombreDeJoueurs));
     }
 
     /**

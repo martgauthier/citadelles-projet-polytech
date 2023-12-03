@@ -16,14 +16,14 @@ class GameManagerTest {
 
     @BeforeEach
     void setup() {
-        game=new GameManager();
+        game = new GameManager();
     }
 
     @Test
     void testThrowMakeAllPlayersSelectRole() {
         assertThrows(IllegalArgumentException.class, () -> game.makeAllPlayersSelectRole(TOO_SHORT_ROLES_LIST));
         game.makeAllPlayersSelectRole(CORRECT_ROLES_LIST);//asserts that it throws nothing
-        for(Player player : game.getPlayersList()) {
+        for (Player player : game.getPlayersList()) {
             assertNotEquals(Role.EMPTY_ROLE, player.getRole());//vérifie que le rôle a bien été changé
         }
         assertThrows(IllegalArgumentException.class, () -> game.makeAllPlayersSelectRole(FULL_EMPTY_ROLES_LIST));
@@ -43,7 +43,7 @@ class GameManagerTest {
     void testRolesSelected() {
         game.makeAllPlayersSelectRole();
         List<Role> rolesSelected = new ArrayList<>();
-        for(Player player : game.getPlayersList()) {
+        for (Player player : game.getPlayersList()) {
             assertFalse(rolesSelected.contains(player.getRole()));
             assertNotSame(Role.EMPTY_ROLE, player.getRole());//checks that role cannot be empty
             rolesSelected.add(player.getRole());
@@ -51,9 +51,16 @@ class GameManagerTest {
     }
 
     @Test
-    void testSetAvailableRoles(){
+    void testSetAvailableRoles() {
         assertThrows(IllegalArgumentException.class, () -> game.setAvailableRoles(8));
-        assertTrue(game.setAvailableRoles(2).size() == 3);
-        assertTrue(game.setAvailableRoles(3).size() == 4);
+        //On test 10 fois pour vérifier que la méthode est stable malgré l'aléatoire
+        for(int i = 0; i < 10; i++){
+            List<Role> availableRoles = game.setAvailableRoles(2);
+            //On vérifie que les roles existent et qu'il y en a 3
+            assertEquals(3, availableRoles.size());
+            for (Role role : availableRoles) {
+                Role.valueOf(role.toString()); // Si le nom du rôle n'existe pas une IllegalArgumentException sera levée
+            }
+        }
     }
 }
