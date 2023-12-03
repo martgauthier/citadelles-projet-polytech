@@ -127,33 +127,6 @@ public class Player implements Comparable<Player> {
         setCards(dealCards);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder output = new StringBuilder("Rôle: ");
-        output.append(role.name()).append("\n");
-        output.append("Cash: ").append(getCash()).append("\n");
-        output.append(getDescriptionOfCards());
-
-        return output.toString();
-    }
-
-    /**
-     *
-     * @return Un {@link String} contenant la liste des cartes dans la main du joueur. PAS CELLES POSEES DANS SA CITE
-     */
-    public String getDescriptionOfCards() {
-        if(!cards.isEmpty()) {
-            StringBuilder output = new StringBuilder("Cartes en main: \n");
-            for (Citadel card : cards) {
-                output.append("\t*").append(card.getName()).append(" : ").append(card.getCost()).append("\n");
-            }
-            return output.toString();
-        }
-        else {
-            return "";
-        }
-    }
-
 
     @Override
     public int compareTo(Player o) {
