@@ -12,7 +12,7 @@ public class Main {
 
         while(!game.isFinished()) {
             System.out.println("Tour : " + tours++ + "\n--------------\n");
-            List<Role> availableRoles = game.generateAvailableRoles(playersNumbers+1);
+            List<Role> availableRoles = game.generateAvailableRoles(playersNumbers);
             describeRoles(availableRoles);
 
             describeRolePicking(game.makeAllPlayersSelectRole(availableRoles), game.getMasterOfTheGameIndex());

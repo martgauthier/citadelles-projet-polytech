@@ -14,5 +14,97 @@
   {
     "name": "Cathedrale",
     "cost": 6
+  },
+  {
+    "name": "Manoir",
+    "cost": 3
+  },
+  {
+    "name": "Chateau",
+    "cost": 4
+  },
+  {
+    "name": "Palais",
+    "cost": 5
+  },
+  {
+    "name": "Taverne",
+    "cost": 1
+  },
+  {
+    "name": "Echoppe",
+    "cost": 2
+  },
+  {
+    "name": "Marché",
+    "cost": 2
+  },
+  {
+    "name": "Comptoir",
+    "cost": 3
+  },
+  {
+    "name": "Port",
+    "cost": 4
+  },
+  {
+    "name": "Hotel de ville",
+    "cost": 5
+  },
+  {
+    "name": "Tour de guet",
+    "cost": 1
+  },
+  {
+    "name": "Prison",
+    "cost": 2
+  },
+  {
+    "name": "Caserne",
+    "cost": 3
+  },
+  {
+    "name": "Forteresse",
+    "cost": 5
+  },
+  {
+    "name": "Cour des miracles",
+    "cost": 2
+  },
+  {
+    "name": "Donjon",
+    "cost": 3
+  },
+  {
+    "name": "Laboratoire",
+    "cost": 5
+  },
+  {
+    "name": "Manufacture",
+    "cost": 5
+  },
+  {
+    "name": "Observatoire",
+    "cost": 5
+  },
+  {
+    "name": "Cimetiere",
+    "cost": 5
+  },
+  {
+    "name": "Bibliotheque",
+    "cost": 6
+  },
+  {
+    "name": "Ecole de magie",
+    "cost": 6
+  },
+  {
+    "name": "Université",
+    "cost": 8
+  },
+  {
+    "name": "Dracoport",
+    "cost": 8
   }
 ]
