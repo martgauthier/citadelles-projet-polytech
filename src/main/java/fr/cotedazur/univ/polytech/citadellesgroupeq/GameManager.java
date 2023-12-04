@@ -115,6 +115,29 @@ public class GameManager {
         return output.toString();
     }
 
+    public String playPlayerTurnV2(Player player) {
+        StringBuilder output = new StringBuilder("Joueur " + player.getId() + " joue: ");
+        output.append(player.toString());
+
+        player.dealCardsOrCash();
+        output.append("Il possède maintenant ").append(player.getCash()).append(" pièces.\n");
+        output.append("Et ").append(player.getDescriptionOfCards());
+
+        List<Citadel> buyableCards=player.getBuyableCards();
+        if(buyableCards.isEmpty()) {
+            output.append("Il n'a que ").append(player.getCash()).append(" pièces, il ne peut donc rien acheter.\n");
+        }
+        else {//le joueur gagne car il a assez pour acheter une de ses citadelles
+            output.append("Avec ses pièces, il a assez pour acheter: \n");
+            for(Citadel card : buyableCards) {
+                output.append("\t").append(card.getName()).append(" : ").append(card.getCost()).append("\n");
+            }
+            output.append("GAGNANT : JOUEUR ").append(player.getId());
+            finishGame();
+        }
+        return output.toString();
+    }
+
     /**
      *
      * @return la liste des joueurs dans leur ordre de passage dû à leur rôle (un Assassin joue avant un Condottiere, quel que soit son id de joueur).

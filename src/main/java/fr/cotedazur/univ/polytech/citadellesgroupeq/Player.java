@@ -31,14 +31,18 @@ public class Player implements Comparable<Player> {
      *      this(id,cash,new ArrayList<>());}
      */
 
-    public Player(int id) {this(id, DEFAULT_CASH,DEFAULT_CARDS);}
+    public Player(int id) {
+        this(id, DEFAULT_CASH, DEFAULT_CARDS);
+    }
+
 
     public Player(int id, int cash, List<Citadel> cards) {
-        this.cash=cash;
-        this.role=Role.EMPTY_ROLE;
-        this.id=id;
-        this.cards=new ArrayList<>(cards);
+        this.cash = cash;
+        this.role = Role.EMPTY_ROLE;
+        this.id = id;
+        this.cards = new ArrayList<>(cards);
     }
+
 
     public int getCash() {
         return cash;
@@ -119,16 +123,18 @@ public class Player implements Comparable<Player> {
      * Permet de distribuer deux cartes quartiers de manière aléatoire à un joueur
      *
      */
-    public void deal2Cards() throws IOException {
-        CitadelsJSONReader citadelsReader = new CitadelsJSONReader();
-        List<Citadel> citadelsList = citadelsReader.getCitadelsList();
-        List<Citadel> dealCards = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            int randomIndex = randomGenerator.nextInt(citadelsList.size());
-            Citadel randomCitadel = citadelsList.get(randomIndex);
-            dealCards.add(randomCitadel);
-        }
-        addCards(dealCards);
+    public void deal2Cards(){
+        try {
+            CitadelsJSONReader citadelsReader = new CitadelsJSONReader();
+            List<Citadel> citadelsList = citadelsReader.getCitadelsList();
+            List<Citadel> dealCards = new ArrayList<>();
+            for (int i = 0; i < 2; i++) {
+                int randomIndex = randomGenerator.nextInt(citadelsList.size());
+                Citadel randomCitadel = citadelsList.get(randomIndex);
+                dealCards.add(randomCitadel);
+            }
+            addCards(dealCards);
+        } catch (IOException ignored){}
     }
 
     @Override
@@ -158,7 +164,7 @@ public class Player implements Comparable<Player> {
         }
     }
 
-    public void dealCardsOrCash() throws IOException {
+    public void dealCardsOrCash() {
         if (randomGenerator.nextInt(2) == 1) {
             draw2Coins();
         } else {
