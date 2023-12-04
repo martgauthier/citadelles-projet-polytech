@@ -31,18 +31,14 @@ public class Player implements Comparable<Player> {
      *      this(id,cash,new ArrayList<>());}
      */
 
-    public Player(int id) {
-        this(id, DEFAULT_CASH, DEFAULT_CARDS);
-    }
-
+    public Player(int id) {this(id, DEFAULT_CASH,DEFAULT_CARDS);}
 
     public Player(int id, int cash, List<Citadel> cards) {
-        this.cash = cash;
-        this.role = Role.EMPTY_ROLE;
-        this.id = id;
-        this.cards = new ArrayList<>(cards);
+        this.cash=cash;
+        this.role=Role.EMPTY_ROLE;
+        this.id=id;
+        this.cards=cards;
     }
-
 
     public int getCash() {
         return cash;

@@ -28,7 +28,21 @@ class GameManagerTest {
         }
         assertThrows(IllegalArgumentException.class, () -> game.makeAllPlayersSelectRole(FULL_EMPTY_ROLES_LIST));
     }
+    @Test
+    void testMakeAllPlayersSelectRole(){
+        //TODO
+        game.makeAllPlayersSelectRole(CORRECT_ROLES_LIST);
+        int IndexMaster=game.getMasterOfTheGameIndex();
 
+    }
+    @Test
+    void testplayPlayerTurn(){
+        //TODO
+        for(Player player : game.getPlayersList()){
+            RoundSummary summary=new RoundSummary(2,null,null);
+            assertEquals(summary,game.playPlayerTurn(player));
+        }
+    }
     @Test
     void testMasterOfTheGameIndex() {
         game.setMasterOfTheGameIndex(-1);
@@ -52,10 +66,10 @@ class GameManagerTest {
 
     @Test
     void testSetAvailableRoles() {
-        assertThrows(IllegalArgumentException.class, () -> game.setAvailableRoles(8));
+        assertThrows(IllegalArgumentException.class, () -> game.generateAvailableRoles(8));
         //On test 10 fois pour vérifier que la méthode est stable malgré l'aléatoire
         for(int i = 0; i < 10; i++){
-            List<Role> availableRoles = game.setAvailableRoles(2);
+            List<Role> availableRoles = game.generateAvailableRoles(2);
             //On vérifie que les roles existent et qu'il y en a 3
             assertEquals(3, availableRoles.size());
             for (Role role : availableRoles) {
