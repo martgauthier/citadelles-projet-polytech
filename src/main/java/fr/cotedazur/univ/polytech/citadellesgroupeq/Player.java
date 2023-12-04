@@ -37,7 +37,7 @@ public class Player implements Comparable<Player> {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
-        this.cards=cards;
+        this.cards=new ArrayList<>(cards);
     }
 
     public int getCash() {
@@ -74,6 +74,10 @@ public class Player implements Comparable<Player> {
         if(coins >= 0) {
             this.cash+=coins;
         }
+    }
+
+    public void addCards(List<Citadel> cardsToAdd){
+        cards.addAll(cardsToAdd);
     }
 
 
@@ -124,7 +128,7 @@ public class Player implements Comparable<Player> {
             Citadel randomCitadel = citadelsList.get(randomIndex);
             dealCards.add(randomCitadel);
         }
-        setCards(dealCards);
+        addCards(dealCards);
     }
 
     @Override
@@ -151,6 +155,14 @@ public class Player implements Comparable<Player> {
         }
         else {
             return "";
+        }
+    }
+
+    public void dealCardsOrCash() throws IOException {
+        if (randomGenerator.nextInt(2) == 1) {
+            draw2Coins();
+        } else {
+            deal2Cards();
         }
     }
 
