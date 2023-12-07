@@ -52,14 +52,14 @@ public class Main {
 
         RoundSummary summary = game.playPlayerTurn(player);
 
-        if(summary.pickedCards()) {
+        if(summary.hasPickedCards()) {
             System.out.println("Il a choisi de piocher 2 cartes");
         }
         else {
             System.out.println("Il a choisi de prendre 2 pièces, ce qui l'amene à: " + player.getCash() + " pieces.");
         }
 
-        if(summary.boughtCitadels()) {
+        if(summary.hasBoughtCitadels()) {
             System.out.println("Il a assez pour acheter ces cartes: ");
             System.out.println(getDescriptionOfCards(summary.getBoughtCitadels()));
             System.out.println("Il a donc gagne !");

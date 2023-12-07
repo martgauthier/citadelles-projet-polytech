@@ -53,7 +53,7 @@ public class RoundSummary {
      *
      * @return True si le joueur a récupéré des pièces, et non pas les cartes. False sinon
      */
-    public boolean pickedCash() {
+    public boolean hasPickedCash() {
         return drawnCoins>0;
     }
 
@@ -61,7 +61,7 @@ public class RoundSummary {
      *
      * @return True si le joueur a récupéré des cartes, et non pas les pièces. False sinon
      */
-    public boolean pickedCards() {
+    public boolean hasPickedCards() {
         return !drawnCards.isEmpty();
     }
 
@@ -69,7 +69,7 @@ public class RoundSummary {
      *
      * @return True si le joueur a posé une de ses citadelles dans sa cité, False sinon
      */
-    public boolean boughtCitadels() {
+    public boolean hasBoughtCitadels() {
         return !boughtCitadels.isEmpty();
     }
 
