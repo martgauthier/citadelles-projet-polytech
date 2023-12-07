@@ -2,6 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Classe représentant le bilan d'un tour: pièces tirées, cartes tirées, citadelles achetées
@@ -70,5 +71,18 @@ public class RoundSummary {
      */
     public boolean boughtCitadels() {
         return !boughtCitadels.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoundSummary summary = (RoundSummary) o;
+        return drawnCoins == summary.drawnCoins && Objects.equals(boughtCitadels, summary.boughtCitadels) && Objects.equals(drawnCards, summary.drawnCards);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(boughtCitadels, drawnCoins, drawnCards);
     }
 }

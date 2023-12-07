@@ -37,7 +37,7 @@ public class Player implements Comparable<Player> {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
-        this.cards=cards;
+        this.cards=new ArrayList<>(cards);//to make sure List is modifiable
     }
 
     public int getCash() {

@@ -43,7 +43,7 @@ class PlayerTest {
     }
 
     @Test
-    void testDealCardsOrCash() throws IOException {
+    void testDealCardsOrCash() {
         assertEquals(0, bot.getCash());
         assertEquals(2, bot.getCards().size());
         bot.dealCardsOrCash();

@@ -35,7 +35,7 @@ public class GameManager {
 
     public GameManager(List<Player> playersList) {
         randomGenerator=new Random();
-        this.playersList=playersList;
+        this.playersList=new ArrayList<>(playersList);//pour ne pas modifier le tableau de base
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;
@@ -62,6 +62,7 @@ public class GameManager {
      * @throws IllegalArgumentException Si certains rôles sont EMPTY ou qu'il y a moins de rôles que de joueurs.
      */
     public List<Player> makeAllPlayersSelectRole(List<Role> availableRoles) throws IllegalArgumentException {
+        availableRoles=new ArrayList<>(availableRoles);//used to prevent original list to be modified
         if(availableRoles.size() <= playersList.size()) {
             throw new IllegalArgumentException("availableRoles must be bigger than players number.");
         }
@@ -101,29 +102,6 @@ public class GameManager {
             finishGame();
         }
         return summary;
-    }
-
-    public String playPlayerTurnV2(Player player) {
-        StringBuilder output = new StringBuilder("Joueur " + player.getId() + " joue: ");
-        output.append(player.toString());
-
-        player.dealCardsOrCash();
-        output.append("Il possède maintenant ").append(player.getCash()).append(" pièces.\n");
-        output.append("Et ").append(player.getDescriptionOfCards());
-
-        List<Citadel> buyableCards=player.getBuyableCards();
-        if(buyableCards.isEmpty()) {
-            output.append("Il n'a que ").append(player.getCash()).append(" pièces, il ne peut donc rien acheter.\n");
-        }
-        else {//le joueur gagne car il a assez pour acheter une de ses citadelles
-            output.append("Avec ses pièces, il a assez pour acheter: \n");
-            for(Citadel card : buyableCards) {
-                output.append("\t").append(card.getName()).append(" : ").append(card.getCost()).append("\n");
-            }
-            output.append("GAGNANT : JOUEUR ").append(player.getId());
-            finishGame();
-        }
-        return output.toString();
     }
 
     /**
@@ -188,6 +166,7 @@ public class GameManager {
             throw new IllegalArgumentException();
         }
         List<Role> newAvailableRoles = new ArrayList<>();
+        availableRoles=new ArrayList<>(availableRoles);//to prevent original list to be modified
         for (int i = 0; i <= nombreDeJoueur; i++) {
             int randomIndex = randomGenerator.nextInt(availableRoles.size());
             Role randomRole = availableRoles.get(randomIndex);

@@ -1,6 +1,5 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
-import java.io.IOException;
 import java.util.List;
 
 public class Main {
