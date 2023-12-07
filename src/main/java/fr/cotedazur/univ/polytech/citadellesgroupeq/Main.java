@@ -56,7 +56,7 @@ public class Main {
             System.out.println("Il a choisi de piocher 2 cartes");
         }
         else {
-            System.out.println("Il a choisi de prendre 2 pièces, ce qui l'amene à: " + player.getCash() + " pieces.");
+            System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces.");
         }
 
         if(summary.hasBoughtCitadels()) {

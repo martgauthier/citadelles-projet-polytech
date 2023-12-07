@@ -30,12 +30,7 @@ class GameManagerTest {
         }
         assertThrows(IllegalArgumentException.class, () -> game.makeAllPlayersSelectRole(FULL_EMPTY_ROLES_LIST));
     }
-    @Test
-    void testMakeAllPlayersSelectRole(){
-        //TODO
-        game.makeAllPlayersSelectRole(CORRECT_ROLES_LIST);
-        int IndexMaster=game.getMasterOfTheGameIndex();
-    }
+
     @Test
     void testplayPlayerTurn(){
         game.makeAllPlayersSelectRole();
@@ -74,7 +69,7 @@ class GameManagerTest {
             //On vérifie que les roles existent et qu'il y en a 3
             assertEquals(3, availableRoles.size());
             for (Role role : availableRoles) {
-                Role.valueOf(role.toString()); // Si le nom du rôle n'existe pas une IllegalArgumentException sera levée
+                assertNotSame(Role.EMPTY_ROLE, role);
             }
         }
     }
