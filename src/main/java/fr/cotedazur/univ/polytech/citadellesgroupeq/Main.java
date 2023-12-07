@@ -28,7 +28,7 @@ public class Main {
     }
 
     public static void describeRoles(List<Role> listeRoles) {
-        System.out.println("Les rôles disponible sont: ");
+        System.out.println("Les roles disponibles sont: ");
         for(Role role: listeRoles) {
             System.out.print("\t-"+role.name());
         }
@@ -39,16 +39,16 @@ public class Main {
         for(Player player: players) {
             System.out.print("Le joueur " + player.getId());
             if(player.getId() == masterOfTheGameIndex) {
-                System.out.print(" (maître du jeu)");
+                System.out.print(" (maitre du jeu)");
             }
-            System.out.println(" a choisi son rôle: " + player.getRole());
+            System.out.println(" a choisi son role: " + player.getRole());
         }
     }
 
     public static void describePlayerRound(Player player, GameManager game) {
         System.out.print("Joueur " + player.getId());
         System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+").");
-        System.out.println("Il possède actuellement " + player.getCash() + " pièces, et ces cartes: ");
+        System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes: ");
         System.out.println(getDescriptionOfCards(player.getCards()));
 
         RoundSummary summary = game.playPlayerTurn(player);
@@ -57,13 +57,13 @@ public class Main {
             System.out.println("Il a choisi de piocher 2 cartes");
         }
         else {
-            System.out.println("Il a choisi de prendre 2 pièces, ce qui l'amène à: " + player.getCash() + " pièces.");
+            System.out.println("Il a choisi de prendre 2 pièces, ce qui l'amene à: " + player.getCash() + " pieces.");
         }
 
         if(summary.boughtCitadels()) {
             System.out.println("Il a assez pour acheter ces cartes: ");
             System.out.println(getDescriptionOfCards(summary.getBoughtCitadels()));
-            System.out.println("Il a donc gagné !");
+            System.out.println("Il a donc gagne !");
         }
         System.out.println("\n");
     }
