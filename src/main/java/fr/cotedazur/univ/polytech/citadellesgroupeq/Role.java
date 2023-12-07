@@ -59,5 +59,7 @@ public enum Role {
     /**
      * Méthode pour utiliser le pouvoir du rôle. PAS ENCORE IMPLEMENTE
      */
-    public void power() { }
+    public void power() {
+        throw new UnsupportedOperationException();
+    }
 }

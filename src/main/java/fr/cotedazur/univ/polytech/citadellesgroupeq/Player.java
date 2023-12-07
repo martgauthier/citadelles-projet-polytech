@@ -1,10 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import org.json.simple.parser.ParseException;
+import java.util.*;
 
 public class Player implements Comparable<Player> {
 
@@ -130,7 +127,10 @@ public class Player implements Comparable<Player> {
                 dealCards.add(randomCitadel);
             }
             addCards(dealCards);
-        } catch (IOException ignored){}
+        }
+        catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
