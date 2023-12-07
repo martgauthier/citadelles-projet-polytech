@@ -12,7 +12,6 @@ public class Player implements Comparable<Player> {
     public static final Random randomGenerator=new Random();
     private int cash;
     public static final int DEFAULT_CASH=0;
-    public static final List<Citadel> DEFAULT_CARDS=Arrays.asList(new Citadel("Temple", 9), new Citadel("Eglise", 8));
 
     /**
      * Identification du bot: bot numéro 0 -> id=0, bot numéro 1 -> id=1...
@@ -32,7 +31,10 @@ public class Player implements Comparable<Player> {
      *      this(id,cash,new ArrayList<>());}
      */
 
-    public Player(int id) {this(id, DEFAULT_CASH,DEFAULT_CARDS);}
+    public Player(int id) {
+        this(id, DEFAULT_CASH, new ArrayList<>());
+        deal2Cards();
+    }
 
     public Player(int id, int cash, List<Citadel> cards) {
         this.cash=cash;
@@ -132,7 +134,7 @@ public class Player implements Comparable<Player> {
             addCards(dealCards);
         }
         catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Impossible de lire les cartes dans le fichier JSON", e);
         }
     }
 

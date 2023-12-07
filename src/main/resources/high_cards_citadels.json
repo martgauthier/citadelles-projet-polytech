@@ -1,0 +1,70 @@
+[
+  {
+    "name": "Temple",
+    "cost": 9
+  },
+  {
+    "name": "Eglise",
+    "cost": 8
+  },
+  {
+    "name": "Monastere",
+    "cost" : 7
+  },
+  {
+    "name": "Cathedrale",
+    "cost": 6
+  },
+  {
+    "name": "Manoir",
+    "cost": 3
+  },
+  {
+    "name": "Chateau",
+    "cost": 4
+  },
+  {
+    "name": "Palais",
+    "cost": 5
+  },
+  {
+    "name": "Hotel de ville",
+    "cost": 5
+  },
+  {
+    "name": "Forteresse",
+    "cost": 5
+  },
+  {
+    "name": "Laboratoire",
+    "cost": 5
+  },
+  {
+    "name": "Manufacture",
+    "cost": 5
+  },
+  {
+    "name": "Observatoire",
+    "cost": 5
+  },
+  {
+    "name": "Cimetiere",
+    "cost": 5
+  },
+  {
+    "name": "Bibliotheque",
+    "cost": 6
+  },
+  {
+    "name": "Ecole de magie",
+    "cost": 6
+  },
+  {
+    "name": "Université",
+    "cost": 8
+  },
+  {
+    "name": "Dracoport",
+    "cost": 8
+  }
+]

@@ -17,7 +17,6 @@ public class Main {
             describeRolePicking(game.makeAllPlayersSelectRole(availableRoles), game.getMasterOfTheGameIndex());
 
             for(Player player : game.getPlayerTreeSet()) {
-                System.out.println(player.getDescriptionOfCards());
                 if(!game.isFinished()) {//actuellement, on s'arrête DES qu'un joueur a 8 cartes. Dans la version finale, il faudra laisser la fin du tour
                     describePlayerRound(player, game);
                 }

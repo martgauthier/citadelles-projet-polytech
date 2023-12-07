@@ -23,7 +23,7 @@ public class CitadelsJSONReader {
     private List<Citadel> citadelsList;
 
 
-    public static final String DEFAULT_PATH="src/main/resources/citadels.json";
+    public static final String DEFAULT_PATH="src/main/resources/high_cards_citadels.json";
 
     /**
      * Construit un objet CitadelsJSONReader en lisant les données du fichier JSON contenant la liste des citadels
