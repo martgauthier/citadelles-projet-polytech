@@ -6,6 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
+ * d'argent (cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
+ */
 public class Player implements Comparable<Player> {
 
     public static final Random randomGenerator=new Random();
@@ -117,7 +121,6 @@ public class Player implements Comparable<Player> {
 
     /**
      * Permet de distribuer deux cartes quartiers de manière aléatoire à un joueur
-     *
      */
     public void deal2Cards(){
         try {
@@ -160,6 +163,9 @@ public class Player implements Comparable<Player> {
         }
     }
 
+    /**
+     * Permet de manière aléatoire de distribuer deux cartes ou de donner deux pièces au joueur
+     */
     public void dealCardsOrCash() {
         if (randomGenerator.nextInt(2) == 1) {
             draw2Coins();

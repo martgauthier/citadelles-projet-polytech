@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -42,12 +43,14 @@ class PlayerTest {
         assertEquals(4, bot.getCards().size());
     }
 
-    @Test
+    @RepeatedTest(100)
     void testDealCardsOrCash() {
         assertEquals(0, bot.getCash());
         assertEquals(2, bot.getCards().size());
+
         bot.dealCardsOrCash();
-        // Soit le bot a pioché deux cartes soit il a récupéré deux pièces
+
+        // Vérifie que le joueur a soit 2 pièces de plus, soit 2 cartes de plus
         assertTrue(bot.getCash() == 2 || bot.getCards().size() == 4);
     }
 }
