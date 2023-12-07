@@ -2,6 +2,10 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import java.util.*;
 
+/**
+ * La classe GameManager gère le déroulement du jeu Citadelles. Elle initialise le jeu, fait choisir des rôles aux joueurs,
+ * exécute les tours des joueurs, et vérifie si le jeu est terminé.
+ */
 public class GameManager {
     private final Random randomGenerator;
 
@@ -25,7 +29,6 @@ public class GameManager {
     /**
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
-
     private final SortedSet<Player> playerTreeSet;
     private static final List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new Player(0), new Player(1));
 
@@ -90,6 +93,11 @@ public class GameManager {
         return playersInRolePickingOrder;
     }
 
+    /**
+     * Exécute le tour d'un joueur, lui permettant de piocher des pièces et d'acheter des citadelles.
+     * @param player Le joueur dont c'est le tour.
+     * @return Un objet {@link RoundSummary}contenant les informations sur le tour du joueur.
+     */
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
 
