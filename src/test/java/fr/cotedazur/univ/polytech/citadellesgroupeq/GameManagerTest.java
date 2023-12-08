@@ -2,6 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -65,5 +66,37 @@ class GameManagerTest {
                 assertNotSame(Role.EMPTY_ROLE, role);
             }
         }
+    }
+
+    @RepeatedTest(50)
+    void testCreatingGameWithPlayers() {
+        for(Player player: game.getPlayersList()) {
+            assertEquals(2, player.getCards().size());
+        }
+    }
+
+    @Test
+    void testGameUsesCopyOfDefaultPlayerList() {//verifie que le Game fait bien une deep copy du DEFAULT_PLAYER_LIST
+        assertNotSame(GameManager.DEFAULT_PLAYER_LIST.get(0).hashCode(), game.getPlayersList().get(0).hashCode());
+        game.getPlayersList().get(0).setRole(Role.ASSASSIN);
+        assertNotSame(Role.ASSASSIN, GameManager.DEFAULT_PLAYER_LIST.get(0).getRole());
+    }
+
+    @RepeatedTest(50)
+    void testPlayerTurn() {
+        game = new GameManager();
+        game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes
+        assertEquals(2,game.getPlayersList().get(0).getCards().size());
+
+        RoundSummary summary=game.playPlayerTurn(game.getPlayersList().get(0));
+
+        assertTrue(summary.hasBoughtCitadels());
+        if(summary.hasPickedCards()) {
+            assertEquals(3, summary.getBoughtCitadels().size());
+        }
+        else {
+            assertEquals(2, summary.getBoughtCitadels().size());
+        }
+        assertTrue(summary.hasPickedCards() ^ summary.hasPickedCash()); //opérateur XOR, pour vérifier que le joueur n'a fait qu'un des deux
     }
 }

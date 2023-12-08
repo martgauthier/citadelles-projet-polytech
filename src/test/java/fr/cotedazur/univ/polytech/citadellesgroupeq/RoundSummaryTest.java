@@ -46,4 +46,21 @@ class RoundSummaryTest {
         assertTrue(bothChoices.hasPickedCards());
     }
 
+    @Test
+    void testDrawnCards() {
+        assertEquals(RoundSummary.EMPTY_CITADEL_LIST, firstBasicRound.getDrawnCards());
+        firstBasicRound.addDrawnCard(reader.getCitadelsList().get(0));//arbitrary card
+        assertTrue(firstBasicRound.hasPickedCards());
+        assertEquals(1, firstBasicRound.getDrawnCards().size());
+    }
+
+    @Test
+    void testDrawnCoins() {
+        assertEquals(2, firstBasicRound.getDrawnCoins());
+        firstBasicRound.addCoins(2);
+        assertEquals(4, firstBasicRound.getDrawnCoins());
+        firstBasicRound.setDrawnCoins(0);
+        assertEquals(0, firstBasicRound.getDrawnCoins());
+        assertFalse(firstBasicRound.hasPickedCash());
+    }
 }

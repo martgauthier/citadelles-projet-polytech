@@ -24,7 +24,7 @@ class PlayerTest {
         bot.setCash(40);
         assertTrue(bot.stillHasCash());
         assertEquals(40, bot.getCash());
-        bot.draw2Coins();
+        bot.draw2Coins(new RoundSummary());
         assertEquals(42, bot.getCash());
         bot.setCash(-1);
         assertEquals(42, bot.getCash());

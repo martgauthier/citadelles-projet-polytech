@@ -7,7 +7,7 @@ import java.util.*;
  * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
  * d'argent (cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
  */
-public class Player implements Comparable<Player> {
+public class Player implements Comparable<Player>, Cloneable {
 
     public static final Random randomGenerator=new Random();
     private int cash;
@@ -33,8 +33,8 @@ public class Player implements Comparable<Player> {
 
     public Player(int id) {
         this(id, DEFAULT_CASH, new ArrayList<>());
-        pickCard();
-        pickCard();
+        pickCard(new RoundSummary());
+        pickCard(new RoundSummary());//no need to get summary
     }
 
     public Player(int id, int cash, List<Citadel> cards) {
@@ -70,8 +70,9 @@ public class Player implements Comparable<Player> {
     /**
      * Ajoute 2 au cash du joueur. Utile pour chaque début de tour
      */
-    public void draw2Coins() {
+    public void draw2Coins(RoundSummary summary) {
         this.cash+=2;
+        summary.addCoins(2);
     }
 
     public void add(int coins) {
@@ -148,7 +149,7 @@ public class Player implements Comparable<Player> {
      * @param cards les cartes proposées
      * @return la carte choisie
      */
-    public Citadel pickCard(List<Citadel> cards) {
+    public Citadel pickCard(RoundSummary summary, List<Citadel> cards) {
         if(cards.isEmpty()) {
             throw new IllegalArgumentException("cards must not be empty.");
         }
@@ -156,15 +157,17 @@ public class Player implements Comparable<Player> {
 
         addCard(choosenCard);
 
+        summary.addDrawnCard(choosenCard);
+
         return choosenCard;
     }
 
     /**
-     * Appelle {@link #pickCard(List)}, avec 2 cartes choisies aléatoirement.
+     * Appelle {@link #pickCard(RoundSummary, List)}, avec 2 cartes choisies aléatoirement.
      * @return la carte choisie par le joueur
      */
-    public Citadel pickCard() {
-        return pickCard(generate2Cards());
+    public Citadel pickCard(RoundSummary summary) {
+        return pickCard(summary, generate2Cards());
     }
 
     @Override
@@ -199,12 +202,9 @@ public class Player implements Comparable<Player> {
      */
     public void dealCardsOrCash(RoundSummary summary) {
         if (randomGenerator.nextInt(2) == 1) {
-            draw2Coins();
-            summary.addCoins(2);
+            draw2Coins(summary);
         } else {
-            Citadel cardChoosen=pickCard();//la carte est alors choisie et ajoutée au jeu du joueur
-
-            summary.addDrawnCard(cardChoosen);
+            pickCard(summary);
         }
     }
 
@@ -220,5 +220,20 @@ public class Player implements Comparable<Player> {
      */
     public int getId() {
         return id;
+    }
+
+    public Object clone() {
+        Object o = null;
+        try {
+            // On récupère l'instance à renvoyer par l'appel de la
+            // méthode super.clone()
+            o = super.clone();
+        } catch(CloneNotSupportedException cnse) {
+            // Ne devrait jamais arriver, car nous implémentons
+            // l'interface Cloneable
+            cnse.printStackTrace(System.err);
+        }
+        // on renvoie le clone
+        return o;
     }
 }
