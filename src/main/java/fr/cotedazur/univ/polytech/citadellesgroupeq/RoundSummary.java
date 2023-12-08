@@ -19,8 +19,8 @@ public class RoundSummary {
 
     public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels) {
         this.drawnCoins=drawnCoins;
-        this.drawnCards=drawnCards;
-        this.boughtCitadels=boughtCitadels;
+        this.drawnCards=new ArrayList<>(drawnCards);
+        this.boughtCitadels=new ArrayList<>(boughtCitadels);
     }
 
     public RoundSummary() {
@@ -31,6 +31,10 @@ public class RoundSummary {
 
     public void setBoughtCitadels(List<Citadel> boughtCitadels) {
         this.boughtCitadels = boughtCitadels;
+    }
+
+    public void addBoughtCitadel(Citadel boughtCitadel) {
+        this.boughtCitadels.add(boughtCitadel);
     }
 
     public int getDrawnCoins() { return drawnCoins; }
@@ -47,6 +51,10 @@ public class RoundSummary {
 
     public void setDrawnCards(List<Citadel> drawnCards) {
         this.drawnCards = drawnCards;
+    }
+
+    public void addDrawnCard(Citadel cardToAdd) {
+        this.drawnCards.add(cardToAdd);
     }
 
     /**

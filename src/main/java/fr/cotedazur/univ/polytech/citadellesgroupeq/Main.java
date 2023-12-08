@@ -53,7 +53,7 @@ public class Main {
         RoundSummary summary = game.playPlayerTurn(player);
 
         if(summary.hasPickedCards()) {
-            System.out.println("Il a choisi de piocher 2 cartes");
+            System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
         }
         else {
             System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces.");

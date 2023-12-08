@@ -101,8 +101,7 @@ public class GameManager {
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
 
-        player.draw2Coins();
-        summary.addCoins(2);
+        player.dealCardsOrCash(summary);
 
         List<Citadel> buyableCards=player.getBuyableCards();
         if(!buyableCards.isEmpty()) {//le joueur gagne car il a assez pour acheter une de ses citadelles

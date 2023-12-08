@@ -33,7 +33,8 @@ public class Player implements Comparable<Player> {
 
     public Player(int id) {
         this(id, DEFAULT_CASH, new ArrayList<>());
-        deal2Cards();
+        pickCard();
+        pickCard();
     }
 
     public Player(int id, int cash, List<Citadel> cards) {
@@ -79,6 +80,10 @@ public class Player implements Comparable<Player> {
         }
     }
 
+    public void addCard(Citadel cardToAdd) {
+        cards.add(cardToAdd);
+    }
+
     public void addCards(List<Citadel> cardsToAdd){
         cards.addAll(cardsToAdd);
     }
@@ -119,9 +124,9 @@ public class Player implements Comparable<Player> {
     }
 
     /**
-     * Permet de distribuer deux cartes quartiers de manière aléatoire à un joueur
+     * Permet de générer 2 cartes aléatoires. Utile pour proposer à un joueur 2 cartes parmi lesquelles choisir
      */
-    public void deal2Cards(){
+    public List<Citadel> generate2Cards(){
         try {
             CitadelsJSONReader citadelsReader = new CitadelsJSONReader();
             List<Citadel> citadelsList = citadelsReader.getCitadelsList();
@@ -131,11 +136,35 @@ public class Player implements Comparable<Player> {
                 Citadel randomCitadel = citadelsList.get(randomIndex);
                 dealCards.add(randomCitadel);
             }
-            addCards(dealCards);
+            return dealCards;
         }
         catch (ParseException e) {
             throw new RuntimeException("Impossible de lire les cartes dans le fichier JSON", e);
         }
+    }
+
+    /**
+     * Choisit une carte parmi celles proposées pour l'ajouter au jeu du joueur.
+     * @param cards les cartes proposées
+     * @return la carte choisie
+     */
+    public Citadel pickCard(List<Citadel> cards) {
+        if(cards.isEmpty()) {
+            throw new IllegalArgumentException("cards must not be empty.");
+        }
+        Citadel choosenCard=cards.get(randomGenerator.nextInt(cards.size()));
+
+        addCard(choosenCard);
+
+        return choosenCard;
+    }
+
+    /**
+     * Appelle {@link #pickCard(List)}, avec 2 cartes choisies aléatoirement.
+     * @return la carte choisie par le joueur
+     */
+    public Citadel pickCard() {
+        return pickCard(generate2Cards());
     }
 
     @Override
@@ -168,11 +197,14 @@ public class Player implements Comparable<Player> {
     /**
      * Permet de manière aléatoire de distribuer deux cartes ou de donner deux pièces au joueur
      */
-    public void dealCardsOrCash() {
+    public void dealCardsOrCash(RoundSummary summary) {
         if (randomGenerator.nextInt(2) == 1) {
             draw2Coins();
+            summary.addCoins(2);
         } else {
-            deal2Cards();
+            Citadel cardChoosen=pickCard();//la carte est alors choisie et ajoutée au jeu du joueur
+
+            summary.addDrawnCard(cardChoosen);
         }
     }
 

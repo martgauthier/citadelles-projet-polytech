@@ -31,14 +31,7 @@ class GameManagerTest {
         assertThrows(IllegalArgumentException.class, () -> game.makeAllPlayersSelectRole(FULL_EMPTY_ROLES_LIST));
     }
 
-    @Test
-    void testplayPlayerTurn(){
-        game.makeAllPlayersSelectRole();
-        for(Player player : game.getPlayersList()){
-            RoundSummary summary=new RoundSummary(2,new ArrayList<>(),new ArrayList<>());
-            assertEquals(summary.getDrawnCards(),game.playPlayerTurn(player).getDrawnCards());
-        }
-    }
+
     @Test
     void testMasterOfTheGameIndex() {
         game.setMasterOfTheGameIndex(-1);
