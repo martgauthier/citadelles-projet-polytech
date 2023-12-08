@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameManagerTest {
     GameManager game;
     public static final List<Role> TOO_SHORT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI));
-    public static final List<Role> CORRECT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI, Role.ASSASSIN, Role.ARCHITECTE));
-    public static final List<Role> FULL_EMPTY_ROLES_LIST = new ArrayList<>(List.of(Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE));
+    public static final List<Role> CORRECT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI, Role.ASSASSIN, Role.ARCHITECTE,Role.MARCHAND,Role.VOLEUR));
+    public static final List<Role> FULL_EMPTY_ROLES_LIST = new ArrayList<>(List.of(Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE));
 
     @BeforeEach
     void setup() {
@@ -23,7 +23,7 @@ class GameManagerTest {
     @Test
     void testThrowMakeAllPlayersSelectRole() {
         assertThrows(IllegalArgumentException.class, () -> game.makeAllPlayersSelectRole(TOO_SHORT_ROLES_LIST));
-        assertEquals(3, CORRECT_ROLES_LIST.size());
+        assertEquals(5, CORRECT_ROLES_LIST.size());
         game.makeAllPlayersSelectRole(CORRECT_ROLES_LIST);//asserts that it throws nothing
         for (Player player : game.getPlayersList()) {
             assertNotEquals(Role.EMPTY_ROLE, player.getRole());//vérifie que le rôle a bien été changé

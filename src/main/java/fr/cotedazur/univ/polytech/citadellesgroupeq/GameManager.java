@@ -30,7 +30,7 @@ public class GameManager {
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
-    private static final List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new Player(0), new Player(1));
+    private static final List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new Player(0), new Player(1),new Player(2),new Player(3));
 
     public GameManager() {
         this(DEFAULT_PLAYER_LIST);
