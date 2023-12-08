@@ -23,7 +23,7 @@ public class CitadelsJSONReader {
     private List<Citadel> citadelsList;
 
 
-    public static final String DEFAULT_PATH="src/main/resources/high_cards_citadels.json";
+    public static final String DEFAULT_PATH="high_cards_citadels.json";
 
     /**
      * Construit un objet CitadelsJSONReader en lisant les données du fichier JSON contenant la liste des citadels
@@ -33,7 +33,7 @@ public class CitadelsJSONReader {
     public CitadelsJSONReader(String path) throws ParseException {
         try {
             // Lis les données du fichier JSON
-            jsonArray = (JSONArray) new JSONParser().parse(new FileReader(path));
+            jsonArray = (JSONArray) new JSONParser().parse(new FileReader(getClass().getClassLoader().getResource(path).getFile()));
             // Initialise la liste des citadelles
             citadelsList = new ArrayList<>();
             // Parcours chaque élément du tableau JSON et crée un objet Citadel correspondant
@@ -47,7 +47,7 @@ public class CitadelsJSONReader {
                 }
             }
         }
-        catch(IOException e) {
+        catch(IOException | NullPointerException e) {
             throw new ParseException(0);//arbitrary value
         }
     }
