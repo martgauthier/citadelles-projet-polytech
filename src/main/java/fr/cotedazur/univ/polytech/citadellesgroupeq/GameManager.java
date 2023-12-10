@@ -19,6 +19,8 @@ public class GameManager {
      */
     private final List<Player> playersList;
 
+    public static final int NUMBER_OF_CITADELS_TO_WIN=1;//le passer plus tard à 3, puis 8
+
     private Map<Player, Role> rolesSelectedMap;
 
     /**
@@ -105,9 +107,16 @@ public class GameManager {
 
         player.dealCardsOrCash(summary);
 
-        List<Citadel> buyableCards=player.getBuyableCards();
-        if(!buyableCards.isEmpty()) {//le joueur gagne car il a assez pour acheter une de ses citadelles
-            summary.setBoughtCitadels(buyableCards);
+        Optional<Citadel> boughtCardOptional=player.getChoosenCitadelToBuy();
+        if(boughtCardOptional.isPresent()) {//le joueur gagne car il a assez pour acheter une de ses citadelles
+            summary.addBoughtCitadel(boughtCardOptional.get());
+            player.removeCoins(boughtCardOptional.get().getCost());
+            player.addCitadelToCity(boughtCardOptional.get());
+            player.removeCardFromHand(boughtCardOptional.get());
+        }
+
+        if(player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
+            summary.setHasWonDuringTurn(true);
             finishGame();
         }
         return summary;

@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import org.json.simple.parser.ParseException;
+
 import java.util.*;
 
 /**
@@ -21,7 +22,9 @@ public class Player implements Comparable<Player>, Cloneable {
     /**
      * Cartes que le joueur contient dans sa main. PAS LES CARTES POSÉES DANS SA CITE
      */
-    private List<Citadel> cards;
+    private List<Citadel> cardsInHand;
+
+    private List<Citadel> city;//la cité, où le joueur pose ses cartes
 
     private Role role;
 
@@ -41,14 +44,15 @@ public class Player implements Comparable<Player>, Cloneable {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
-        this.cards=new ArrayList<>(cards);//to make sure List is modifiable
+        this.cardsInHand =new ArrayList<>(cards);//to make sure List is modifiable
+        this.city=new ArrayList<>();
     }
 
     public int getCash() {
         return cash;
     }
 
-    public List<Citadel> getCards() {return cards;}
+    public List<Citadel> getCardsInHand() {return cardsInHand;}
 
     public Role getRole() {
         return role;
@@ -61,7 +65,7 @@ public class Player implements Comparable<Player>, Cloneable {
     public void setCash(int cash) {
         this.cash=(cash >= 0) ? cash : this.cash;
     }
-    public void setCards(List<Citadel> cards) {this.cards = cards;}
+    public void setCardsInHand(List<Citadel> cards) {this.cardsInHand = cards;}
 
     public boolean stillHasCash() {
         return (cash > 0);
@@ -75,18 +79,28 @@ public class Player implements Comparable<Player>, Cloneable {
         summary.addCoins(2);
     }
 
-    public void add(int coins) {
+    public void addCoins(int coins) {
         if(coins >= 0) {
             this.cash+=coins;
         }
     }
 
-    public void addCard(Citadel cardToAdd) {
-        cards.add(cardToAdd);
+    public void removeCoins(int coins) {
+        if(cash >= coins && coins >= 0) {
+            this.cash-=coins;
+        }
     }
 
-    public void addCards(List<Citadel> cardsToAdd){
-        cards.addAll(cardsToAdd);
+    public boolean removeCardFromHand(Citadel cardToRemove) {
+        return cardsInHand.remove(cardToRemove);
+    }
+
+    public void addCardToHand(Citadel cardToAdd) {
+        cardsInHand.add(cardToAdd);
+    }
+
+    public void addAllCardsToHand(List<Citadel> cardsToAdd){
+        cardsInHand.addAll(cardsToAdd);
     }
 
 
@@ -116,7 +130,7 @@ public class Player implements Comparable<Player>, Cloneable {
      */
     public List<Citadel> getBuyableCards(int cashAvailable) {
         List<Citadel> buyableCards = new ArrayList<>();
-        for(Citadel card : cards) {
+        for(Citadel card : cardsInHand) {
             if(card.getCost() <= cashAvailable) {
                 buyableCards.add(card);
             }
@@ -155,7 +169,7 @@ public class Player implements Comparable<Player>, Cloneable {
         }
         Citadel choosenCard=cards.get(randomGenerator.nextInt(cards.size()));
 
-        addCard(choosenCard);
+        addCardToHand(choosenCard);
 
         summary.addDrawnCard(choosenCard);
 
@@ -168,33 +182,6 @@ public class Player implements Comparable<Player>, Cloneable {
      */
     public Citadel pickCard(RoundSummary summary) {
         return pickCard(summary, generate2Cards());
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder output = new StringBuilder("Rôle: ");
-        output.append(role.name()).append("\n");
-        output.append("Cash: ").append(getCash()).append("\n");
-        output.append(getDescriptionOfCards());
-
-        return output.toString();
-    }
-
-    /**
-     *
-     * @return Un {@link String} contenant la liste des cartes dans la main du joueur. PAS CELLES POSEES DANS SA CITE
-     */
-    public String getDescriptionOfCards() {
-        if(!cards.isEmpty()) {
-            StringBuilder output = new StringBuilder("Cartes en main: \n");
-            for (Citadel card : cards) {
-                output.append("\t*").append(card.getName()).append(" : ").append(card.getCost()).append("\n");
-            }
-            return output.toString();
-        }
-        else {
-            return "";
-        }
     }
 
     /**
@@ -220,6 +207,58 @@ public class Player implements Comparable<Player>, Cloneable {
      */
     public int getId() {
         return id;
+    }
+
+
+    public List<Citadel> getCity() { return city; }
+
+    public void setCity(List<Citadel> city) {
+        this.city = city;
+    }
+
+    public void addCitadelToCity(Citadel citadelToAdd) {
+        this.city.add(citadelToAdd);
+    }
+
+    public void addAllCitadelsToCity(List<Citadel> citadelsToAdd) {
+        this.city.addAll(citadelsToAdd);
+    }
+
+    public boolean removeCitadelFromCity(Citadel citadelToRemove) {
+        return city.remove(citadelToRemove);
+    }
+
+    public void clearCity() {
+        city.clear();
+    }
+
+    /**
+     *
+     * @return la somme des prix des citadelles actuellement posées dans la cité du joueur
+     */
+    public int getTotalCityPrice() {
+        int sum=0;
+        for(Citadel citadel: city) {
+            sum+=citadel.getCost();
+        }
+
+        return sum;
+    }
+
+    public boolean hasEmptyCity() {
+        return this.city.isEmpty();
+    }
+
+    /**
+     *
+     * @return la citadelle que le joueur a choisi d'acheter (par défaut, la moins chère). Si le joueur n'est pas en mesure d'acheter une citadelle, l'Optional est empty
+     */
+    public Optional<Citadel> getChoosenCitadelToBuy() {
+        List<Citadel> buyableCitadels=getBuyableCards();
+
+        if(buyableCitadels.isEmpty()) return Optional.empty();
+
+        return Optional.of(Collections.min(buyableCitadels));
     }
 
     public Object clone() {

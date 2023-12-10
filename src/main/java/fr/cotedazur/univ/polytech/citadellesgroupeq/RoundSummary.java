@@ -15,16 +15,19 @@ public class RoundSummary {
     private List<Citadel> boughtCitadels;
     private int drawnCoins;
 
+    private boolean hasWonDuringTurn;
+
     private List<Citadel> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels) {
+    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtCitadels=new ArrayList<>(boughtCitadels);
+        this.hasWonDuringTurn = hasWonDuringTurn;
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST);
+        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false);
     }
 
     public List<Citadel> getBoughtCitadels() { return boughtCitadels; }
@@ -81,12 +84,20 @@ public class RoundSummary {
         return !boughtCitadels.isEmpty();
     }
 
+    public boolean hasWonDuringTurn() {
+        return hasWonDuringTurn;
+    }
+
+    public void setHasWonDuringTurn(boolean hasWonDuringTurn) {
+        this.hasWonDuringTurn=hasWonDuringTurn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoundSummary summary = (RoundSummary) o;
-        return drawnCoins == summary.drawnCoins && Objects.equals(boughtCitadels, summary.boughtCitadels) && Objects.equals(drawnCards, summary.drawnCards);
+        return drawnCoins == summary.drawnCoins && Objects.equals(boughtCitadels, summary.boughtCitadels) && Objects.equals(drawnCards, summary.drawnCards) && hasWonDuringTurn == summary.hasWonDuringTurn();
     }
 
     @Override
