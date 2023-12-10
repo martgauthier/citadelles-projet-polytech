@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
-public class Citadel {
+public class Citadel implements Comparable<Citadel> {
     private String name;
     private int cost;
 
@@ -20,6 +20,20 @@ public class Citadel {
     public void setCost(int cost) {
         if(0<=cost) {
             this.cost=cost;
+        }
+    }
+
+    @Override
+    public int compareTo(Citadel citadelToCompare) {
+        int otherCost= citadelToCompare.getCost();
+        if(this.cost > otherCost) {
+            return 1;
+        }
+        else if(this.cost < otherCost) {
+            return -1;
+        }
+        else {
+            return 0;
         }
     }
 }

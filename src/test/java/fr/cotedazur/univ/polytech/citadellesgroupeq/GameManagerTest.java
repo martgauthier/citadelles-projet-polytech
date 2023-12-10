@@ -71,7 +71,7 @@ class GameManagerTest {
     @RepeatedTest(50)
     void testCreatingGameWithPlayers() {
         for(Player player: game.getPlayersList()) {
-            assertEquals(2, player.getCards().size());
+            assertEquals(2, player.getCardsInHand().size());
         }
     }
 
@@ -86,17 +86,19 @@ class GameManagerTest {
     void testPlayerTurn() {
         game = new GameManager();
         game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes
-        assertEquals(2,game.getPlayersList().get(0).getCards().size());
+        assertEquals(2,game.getPlayersList().get(0).getCardsInHand().size());
 
         RoundSummary summary=game.playPlayerTurn(game.getPlayersList().get(0));
 
         assertTrue(summary.hasBoughtCitadels());
-        if(summary.hasPickedCards()) {
-            assertEquals(3, summary.getBoughtCitadels().size());
+        assertEquals(1, summary.getBoughtCitadels().size());
+
+        int boughtCitadelPrice=summary.getBoughtCitadels().get(0).getCost();
+
+        for(Citadel cardInHand: game.getPlayersList().get(0).getCardsInHand()) {
+            assertTrue(boughtCitadelPrice <= cardInHand.getCost());
         }
-        else {
-            assertEquals(2, summary.getBoughtCitadels().size());
-        }
+
         assertTrue(summary.hasPickedCards() ^ summary.hasPickedCash()); //opérateur XOR, pour vérifier que le joueur n'a fait qu'un des deux
     }
 }

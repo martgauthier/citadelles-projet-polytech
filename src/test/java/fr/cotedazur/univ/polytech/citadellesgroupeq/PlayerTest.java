@@ -4,9 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,28 +26,28 @@ class PlayerTest {
         bot.setCash(-1);
         assertEquals(42, bot.getCash());
 
-        bot.add(4);
+        bot.addCoins(4);
         assertEquals(46, bot.getCash());
-        bot.add(-2);
+        bot.addCoins(-2);
         assertEquals(46, bot.getCash());
     }
 
     @Test
     void testAddCards(){
-        assertEquals(2, bot.getCards().size());
+        assertEquals(2, bot.getCardsInHand().size());
         List<Citadel> cardsToAdd = List.of(new Citadel("Temple", 9), new Citadel("Eglise", 8));
-        bot.addCards(cardsToAdd);
-        assertEquals(4, bot.getCards().size());
+        bot.addAllCardsToHand(cardsToAdd);
+        assertEquals(4, bot.getCardsInHand().size());
     }
 
     @RepeatedTest(100)
     void testDealCardsOrCash() {
         assertEquals(0, bot.getCash());
-        assertEquals(2, bot.getCards().size());
+        assertEquals(2, bot.getCardsInHand().size());
 
         bot.dealCardsOrCash(new RoundSummary());
 
         // Vérifie que le joueur a soit 2 pièces de plus, soit 1 cartes de plus
-        assertTrue(bot.getCash() == 2 || bot.getCards().size() == 3);
+        assertTrue(bot.getCash() == 2 || bot.getCardsInHand().size() == 3);
     }
 }

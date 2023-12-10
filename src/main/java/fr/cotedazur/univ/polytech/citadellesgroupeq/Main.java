@@ -47,8 +47,15 @@ public class Main {
     public static void describePlayerRound(Player player, GameManager game) {
         System.out.print("Joueur " + player.getId());
         System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+").");
-        System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes: ");
-        System.out.println(getDescriptionOfCards(player.getCards()));
+        System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes en main: ");
+        System.out.println(getDescriptionOfCards(player.getCardsInHand()));
+        if(player.hasEmptyCity()) {
+            System.out.println("Il n'a rien dans sa cité.");
+        }
+        else {
+            System.out.println("Sa cité contient: ");
+            System.out.println(getDescriptionOfCards(player.getCity()));
+        }
 
         RoundSummary summary = game.playPlayerTurn(player);
 
@@ -56,13 +63,15 @@ public class Main {
             System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
         }
         else {
-            System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces.");
+            System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces. (après achat de la citadelle si il y a eu)");
         }
 
         if(summary.hasBoughtCitadels()) {
-            System.out.println("Il a assez pour acheter ces cartes: ");
+            System.out.println("Il a acheté cette carte:");
             System.out.println(getDescriptionOfCards(summary.getBoughtCitadels()));
-            System.out.println("Il a donc gagne !");
+        }
+        if(summary.hasWonDuringTurn()) {
+            System.out.println("Il a gagné, car il possède dans sa cité " + GameManager.NUMBER_OF_CITADELS_TO_WIN + " citadelles.");
         }
         System.out.println("\n");
     }
