@@ -101,4 +101,14 @@ class GameManagerTest {
 
         assertTrue(summary.hasPickedCards() ^ summary.hasPickedCash()); //opérateur XOR, pour vérifier que le joueur n'a fait qu'un des deux
     }
+    @Test
+    void testFinishCondition(){
+        List<Citadel> citadels=new ArrayList<>();
+        citadels.add(new Citadel("Temple",9));
+        citadels.add(new Citadel("Eglise",8));
+        citadels.add(new Citadel("Monastere",7));
+        game.getPlayersList().get(0).addAllCitadelsToCity(citadels);
+        game.playPlayerTurn(game.getPlayersList().get(0));
+        assertTrue(game.isFinished());
+    }
 }
