@@ -24,7 +24,7 @@ class PlayerTest {
         bot.setCash(40);
         assertTrue(bot.stillHasCash());
         assertEquals(40, bot.getCash());
-        bot.draw2Coins();
+        bot.draw2Coins(new RoundSummary());
         assertEquals(42, bot.getCash());
         bot.setCash(-1);
         assertEquals(42, bot.getCash());
@@ -48,9 +48,9 @@ class PlayerTest {
         assertEquals(0, bot.getCash());
         assertEquals(2, bot.getCards().size());
 
-        bot.dealCardsOrCash();
+        bot.dealCardsOrCash(new RoundSummary());
 
-        // Vérifie que le joueur a soit 2 pièces de plus, soit 2 cartes de plus
-        assertTrue(bot.getCash() == 2 || bot.getCards().size() == 4);
+        // Vérifie que le joueur a soit 2 pièces de plus, soit 1 cartes de plus
+        assertTrue(bot.getCash() == 2 || bot.getCards().size() == 3);
     }
 }

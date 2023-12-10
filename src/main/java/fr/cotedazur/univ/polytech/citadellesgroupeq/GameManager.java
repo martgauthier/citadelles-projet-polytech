@@ -30,15 +30,17 @@ public class GameManager {
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
+  
     private static final List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new Player(0), new Player(1),new Player(2),new Player(3));
 
     public GameManager() {
         this(DEFAULT_PLAYER_LIST);
+        DEFAULT_PLAYER_LIST=Arrays.asList(new Player(0), new Player(1));
     }
 
     public GameManager(List<Player> playersList) {
         randomGenerator=new Random();
-        this.playersList=new ArrayList<>(playersList);//pour ne pas modifier le tableau de base
+        this.playersList=new ArrayList<>(DEFAULT_PLAYER_LIST);//pour ne pas modifier le tableau de base
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;
@@ -101,8 +103,7 @@ public class GameManager {
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
 
-        player.draw2Coins();
-        summary.addCoins(2);
+        player.dealCardsOrCash(summary);
 
         List<Citadel> buyableCards=player.getBuyableCards();
         if(!buyableCards.isEmpty()) {//le joueur gagne car il a assez pour acheter une de ses citadelles

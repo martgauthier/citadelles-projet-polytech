@@ -7,7 +7,7 @@ import java.util.*;
  * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
  * d'argent (cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
  */
-public class Player implements Comparable<Player> {
+public class Player implements Comparable<Player>, Cloneable {
 
     public static final Random randomGenerator=new Random();
     private int cash;
@@ -33,7 +33,8 @@ public class Player implements Comparable<Player> {
 
     public Player(int id) {
         this(id, DEFAULT_CASH, new ArrayList<>());
-        deal2Cards();
+        pickCard(new RoundSummary());
+        pickCard(new RoundSummary());//no need to get summary
     }
 
     public Player(int id, int cash, List<Citadel> cards) {
@@ -69,14 +70,19 @@ public class Player implements Comparable<Player> {
     /**
      * Ajoute 2 au cash du joueur. Utile pour chaque début de tour
      */
-    public void draw2Coins() {
+    public void draw2Coins(RoundSummary summary) {
         this.cash+=2;
+        summary.addCoins(2);
     }
 
     public void add(int coins) {
         if(coins >= 0) {
             this.cash+=coins;
         }
+    }
+
+    public void addCard(Citadel cardToAdd) {
+        cards.add(cardToAdd);
     }
 
     public void addCards(List<Citadel> cardsToAdd){
@@ -119,9 +125,9 @@ public class Player implements Comparable<Player> {
     }
 
     /**
-     * Permet de distribuer deux cartes quartiers de manière aléatoire à un joueur
+     * Permet de générer 2 cartes aléatoires. Utile pour proposer à un joueur 2 cartes parmi lesquelles choisir
      */
-    public void deal2Cards(){
+    public List<Citadel> generate2Cards(){
         try {
             CitadelsJSONReader citadelsReader = new CitadelsJSONReader();
             List<Citadel> citadelsList = citadelsReader.getCitadelsList();
@@ -131,11 +137,37 @@ public class Player implements Comparable<Player> {
                 Citadel randomCitadel = citadelsList.get(randomIndex);
                 dealCards.add(randomCitadel);
             }
-            addCards(dealCards);
+            return dealCards;
         }
         catch (ParseException e) {
             throw new RuntimeException("Impossible de lire les cartes dans le fichier JSON", e);
         }
+    }
+
+    /**
+     * Choisit une carte parmi celles proposées pour l'ajouter au jeu du joueur.
+     * @param cards les cartes proposées
+     * @return la carte choisie
+     */
+    public Citadel pickCard(RoundSummary summary, List<Citadel> cards) {
+        if(cards.isEmpty()) {
+            throw new IllegalArgumentException("cards must not be empty.");
+        }
+        Citadel choosenCard=cards.get(randomGenerator.nextInt(cards.size()));
+
+        addCard(choosenCard);
+
+        summary.addDrawnCard(choosenCard);
+
+        return choosenCard;
+    }
+
+    /**
+     * Appelle {@link #pickCard(RoundSummary, List)}, avec 2 cartes choisies aléatoirement.
+     * @return la carte choisie par le joueur
+     */
+    public Citadel pickCard(RoundSummary summary) {
+        return pickCard(summary, generate2Cards());
     }
 
     @Override
@@ -168,11 +200,11 @@ public class Player implements Comparable<Player> {
     /**
      * Permet de manière aléatoire de distribuer deux cartes ou de donner deux pièces au joueur
      */
-    public void dealCardsOrCash() {
+    public void dealCardsOrCash(RoundSummary summary) {
         if (randomGenerator.nextInt(2) == 1) {
-            draw2Coins();
+            draw2Coins(summary);
         } else {
-            deal2Cards();
+            pickCard(summary);
         }
     }
 
@@ -188,5 +220,20 @@ public class Player implements Comparable<Player> {
      */
     public int getId() {
         return id;
+    }
+
+    public Object clone() {
+        Object o = null;
+        try {
+            // On récupère l'instance à renvoyer par l'appel de la
+            // méthode super.clone()
+            o = super.clone();
+        } catch(CloneNotSupportedException cnse) {
+            // Ne devrait jamais arriver, car nous implémentons
+            // l'interface Cloneable
+            cnse.printStackTrace(System.err);
+        }
+        // on renvoie le clone
+        return o;
     }
 }
