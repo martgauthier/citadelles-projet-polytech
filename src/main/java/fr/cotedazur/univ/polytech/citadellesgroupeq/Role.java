@@ -5,50 +5,50 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
  * and string representations.
  */
 public enum Role {
-    EMPTY_ROLE,
-    ASSASSIN {
+    EMPTY_ROLE(Color.GRAY),
+    ASSASSIN(Color.GRAY) {
         @Override
         public void power () {
             //TODO create power
         }
     },
-    VOLEUR {
+    VOLEUR(Color.GRAY) {
         @Override
         public void power() {
             //TODO
         }
     },
-    MAGICIEN {
+    MAGICIEN(Color.GRAY) {
         @Override
         public void power() {
             //TODO
         }
     },
-    ROI {
+    ROI (Color.YELLOW) {
         @Override
         public void power() {
             //TODO
         }
     },
-    EVEQUE {
+    EVEQUE(Color.BLUE) {
         @Override
         public void power() {
             //TODO
         }
     },
-    MARCHAND {
+    MARCHAND (Color.GREEN) {
         @Override
         public void power() {
             //TODO
         }
     },
-    ARCHITECTE {
+    ARCHITECTE (Color.GRAY) {
         @Override
         public void power() {
             //TODO
         }
     },
-    CONDOTTIERE {
+    CONDOTTIERE (Color.RED) {
         @Override
         public void power() {
             //TODO
@@ -62,4 +62,14 @@ public enum Role {
     public void power() {
         throw new UnsupportedOperationException();
     }
+
+    private Color color;
+
+    private Role(Color color) {
+        this.color=color;
+    }
+    public Color getColor() {
+        return this.color;
+    }
+
 }

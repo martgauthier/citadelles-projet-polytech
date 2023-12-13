@@ -49,7 +49,7 @@ class RoundSummaryTest {
     @Test
     void testDrawnCards() {
         assertEquals(RoundSummary.EMPTY_CITADEL_LIST, firstBasicRound.getDrawnCards());
-        firstBasicRound.addDrawnCard(reader.getCitadelsList().get(0));//arbitrary card
+        firstBasicRound.addDrawnCard(reader.getFromIndex(0));//arbitrary card
         assertTrue(firstBasicRound.hasPickedCards());
         assertEquals(1, firstBasicRound.getDrawnCards().size());
     }

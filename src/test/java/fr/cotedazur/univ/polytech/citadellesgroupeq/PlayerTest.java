@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -11,9 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
     Player bot;
+    CitadelsJSONReader reader;
     @BeforeEach
-    void setup() {
+    void setup() throws ParseException {
         bot = new Player(0);
+        reader=new CitadelsJSONReader();
     }
 
     @Test
@@ -36,7 +39,7 @@ class PlayerTest {
     @Test
     void testAddCards(){
         assertEquals(2, bot.getCardsInHand().size());
-        List<Citadel> cardsToAdd = List.of(new Citadel("Temple", 9), new Citadel("Eglise", 8));
+        List<Citadel> cardsToAdd = List.of(reader.getFromIndex(0), reader.getFromIndex(1));
         bot.addAllCardsToHand(cardsToAdd);
         assertEquals(4, bot.getCardsInHand().size());
     }
@@ -54,9 +57,9 @@ class PlayerTest {
     @Test
     void testGetTotalCityPrice(){
         List<Citadel> citadels=new ArrayList<>();
-        citadels.add(new Citadel("Temple",9));
-        citadels.add(new Citadel("Eglise",8));
-        citadels.add(new Citadel("Monastere",7));
+        citadels.add(new Citadel("Temple",9,"gray"));
+        citadels.add(new Citadel("Eglise",8, "gray"));
+        citadels.add(new Citadel("Monastere",7, "gray"));//arbitrary colors just for price
         bot.addAllCitadelsToCity(citadels);
         assertEquals(24,bot.getTotalCityPrice());
     }
