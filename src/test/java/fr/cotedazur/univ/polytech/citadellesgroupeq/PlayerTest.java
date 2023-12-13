@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,5 +50,14 @@ class PlayerTest {
 
         // Vérifie que le joueur a soit 2 pièces de plus, soit 1 cartes de plus
         assertTrue(bot.getCash() == 2 || bot.getCardsInHand().size() == 3);
+    }
+    @Test
+    void testGetTotalCityPrice(){
+        List<Citadel> citadels=new ArrayList<>();
+        citadels.add(new Citadel("Temple",9));
+        citadels.add(new Citadel("Eglise",8));
+        citadels.add(new Citadel("Monastere",7));
+        bot.addAllCitadelsToCity(citadels);
+        assertEquals(24,bot.getTotalCityPrice());
     }
 }
