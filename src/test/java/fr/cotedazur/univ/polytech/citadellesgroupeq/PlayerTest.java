@@ -13,7 +13,7 @@ class PlayerTest {
     Player bot;
     @BeforeEach
     void setup() {
-        bot = new Player(0);
+        bot = new alwaysSpendPlayer(0);
     }
 
     @Test

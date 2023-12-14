@@ -8,7 +8,7 @@ import java.util.*;
  * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
  * d'argent (cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
  */
-public class Player implements Comparable<Player>, Cloneable {
+public abstract class Player implements Comparable<Player>, Cloneable {
 
     public static final Random randomGenerator=new Random();
     private int cash;
@@ -275,4 +275,6 @@ public class Player implements Comparable<Player>, Cloneable {
         // on renvoie le clone
         return o;
     }
+
+    public abstract void playerTurn(RoundSummary summary);
 }

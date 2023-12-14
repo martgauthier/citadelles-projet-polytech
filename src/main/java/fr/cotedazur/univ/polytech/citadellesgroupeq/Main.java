@@ -71,7 +71,9 @@ public class Main {
             System.out.println(getDescriptionOfCards(summary.getBoughtCitadels()));
         }
         if(summary.hasWonDuringTurn()) {
-            System.out.println("Il a gagné, car il possède dans sa cité " + GameManager.NUMBER_OF_CITADELS_TO_WIN + " citadelles.");
+            System.out.println("Il a gagné, car il possède dans sa cité " + GameManager.NUMBER_OF_CITADELS_TO_WIN + " citadelles.\n");
+            System.out.println("Voici sa cité");
+            System.out.println(getDescriptionOfCards(player.getCity()));
         }
         System.out.println("\n");
     }
