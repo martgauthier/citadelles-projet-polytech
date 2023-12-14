@@ -19,8 +19,8 @@ class RoundSummaryTest {
 
     @BeforeEach
     void setup() {
-        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false);
-        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false);
+        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0);
+        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0);
     }
 
     @Test
@@ -30,10 +30,10 @@ class RoundSummaryTest {
 
     @Test
     void testHasBought() {
-        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, reader.getCitadelsList(), false).hasBoughtCitadels());
+        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, reader.getCitadelsList(), false, 0).hasBoughtCitadels());
 
-        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false).hasBoughtCitadels());
-        assertFalse(new RoundSummary(0, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false).hasBoughtCitadels());
+        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0).hasBoughtCitadels());
+        assertFalse(new RoundSummary(0, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0).hasBoughtCitadels());
     }
 
     @Test
@@ -41,7 +41,7 @@ class RoundSummaryTest {
         assertTrue(firstBasicRound.hasPickedCash());
         assertFalse(firstBasicRound.hasPickedCards());
 
-        RoundSummary bothChoices = new RoundSummary(2, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false);
+        RoundSummary bothChoices = new RoundSummary(2, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0);
         assertTrue(bothChoices.hasPickedCash());
         assertTrue(bothChoices.hasPickedCards());
     }
@@ -49,7 +49,7 @@ class RoundSummaryTest {
     @Test
     void testDrawnCards() {
         assertEquals(RoundSummary.EMPTY_CITADEL_LIST, firstBasicRound.getDrawnCards());
-        firstBasicRound.addDrawnCard(reader.getCitadelsList().get(0));//arbitrary card
+        firstBasicRound.addDrawnCard(reader.getFromIndex(0));//arbitrary card
         assertTrue(firstBasicRound.hasPickedCards());
         assertEquals(1, firstBasicRound.getDrawnCards().size());
     }

@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -12,13 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameManagerTest {
     GameManager game;
+    CitadelsJSONReader reader;
     public static final List<Role> TOO_SHORT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI));
     public static final List<Role> CORRECT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI, Role.ASSASSIN, Role.ARCHITECTE,Role.MARCHAND,Role.VOLEUR));
     public static final List<Role> FULL_EMPTY_ROLES_LIST = new ArrayList<>(List.of(Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE));
 
     @BeforeEach
-    void setup() {
+    void setup() throws ParseException {
         game = new GameManager();
+        reader=new CitadelsJSONReader();
     }
 
     @Test
@@ -104,9 +107,9 @@ class GameManagerTest {
     @Test
     void testFinishCondition(){
         List<Citadel> citadels=new ArrayList<>();
-        citadels.add(new Citadel("Temple",9));
-        citadels.add(new Citadel("Eglise",8));
-        citadels.add(new Citadel("Monastere",7));
+        citadels.add(reader.getFromIndex(0));
+        citadels.add(reader.getFromIndex(1));
+        citadels.add(reader.getFromIndex(2));
         game.getPlayersList().get(0).addAllCitadelsToCity(citadels);
         game.playPlayerTurn(game.getPlayersList().get(0));
         assertTrue(game.isFinished());

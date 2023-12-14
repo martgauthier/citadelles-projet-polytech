@@ -38,12 +38,13 @@ public class CitadelsJSONReader {
             citadelsList = new ArrayList<>();
             // Parcours chaque élément du tableau JSON et crée un objet Citadel correspondant
             for (JSONObject citadelObject : (Iterable<JSONObject>) jsonArray) {
-                if (citadelObject.get("name") == null || citadelObject.get("cost") == null) {
+                if (citadelObject.get("name") == null || citadelObject.get("cost") == null || citadelObject.get("color") == null) {
                     throw new InvalidPropertiesFormatException("Format du fichier JSON incorrect");
                 } else {
                     String name = (String) citadelObject.get("name");
                     int cost = ((Long) citadelObject.get("cost")).intValue();
-                    citadelsList.add(new Citadel(name, cost));
+                    String color = (String) citadelObject.get("color");
+                    citadelsList.add(new Citadel(name, cost, color));
                 }
             }
         }
@@ -65,29 +66,40 @@ public class CitadelsJSONReader {
      * Récupère le nom et le cout de chaque citadels présentes dans la liste de citadels
      *
      * @return Une chaîne de caractères décrivant les citadelles avec leur nom et coût.
-     * @throws IOException Si une erreur se produit lors de la lecture du fichier ou si le format du fichier est incorrect.
+     * @throws BadlyInitializedReader Si une erreur se produit lors de la lecture du fichier ou si le format du fichier est incorrect.
      */
     public String getCitadelsListDescription() throws BadlyInitializedReader {
         StringBuilder output=new StringBuilder("Citadelles présentes dans le .json:\n");
-        CitadelsJSONReader citadelsList;
 
-        try {
-            citadelsList = new CitadelsJSONReader();//création du reader
-        }
-        catch(ParseException e) {
-            throw new BadlyInitializedReader(e);
+        if(citadelsList.isEmpty()) {
+            throw new BadlyInitializedReader("Citadel list is empty");
         }
 
-
-        for(Citadel citadel: citadelsList.getCitadelsList()) {
+        for(Citadel citadel: citadelsList) {
             output.append(citadel.getName() + " : " + citadel.getCost()).append("\n");
         }
 
         return output.toString();
     }
 
+    public Citadel getFromIndex(int index) throws BadlyInitializedReader, IllegalArgumentException {
+        if(citadelsList.isEmpty()) {
+            throw new BadlyInitializedReader("Citadel list is empty");
+        }
+        else if(index<0||index>=citadelsList.size()) {
+            throw new IllegalArgumentException("index must be in citadels list");
+        }
+        else {
+            return citadelsList.get(index);
+        }
+    }
+
     private class BadlyInitializedReader extends ExceptionInInitializerError {
         public BadlyInitializedReader(Throwable error) {
+            super(error);
+        }
+
+        public BadlyInitializedReader(String error) {
             super(error);
         }
     }

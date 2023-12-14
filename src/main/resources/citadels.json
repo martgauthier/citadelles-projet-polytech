@@ -1,110 +1,132 @@
 [
   {
     "name": "Temple",
-    "cost": 9
+    "cost": 9,
+    "color": "blue"
   },
   {
     "name": "Eglise",
-    "cost": 8
+    "cost": 8,
+    "color": "blue"
   },
   {
     "name": "Monastere",
-    "cost" : 7
+    "cost" : 7,
+    "color": "blue"
   },
   {
     "name": "Cathedrale",
-    "cost": 6
+    "cost": 6,
+    "color": "blue"
   },
   {
     "name": "Manoir",
-    "cost": 3
+    "cost": 3,
+    "color": "yellow"
   },
   {
     "name": "Chateau",
-    "cost": 4
+    "cost": 4,
+    "color": "yellow"
   },
   {
     "name": "Palais",
-    "cost": 5
+    "cost": 5,
+    "color": "yellow"
   },
   {
     "name": "Taverne",
-    "cost": 1
-  },
-  {
-    "name": "Echoppe",
-    "cost": 2
+    "cost": 1,
+    "color": "green"
   },
   {
     "name": "Marché",
-    "cost": 2
+    "cost": 2,
+    "color": "green"
   },
   {
     "name": "Comptoir",
-    "cost": 3
+    "cost": 3,
+    "color": "green"
   },
   {
     "name": "Port",
-    "cost": 4
+    "cost": 4,
+    "color": "green"
   },
   {
     "name": "Hotel de ville",
-    "cost": 5
+    "cost": 5,
+    "color": "green"
   },
   {
     "name": "Tour de guet",
-    "cost": 1
+    "cost": 1,
+    "color": "red"
   },
   {
     "name": "Prison",
-    "cost": 2
+    "cost": 2,
+    "color": "red"
   },
   {
     "name": "Caserne",
-    "cost": 3
+    "cost": 3,
+    "color": "red"
   },
   {
     "name": "Forteresse",
-    "cost": 5
+    "cost": 5,
+    "color": "red"
   },
   {
     "name": "Cour des miracles",
-    "cost": 2
+    "cost": 2,
+    "color": "purple"
   },
   {
     "name": "Donjon",
-    "cost": 3
+    "cost": 3,
+    "color": "purple"
   },
   {
     "name": "Laboratoire",
-    "cost": 5
+    "cost": 5,
+    "color": "purple"
   },
   {
     "name": "Manufacture",
-    "cost": 5
+    "cost": 5,
+    "color": "purple"
   },
   {
     "name": "Observatoire",
-    "cost": 5
+    "cost": 5,
+    "color": "purple"
   },
   {
     "name": "Cimetiere",
-    "cost": 5
+    "cost": 5,
+    "color": "purple"
   },
   {
     "name": "Bibliotheque",
-    "cost": 6
+    "cost": 6,
+    "color": "purple"
   },
   {
     "name": "Ecole de magie",
-    "cost": 6
+    "cost": 6,
+    "color": "purple"
   },
   {
     "name": "Université",
-    "cost": 8
+    "cost": 8,
+    "color": "purple"
   },
   {
     "name": "Dracoport",
-    "cost": 8
+    "cost": 8,
+    "color": "purple"
   }
 ]

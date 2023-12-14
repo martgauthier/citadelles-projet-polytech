@@ -8,7 +8,7 @@ import java.util.*;
  * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
  * d'argent (cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
  */
-public class Player implements Comparable<Player>, Cloneable {
+public class Player implements Comparable<Player> {
 
     public static final Random randomGenerator=new Random();
     private int cash;
@@ -259,20 +259,5 @@ public class Player implements Comparable<Player>, Cloneable {
         if(buyableCitadels.isEmpty()) return Optional.empty();
 
         return Optional.of(Collections.min(buyableCitadels));
-    }
-
-    public Object clone() {
-        Object o = null;
-        try {
-            // On récupère l'instance à renvoyer par l'appel de la
-            // méthode super.clone()
-            o = super.clone();
-        } catch(CloneNotSupportedException cnse) {
-            // Ne devrait jamais arriver, car nous implémentons
-            // l'interface Cloneable
-            cnse.printStackTrace(System.err);
-        }
-        // on renvoie le clone
-        return o;
     }
 }

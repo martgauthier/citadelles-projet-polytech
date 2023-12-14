@@ -40,13 +40,13 @@ public class Main {
             if(player.getId() == masterOfTheGameIndex) {
                 System.out.print(" (maitre du jeu)");
             }
-            System.out.println(" a choisi son role: " + player.getRole());
+            System.out.println(" a choisi son role: " + player.getRole() + " ("+player.getRole().getColor().name()+")");
         }
     }
 
     public static void describePlayerRound(Player player, GameManager game) {
         System.out.print("Joueur " + player.getId());
-        System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+").");
+        System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+"-" + player.getRole().getColor().name()+").");
         System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes en main: ");
         System.out.println(getDescriptionOfCards(player.getCardsInHand()));
         if(player.hasEmptyCity()) {
@@ -58,6 +58,10 @@ public class Main {
         }
 
         RoundSummary summary = game.playPlayerTurn(player);
+
+        if(summary.hasWonCoinsByColorCards()) {
+            System.out.println("Grâce à sa couleur et à ses cartes, il a gagné " + summary.getCoinsWonByColorCards() + " pièces.");
+        }
 
         if(summary.hasPickedCards()) {
             System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
@@ -84,7 +88,10 @@ public class Main {
         if(!cards.isEmpty()) {
             StringBuilder output = new StringBuilder("Cartes : \n");
             for (Citadel card : cards) {
-                output.append("\t*").append(card.getName()).append(" : ").append(card.getCost()).append("\n");
+                output.append("\t*").append(card.getName()).append(" : ");
+                output.append(card.getCost());
+                output.append(" (").append(card.getColor().name()).append(")");
+                output.append("\n");
             }
             return output.toString();
         }
