@@ -15,19 +15,22 @@ public class RoundSummary {
     private List<Citadel> boughtCitadels;
     private int drawnCoins;
 
+    private int coinsWonByColorCards;
+
     private boolean hasWonDuringTurn;
 
     private List<Citadel> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn) {
+    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn, int coinsWonByColorCards) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtCitadels=new ArrayList<>(boughtCitadels);
         this.hasWonDuringTurn = hasWonDuringTurn;
+        this.coinsWonByColorCards=coinsWonByColorCards;
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false);
+        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false, 0);
     }
 
     public List<Citadel> getBoughtCitadels() { return boughtCitadels; }
@@ -103,5 +106,22 @@ public class RoundSummary {
     @Override
     public int hashCode() {
         return Objects.hash(boughtCitadels, drawnCoins, drawnCards);
+    }
+
+
+    public int getCoinsWonByColorCards() {
+        return coinsWonByColorCards;
+    }
+
+    public void setCoinsWonByColorCards(int coins) {
+        coinsWonByColorCards=coins;
+    }
+
+    public void addCoinsWonByColorCards(int coins) {
+        coinsWonByColorCards+=coins;
+    }
+
+    public boolean hasWonCoinsByColorCards() {
+        return coinsWonByColorCards>0;
     }
 }

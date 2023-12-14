@@ -105,6 +105,13 @@ public class GameManager {
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
 
+        for(Citadel cartePosee: player.getCity()) {
+            if(cartePosee.getColor() == player.getRole().getColor() && player.getRole().getColor()!=Color.GRAY) {
+                player.addCoins(1);
+                summary.addCoinsWonByColorCards(1);
+            }
+        }
+
         player.dealCardsOrCash(summary);
 
         Optional<Citadel> boughtCardOptional=player.getChoosenCitadelToBuy();
