@@ -110,6 +110,11 @@ class GameManagerTest {
         citadels.add(reader.getFromIndex(0));
         citadels.add(reader.getFromIndex(1));
         citadels.add(reader.getFromIndex(2));
+        citadels.add(reader.getFromIndex(3));
+        citadels.add(reader.getFromIndex(4));
+        citadels.add(reader.getFromIndex(5));
+        citadels.add(reader.getFromIndex(6));
+        citadels.add(reader.getFromIndex(7));
         game.getPlayersList().get(0).addAllCitadelsToCity(citadels);
         game.playPlayerTurn(game.getPlayersList().get(0));
         assertTrue(game.isFinished());

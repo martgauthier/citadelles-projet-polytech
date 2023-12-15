@@ -19,7 +19,7 @@ public class GameManager {
      */
     private final List<Player> playersList;
 
-    public static final int NUMBER_OF_CITADELS_TO_WIN=3;//le passer plus tard à 8
+    public static final int NUMBER_OF_CITADELS_TO_WIN=8;
 
     private Map<Player, Role> rolesSelectedMap;
 
