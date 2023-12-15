@@ -7,22 +7,22 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class alwaysSpendPlayerTest {
+class AlwaysSpendPlayerTest {
     Player botWithCards;
     Player botWithoutCards;
     RoundSummary summary;
 
     @BeforeEach
     public void setUp(){
-        botWithCards = new alwaysSpendPlayer(0);
-        botWithoutCards = new alwaysSpendPlayer(1,0,new ArrayList<>());
+        botWithCards = new AlwaysSpendPlayer(0);
+        botWithoutCards = new AlwaysSpendPlayer(1,0,new ArrayList<>());
         summary = new RoundSummary();
     }
 
     @Test
     public void testPlayerTurnWithCardsInHand(){
         assertEquals(2, botWithCards.getCardsInHand().size());
-        botWithCards.playerTurn(summary);
+        botWithCards.playPlayerTurn(summary);
 
         assertTrue(summary.hasPickedCash());
     }
@@ -30,12 +30,12 @@ class alwaysSpendPlayerTest {
     @Test
     public void testPlayerTurnWithEmptyHand(){
         assertEquals(0,botWithoutCards.getCardsInHand().size());
-        botWithoutCards.playerTurn(summary);
+        botWithoutCards.playPlayerTurn(summary);
 
         // il n'a plus de carte en main donc il pioche
         assertTrue(summary.hasPickedCards());
 
-        botWithoutCards.playerTurn(summary);
+        botWithoutCards.playPlayerTurn(summary);
 
         // il a maintenant une carte en main, son objectif avoir plus d'argent
         assertTrue(summary.hasPickedCash());

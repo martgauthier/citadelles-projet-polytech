@@ -261,7 +261,7 @@ public abstract class Player implements Comparable<Player>, Cloneable {
         return Optional.of(Collections.min(buyableCitadels));
     }
 
-    public void playerTurn(RoundSummary summary) {
+    public void playPlayerTurn(RoundSummary summary) {
         for(Citadel cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!=Color.GRAY) {
                 addCoins(1);

@@ -8,13 +8,13 @@ import java.util.Optional;
  * qui choisit toujours de dépenser ou de récupérer des pièces lors de son tour.
  * Cette classe hérite de la classe abstraite {@link Player}.
  */
-public class realEstatePlayer extends Player{
+public class RealEstatePlayer extends Player{
 
-    public realEstatePlayer(int id) {
+    public RealEstatePlayer(int id) {
         super(id);
     }
 
-    public realEstatePlayer(int id, int cash, List<Citadel> cards) {
+    public RealEstatePlayer(int id, int cash, List<Citadel> cards) {
         super(id, cash, cards);
     }
 
@@ -24,8 +24,8 @@ public class realEstatePlayer extends Player{
      * @param summary Résumé du tour actuel.
      */
     @Override
-    public void playerTurn(RoundSummary summary) {
-        super.playerTurn(summary);
+    public void playPlayerTurn(RoundSummary summary) {
+        super.playPlayerTurn(summary);
 
         if (getCardsInHand().size() != 8) {
             pickCard(summary);

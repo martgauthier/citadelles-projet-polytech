@@ -33,11 +33,11 @@ public class GameManager {
      */
     private final SortedSet<Player> playerTreeSet;
   
-    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new realEstatePlayer(0), new realEstatePlayer(1),new alwaysSpendPlayer(2),new alwaysSpendPlayer(3));
+    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new RealEstatePlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new AlwaysSpendPlayer(3));
 
     public GameManager() {
         this(DEFAULT_PLAYER_LIST);
-        DEFAULT_PLAYER_LIST=Arrays.asList(new alwaysSpendPlayer(0), new realEstatePlayer(1),new realEstatePlayer(2),new alwaysSpendPlayer(3));//to prevent game from modifying default players values
+        DEFAULT_PLAYER_LIST=Arrays.asList(new AlwaysSpendPlayer(0), new RealEstatePlayer(1),new RealEstatePlayer(2),new AlwaysSpendPlayer(3));//to prevent game from modifying default players values
     }
 
     public GameManager(List<Player> playersList) {
@@ -104,7 +104,7 @@ public class GameManager {
      */
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary = new RoundSummary();
-        player.playerTurn(summary);
+        player.playPlayerTurn(summary);
 
         if (player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
             summary.setHasWonDuringTurn(true);

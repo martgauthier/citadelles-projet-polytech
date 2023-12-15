@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class realEstatePlayerTest {
+class RealEstatePlayerTest {
     Player botWithEightCards;
     Player botWithoutCards;
     RoundSummary summary;
@@ -26,15 +26,15 @@ class realEstatePlayerTest {
         citadelList.add(new Citadel("Port", 4, "green"));
         citadelList.add(new Citadel("Hotel de ville", 5, "green"));
 
-        botWithEightCards = new realEstatePlayer(0,0,citadelList);
-        botWithoutCards = new realEstatePlayer(1,0,new ArrayList<>());
+        botWithEightCards = new RealEstatePlayer(0,0,citadelList);
+        botWithoutCards = new RealEstatePlayer(1,0,new ArrayList<>());
         summary = new RoundSummary();
     }
 
     @Test
     public void testPlayerTurnWithEightCardsInHand(){
         assertEquals(8, botWithEightCards.getCardsInHand().size());
-        botWithEightCards.playerTurn(summary);
+        botWithEightCards.playPlayerTurn(summary);
 
         assertTrue(summary.hasPickedCash());
     }
@@ -43,13 +43,13 @@ class realEstatePlayerTest {
     public void testPlayerTurnWithEmptyHand(){
         assertEquals(0,botWithoutCards.getCardsInHand().size());
         for (int i = 0; i < 8; i++){
-            botWithoutCards.playerTurn(summary);
+            botWithoutCards.playPlayerTurn(summary);
             assertTrue(summary.hasPickedCards());
         }
         assertEquals(8,botWithoutCards.getCardsInHand().size());
 
         // il a maintenant 8 cartes en main, son objectif faire de l'argent
-        botWithoutCards.playerTurn(summary);
+        botWithoutCards.playPlayerTurn(summary);
         assertTrue(summary.hasPickedCash());
     }
 }

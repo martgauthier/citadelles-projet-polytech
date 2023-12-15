@@ -8,13 +8,13 @@ import java.util.Optional;
  * qui choisit toujours de dépenser ou de récupérer des pièces lors de son tour.
  * Cette classe hérite de la classe abstraite {@link Player}.
  */
-public class alwaysSpendPlayer extends Player{
+public class AlwaysSpendPlayer extends Player{
 
-    public alwaysSpendPlayer(int id) {
+    public AlwaysSpendPlayer(int id) {
         super(id);
     }
 
-    public alwaysSpendPlayer(int id, int cash, List<Citadel> cards) {
+    public AlwaysSpendPlayer(int id, int cash, List<Citadel> cards) {
         super(id, cash, cards);
     }
 
@@ -24,8 +24,8 @@ public class alwaysSpendPlayer extends Player{
      * @param summary Résumé du tour actuel.
      */
     @Override
-    public void playerTurn(RoundSummary summary) {
-        super.playerTurn(summary);
+    public void playPlayerTurn(RoundSummary summary) {
+        super.playPlayerTurn(summary);
 
         if (!getCardsInHand().isEmpty()) {
             draw2Coins(summary);
