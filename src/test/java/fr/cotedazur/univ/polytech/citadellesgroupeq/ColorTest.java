@@ -1,6 +1,10 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

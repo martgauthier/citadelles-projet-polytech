@@ -1,4 +1,7 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
+
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,13 +11,13 @@ import java.util.Optional;
  * qui choisit toujours de dépenser ou de récupérer des pièces lors de son tour.
  * Cette classe hérite de la classe abstraite {@link Player}.
  */
-public class AlwaysSpendPlayer extends Player{
+public class RealEstatePlayer extends Player{
 
-    public AlwaysSpendPlayer(int id) {
+    public RealEstatePlayer(int id) {
         super(id);
     }
 
-    public AlwaysSpendPlayer(int id, int cash, List<Citadel> cards) {
+    public RealEstatePlayer(int id, int cash, List<Citadel> cards) {
         super(id, cash, cards);
     }
 
@@ -27,7 +30,10 @@ public class AlwaysSpendPlayer extends Player{
     public void playPlayerTurn(RoundSummary summary) {
         super.playPlayerTurn(summary);
 
-        if (!getCardsInHand().isEmpty()) {
+        if (getCardsInHand().size() != 8) {
+            pickCard(summary);
+        }
+        else{
             draw2Coins(summary);
             Optional<Citadel> choosenCitadel = getChoosenCitadelToBuy();
             if (choosenCitadel.isPresent()) {
@@ -38,10 +44,6 @@ public class AlwaysSpendPlayer extends Player{
                 removeCoins(citadel.getCost());
             }
         }
-        else{
-            pickCard(summary);
-        }
     }
-
 
 }

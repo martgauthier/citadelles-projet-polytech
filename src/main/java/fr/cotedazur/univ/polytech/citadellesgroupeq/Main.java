@@ -1,5 +1,9 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+
 import java.util.List;
 
 public class Main {

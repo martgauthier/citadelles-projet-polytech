@@ -1,5 +1,7 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.json.simple.parser.ParseException;
 
 import java.util.*;
@@ -263,7 +265,7 @@ public abstract class Player implements Comparable<Player>, Cloneable {
 
     public void playPlayerTurn(RoundSummary summary) {
         for(Citadel cartePosee: city) {
-            if(cartePosee.getColor() == role.getColor() && role.getColor()!=Color.GRAY) {
+            if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
                 addCoins(1);
                 summary.addCoinsWonByColorCards(1);
             }
