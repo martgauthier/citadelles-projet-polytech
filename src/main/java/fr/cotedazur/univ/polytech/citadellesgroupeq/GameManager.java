@@ -33,11 +33,11 @@ public class GameManager {
      */
     private final SortedSet<Player> playerTreeSet;
   
-        public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new alwaysSpendPlayer(0), new alwaysSpendPlayer(1),new alwaysSpendPlayer(2),new alwaysSpendPlayer(3));
+    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new realEstatePlayer(0), new realEstatePlayer(1),new alwaysSpendPlayer(2),new alwaysSpendPlayer(3));
 
     public GameManager() {
         this(DEFAULT_PLAYER_LIST);
-        DEFAULT_PLAYER_LIST=Arrays.asList(new alwaysSpendPlayer(0), new alwaysSpendPlayer(1),new alwaysSpendPlayer(2),new alwaysSpendPlayer(3));//to prevent game from modifying default players values
+        DEFAULT_PLAYER_LIST=Arrays.asList(new alwaysSpendPlayer(0), new realEstatePlayer(1),new realEstatePlayer(2),new alwaysSpendPlayer(3));//to prevent game from modifying default players values
     }
 
     public GameManager(List<Player> playersList) {
