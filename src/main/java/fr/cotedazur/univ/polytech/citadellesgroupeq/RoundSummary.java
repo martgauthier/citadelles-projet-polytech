@@ -92,7 +92,13 @@ public class RoundSummary {
         return !boughtCitadels.isEmpty();
     }
     public boolean hasUsedHisPower(){return usePower;}
-    public void setUsePower(){usePower=true;}
+    public void setUsePower(){
+        if(usePower){
+            usePower = false;
+        }else{
+            usePower = true;
+        }
+    }
     public boolean hasBeenKilled(){return hasBeenKilledDuringTurn;}
     public void setHasKilledDuringTurn(){
         hasBeenKilledDuringTurn =true;}

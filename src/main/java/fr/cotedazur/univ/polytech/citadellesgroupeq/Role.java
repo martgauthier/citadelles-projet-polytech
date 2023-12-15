@@ -1,8 +1,5 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
-import java.util.List;
-import java.util.Random;
-
 /**
  * Enum that represents roles. Each enum overrides the "power" method. You can use ".name()" and ".ordinal()" to get their number
  * and string representations.
@@ -15,7 +12,7 @@ public enum Role {
             Role assassinatedRole=assassin.selectAssassinatedRole(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
-                    player.Assassinate();
+                    player.assassinate();
                     break;
                 }
             }

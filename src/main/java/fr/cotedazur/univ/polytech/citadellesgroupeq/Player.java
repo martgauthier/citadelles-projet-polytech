@@ -12,7 +12,7 @@ public class Player implements Comparable<Player> {
 
     public static final Random randomGenerator=new Random();
     private int cash;
-    private boolean Assassinated;
+    private boolean assassinated;
     public static final int DEFAULT_CASH=0;
 
     /**
@@ -36,17 +36,18 @@ public class Player implements Comparable<Player> {
      */
 
     public Player(int id) {
-        this(id, DEFAULT_CASH, new ArrayList<>());
+        this(id, DEFAULT_CASH, new ArrayList<>(),false);
         pickCard(new RoundSummary());
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    public Player(int id, int cash, List<Citadel> cards) {
+    public Player(int id, int cash, List<Citadel> cards,boolean assassinated) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
         this.cardsInHand =new ArrayList<>(cards);//to make sure List is modifiable
         this.city=new ArrayList<>();
+        this.assassinated=assassinated;
     }
 
     public int getCash() {
@@ -72,11 +73,14 @@ public class Player implements Comparable<Player> {
         return (cash > 0);
     }
     public boolean isAssassinated() {
-        return Assassinated;
+        return assassinated;
     }
 
-    public void Assassinate() {
-        Assassinated = true;
+    public void assassinate() {
+        assassinated = true;
+    }
+    public void ressucitate(){
+        assassinated = false;
     }
     /**
      * Choisi un rôle à Assasiner
@@ -85,6 +89,9 @@ public class Player implements Comparable<Player> {
      */
     public Role selectAssassinatedRole(List<Role> availableRoles){
         Role assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
+        while((assassinatedRole.equals(this.getRole()))){ //boucle while pour éviter qu'il se tue lui même
+            assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
+        }
         return assassinatedRole;
     }
 
