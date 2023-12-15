@@ -15,8 +15,8 @@ class PlayerTest {
     CitadelsJSONReader reader;
     @BeforeEach
     void setup() throws ParseException {
-        bot = new Player(0);
-        reader=new CitadelsJSONReader();
+        bot = new alwaysSpendPlayer(0);
+        reader = new CitadelsJSONReader();
     }
 
     @Test
