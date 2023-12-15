@@ -29,6 +29,7 @@ public class RandomPlayerTest {
         assertTrue(summary.hasPickedCash());
     }
 
+    // NE MARCHE PAS PCQ MOCKITO C CACA
     @Test
     public void testPlayPlayerTurnRandomChoice0() {
         when(trickedRandom.nextInt(anyInt())).thenReturn(0);
