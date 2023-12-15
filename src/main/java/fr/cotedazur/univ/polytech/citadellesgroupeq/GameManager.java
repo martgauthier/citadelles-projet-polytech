@@ -104,6 +104,12 @@ public class GameManager {
      */
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
+        if(player.isAssassinated()){
+            summary.setHasKilledDuringTurn();
+            return summary;
+        }
+        player.getRole().power(this,player,summary);
+        summary.setUsePower();
 
         for(Citadel cartePosee: player.getCity()) {
             if(cartePosee.getColor() == player.getRole().getColor() && player.getRole().getColor()!=Color.GRAY) {

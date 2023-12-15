@@ -16,21 +16,26 @@ public class RoundSummary {
     private int drawnCoins;
 
     private int coinsWonByColorCards;
+    private boolean usePower;
+    private boolean hasBeenKilledDuringTurn;
+
 
     private boolean hasWonDuringTurn;
 
     private List<Citadel> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn, int coinsWonByColorCards) {
+    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn, int coinsWonByColorCards,boolean usePower,boolean hasKilledDuringTurn) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtCitadels=new ArrayList<>(boughtCitadels);
         this.hasWonDuringTurn = hasWonDuringTurn;
         this.coinsWonByColorCards=coinsWonByColorCards;
+        this.usePower=usePower;
+        this.hasBeenKilledDuringTurn =hasKilledDuringTurn;
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false, 0);
+        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false, 0,false,false);
     }
 
     public List<Citadel> getBoughtCitadels() { return boughtCitadels; }
@@ -86,6 +91,11 @@ public class RoundSummary {
     public boolean hasBoughtCitadels() {
         return !boughtCitadels.isEmpty();
     }
+    public boolean hasUsedHisPower(){return usePower;}
+    public void setUsePower(){usePower=true;}
+    public boolean hasBeenKilled(){return hasBeenKilledDuringTurn;}
+    public void setHasKilledDuringTurn(){
+        hasBeenKilledDuringTurn =true;}
 
     public boolean hasWonDuringTurn() {
         return hasWonDuringTurn;

@@ -12,6 +12,7 @@ public class Player implements Comparable<Player> {
 
     public static final Random randomGenerator=new Random();
     private int cash;
+    private boolean Assassinated;
     public static final int DEFAULT_CASH=0;
 
     /**
@@ -69,6 +70,22 @@ public class Player implements Comparable<Player> {
 
     public boolean stillHasCash() {
         return (cash > 0);
+    }
+    public boolean isAssassinated() {
+        return Assassinated;
+    }
+
+    public void Assassinate() {
+        Assassinated = true;
+    }
+    /**
+     * Choisi un rôle à Assasiner
+     * @param availableRoles les rôles disponible
+     * @return un rôle
+     */
+    public Role selectAssassinatedRole(List<Role> availableRoles){
+        Role assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
+        return assassinatedRole;
     }
 
     /**
