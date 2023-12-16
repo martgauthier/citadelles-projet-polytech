@@ -20,43 +20,43 @@ public enum Role {
     },
     VOLEUR(Color.GRAY) {
         @Override
-        public void power(GameManager g,Player assassin,RoundSummary summary) {
+        public void power(GameManager g,Player voleur,RoundSummary summary) {
             //TODO
         }
     },
     MAGICIEN(Color.GRAY) {
         @Override
-        public void power(GameManager g,Player assassin,RoundSummary summary) {
+        public void power(GameManager g,Player magicien,RoundSummary summary) {
             //TODO
         }
     },
     ROI (Color.YELLOW) {
         @Override
-        public void power(GameManager g,Player assassin,RoundSummary summary) {
+        public void power(GameManager g,Player roi,RoundSummary summary) {
             //TODO
         }
     },
     EVEQUE(Color.BLUE) {
         @Override
-        public void power(GameManager g,Player assassin,RoundSummary summary) {
+        public void power(GameManager g,Player eveque,RoundSummary summary) {
             //TODO
         }
     },
     MARCHAND (Color.GREEN) {
         @Override
-        public void power(GameManager g,Player assassin,RoundSummary summary) {
+        public void power(GameManager g,Player marchand,RoundSummary summary) {
             //TODO
         }
     },
     ARCHITECTE (Color.GRAY) {
         @Override
-        public void power(GameManager g,Player assassin,RoundSummary summary) {
+        public void power(GameManager g,Player architecte,RoundSummary summary) {
             //TODO
         }
     },
     CONDOTTIERE (Color.RED) {
         @Override
-        public void power(GameManager g,Player assassin,RoundSummary summary) {
+        public void power(GameManager g,Player condottiere,RoundSummary summary) {
             //TODO
         }
     };
@@ -65,7 +65,7 @@ public enum Role {
     /**
      * Méthode pour utiliser le pouvoir du rôle. PAS ENCORE IMPLEMENTE
      */
-    public void power(GameManager g,Player assassin,RoundSummary summary) {
+    public void power(GameManager g,Player player,RoundSummary summary) {
         throw new UnsupportedOperationException();
     }
 

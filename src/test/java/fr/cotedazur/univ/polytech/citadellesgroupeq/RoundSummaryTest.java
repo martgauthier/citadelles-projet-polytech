@@ -19,8 +19,8 @@ class RoundSummaryTest {
 
     @BeforeEach
     void setup() {
-        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0);
-        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0);
+        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false);
+        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false);
     }
 
     @Test
@@ -30,10 +30,10 @@ class RoundSummaryTest {
 
     @Test
     void testHasBought() {
-        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, reader.getCitadelsList(), false, 0).hasBoughtCitadels());
+        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, reader.getCitadelsList(), false, 0,false,false).hasBoughtCitadels());
 
-        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0).hasBoughtCitadels());
-        assertFalse(new RoundSummary(0, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0).hasBoughtCitadels());
+        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false).hasBoughtCitadels());
+        assertFalse(new RoundSummary(0, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false).hasBoughtCitadels());
     }
 
     @Test
@@ -41,7 +41,7 @@ class RoundSummaryTest {
         assertTrue(firstBasicRound.hasPickedCash());
         assertFalse(firstBasicRound.hasPickedCards());
 
-        RoundSummary bothChoices = new RoundSummary(2, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0);
+        RoundSummary bothChoices = new RoundSummary(2, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false);
         assertTrue(bothChoices.hasPickedCash());
         assertTrue(bothChoices.hasPickedCards());
     }
@@ -62,5 +62,17 @@ class RoundSummaryTest {
         firstBasicRound.setDrawnCoins(0);
         assertEquals(0, firstBasicRound.getDrawnCoins());
         assertFalse(firstBasicRound.hasPickedCash());
+    }
+    @Test
+    void testUsePower(){
+        assertFalse(firstBasicRound.hasUsedHisPower());
+        firstBasicRound.setUsePower();
+        assertTrue(firstBasicRound.hasUsedHisPower());
+    }
+    @Test
+    void testAssassinateSummary(){
+        assertFalse(firstBasicRound.hasBeenKilled());
+        firstBasicRound.setHasKilledDuringTurn();
+        assertTrue(firstBasicRound.hasBeenKilled());
     }
 }

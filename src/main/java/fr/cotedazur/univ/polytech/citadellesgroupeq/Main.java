@@ -90,8 +90,8 @@ public class Main {
             if(summary.hasWonDuringTurn()) {
                 System.out.println("Il a gagné, car il possède dans sa cité " + GameManager.NUMBER_OF_CITADELS_TO_WIN + " citadelles.");
             }
-            System.out.println("\n");
         }
+        System.out.println("\n");
 
     }
 
