@@ -13,8 +13,7 @@ public class RandomPlayerTest {
 
     Player randomPlayer;
     RoundSummary summary;
-    @Mock
-    Random trickedRandom = mock(Random.class);
+    @Mock Random trickedRandom = mock(Random.class);
 
     @BeforeEach
     public void setUp() {
@@ -25,6 +24,7 @@ public class RandomPlayerTest {
     @Test
     public void testPlayPlayerTurnRandomChoice1() {
         when(trickedRandom.nextInt(anyInt())).thenReturn(1);
+        randomPlayer.setRandomGenerator(trickedRandom);
         randomPlayer.playPlayerTurn(summary);
         assertTrue(summary.hasPickedCash());
     }
@@ -33,6 +33,7 @@ public class RandomPlayerTest {
     @Test
     public void testPlayPlayerTurnRandomChoice0() {
         when(trickedRandom.nextInt(anyInt())).thenReturn(0);
+        randomPlayer.setRandomGenerator(trickedRandom);
         randomPlayer.playPlayerTurn(summary);
         assertTrue(summary.hasPickedCards());
     }

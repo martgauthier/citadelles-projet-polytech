@@ -10,7 +10,7 @@ import java.util.*;
  */
 public abstract class Player implements Comparable<Player>, Cloneable {
 
-    public static final Random randomGenerator=new Random();
+    public Random randomGenerator=new Random();
     private int cash;
     public static final int DEFAULT_CASH=0;
 
@@ -46,6 +46,10 @@ public abstract class Player implements Comparable<Player>, Cloneable {
         this.id=id;
         this.cardsInHand =new ArrayList<>(cards);//to make sure List is modifiable
         this.city=new ArrayList<>();
+    }
+
+    public void setRandomGenerator(Random customRandom) {
+        randomGenerator = customRandom;
     }
 
     public int getCash() {
