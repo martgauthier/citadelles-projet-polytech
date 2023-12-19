@@ -25,6 +25,9 @@ public class Main {
                     describePlayerRound(player, game);
                 }
             }
+
+
+            game.resuscitateAllPlayers();
             System.out.println("--------------");
         }
         System.out.println("Jeu fini !");
@@ -66,8 +69,8 @@ public class Main {
             System.out.println("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
         }
         else {
-            if (summary.hasUsedHisPower()) {
-                System.out.println("Ce joueur utilise son pouvoir de " + player.getRole());
+            if (summary.hasUsedPower()) {
+                System.out.println("Ce joueur utilise son pouvoir de " + player.getRole().name());
                 for (Player p : game.getPlayersList()) {
                     if (player.getRole().equals(Role.ASSASSIN) && p.isDeadForThisTurn()) {
                         System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());

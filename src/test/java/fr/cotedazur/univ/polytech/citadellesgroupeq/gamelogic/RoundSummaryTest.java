@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,14 +64,14 @@ class RoundSummaryTest {
     }
     @Test
     void testUsePower(){
-        assertFalse(firstBasicRound.hasUsedHisPower());
-        firstBasicRound.setUsePower();
-        assertTrue(firstBasicRound.hasUsedHisPower());
+        assertFalse(firstBasicRound.hasUsedPower());
+        firstBasicRound.toggleUsePower();
+        assertTrue(firstBasicRound.hasUsedPower());
     }
     @Test
     void testAssassinateSummary(){
         assertFalse(firstBasicRound.hasBeenKilled());
-        firstBasicRound.setHasKilledDuringTurn();
+        firstBasicRound.setHasBeenKilledDuringTurn();
         assertTrue(firstBasicRound.hasBeenKilled());
     }
 }

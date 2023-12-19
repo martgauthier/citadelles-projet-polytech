@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.json.simple.parser.ParseException;
 
@@ -37,13 +38,13 @@ public abstract class Player implements Comparable<Player>, Cloneable {
      *      this(id,cash,new ArrayList<>());}
      */
 
-    public Player(int id) {
+    protected Player(int id) {
         this(id, DEFAULT_CASH, new ArrayList<>(),false);
         pickCard(new RoundSummary());
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    public Player(int id, int cash, List<Citadel> cards,boolean deadForThisTurn) {
+    protected Player(int id, int cash, List<Citadel> cards, boolean deadForThisTurn) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
@@ -289,7 +290,7 @@ public abstract class Player implements Comparable<Player>, Cloneable {
         return Optional.of(Collections.min(buyableCitadels));
     }
 
-    public void playPlayerTurn(RoundSummary summary) {
+    public void playPlayerTurn(RoundSummary summary, GameManager game) {
         for(Citadel cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
                 addCoins(1);

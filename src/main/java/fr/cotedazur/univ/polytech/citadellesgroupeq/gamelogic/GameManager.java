@@ -1,6 +1,5 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
@@ -111,17 +110,16 @@ public class GameManager {
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
         if(player.isDeadForThisTurn()){
-            summary.setHasKilledDuringTurn();
-            return summary;
+            summary.setHasBeenKilledDuringTurn();
         }
         else {
-            player.playPlayerTurn(summary);
+            player.playPlayerTurn(summary, this);
             if (player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
                 summary.setHasWonDuringTurn(true);
                 finishGame();
             }
-            return summary;
         }
+        return summary;
     }
 
     /**
@@ -194,6 +192,12 @@ public class GameManager {
             newAvailableRoles.add(randomRole);
         }
         return newAvailableRoles;
+    }
+
+    public void resuscitateAllPlayers() {
+        for(Player player: playersList) {
+            player.rescucitate();
+        }
     }
 }
 

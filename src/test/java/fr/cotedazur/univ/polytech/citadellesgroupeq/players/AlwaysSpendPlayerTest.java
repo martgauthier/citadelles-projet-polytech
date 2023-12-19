@@ -1,8 +1,8 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,8 @@ class AlwaysSpendPlayerTest {
     @Test
     public void testPlayerTurnWithCardsInHand(){
         assertEquals(2, botWithCards.getCardsInHand().size());
-        botWithCards.playPlayerTurn(summary);
+        botWithCards.setRole(Role.ASSASSIN);
+        botWithCards.playPlayerTurn(summary, new GameManager());
 
         assertTrue(summary.hasPickedCash());
     }
@@ -33,12 +34,13 @@ class AlwaysSpendPlayerTest {
     @Test
     public void testPlayerTurnWithEmptyHand(){
         assertEquals(0,botWithoutCards.getCardsInHand().size());
-        botWithoutCards.playPlayerTurn(summary);
+        botWithoutCards.setRole(Role.ASSASSIN);
+        botWithoutCards.playPlayerTurn(summary, new GameManager());
 
         // il n'a plus de carte en main donc il pioche
         assertTrue(summary.hasPickedCards());
 
-        botWithoutCards.playPlayerTurn(summary);
+        botWithoutCards.playPlayerTurn(summary, new GameManager());
 
         // il a maintenant une carte en main, son objectif avoir plus d'argent
         assertTrue(summary.hasPickedCash());

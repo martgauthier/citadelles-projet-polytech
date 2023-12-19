@@ -1,5 +1,9 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+
 /**
  * Enum that represents roles. Each enum overrides the "power" method. You can use ".name()" and ".ordinal()" to get their number
  * and string representations.
@@ -8,7 +12,7 @@ public enum Role {
     EMPTY_ROLE(Color.GRAY),
     ASSASSIN(Color.GRAY) {
         @Override
-        public void power (GameManager g,Player assassin,RoundSummary summary) {
+        public void power (GameManager g, Player assassin, RoundSummary summary) {
             Role assassinatedRole=assassin.selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
