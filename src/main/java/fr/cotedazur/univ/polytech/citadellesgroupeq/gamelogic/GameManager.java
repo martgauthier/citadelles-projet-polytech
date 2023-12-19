@@ -47,7 +47,7 @@ public class GameManager {
 
     public GameManager(List<Player> playersList) {
         randomGenerator=new Random();
-        this.playersList=new ArrayList<>(DEFAULT_PLAYER_LIST);//pour ne pas modifier le tableau de base
+        this.playersList=new ArrayList<>(playersList);//pour ne pas modifier le tableau de base
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;

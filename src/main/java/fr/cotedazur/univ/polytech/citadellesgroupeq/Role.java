@@ -17,7 +17,6 @@ public enum Role {
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
                     player.dieForThisTurn();
-                    break;
                 }
             }
         }

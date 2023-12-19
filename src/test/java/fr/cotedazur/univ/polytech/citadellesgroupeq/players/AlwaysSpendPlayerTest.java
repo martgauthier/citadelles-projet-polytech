@@ -23,7 +23,7 @@ class AlwaysSpendPlayerTest {
     }
 
     @Test
-    public void testPlayerTurnWithCardsInHand(){
+    void testPlayerTurnWithCardsInHand(){
         assertEquals(2, botWithCards.getCardsInHand().size());
         botWithCards.setRole(Role.ASSASSIN);
         botWithCards.playPlayerTurn(summary, new GameManager());
@@ -32,7 +32,7 @@ class AlwaysSpendPlayerTest {
     }
 
     @Test
-    public void testPlayerTurnWithEmptyHand(){
+    void testPlayerTurnWithEmptyHand(){
         assertEquals(0,botWithoutCards.getCardsInHand().size());
         botWithoutCards.setRole(Role.ASSASSIN);
         botWithoutCards.playPlayerTurn(summary, new GameManager());

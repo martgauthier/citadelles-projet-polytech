@@ -36,7 +36,7 @@ class RealEstatePlayerTest {
     }
 
     @Test
-    public void testPlayerTurnWithEightCardsInHand(){
+    void testPlayerTurnWithEightCardsInHand(){
         assertEquals(8, botWithEightCards.getCardsInHand().size());
         botWithEightCards.setRole(Role.ROI);
         botWithEightCards.playPlayerTurn(summary, new GameManager());
@@ -45,7 +45,7 @@ class RealEstatePlayerTest {
     }
 
     @Test
-    public void testPlayerTurnWithEmptyHand(){
+    void testPlayerTurnWithEmptyHand(){
         assertEquals(0,botWithoutCards.getCardsInHand().size());
         for (int i = 0; i < 8; i++){
             botWithoutCards.setRole(Role.ROI);
