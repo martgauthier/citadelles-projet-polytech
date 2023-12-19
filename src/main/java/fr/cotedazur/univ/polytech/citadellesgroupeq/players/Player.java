@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.json.simple.parser.ParseException;
 
@@ -14,6 +15,7 @@ public abstract class Player implements Comparable<Player>, Cloneable {
 
     public static final Random randomGenerator=new Random();
     private int cash;
+    private boolean deadForThisTurn;
     public static final int DEFAULT_CASH=0;
 
     /**
@@ -36,18 +38,19 @@ public abstract class Player implements Comparable<Player>, Cloneable {
      *      this(id,cash,new ArrayList<>());}
      */
 
-    public Player(int id) {
-        this(id, DEFAULT_CASH, new ArrayList<>());
+    protected Player(int id) {
+        this(id, DEFAULT_CASH, new ArrayList<>(),false);
         pickCard(new RoundSummary());
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    public Player(int id, int cash, List<Citadel> cards) {
+    protected Player(int id, int cash, List<Citadel> cards, boolean deadForThisTurn) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
         this.cardsInHand =new ArrayList<>(cards);//to make sure List is modifiable
         this.city=new ArrayList<>();
+        this.deadForThisTurn = deadForThisTurn;
     }
 
     public int getCash() {
@@ -71,6 +74,30 @@ public abstract class Player implements Comparable<Player>, Cloneable {
 
     public boolean stillHasCash() {
         return (cash > 0);
+    }
+    public boolean isDeadForThisTurn() {
+        return deadForThisTurn;
+    }
+
+    public void dieForThisTurn() {
+        deadForThisTurn = true;
+    }
+    public void rescucitate(){
+        deadForThisTurn = false;
+    }
+
+
+    /**
+     * Choisi un rôle à Assasiner
+     * @param availableRoles les rôles disponible
+     * @return un rôle
+     */
+    public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
+        Role assassinatedRole;
+        do { //boucle while pour éviter qu'il se tue lui même
+            assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
+        } while((assassinatedRole.equals(this.getRole())));
+        return assassinatedRole;
     }
 
     /**
@@ -263,7 +290,7 @@ public abstract class Player implements Comparable<Player>, Cloneable {
         return Optional.of(Collections.min(buyableCitadels));
     }
 
-    public void playPlayerTurn(RoundSummary summary) {
+    public void playPlayerTurn(RoundSummary summary, GameManager game) {
         for(Citadel cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
                 addCoins(1);

@@ -68,4 +68,11 @@ class PlayerTest {
         bot.addAllCitadelsToCity(citadels);
         assertEquals(24,bot.getTotalCityPrice());
     }
+    @Test
+    void testAssassinate(){
+        bot.dieForThisTurn();
+        assertTrue(bot.isDeadForThisTurn());
+        bot.rescucitate();
+        assertFalse(bot.isDeadForThisTurn());
+    }
 }

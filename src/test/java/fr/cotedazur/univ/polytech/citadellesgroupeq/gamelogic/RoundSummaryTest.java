@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +18,8 @@ class RoundSummaryTest {
 
     @BeforeEach
     void setup() {
-        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0);
-        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0);
+        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false);
+        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false);
     }
 
     @Test
@@ -30,10 +29,10 @@ class RoundSummaryTest {
 
     @Test
     void testHasBought() {
-        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, reader.getCitadelsList(), false, 0).hasBoughtCitadels());
+        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, reader.getCitadelsList(), false, 0,false,false).hasBoughtCitadels());
 
-        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0).hasBoughtCitadels());
-        assertFalse(new RoundSummary(0, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0).hasBoughtCitadels());
+        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_CITADEL_LIST, RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false).hasBoughtCitadels());
+        assertFalse(new RoundSummary(0, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false).hasBoughtCitadels());
     }
 
     @Test
@@ -41,7 +40,7 @@ class RoundSummaryTest {
         assertTrue(firstBasicRound.hasPickedCash());
         assertFalse(firstBasicRound.hasPickedCards());
 
-        RoundSummary bothChoices = new RoundSummary(2, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0);
+        RoundSummary bothChoices = new RoundSummary(2, reader.getCitadelsList(), RoundSummary.EMPTY_CITADEL_LIST, false, 0,false,false);
         assertTrue(bothChoices.hasPickedCash());
         assertTrue(bothChoices.hasPickedCards());
     }
@@ -62,5 +61,17 @@ class RoundSummaryTest {
         firstBasicRound.setDrawnCoins(0);
         assertEquals(0, firstBasicRound.getDrawnCoins());
         assertFalse(firstBasicRound.hasPickedCash());
+    }
+    @Test
+    void testUsePower(){
+        assertFalse(firstBasicRound.hasUsedPower());
+        firstBasicRound.toggleUsePower();
+        assertTrue(firstBasicRound.hasUsedPower());
+    }
+    @Test
+    void testAssassinateSummary(){
+        assertFalse(firstBasicRound.hasBeenKilled());
+        firstBasicRound.setHasBeenKilledDuringTurn();
+        assertTrue(firstBasicRound.hasBeenKilled());
     }
 }
