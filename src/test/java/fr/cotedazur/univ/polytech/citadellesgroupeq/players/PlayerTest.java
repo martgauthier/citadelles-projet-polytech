@@ -1,5 +1,10 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -15,8 +20,8 @@ class PlayerTest {
     CitadelsJSONReader reader;
     @BeforeEach
     void setup() throws ParseException {
-        bot = new Player(0);
-        reader=new CitadelsJSONReader();
+        bot = new AlwaysSpendPlayer(0);
+        reader = new CitadelsJSONReader();
     }
 
     @Test

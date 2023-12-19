@@ -1,4 +1,10 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
+
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 
 import java.util.*;
 
@@ -33,11 +39,11 @@ public class GameManager {
      */
     private final SortedSet<Player> playerTreeSet;
   
-    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new Player(0), new Player(1),new Player(2),new Player(3));
+    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new RealEstatePlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new AlwaysSpendPlayer(3));
 
     public GameManager() {
         this(DEFAULT_PLAYER_LIST);
-        DEFAULT_PLAYER_LIST=Arrays.asList(new Player(0), new Player(1),new Player(2),new Player(3));//to prevent game from modifying default players values
+        DEFAULT_PLAYER_LIST=Arrays.asList(new AlwaysSpendPlayer(0), new RealEstatePlayer(1),new RealEstatePlayer(2),new AlwaysSpendPlayer(3));//to prevent game from modifying default players values
     }
 
     public GameManager(List<Player> playersList) {
@@ -108,31 +114,14 @@ public class GameManager {
             summary.setHasKilledDuringTurn();
             return summary;
         }
-        player.getRole().power(this,player,summary);
-        summary.setUsePower();
-
-        for(Citadel cartePosee: player.getCity()) {
-            if(cartePosee.getColor() == player.getRole().getColor() && player.getRole().getColor()!=Color.GRAY) {
-                player.addCoins(1);
-                summary.addCoinsWonByColorCards(1);
+        else {
+            player.playPlayerTurn(summary);
+            if (player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
+                summary.setHasWonDuringTurn(true);
+                finishGame();
             }
+            return summary;
         }
-
-        player.dealCardsOrCash(summary);
-
-        Optional<Citadel> boughtCardOptional=player.getChoosenCitadelToBuy();
-        if(boughtCardOptional.isPresent()) {
-            summary.addBoughtCitadel(boughtCardOptional.get());
-            player.removeCoins(boughtCardOptional.get().getCost());
-            player.addCitadelToCity(boughtCardOptional.get());
-            player.removeCardFromHand(boughtCardOptional.get());
-        }
-
-        if(player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
-            summary.setHasWonDuringTurn(true);
-            finishGame();
-        }
-        return summary;
     }
 
     /**

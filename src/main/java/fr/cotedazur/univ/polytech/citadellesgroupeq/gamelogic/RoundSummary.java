@@ -1,4 +1,6 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
+
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
 
 import java.util.ArrayList;
 import java.util.List;
