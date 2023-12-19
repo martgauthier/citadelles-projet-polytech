@@ -65,9 +65,9 @@ class PlayerTest {
     }
     @Test
     void testAssassinate(){
-        bot.assassinate();
-        assertTrue(bot.isAssassinated());
-        bot.ressucitate();
-        assertFalse(bot.isAssassinated());
+        bot.dieForThisTurn();
+        assertTrue(bot.isDeadForThisTurn());
+        bot.rescucitate();
+        assertFalse(bot.isDeadForThisTurn());
     }
 }

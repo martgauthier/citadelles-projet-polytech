@@ -104,7 +104,7 @@ public class GameManager {
      */
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
-        if(player.isAssassinated()){
+        if(player.isDeadForThisTurn()){
             summary.setHasKilledDuringTurn();
             return summary;
         }

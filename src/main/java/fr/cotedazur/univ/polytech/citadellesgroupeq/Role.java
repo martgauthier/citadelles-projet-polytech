@@ -9,10 +9,10 @@ public enum Role {
     ASSASSIN(Color.GRAY) {
         @Override
         public void power (GameManager g,Player assassin,RoundSummary summary) {
-            Role assassinatedRole=assassin.selectAssassinatedRole(g.generateAvailableRoles(g.getPlayersList().size()));
+            Role assassinatedRole=assassin.selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
-                    player.assassinate();
+                    player.dieForThisTurn();
                     break;
                 }
             }

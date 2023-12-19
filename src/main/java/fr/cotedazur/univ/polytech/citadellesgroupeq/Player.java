@@ -12,7 +12,7 @@ public class Player implements Comparable<Player> {
 
     public static final Random randomGenerator=new Random();
     private int cash;
-    private boolean assassinated;
+    private boolean deadForThisTurn;
     public static final int DEFAULT_CASH=0;
 
     /**
@@ -41,13 +41,13 @@ public class Player implements Comparable<Player> {
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    public Player(int id, int cash, List<Citadel> cards,boolean assassinated) {
+    public Player(int id, int cash, List<Citadel> cards,boolean deadForThisTurn) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
         this.cardsInHand =new ArrayList<>(cards);//to make sure List is modifiable
         this.city=new ArrayList<>();
-        this.assassinated=assassinated;
+        this.deadForThisTurn = deadForThisTurn;
     }
 
     public int getCash() {
@@ -72,26 +72,28 @@ public class Player implements Comparable<Player> {
     public boolean stillHasCash() {
         return (cash > 0);
     }
-    public boolean isAssassinated() {
-        return assassinated;
+    public boolean isDeadForThisTurn() {
+        return deadForThisTurn;
     }
 
-    public void assassinate() {
-        assassinated = true;
+    public void dieForThisTurn() {
+        deadForThisTurn = true;
     }
-    public void ressucitate(){
-        assassinated = false;
+    public void rescucitate(){
+        deadForThisTurn = false;
     }
+
+
     /**
      * Choisi un rôle à Assasiner
      * @param availableRoles les rôles disponible
      * @return un rôle
      */
-    public Role selectAssassinatedRole(List<Role> availableRoles){
-        Role assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
-        while((assassinatedRole.equals(this.getRole()))){ //boucle while pour éviter qu'il se tue lui même
+    public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
+        Role assassinatedRole;
+        do { //boucle while pour éviter qu'il se tue lui même
             assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
-        }
+        } while((assassinatedRole.equals(this.getRole())));
         return assassinatedRole;
     }
 

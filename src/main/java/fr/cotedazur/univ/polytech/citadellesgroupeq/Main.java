@@ -19,7 +19,7 @@ public class Main {
             for(Player player : game.getPlayerTreeSet()) {
                 if(!game.isFinished()) {//actuellement, on s'arrête DES qu'un joueur a 8 cartes. Dans la version finale, il faudra laisser la fin du tour
                     describePlayerRound(player, game);
-                    player.ressucitate();
+                    player.rescucitate();
                 }
             }
             System.out.println("--------------");
@@ -65,7 +65,7 @@ public class Main {
             if(summary.hasUsedHisPower()){
                 System.out.println("Ce joueur utilise son pouvoir de " + player.getRole());
                 for(Player p : game.getPlayersList()){
-                    if(player.getRole().equals(Role.ASSASSIN) && p.isAssassinated()){
+                    if(player.getRole().equals(Role.ASSASSIN) && p.isDeadForThisTurn()){
                         System.out.println("et a tué le joueur "+p.getRole()+" qui est le joueur "+p.getId());
                         break;
                     }
@@ -79,7 +79,7 @@ public class Main {
             if(summary.hasPickedCards()) {
                 System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
             }
-            else if(!player.isAssassinated()) {
+            else if(!player.isDeadForThisTurn()) {
                 System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces. (après achat de la citadelle si il y a eu)");
             }
 
