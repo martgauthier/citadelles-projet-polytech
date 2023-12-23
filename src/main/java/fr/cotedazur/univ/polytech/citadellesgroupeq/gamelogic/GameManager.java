@@ -1,4 +1,9 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
+
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 
 import java.util.*;
 
@@ -42,7 +47,7 @@ public class GameManager {
 
     public GameManager(List<Player> playersList) {
         randomGenerator=new Random();
-        this.playersList=new ArrayList<>(DEFAULT_PLAYER_LIST);//pour ne pas modifier le tableau de base
+        this.playersList=new ArrayList<>(playersList);//pour ne pas modifier le tableau de base
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;
@@ -103,12 +108,16 @@ public class GameManager {
      * @return Un objet {@link RoundSummary}contenant les informations sur le tour du joueur.
      */
     public RoundSummary playPlayerTurn(Player player) {
-        RoundSummary summary = new RoundSummary();
-        player.playPlayerTurn(summary);
-
-        if (player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
-            summary.setHasWonDuringTurn(true);
-            finishGame();
+        RoundSummary summary=new RoundSummary();
+        if(player.isDeadForThisTurn()){
+            summary.setHasBeenKilledDuringTurn();
+        }
+        else {
+            player.playPlayerTurn(summary, this);
+            if (player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
+                summary.setHasWonDuringTurn(true);
+                finishGame();
+            }
         }
         return summary;
     }
@@ -183,6 +192,12 @@ public class GameManager {
             newAvailableRoles.add(randomRole);
         }
         return newAvailableRoles;
+    }
+
+    public void resuscitateAllPlayers() {
+        for(Player player: playersList) {
+            player.rescucitate();
+        }
     }
 }
 

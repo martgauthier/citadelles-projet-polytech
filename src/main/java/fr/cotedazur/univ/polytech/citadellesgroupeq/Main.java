@@ -1,5 +1,9 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+
 import java.util.List;
 
 public class Main {
@@ -21,6 +25,9 @@ public class Main {
                     describePlayerRound(player, game);
                 }
             }
+
+
+            game.resuscitateAllPlayers();
             System.out.println("--------------");
         }
         System.out.println("Jeu fini !");
@@ -58,16 +65,29 @@ public class Main {
         }
 
         RoundSummary summary = game.playPlayerTurn(player);
-
-        if(summary.hasWonCoinsByColorCards()) {
-            System.out.println("Grâce à sa couleur et à ses cartes, il a gagné " + summary.getCoinsWonByColorCards() + " pièces.");
-        }
-
-        if(summary.hasPickedCards()) {
-            System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
+        if(summary.hasBeenKilled()){
+            System.out.println("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
         }
         else {
-            System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces. (après achat de la citadelle si il y a eu)");
+            if (summary.hasUsedPower()) {
+                System.out.println("Ce joueur utilise son pouvoir de " + player.getRole().name());
+                for (Player p : game.getPlayersList()) {
+                    if (player.getRole().equals(Role.ASSASSIN) && p.isDeadForThisTurn()) {
+                        System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
+                        break;
+                    }
+                }
+            }
+
+            if (summary.hasWonCoinsByColorCards()) {
+                System.out.println("Grâce à sa couleur et à ses cartes, il a gagné " + summary.getCoinsWonByColorCards() + " pièces.");
+            }
+
+            if (summary.hasPickedCards()) {
+                System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
+            } else if (!player.isDeadForThisTurn()) {
+                System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces. (après achat de la citadelle si il y a eu)");
+            }
         }
 
         if(summary.hasBoughtCitadels()) {

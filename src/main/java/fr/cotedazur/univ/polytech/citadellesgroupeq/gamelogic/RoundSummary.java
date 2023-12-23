@@ -1,4 +1,6 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
+
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,21 +18,26 @@ public class RoundSummary {
     private int drawnCoins;
 
     private int coinsWonByColorCards;
+    private boolean hasUsedPower;
+    private boolean hasBeenKilledDuringTurn;
+
 
     private boolean hasWonDuringTurn;
 
     private List<Citadel> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn, int coinsWonByColorCards) {
+    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtCitadels=new ArrayList<>(boughtCitadels);
         this.hasWonDuringTurn = hasWonDuringTurn;
         this.coinsWonByColorCards=coinsWonByColorCards;
+        this.hasUsedPower = hasUsedPower;
+        this.hasBeenKilledDuringTurn=hasBeenKilledDuringTurn;
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false, 0);
+        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false, 0, false, false);
     }
 
     public List<Citadel> getBoughtCitadels() { return boughtCitadels; }
@@ -85,6 +92,18 @@ public class RoundSummary {
      */
     public boolean hasBoughtCitadels() {
         return !boughtCitadels.isEmpty();
+    }
+    public boolean hasUsedPower(){return hasUsedPower;}
+    public void toggleUsePower(){
+        hasUsedPower = !hasUsedPower;
+    }
+
+    public void setHasUsedPower() {
+        hasUsedPower=true;
+    }
+    public boolean hasBeenKilled(){return hasBeenKilledDuringTurn;}
+    public void setHasBeenKilledDuringTurn(){
+        hasBeenKilledDuringTurn =true;
     }
 
     public boolean hasWonDuringTurn() {

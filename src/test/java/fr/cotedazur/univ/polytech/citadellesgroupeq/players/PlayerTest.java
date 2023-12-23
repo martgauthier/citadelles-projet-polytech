@@ -1,5 +1,10 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -62,5 +67,12 @@ class PlayerTest {
         citadels.add(new Citadel("Monastere",7, "gray"));//arbitrary colors just for price
         bot.addAllCitadelsToCity(citadels);
         assertEquals(24,bot.getTotalCityPrice());
+    }
+    @Test
+    void testAssassinate(){
+        bot.dieForThisTurn();
+        assertTrue(bot.isDeadForThisTurn());
+        bot.rescucitate();
+        assertFalse(bot.isDeadForThisTurn());
     }
 }

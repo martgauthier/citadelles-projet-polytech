@@ -1,6 +1,12 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -89,6 +95,7 @@ class GameManagerTest {
     void testPlayerTurn() {
         game = new GameManager();
         game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes
+        game.getPlayersList().get(0).setRole(Role.MARCHAND);
         assertEquals(2,game.getPlayersList().get(0).getCardsInHand().size());
 
         RoundSummary summary=game.playPlayerTurn(game.getPlayersList().get(0));
@@ -116,6 +123,7 @@ class GameManagerTest {
         citadels.add(reader.getFromIndex(6));
         citadels.add(reader.getFromIndex(7));
         game.getPlayersList().get(0).addAllCitadelsToCity(citadels);
+        game.getPlayersList().get(0).setRole(Role.ASSASSIN);
         game.playPlayerTurn(game.getPlayersList().get(0));
         assertTrue(game.isFinished());
     }
