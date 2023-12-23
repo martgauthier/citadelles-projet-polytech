@@ -70,7 +70,7 @@ public class ColorPlayer extends Player {
         Optional<Citadel> minCardWithColor=Optional.empty();
 
         for(Citadel card: getCardsInHand()) {
-            if(card.getColor()!=Color.GRAY && card.getColor()!=Color.PURPLE && (minCardWithColor.isEmpty() || card.compareTo(minCardWithColor.get()) < 0)) {
+            if(card.getColor() == getRole().getColor() && (minCardWithColor.isEmpty() || card.compareTo(minCardWithColor.get()) < 0)) {
                 minCardWithColor=Optional.of(card);
             }
         }
