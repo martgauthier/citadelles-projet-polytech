@@ -1,15 +1,20 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
+
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.util.List;
 import java.util.Optional;
 
-public class RandomPlayer extends Player{
+public class RandomPlayer extends Player {
     public RandomPlayer(int id) {
         super(id);
     }
 
     public RandomPlayer(int id, int cash, List<Citadel> cards) {
-        super(id, cash, cards);
+        super(id, cash, cards, false);
     }
 
     /**
@@ -18,8 +23,11 @@ public class RandomPlayer extends Player{
      * @param summary Résumé du tour actuel.
      */
     @Override
-    public void playPlayerTurn(RoundSummary summary) {
-        super.playPlayerTurn(summary);
+    public void playPlayerTurn(RoundSummary summary, GameManager game) {
+        super.playPlayerTurn(summary, game);
+
+        getRole().power(game, this, summary);
+        summary.setHasUsedPower();
 
         int randomChoice = randomGenerator.nextInt(2);
 

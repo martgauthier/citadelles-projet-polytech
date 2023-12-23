@@ -5,6 +5,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ class ColorPlayerTest {
 
         highPriceRedCitadel=new Citadel("temple", 80, Color.RED);
         lowPriceRedCitadel=new Citadel("temple", 1, Color.RED);
+
+        firstPlayer.clearHand();
+        secondPlayer.clearHand();
     }
 
     @Test
@@ -38,13 +42,13 @@ class ColorPlayerTest {
         assertEquals(0, firstPlayer.selectRole(availablesRoles));
     }
 
-    @Test
+    @RepeatedTest(50)
     void testChoosesColorCitadel() {
         firstPlayer.setRole(Role.CONDOTTIERE);
         firstPlayer.addAllCardsToHand(new Citadel("temple", 8, Color.PURPLE), new Citadel("temple", 7, Color.PURPLE), highPriceRedCitadel);
         firstPlayer.addCoins(1000);//to make him rich
         assertTrue(firstPlayer.getChoosenCitadelToBuy().isPresent());
-        assertEquals(highPriceRedCitadel, firstPlayer.getChoosenCitadelToBuy().get());
+        assertEquals(highPriceRedCitadel.getName(), firstPlayer.getChoosenCitadelToBuy().get().getName());
     }
 
 

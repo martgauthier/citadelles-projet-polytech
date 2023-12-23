@@ -29,6 +29,7 @@ public class ColorPlayer extends Player {
                 return i;
             }
         }
+        setRole(availableRoles.get(0));
         return 0;//if no roles had color
     }
 

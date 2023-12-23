@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.ColorPlayer;
@@ -39,11 +40,11 @@ public class GameManager {
      */
     private final SortedSet<Player> playerTreeSet;
   
-    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new AlwaysSpendPlayer(3));
+    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new RandomPlayer(3));
 
     public GameManager() {
         this(DEFAULT_PLAYER_LIST);
-        DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new AlwaysSpendPlayer(3));
+        DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new RandomPlayer(3));
     }
 
     public GameManager(List<Player> playersList) {

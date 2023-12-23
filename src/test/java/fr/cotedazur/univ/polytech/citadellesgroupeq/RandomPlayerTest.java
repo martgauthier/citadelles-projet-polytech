@@ -3,38 +3,45 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 
 import java.util.Random;
 
-public class RandomPlayerTest {
+class RandomPlayerTest {
 
     Player randomPlayer;
     RoundSummary summary;
-    @Mock Random trickedRandom = mock(Random.class);
+    Random trickedRandom;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         summary = new RoundSummary();
         randomPlayer = new RandomPlayer(0);
+        trickedRandom = mock(Random.class);
     }
 
     @Test
-    public void testPlayPlayerTurnRandomChoice1() {
+    void testPlayPlayerTurnRandomChoice1() {
+        randomPlayer.setRole(Role.ASSASSIN);
         when(trickedRandom.nextInt(anyInt())).thenReturn(1);
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary);
+        randomPlayer.playPlayerTurn(summary, new GameManager());
         assertTrue(summary.hasPickedCash());
     }
 
-    // NE MARCHE PAS PCQ MOCKITO C CACA
+
     @Test
-    public void testPlayPlayerTurnRandomChoice0() {
+    void testPlayPlayerTurnRandomChoice0() {
+        randomPlayer.setRole(Role.ASSASSIN);
         when(trickedRandom.nextInt(anyInt())).thenReturn(0);
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary);
+        randomPlayer.playPlayerTurn(summary, new GameManager());
         assertTrue(summary.hasPickedCards());
     }
 }
