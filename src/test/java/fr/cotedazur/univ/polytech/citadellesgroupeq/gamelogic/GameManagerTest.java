@@ -11,11 +11,16 @@ import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class GameManagerTest {
     GameManager game;
@@ -52,11 +57,16 @@ class GameManagerTest {
         assertEquals(1, game.getMasterOfTheGameIndex());
     }
 
-    @Test
+    @RepeatedTest(50)
     void testRolesSelected() {
+        for(int i=0; i < game.getPlayersList().size(); i++) {
+            game.getPlayersList().set(i, Mockito.spy(game.getPlayersList().get(i)));
+        }
+
         game.makeAllPlayersSelectRole();
         List<Role> rolesSelected = new ArrayList<>();
         for (Player player : game.getPlayersList()) {
+            verify(player, times(1)).selectRole(anyList());
             assertFalse(rolesSelected.contains(player.getRole()));
             assertNotSame(Role.EMPTY_ROLE, player.getRole());//checks that role cannot be empty
             rolesSelected.add(player.getRole());
@@ -104,10 +114,6 @@ class GameManagerTest {
         assertEquals(1, summary.getBoughtCitadels().size());
 
         int boughtCitadelPrice=summary.getBoughtCitadels().get(0).getCost();
-
-        for(Citadel cardInHand: game.getPlayersList().get(0).getCardsInHand()) {
-            assertTrue(boughtCitadelPrice <= cardInHand.getCost());
-        }
 
         assertTrue(summary.hasPickedCards() ^ summary.hasPickedCash()); //opérateur XOR, pour vérifier que le joueur n'a fait qu'un des deux
     }

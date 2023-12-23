@@ -13,7 +13,7 @@ import java.util.*;
  */
 public abstract class Player implements Comparable<Player> {
 
-    public static final Random randomGenerator=new Random();
+    public Random randomGenerator=new Random();
     private int cash;
     private boolean deadForThisTurn;
     public static final int DEFAULT_CASH=0;
@@ -51,6 +51,10 @@ public abstract class Player implements Comparable<Player> {
         this.cardsInHand =new ArrayList<>(cards);//to make sure List is modifiable
         this.city=new ArrayList<>();
         this.deadForThisTurn = deadForThisTurn;
+    }
+
+    public void setRandomGenerator(Random customRandom) {
+        randomGenerator = customRandom;
     }
 
     public int getCash() {
@@ -301,5 +305,9 @@ public abstract class Player implements Comparable<Player> {
                 summary.addCoinsWonByColorCards(1);
             }
         }
+    }
+
+    public void clearHand() {
+        cardsInHand.clear();
     }
 }
