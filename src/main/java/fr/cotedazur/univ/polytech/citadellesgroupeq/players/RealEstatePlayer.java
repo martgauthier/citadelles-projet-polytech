@@ -33,7 +33,6 @@ public class RealEstatePlayer extends Player {
         super.playPlayerTurn(summary, game);
 
         getRole().power(game, this, summary);
-        summary.setHasUsedPower();
 
         if (getCardsInHand().size() != 8) {
             pickCard(summary);

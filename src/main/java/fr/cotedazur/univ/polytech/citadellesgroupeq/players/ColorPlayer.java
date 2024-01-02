@@ -46,7 +46,6 @@ public class ColorPlayer extends Player {
         super.playPlayerTurn(summary, game);
 
         getRole().power(game, this, summary);
-        summary.setHasUsedPower();
 
         if(getCardsInHand().size() < 4) {
             pickCard(summary);

@@ -27,7 +27,6 @@ public class RandomPlayer extends Player {
         super.playPlayerTurn(summary, game);
 
         getRole().power(game, this, summary);
-        summary.setHasUsedPower();
 
         int randomChoice = randomGenerator.nextInt(2);
 

@@ -33,7 +33,6 @@ public class AlwaysSpendPlayer extends Player{
         super.playPlayerTurn(summary, game);
 
         getRole().power(game, this, summary);
-        summary.setHasUsedPower();
 
         if (!getCardsInHand().isEmpty()) {
             draw2Coins(summary);
