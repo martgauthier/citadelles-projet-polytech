@@ -29,7 +29,6 @@ public enum Role {
     VOLEUR(Color.GRAY) {
         @Override
         public void power(GameManager g,Player voleur,RoundSummary summary) {
-
             List<Role> unstealableRoles = new ArrayList<>(Arrays.asList(ASSASSIN, VOLEUR));
             //On récupère le joueur assassiné ce tour
             for(Player player : g.getPlayersList()){
