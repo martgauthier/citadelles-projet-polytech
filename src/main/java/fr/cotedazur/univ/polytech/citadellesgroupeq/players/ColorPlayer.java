@@ -43,10 +43,9 @@ public class ColorPlayer extends Player {
      */
     @Override
     public void playPlayerTurn(RoundSummary summary, GameManager game) {
-        super.playPlayerTurn(summary, game);
+        super.getCoinsFromColorCards(summary);
 
-        getRole().power(game, this, summary);
-        summary.setHasUsedPower();
+        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
 
         if(getCardsInHand().size() < 4) {
             pickCard(summary);
@@ -55,15 +54,7 @@ public class ColorPlayer extends Player {
             draw2Coins(summary);
         }
 
-        Optional<Citadel> choosenCitadelToBuy=getChoosenCitadelToBuy();
-
-        if(choosenCitadelToBuy.isPresent()) {
-            Citadel citadel = choosenCitadelToBuy.get();
-            addCitadelToCity(citadel);
-            summary.addBoughtCitadel(citadel);
-            removeCardFromHand(citadel);
-            removeCoins(citadel.getCost());
-        }
+        super.buyCitadelsDuringTurn(summary);
     }
 
     @Override

@@ -298,7 +298,7 @@ public abstract class Player implements Comparable<Player> {
         return Optional.of(Collections.min(buyableCitadels));
     }
 
-    public void playPlayerTurn(RoundSummary summary, GameManager game) {
+    public void getCoinsFromColorCards(RoundSummary summary) {
         for(Citadel cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
                 addCoins(1);
@@ -307,7 +307,20 @@ public abstract class Player implements Comparable<Player> {
         }
     }
 
+    public void buyCitadelsDuringTurn(RoundSummary summary) {
+        Optional<Citadel> choosenCitadel = getChoosenCitadelToBuy();
+        if (choosenCitadel.isPresent()) {
+            Citadel citadel = choosenCitadel.get();
+            addCitadelToCity(citadel);
+            summary.addBoughtCitadel(citadel);
+            removeCardFromHand(citadel);
+            removeCoins(citadel.getCost());
+        }
+    }
+
     public void clearHand() {
         cardsInHand.clear();
     }
+
+    public abstract void playPlayerTurn(RoundSummary summary, GameManager game);
 }
