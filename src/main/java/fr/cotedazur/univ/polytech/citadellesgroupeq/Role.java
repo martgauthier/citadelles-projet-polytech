@@ -42,7 +42,7 @@ public enum Role {
                 List<District> districtListCopy=selectedPlayerToExchangeWith.getCardsInHand();
                 selectedPlayerToExchangeWith.setCardsInHand(magicien.getCardsInHand());
                 magicien.setCardsInHand(districtListCopy);
-                //TODO: note that in summary
+                summary.setExchangedCardsPlayerId(selectedPlayerToExchangeWith.getId());
             }
             else {//wants to draw some cards from the pile
                 int[] cardsToExchange=magicien.selectCardsToExchangeWithPileAsMagicien();
@@ -53,7 +53,7 @@ public enum Role {
                         magicien.getCardsInHand().set(cardIndex, districtsJSONReader.getRandomDistrict());
                     }
 
-                    //TODO: note that in summary
+                    summary.setHasExchangedCardsWithPileAsMagician(true);
                 }
                 catch(ParseException e) {
                     throw new RuntimeException("Error while parsing district JSON file.");

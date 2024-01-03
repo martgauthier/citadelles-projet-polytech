@@ -71,10 +71,20 @@ public class Main {
         else {
             if (summary.hasUsedPower()) {
                 System.out.println("Ce joueur utilise son pouvoir de " + player.getRole().name());
-                for (Player p : game.getPlayersList()) {
-                    if (player.getRole().equals(Role.ASSASSIN) && p.isDeadForThisTurn()) {
-                        System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
-                        break;
+                if(player.getRole() == Role.ASSASSIN) {
+                    for (Player p : game.getPlayersList()) {
+                        if (p.isDeadForThisTurn()) {
+                            System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
+                            break;
+                        }
+                    }
+                }
+                else if(player.getRole()==Role.MAGICIEN) {
+                    if(summary.hasExchangedCardsWithPileAsMagician()) {
+                        System.out.println("Il a échangé des cartes avec la pile.");
+                    }
+                    else {//a échangé ses cartes avec un joueur
+                        System.out.println("Il a échangé ses cartes avec le joueur d'id "  + summary.getExchangedCardsPlayerId());
                     }
                 }
             }
