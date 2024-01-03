@@ -1,11 +1,9 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 class GameManagerTest {
     GameManager game;
-    CitadelsJSONReader reader;
+    DistrictsJSONReader reader;
     public static final List<Role> TOO_SHORT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI));
     public static final List<Role> CORRECT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI, Role.ASSASSIN, Role.ARCHITECTE,Role.MARCHAND,Role.VOLEUR));
     public static final List<Role> FULL_EMPTY_ROLES_LIST = new ArrayList<>(List.of(Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE));
@@ -32,7 +30,7 @@ class GameManagerTest {
     @BeforeEach
     void setup() throws ParseException {
         game = new GameManager();
-        reader=new CitadelsJSONReader();
+        reader=new DistrictsJSONReader();
     }
 
     @Test
@@ -110,25 +108,25 @@ class GameManagerTest {
 
         RoundSummary summary=game.playPlayerTurn(game.getPlayersList().get(0));
 
-        assertTrue(summary.hasBoughtCitadels());
-        assertEquals(1, summary.getBoughtCitadels().size());
+        assertTrue(summary.hasBoughtDistricts());
+        assertEquals(1, summary.getBoughtDistricts().size());
 
-        int boughtCitadelPrice=summary.getBoughtCitadels().get(0).getCost();
+        int boughtDistrictPrice=summary.getBoughtDistricts().get(0).getCost();
 
         assertTrue(summary.hasPickedCards() ^ summary.hasPickedCash()); //opérateur XOR, pour vérifier que le joueur n'a fait qu'un des deux
     }
     @Test
     void testFinishCondition(){
-        List<Citadel> citadels=new ArrayList<>();
-        citadels.add(reader.getFromIndex(0));
-        citadels.add(reader.getFromIndex(1));
-        citadels.add(reader.getFromIndex(2));
-        citadels.add(reader.getFromIndex(3));
-        citadels.add(reader.getFromIndex(4));
-        citadels.add(reader.getFromIndex(5));
-        citadels.add(reader.getFromIndex(6));
-        citadels.add(reader.getFromIndex(7));
-        game.getPlayersList().get(0).addAllCitadelsToCity(citadels);
+        List<District> districts =new ArrayList<>();
+        districts.add(reader.getFromIndex(0));
+        districts.add(reader.getFromIndex(1));
+        districts.add(reader.getFromIndex(2));
+        districts.add(reader.getFromIndex(3));
+        districts.add(reader.getFromIndex(4));
+        districts.add(reader.getFromIndex(5));
+        districts.add(reader.getFromIndex(6));
+        districts.add(reader.getFromIndex(7));
+        game.getPlayersList().get(0).addAllDistrictsToCity(districts);
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
         game.playPlayerTurn(game.getPlayersList().get(0));
         assertTrue(game.isFinished());

@@ -26,7 +26,7 @@ public class GameManager {
      */
     private final List<Player> playersList;
 
-    public static final int NUMBER_OF_CITADELS_TO_WIN=8;
+    public static final int NUMBER_OF_DISTRICTS_TO_WIN =8;
 
     private Map<Player, Role> rolesSelectedMap;
 
@@ -105,7 +105,7 @@ public class GameManager {
     }
 
     /**
-     * Exécute le tour d'un joueur, lui permettant de piocher des pièces et d'acheter des citadelles.
+     * Exécute le tour d'un joueur, lui permettant de piocher des pièces et d'acheter des districts.
      * @param player Le joueur dont c'est le tour.
      * @return Un objet {@link RoundSummary}contenant les informations sur le tour du joueur.
      */
@@ -116,7 +116,7 @@ public class GameManager {
         }
         else {
             player.playPlayerTurn(summary, this);
-            if (player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
+            if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN) {
                 summary.setHasWonDuringTurn(true);
                 finishGame();
             }

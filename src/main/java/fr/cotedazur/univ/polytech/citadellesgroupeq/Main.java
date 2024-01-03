@@ -86,16 +86,16 @@ public class Main {
             if (summary.hasPickedCards()) {
                 System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
             } else if (!player.isDeadForThisTurn()) {
-                System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces. (après achat de la citadelle si il y a eu)");
+                System.out.println("Il a choisi de prendre 2 pieces, ce qui l'amene a: " + player.getCash() + " pieces. (après achat du district si il y a eu)");
             }
         }
 
-        if(summary.hasBoughtCitadels()) {
+        if(summary.hasBoughtDistricts()) {
             System.out.println("Il a acheté cette carte:");
-            System.out.println(getDescriptionOfCards(summary.getBoughtCitadels()));
+            System.out.println(getDescriptionOfCards(summary.getBoughtDistricts()));
         }
         if(summary.hasWonDuringTurn()) {
-            System.out.println("Il a gagné, car il possède dans sa cité " + GameManager.NUMBER_OF_CITADELS_TO_WIN + " citadelles.\n");
+            System.out.println("Il a gagné, car il possède dans sa cité " + GameManager.NUMBER_OF_DISTRICTS_TO_WIN + " districts.\n");
             System.out.println("Voici sa cité");
             System.out.println(getDescriptionOfCards(player.getCity()));
         }
@@ -106,10 +106,10 @@ public class Main {
      *
      * @return Un {@link String} contenant la liste des cartes dans la main du joueur. PAS CELLES POSEES DANS SA CITE
      */
-    public static String getDescriptionOfCards(List<Citadel> cards) {
+    public static String getDescriptionOfCards(List<District> cards) {
         if(!cards.isEmpty()) {
             StringBuilder output = new StringBuilder("Cartes : \n");
-            for (Citadel card : cards) {
+            for (District card : cards) {
                 output.append("\t*").append(card.getName()).append(" : ");
                 output.append(card.getCost());
                 output.append(" (").append(card.getColor().name()).append(")");

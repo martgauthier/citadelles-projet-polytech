@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
@@ -17,7 +17,7 @@ public class AlwaysSpendPlayer extends Player{
         super(id);
     }
 
-    public AlwaysSpendPlayer(int id, int cash, List<Citadel> cards) {
+    public AlwaysSpendPlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
     }
 
@@ -35,7 +35,7 @@ public class AlwaysSpendPlayer extends Player{
 
         if (!getCardsInHand().isEmpty()) {
             draw2Coins(summary);
-            super.buyCitadelsDuringTurn(summary);
+            super.buyDistrictsDuringTurn(summary);
         }
         else {
             pickCard(summary);
