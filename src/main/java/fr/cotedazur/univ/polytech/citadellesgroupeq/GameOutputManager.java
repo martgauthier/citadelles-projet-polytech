@@ -24,12 +24,13 @@ public class GameOutputManager {
     }
 
     public void startMainOutputLoop() {
-        while(!game.isFinished()) {
+        while(!game.isFinished()) {//pour chaque manche
             System.out.println("Tour : " + rounds ++ + "\n--------------\n");
             List<Role> availableRoles = game.generateAvailableRoles(playersNumber);
-            describeRoles(availableRoles);
 
-            describeRolePicking(game.makeAllPlayersSelectRole(availableRoles), game.getMasterOfTheGameIndex());
+            describeRoles(availableRoles);//liste les rôles rendus disponibles à choisir par le jeu
+
+            describeRolePicking(game.makeAllPlayersSelectRole(availableRoles), game.getMasterOfTheGameIndex());//décrit les rôles choisis par chaque joueur
 
             for(Player player : game.getPlayerTreeSet()) {
                 if(!game.isFinished()) {//actuellement, on s'arrête DES qu'un joueur a 8 cartes. Dans la version finale, il faudra laisser la fin du tour
@@ -64,17 +65,7 @@ public class GameOutputManager {
     }
 
     public void describePlayerRound(Player player, GameLogicManager game) {
-        System.out.print("Joueur " + player.getId());
-        System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+"-" + player.getRole().getColor().name()+").");
-        System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes en main: ");
-        System.out.println(getDescriptionOfCards(player.getCardsInHand()));
-        if(player.hasEmptyCity()) {
-            System.out.println("Il n'a rien dans sa cité.");
-        }
-        else {
-            System.out.println("Sa cité contient: ");
-            System.out.println(getDescriptionOfCards(player.getCity()));
-        }
+        describePlayerState(player);
 
         RoundSummary summary = game.playPlayerTurn(player);
         if(summary.hasBeenKilled()){
@@ -112,6 +103,25 @@ public class GameOutputManager {
             System.out.println(getDescriptionOfCards(player.getCity()));
         }
         System.out.println("\n");
+    }
+
+
+    /**
+     * décrit l'état actuel d'un joueur avant son tour: son rôle, ses cartes en main, et celles dans sa cité, et son cash
+     * @param player
+     */
+    public void describePlayerState(Player player) {
+        System.out.print("Joueur " + player.getId());
+        System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+"-" + player.getRole().getColor().name()+").");
+        System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes en main: ");
+        System.out.println(getDescriptionOfCards(player.getCardsInHand()));
+        if(player.hasEmptyCity()) {
+            System.out.println("Il n'a rien dans sa cité.");
+        }
+        else {
+            System.out.println("Sa cité contient: ");
+            System.out.println(getDescriptionOfCards(player.getCity()));
+        }
     }
 
     /**
