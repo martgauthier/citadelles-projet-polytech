@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
@@ -15,7 +15,7 @@ public class ColorPlayer extends Player {
         super(id);
     }
 
-    public ColorPlayer(int id, int cash, List<Citadel> cards) {
+    public ColorPlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
     }
 
@@ -43,10 +43,9 @@ public class ColorPlayer extends Player {
      */
     @Override
     public void playPlayerTurn(RoundSummary summary, GameManager game) {
-        super.playPlayerTurn(summary, game);
+        super.getCoinsFromColorCards(summary);
 
-        getRole().power(game, this, summary);
-        summary.setHasUsedPower();
+        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
 
         if(getCardsInHand().size() < 4) {
             pickCard(summary);
@@ -55,22 +54,14 @@ public class ColorPlayer extends Player {
             draw2Coins(summary);
         }
 
-        Optional<Citadel> choosenCitadelToBuy=getChoosenCitadelToBuy();
-
-        if(choosenCitadelToBuy.isPresent()) {
-            Citadel citadel = choosenCitadelToBuy.get();
-            addCitadelToCity(citadel);
-            summary.addBoughtCitadel(citadel);
-            removeCardFromHand(citadel);
-            removeCoins(citadel.getCost());
-        }
+        super.buyDistrictsDuringTurn(summary);
     }
 
     @Override
-    public Optional<Citadel> getChoosenCitadelToBuy() {
-        Optional<Citadel> minCardWithColor=Optional.empty();
+    public Optional<District> getChoosenDistrictToBuy() {
+        Optional<District> minCardWithColor=Optional.empty();
 
-        for(Citadel card: getCardsInHand()) {
+        for(District card: getCardsInHand()) {
             if(card.getColor() == getRole().getColor() && (minCardWithColor.isEmpty() || card.compareTo(minCardWithColor.get()) < 0)) {
                 minCardWithColor=Optional.of(card);
             }
@@ -80,7 +71,7 @@ public class ColorPlayer extends Player {
             return minCardWithColor;
         }
         else if(!getCardsInHand().isEmpty()){//no card with color are buyable, but some cards are present in hand. Let's try to buy the cheapest
-            Citadel minCard=Collections.min(getCardsInHand());
+            District minCard=Collections.min(getCardsInHand());
             if(minCard.getCost() <= getCash()){
                 return Optional.of(minCard);
             }
