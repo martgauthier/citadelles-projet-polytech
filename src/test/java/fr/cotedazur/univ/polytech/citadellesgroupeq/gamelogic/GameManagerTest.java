@@ -93,10 +93,16 @@ class GameManagerTest {
     }
 
     @Test
-    void testGameUsesCopyOfDefaultPlayerList() {//verifie que le Game fait bien une deep copy du DEFAULT_PLAYER_LIST
-        assertNotSame(GameManager.DEFAULT_PLAYER_LIST.get(0).hashCode(), game.getPlayersList().get(0).hashCode());
-        game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        assertNotSame(Role.ASSASSIN, GameManager.DEFAULT_PLAYER_LIST.get(0).getRole());
+    void testGameCreatesDifferentInstancesFromDefaultPlayerList() {
+        GameManager firstGame = new GameManager();
+        GameManager secondGame = new GameManager();
+        for(int i=0; i < firstGame.getPlayersList().size(); i++) {
+            assertNotEquals(firstGame.getPlayersList().get(i), secondGame.getPlayersList().get(i));
+        }
+
+        assertEquals(firstGame.getPlayersList().get(0).getCash(), secondGame.getPlayersList().get(0).getCash());//par défaut, ils ont un cash à 0
+        firstGame.getPlayersList().get(0).setCash(50);
+        assertNotEquals(firstGame.getPlayersList().get(0).getCash(), secondGame.getPlayersList().get(0).getCash());//changer le cash d'un ne change pas le cash de l'autre
     }
 
     @RepeatedTest(50)
