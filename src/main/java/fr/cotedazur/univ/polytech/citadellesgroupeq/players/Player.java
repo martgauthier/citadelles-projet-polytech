@@ -290,13 +290,7 @@ public abstract class Player implements Comparable<Player> {
      *
      * @return la citadelle que le joueur a choisi d'acheter (par défaut, la moins chère). Si le joueur n'est pas en mesure d'acheter une citadelle, l'Optional est empty
      */
-    public Optional<District> getChoosenDistrictToBuy() {
-        List<District> buyableDistricts =getBuyableCards();
-
-        if(buyableDistricts.isEmpty()) return Optional.empty();
-
-        return Optional.of(Collections.min(buyableDistricts));
-    }
+    public abstract Optional<District> getChoosenDistrictToBuy();
 
     public void getCoinsFromColorCards(RoundSummary summary) {
         for(District cartePosee: city) {
@@ -318,9 +312,14 @@ public abstract class Player implements Comparable<Player> {
         }
     }
 
+    public abstract Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playerList);
+    public abstract boolean choosesToExchangeCardWithPlayer();//true si il échange avec un joueur, false si il veut échanger certaines de ses cartes avec des cartes de la pile (d'après règle du jeu)
+
     public void clearHand() {
         cardsInHand.clear();
     }
 
     public abstract void playPlayerTurn(RoundSummary summary, GameManager game);
+
+    public abstract int[] selectCardsToExchangeWithPileAsMagicien();//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
 }

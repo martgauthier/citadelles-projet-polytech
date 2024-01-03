@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
+import java.util.Random;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
@@ -21,6 +22,8 @@ public class DistrictsJSONReader {
     private JSONArray jsonArray;
     /** La liste des districts lue à partir du fichier JSON. */
     private List<District> districtsList;
+
+    private Random randomGenerator=new Random();
 
 
     public static final String DEFAULT_PATH= "high_cards_districts.json";
@@ -83,15 +86,19 @@ public class DistrictsJSONReader {
     }
 
     public District getFromIndex(int index) throws BadlyInitializedReader, IllegalArgumentException {
-        if(districtsList.isEmpty()) {
-            throw new BadlyInitializedReader("District list is empty");
-        }
-        else if(index<0||index>= districtsList.size()) {
+        if(index<0||index>= districtsList.size()) {
             throw new IllegalArgumentException("index must be in districts list");
         }
         else {
             return districtsList.get(index);
         }
+    }
+
+    public District getRandomDistrict() throws BadlyInitializedReader {
+        if (districtsList.isEmpty()) {
+            throw new BadlyInitializedReader("District list is empty");
+        }
+        return districtsList.get(randomGenerator.nextInt(districtsList.size()));
     }
 
     private class BadlyInitializedReader extends ExceptionInInitializerError {

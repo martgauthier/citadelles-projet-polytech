@@ -3,6 +3,9 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import org.json.simple.parser.ParseException;
+
+import java.util.List;
 
 /**
  * Enum that represents roles. Each enum overrides the "power" method. You can use ".name()" and ".ordinal()" to get their number
@@ -32,8 +35,30 @@ public enum Role {
     MAGICIEN(Color.GRAY) {
         @Override
         public void power(GameManager g,Player magicien,RoundSummary summary) {
-            //TODO
             super.power(g, magicien, summary);
+
+            if(magicien.choosesToExchangeCardWithPlayer()) {
+                Player selectedPlayerToExchangeWith = magicien.selectPlayerToExchangeCardsWithAsMagicien(g.getPlayersList());
+                List<District> districtListCopy=selectedPlayerToExchangeWith.getCardsInHand();
+                selectedPlayerToExchangeWith.setCardsInHand(magicien.getCardsInHand());
+                magicien.setCardsInHand(districtListCopy);
+                //TODO: note that in summary
+            }
+            else {//wants to draw some cards from the pile
+                int[] cardsToExchange=magicien.selectCardsToExchangeWithPileAsMagicien();
+                try {
+                    DistrictsJSONReader districtsJSONReader = new DistrictsJSONReader();
+
+                    for(int cardIndex: cardsToExchange) {
+                        magicien.getCardsInHand().set(cardIndex, districtsJSONReader.getRandomDistrict());
+                    }
+
+                    //TODO: note that in summary
+                }
+                catch(ParseException e) {
+                    throw new RuntimeException("Error while parsing district JSON file.");
+                }
+            }
         }
     },
     ROI (Color.YELLOW) {
@@ -74,7 +99,7 @@ public enum Role {
 
 
     /**
-     * Méthode pour utiliser le pouvoir du rôle. PAS ENCORE IMPLEMENTE
+     * Méthode pour utiliser le pouvoir du rôle. Toujours appeler "super.power", car c'est lui qui écrit dans le summary que le pouvoir a été utilisé
      */
     public void power(GameManager g,Player player,RoundSummary summary) {
         summary.setHasUsedPower();
