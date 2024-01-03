@@ -2,7 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class RealEstatePlayerTest {
     void testPlayerTurnWithEightCardsInHand(){
         assertEquals(8, botWithEightCards.getCardsInHand().size());
         botWithEightCards.setRole(Role.ROI);
-        botWithEightCards.playPlayerTurn(summary, new GameManager());
+        botWithEightCards.playPlayerTurn(summary, new GameLogicManager());
 
         assertTrue(summary.hasPickedCash());
     }
@@ -49,13 +49,13 @@ class RealEstatePlayerTest {
         assertEquals(0,botWithoutCards.getCardsInHand().size());
         for (int i = 0; i < 8; i++){
             botWithoutCards.setRole(Role.ROI);
-            botWithoutCards.playPlayerTurn(summary, new GameManager());
+            botWithoutCards.playPlayerTurn(summary, new GameLogicManager());
             assertTrue(summary.hasPickedCards());
         }
         assertEquals(8,botWithoutCards.getCardsInHand().size());
 
         // il a maintenant 8 cartes en main, son objectif faire de l'argent
-        botWithoutCards.playPlayerTurn(summary, new GameManager());
+        botWithoutCards.playPlayerTurn(summary, new GameLogicManager());
         assertTrue(summary.hasPickedCash());
     }
 }

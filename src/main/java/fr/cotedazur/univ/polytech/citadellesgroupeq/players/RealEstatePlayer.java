@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class RealEstatePlayer extends Player {
      * @param game
      */
     @Override
-    public void playPlayerTurn(RoundSummary summary, GameManager game) {
+    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
         super.playPlayerTurn(summary, game);
 
         getRole().power(game, this, summary);

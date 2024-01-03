@@ -13,7 +13,7 @@ import java.util.*;
  * La classe GameManager gère le déroulement du jeu Citadelles. Elle initialise le jeu, fait choisir des rôles aux joueurs,
  * exécute les tours des joueurs, et vérifie si le jeu est terminé.
  */
-public class GameManager {
+public class GameLogicManager {
     private final Random randomGenerator;
 
     /**
@@ -42,12 +42,12 @@ public class GameManager {
   
     public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new RandomPlayer(3));
 
-    public GameManager() {
+    public GameLogicManager() {
         this(DEFAULT_PLAYER_LIST);
         DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new RandomPlayer(3));
     }
 
-    public GameManager(List<Player> playersList) {
+    public GameLogicManager(List<Player> playersList) {
         randomGenerator=new Random();
         this.playersList=new ArrayList<>(playersList);//pour ne pas modifier le tableau de base
         this.masterOfTheGameIndex=0;

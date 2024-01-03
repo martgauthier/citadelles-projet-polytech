@@ -1,9 +1,8 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,7 @@ public class RandomPlayer extends Player {
      * @param summary Résumé du tour actuel.
      */
     @Override
-    public void playPlayerTurn(RoundSummary summary, GameManager game) {
+    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
         super.playPlayerTurn(summary, game);
 
         getRole().power(game, this, summary);

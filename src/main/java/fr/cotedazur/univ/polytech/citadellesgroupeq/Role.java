@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
@@ -12,7 +12,7 @@ public enum Role {
     EMPTY_ROLE(Color.GRAY),
     ASSASSIN(Color.GRAY) {
         @Override
-        public void power (GameManager g, Player assassin, RoundSummary summary) {
+        public void power (GameLogicManager g, Player assassin, RoundSummary summary) {
             Role assassinatedRole=assassin.selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
@@ -23,43 +23,43 @@ public enum Role {
     },
     VOLEUR(Color.GRAY) {
         @Override
-        public void power(GameManager g,Player voleur,RoundSummary summary) {
+        public void power(GameLogicManager g, Player voleur, RoundSummary summary) {
             //TODO
         }
     },
     MAGICIEN(Color.GRAY) {
         @Override
-        public void power(GameManager g,Player magicien,RoundSummary summary) {
+        public void power(GameLogicManager g, Player magicien, RoundSummary summary) {
             //TODO
         }
     },
     ROI (Color.YELLOW) {
         @Override
-        public void power(GameManager g,Player roi,RoundSummary summary) {
+        public void power(GameLogicManager g, Player roi, RoundSummary summary) {
             //TODO
         }
     },
     EVEQUE(Color.BLUE) {
         @Override
-        public void power(GameManager g,Player eveque,RoundSummary summary) {
+        public void power(GameLogicManager g, Player eveque, RoundSummary summary) {
             //TODO
         }
     },
     MARCHAND (Color.GREEN) {
         @Override
-        public void power(GameManager g,Player marchand,RoundSummary summary) {
+        public void power(GameLogicManager g, Player marchand, RoundSummary summary) {
             //TODO
         }
     },
     ARCHITECTE (Color.GRAY) {
         @Override
-        public void power(GameManager g,Player architecte,RoundSummary summary) {
+        public void power(GameLogicManager g, Player architecte, RoundSummary summary) {
             //TODO
         }
     },
     CONDOTTIERE (Color.RED) {
         @Override
-        public void power(GameManager g,Player condottiere,RoundSummary summary) {
+        public void power(GameLogicManager g, Player condottiere, RoundSummary summary) {
             //TODO
         }
     };
@@ -68,7 +68,7 @@ public enum Role {
     /**
      * Méthode pour utiliser le pouvoir du rôle. PAS ENCORE IMPLEMENTE
      */
-    public void power(GameManager g,Player player,RoundSummary summary) {
+    public void power(GameLogicManager g, Player player, RoundSummary summary) {
         throw new UnsupportedOperationException();
     }
 

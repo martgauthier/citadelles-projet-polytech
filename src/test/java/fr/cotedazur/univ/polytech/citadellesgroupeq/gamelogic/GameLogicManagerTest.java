@@ -4,8 +4,6 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +20,8 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class GameManagerTest {
-    GameManager game;
+class GameLogicManagerTest {
+    GameLogicManager game;
     CitadelsJSONReader reader;
     public static final List<Role> TOO_SHORT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI));
     public static final List<Role> CORRECT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI, Role.ASSASSIN, Role.ARCHITECTE,Role.MARCHAND,Role.VOLEUR));
@@ -31,7 +29,7 @@ class GameManagerTest {
 
     @BeforeEach
     void setup() throws ParseException {
-        game = new GameManager();
+        game = new GameLogicManager();
         reader=new CitadelsJSONReader();
     }
 
@@ -96,14 +94,14 @@ class GameManagerTest {
 
     @Test
     void testGameUsesCopyOfDefaultPlayerList() {//verifie que le Game fait bien une deep copy du DEFAULT_PLAYER_LIST
-        assertNotSame(GameManager.DEFAULT_PLAYER_LIST.get(0).hashCode(), game.getPlayersList().get(0).hashCode());
+        assertNotSame(GameLogicManager.DEFAULT_PLAYER_LIST.get(0).hashCode(), game.getPlayersList().get(0).hashCode());
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        assertNotSame(Role.ASSASSIN, GameManager.DEFAULT_PLAYER_LIST.get(0).getRole());
+        assertNotSame(Role.ASSASSIN, GameLogicManager.DEFAULT_PLAYER_LIST.get(0).getRole());
     }
 
     @RepeatedTest(50)
     void testPlayerTurn() {
-        game = new GameManager();
+        game = new GameLogicManager();
         game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes
         game.getPlayersList().get(0).setRole(Role.MARCHAND);
         assertEquals(2,game.getPlayersList().get(0).getCardsInHand().size());

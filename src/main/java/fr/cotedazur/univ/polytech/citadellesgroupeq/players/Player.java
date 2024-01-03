@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.json.simple.parser.ParseException;
 
@@ -298,7 +298,7 @@ public abstract class Player implements Comparable<Player> {
         return Optional.of(Collections.min(buyableCitadels));
     }
 
-    public void playPlayerTurn(RoundSummary summary, GameManager game) {
+    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
         for(Citadel cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
                 addCoins(1);

@@ -3,25 +3,24 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ColorPlayerTest {
-    GameManager game;
+    GameLogicManager game;
     ColorPlayer firstPlayer, secondPlayer;
     Citadel highPriceRedCitadel, lowPriceRedCitadel;
     @BeforeEach
     void setup() {
         firstPlayer=new ColorPlayer(0);
         secondPlayer=new ColorPlayer(0);
-        game=new GameManager(List.of(firstPlayer, secondPlayer));
+        game=new GameLogicManager(List.of(firstPlayer, secondPlayer));
 
         highPriceRedCitadel=new Citadel("temple", 80, Color.RED);
         lowPriceRedCitadel=new Citadel("temple", 1, Color.RED);
