@@ -3,7 +3,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -13,14 +13,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ColorPlayerTest {
-    GameManager game;
+    GameLogicManager game;
     ColorPlayer firstPlayer, secondPlayer;
     District highPriceRedDistrict, lowPriceRedDistrict;
     @BeforeEach
     void setup() {
         firstPlayer=new ColorPlayer(0);
         secondPlayer=new ColorPlayer(0);
-        game=new GameManager(List.of(firstPlayer, secondPlayer));
+        game=new GameLogicManager(List.of(firstPlayer, secondPlayer));
 
         highPriceRedDistrict =new District("temple", 80, Color.RED);
         lowPriceRedDistrict =new District("temple", 1, Color.RED);

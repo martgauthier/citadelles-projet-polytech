@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
 import java.util.*;
@@ -99,6 +99,17 @@ public abstract class Player implements Comparable<Player> {
             assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
         } while((assassinatedRole.equals(this.getRole())));
         return assassinatedRole;
+    }
+
+
+    public Role selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) throws Exception {
+        for (int i = 0; i < availableRoles.size(); i++) {
+            Role stealedRole = availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
+            if (!unstealableRoles.contains(stealedRole)) {
+                return stealedRole;
+            }
+        }
+        throw new Exception("Aucuns rôles à voler");
     }
 
     /**
@@ -316,7 +327,7 @@ public abstract class Player implements Comparable<Player> {
         cardsInHand.clear();
     }
 
-    public abstract void playPlayerTurn(RoundSummary summary, GameManager game);
+    public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
 
     public abstract int[] selectCardsToExchangeWithPileAsMagicien();//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
 }

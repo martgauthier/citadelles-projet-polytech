@@ -2,18 +2,18 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ColorTest {
-    GameManager game;
+    GameLogicManager game;
     Player firstP, secondP;
     @BeforeEach
     void setup() {
-        game=new GameManager();
+        game=new GameLogicManager();
         firstP=game.getPlayersList().get(0);
         secondP=game.getPlayersList().get(1);
     }
