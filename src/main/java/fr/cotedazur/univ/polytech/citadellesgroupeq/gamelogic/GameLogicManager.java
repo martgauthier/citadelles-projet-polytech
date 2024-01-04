@@ -7,13 +7,14 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.ColorPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 /**
  * La classe GameManager gère le déroulement du jeu Citadelles. Elle initialise le jeu, fait choisir des rôles aux joueurs,
  * exécute les tours des joueurs, et vérifie si le jeu est terminé.
  */
-public class GameManager {
+public class GameLogicManager {
     private final Random randomGenerator;
 
     /**
@@ -26,9 +27,7 @@ public class GameManager {
      */
     private final List<Player> playersList;
 
-    public static final int NUMBER_OF_CITADELS_TO_WIN=8;
-
-    private Map<Player, Role> rolesSelectedMap;
+    public static final int NUMBER_OF_DISTRICTS_TO_WIN =8;
 
     /**
      * True quand la partie est finie, False quand elle est en cours
@@ -39,21 +38,36 @@ public class GameManager {
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
-  
-    public static List<Player> DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new RandomPlayer(3));
 
-    public GameManager() {
-        this(DEFAULT_PLAYER_LIST);
-        DEFAULT_PLAYER_LIST= Arrays.asList(new ColorPlayer(0), new RealEstatePlayer(1),new AlwaysSpendPlayer(2),new RandomPlayer(3));
+
+    //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
+    public static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ColorPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
+
+    public GameLogicManager() {
+        this(List.of());//liste de joueurs vide
+
+
+        //nécessaire pour régler l'issue #53 sur github:
+        // il est plus simple d'instancier les joueurs depuis une liste de classes, avec leur constructeur, qu'essayer de les copier en profondeur
+
+        int ids=0;
+        for(Class<? extends Player> playerStrategy: DEFAULT_PLAYER_CLASS_LIST) {
+            try {
+                Constructor<? extends Player> constructor = playerStrategy.getDeclaredConstructor(int.class);
+                this.playersList.add(constructor.newInstance(ids++));
+            }
+            catch(Exception e) {
+                throw new RuntimeException("pas de constructeur prenant un int en paramètre trouvé pour la classe " + playerStrategy.getName() + "! Erreur de code");
+            }
+        }
     }
 
-    public GameManager(List<Player> playersList) {
+    public GameLogicManager(List<Player> playersList) {
         randomGenerator=new Random();
         this.playersList=new ArrayList<>(playersList);//pour ne pas modifier le tableau de base
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;
-        rolesSelectedMap=new HashMap<>();
     }
 
     public List<Player> getPlayersList() {
@@ -84,7 +98,6 @@ public class GameManager {
         List<Player> playersInRolePickingOrder=new ArrayList<>();
 
         playerTreeSet.clear();
-        rolesSelectedMap.clear();
         setRandomMasterOfGame();//pour débuter par un joueur aléatoire
         for(int i=0; i < playersList.size(); i++) {
             int selectedPlayerIndex=(i+masterOfTheGameIndex) % playersList.size();//permet de boucler toutes les valeurs dans l'ordre, à partir du masterOfGame
@@ -97,7 +110,6 @@ public class GameManager {
                 throw new IllegalArgumentException("Roles can't be EMPTY_ROLE.");
             }
 
-            rolesSelectedMap.put(selectedPlayer, availableRoles.get(selectedRoleIndex));
             playerTreeSet.add(selectedPlayer);//on ajoute le joueur actuel à la liste, qui est automatiquement triée de par son type TreeSet
             availableRoles.remove(selectedRoleIndex);//pour que les prochains joueurs ne puissent pas prendre le même rôle
         }
@@ -105,7 +117,7 @@ public class GameManager {
     }
 
     /**
-     * Exécute le tour d'un joueur, lui permettant de piocher des pièces et d'acheter des citadelles.
+     * Exécute le tour d'un joueur, lui permettant de piocher des pièces et d'acheter des districts.
      * @param player Le joueur dont c'est le tour.
      * @return Un objet {@link RoundSummary}contenant les informations sur le tour du joueur.
      */
@@ -116,7 +128,7 @@ public class GameManager {
         }
         else {
             player.playPlayerTurn(summary, this);
-            if (player.getCity().size() == NUMBER_OF_CITADELS_TO_WIN) {
+            if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN) {
                 summary.setHasWonDuringTurn(true);
                 finishGame();
             }

@@ -1,10 +1,8 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.CitadelsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -17,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
     Player bot;
-    CitadelsJSONReader reader;
+    DistrictsJSONReader reader;
     @BeforeEach
     void setup() throws ParseException {
         bot = new AlwaysSpendPlayer(0);
-        reader = new CitadelsJSONReader();
+        reader = new DistrictsJSONReader();
     }
 
     @Test
@@ -44,7 +42,7 @@ class PlayerTest {
     @Test
     void testAddCards(){
         assertEquals(2, bot.getCardsInHand().size());
-        List<Citadel> cardsToAdd = List.of(reader.getFromIndex(0), reader.getFromIndex(1));
+        List<District> cardsToAdd = List.of(reader.getFromIndex(0), reader.getFromIndex(1));
         bot.addAllCardsToHand(cardsToAdd);
         assertEquals(4, bot.getCardsInHand().size());
     }
@@ -61,11 +59,11 @@ class PlayerTest {
     }
     @Test
     void testGetTotalCityPrice(){
-        List<Citadel> citadels=new ArrayList<>();
-        citadels.add(new Citadel("Temple",9,"gray"));
-        citadels.add(new Citadel("Eglise",8, "gray"));
-        citadels.add(new Citadel("Monastere",7, "gray"));//arbitrary colors just for price
-        bot.addAllCitadelsToCity(citadels);
+        List<District> districts =new ArrayList<>();
+        districts.add(new District("Temple",9,"gray"));
+        districts.add(new District("Eglise",8, "gray"));
+        districts.add(new District("Monastere",7, "gray"));//arbitrary colors just for price
+        bot.addAllDistrictsToCity(districts);
         assertEquals(24,bot.getTotalCityPrice());
     }
     @Test

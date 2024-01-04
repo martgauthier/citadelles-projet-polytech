@@ -1,8 +1,8 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.Objects;
 public class RoundSummary {
 
     public static final int DEFAULT_DRAWN_COINS=0;
-    public static final List<Citadel> EMPTY_CITADEL_LIST=new ArrayList<>();
+    public static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
 
-    private List<Citadel> boughtCitadels;
+    private List<District> boughtDistricts;
     private int drawnCoins;
 
     private int coinsWonByColorCards;
@@ -25,12 +25,12 @@ public class RoundSummary {
     private Role stealedRole;
     private boolean hasWonDuringTurn;
 
-    private List<Citadel> drawnCards;
+    private List<District> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<Citadel> drawnCards, List<Citadel> boughtCitadels, boolean hasWonDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn, Role stealedRole) {
+    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasWonDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn, Role stealedRole) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
-        this.boughtCitadels=new ArrayList<>(boughtCitadels);
+        this.boughtDistricts =new ArrayList<>(boughtDistricts);
         this.hasWonDuringTurn = hasWonDuringTurn;
         this.coinsWonByColorCards=coinsWonByColorCards;
         this.hasUsedPower = hasUsedPower;
@@ -39,17 +39,17 @@ public class RoundSummary {
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_CITADEL_LIST, EMPTY_CITADEL_LIST, false, 0, false, false, Role.EMPTY_ROLE);
+        this(DEFAULT_DRAWN_COINS, EMPTY_DISTRICT_LIST, EMPTY_DISTRICT_LIST, false, 0, false, false, Role.EMPTY_ROLE);
     }
 
-    public List<Citadel> getBoughtCitadels() { return boughtCitadels; }
+    public List<District> getBoughtDistricts() { return boughtDistricts; }
 
-    public void setBoughtCitadels(List<Citadel> boughtCitadels) {
-        this.boughtCitadels = boughtCitadels;
+    public void setBoughtDistricts(List<District> boughtDistricts) {
+        this.boughtDistricts = boughtDistricts;
     }
 
-    public void addBoughtCitadel(Citadel boughtCitadel) {
-        this.boughtCitadels.add(boughtCitadel);
+    public void addBoughtDistrict(District boughtDistrict) {
+        this.boughtDistricts.add(boughtDistrict);
     }
 
     public int getDrawnCoins() { return drawnCoins; }
@@ -62,13 +62,13 @@ public class RoundSummary {
         drawnCoins+=coinsToAdd;
     }
 
-    public List<Citadel> getDrawnCards() { return drawnCards; }
+    public List<District> getDrawnCards() { return drawnCards; }
 
-    public void setDrawnCards(List<Citadel> drawnCards) {
+    public void setDrawnCards(List<District> drawnCards) {
         this.drawnCards = drawnCards;
     }
 
-    public void addDrawnCard(Citadel cardToAdd) {
+    public void addDrawnCard(District cardToAdd) {
         this.drawnCards.add(cardToAdd);
     }
 
@@ -90,10 +90,10 @@ public class RoundSummary {
 
     /**
      *
-     * @return True si le joueur a posé une de ses citadelles dans sa cité, False sinon
+     * @return True si le joueur a posé un de ses districts dans sa cité, False sinon
      */
-    public boolean hasBoughtCitadels() {
-        return !boughtCitadels.isEmpty();
+    public boolean hasBoughtDistricts() {
+        return !boughtDistricts.isEmpty();
     }
     public boolean hasUsedPower(){return hasUsedPower;}
     public void toggleUsePower(){
@@ -107,7 +107,9 @@ public class RoundSummary {
     public void setHasBeenKilledDuringTurn(){
         hasBeenKilledDuringTurn =true;
     }
+
     public void setStealedRole(Role stealedRole){this.stealedRole = stealedRole;}
+
     public Role getStealedRole(){
         return stealedRole;
     }
@@ -125,12 +127,12 @@ public class RoundSummary {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoundSummary summary = (RoundSummary) o;
-        return drawnCoins == summary.drawnCoins && Objects.equals(boughtCitadels, summary.boughtCitadels) && Objects.equals(drawnCards, summary.drawnCards) && hasWonDuringTurn == summary.hasWonDuringTurn();
+        return drawnCoins == summary.drawnCoins && Objects.equals(boughtDistricts, summary.boughtDistricts) && Objects.equals(drawnCards, summary.drawnCards) && hasWonDuringTurn == summary.hasWonDuringTurn();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(boughtCitadels, drawnCoins, drawnCards);
+        return Objects.hash(boughtDistricts, drawnCoins, drawnCards);
     }
 
 
