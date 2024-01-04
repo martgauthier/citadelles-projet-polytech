@@ -3,12 +3,15 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.ColorPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,12 +24,15 @@ class RolePowerTest {
     Player otherRolePlayer;
     Player voleurPlayer;
 
+    Player magicienPlayer;
+
     @BeforeEach
     void setup() {
         assassinPlayer = new AlwaysSpendPlayer(0);
         voleurPlayer = new AlwaysSpendPlayer(1);
         otherRolePlayer = new RealEstatePlayer(2);
-        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer));
+        magicienPlayer=new ColorPlayer(3);
+        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer));
         summary=new RoundSummary();
     }
 
@@ -43,7 +49,7 @@ class RolePowerTest {
         assassinPlayer= Mockito.spy(new AlwaysSpendPlayer(0));
         assassinPlayer.setRole(Mockito.spy(Role.ASSASSIN));
 
-        game.getPlayersList().set(0, assassinPlayer);
+        game.getPlayersList().set(assassinPlayer.getId(), assassinPlayer);
 
         doReturn(Role.VOLEUR).when(assassinPlayer).selectRoleToKillAsAssassin(anyList());
         otherRolePlayer.setRole(Role.VOLEUR);
@@ -60,7 +66,7 @@ class RolePowerTest {
         assassinPlayer= Mockito.spy(new AlwaysSpendPlayer(0));
         assassinPlayer.setRole(Mockito.spy(Role.ASSASSIN));
 
-        game.getPlayersList().set(0, assassinPlayer);
+        game.getPlayersList().set(assassinPlayer.getId(), assassinPlayer);
 
         doReturn(Role.VOLEUR).when(assassinPlayer).selectRoleToKillAsAssassin(anyList());
         otherRolePlayer.setRole(Role.CONDOTTIERE);//other role than the one killed
@@ -72,12 +78,49 @@ class RolePowerTest {
         assertFalse(otherRolePlayer.isDeadForThisTurn());
     }
 
+    void initSpyMagicien(boolean choosesToExchangeWithPlayer) {
+        magicienPlayer = Mockito.spy(magicienPlayer);
+        magicienPlayer.setRole(Role.MAGICIEN);
+        doReturn(choosesToExchangeWithPlayer).when(magicienPlayer).choosesToExchangeCardWithPlayer();
+
+        game.getPlayersList().set(magicienPlayer.getId(), magicienPlayer);
+    }
+
+    @Test
+    void testHasExchangedCardWithPlayer() {
+        initSpyMagicien(true);
+        List<District> cardsBeforeExchange=magicienPlayer.getCardsInHand();
+
+        assertEquals(-1, summary.getExchangedCardsPlayerId());//la personne avec qui il a échangé n'est pas encore défini
+
+        magicienPlayer.playPlayerTurn(summary, game);
+
+        assertFalse(summary.hasExchangedCardsWithPileAsMagician());
+
+        int exchangedPlayerId=summary.getExchangedCardsPlayerId();
+        assertNotEquals(magicienPlayer.getId(), exchangedPlayerId);//il n'échange pas avec lui-même
+        assertNotEquals(-1, exchangedPlayerId);//la personne avec qui il a échangé est bien défini
+
+        assertEquals(game.getPlayersList().get(exchangedPlayerId).getCardsInHand(), cardsBeforeExchange);//il a bien donné ses cartes à l'autre joueur
+    }
+
+    @Test
+    void testExchangePlayerIdNotDefinedIfNoExchange() {
+        initSpyMagicien(false);
+
+        assertEquals(-1, summary.getExchangedCardsPlayerId());
+        magicienPlayer.playPlayerTurn(summary, game);
+
+        assertEquals(-1, summary.getExchangedCardsPlayerId());//il n'échange pas avec le joueur, donc pas d'échange défini
+        assertTrue(summary.hasExchangedCardsWithPileAsMagician());
+    }
+
     @Test
     void testVoleurStealsGold() throws Exception {
         voleurPlayer = Mockito.spy(new AlwaysSpendPlayer(1));
         voleurPlayer.setRole(Mockito.spy(Role.VOLEUR));
 
-        game.getPlayersList().set(1, voleurPlayer);
+        game.getPlayersList().set(voleurPlayer.getId(), voleurPlayer);
 
         otherRolePlayer.setCash(5); // Le joueur à voler est à 5 pièces
         voleurPlayer.setCash(0);
@@ -95,10 +138,9 @@ class RolePowerTest {
     }
     @Test
     void testVoleurCannotStealFromAssassinOrAssassinated() {
-        voleurPlayer = Mockito.spy(new AlwaysSpendPlayer(1));
-        voleurPlayer.setRole(Mockito.spy(Role.VOLEUR));
+        voleurPlayer.setRole(Role.VOLEUR);
 
-        game.getPlayersList().set(1, voleurPlayer);
+        game.getPlayersList().set(voleurPlayer.getId(), voleurPlayer);
 
         otherRolePlayer.setRole(Role.MAGICIEN);
         otherRolePlayer.dieForThisTurn();
@@ -111,10 +153,48 @@ class RolePowerTest {
 
         voleurPlayer.playPlayerTurn(summary, game);
 
-        assertEquals(2, voleurPlayer.getCash()); // Le voleur ne devrait pas avoir volé de pièces, il en a seulement pioché 2
+        assertEquals(voleurPlayer.getCash(), 2 - summary.getBoughtDistricts().stream().mapToInt(District::getCost).sum()); // Le voleur ne devrait pas avoir volé de pièces, il en a seulement pioché 2
         assertEquals(5, otherRolePlayer.getCash()); // Les autres devraient avoir le même nombre de pièces
         assertEquals(6, assassinPlayer.getCash());
         assertFalse(summary.hasUsedPower());
     }
 
+    /**
+     * Vérifie que les cartes échangées avec la pile sont différentes, et que les autres sont égales.
+     * ATTENTION, une carte pourrait être "égale" (equals), car les cartes sont présentes en plusieurs exemplaires,
+     * mais là on vérifie que la REFERENCE de l'objet a changé ou non
+     */
+    @Test
+    void testExchangedCardsFromPileAreDifferent() {
+        initSpyMagicien(false);
+        List<District> cardsBeforeTurn=new ArrayList<>(magicienPlayer.getCardsInHand());//shallow copy of list
+
+        List<List<Integer>> testedCombinaisons=List.of(
+                List.of(),//vide
+                List.of(1),//un seul élement, qui n'est pas le premier
+                List.of(0, 1)//tout
+        );
+
+        for(List<Integer> combinaison: testedCombinaisons) {
+            doReturn(combinaison.stream().mapToInt(i -> i).toArray()).when(magicienPlayer).selectCardsToExchangeWithPileAsMagicien();
+            magicienPlayer.playPlayerTurn(summary, game);
+
+            assertTrue(summary.hasExchangedCardsWithPileAsMagician());
+
+            List<Integer> cardsChanged=Arrays.stream(summary.getExchangedCardsWithPileIndex()).boxed().toList();
+
+            assertTrue(cardsChanged.size() <= cardsBeforeTurn.size());
+
+
+            //pour chacune des combinaisons plus haut, vérifie que les cartes changées changent et les cartes non-changées restent
+            for(int cardIndex=0; cardIndex<cardsBeforeTurn.size(); cardIndex++) {
+                if(cardsChanged.contains(cardIndex)) {//assertSame vérifie les REFERENCES objets, contrairement à assertEquals qui vérifie equals()
+                    assertNotSame(cardsBeforeTurn.get(cardIndex), magicienPlayer.getCardsInHand().get(cardIndex));//cartes échangées sont différentes
+                }
+                else {
+                    assertSame(cardsBeforeTurn.get(cardIndex), magicienPlayer.getCardsInHand().get(cardIndex));//cartes non-échangées sont les mêmes
+                }
+            }
+        }
+    }
 }

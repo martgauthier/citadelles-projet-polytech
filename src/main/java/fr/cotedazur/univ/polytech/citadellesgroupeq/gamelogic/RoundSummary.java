@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 
 import java.util.ArrayList;
@@ -23,7 +22,24 @@ public class RoundSummary {
     private boolean hasUsedPower;
     private boolean hasBeenKilledDuringTurn;
     private Role stealedRole;
+
+    private boolean hasExchangedCardsWithPileAsMagician;
+
+
     private boolean hasWonDuringTurn;
+
+    /**
+     * Id du joueur avec qui il a échangé ses cartes en tant que magicien. -1 si personne
+     */
+    private int exchangedCardsPlayerId=-1;
+
+    private int[] exchangedCardsWithPileIndex=new int[0];
+
+    public int[] getExchangedCardsWithPileIndex() { return exchangedCardsWithPileIndex; }
+
+    public void setExchangedCardsWithPileIndex(int[] exchangedCardsWithPileIndex) {
+        this.exchangedCardsWithPileIndex = exchangedCardsWithPileIndex;
+    }
 
     private List<District> drawnCards;
 
@@ -140,6 +156,14 @@ public class RoundSummary {
         return coinsWonByColorCards;
     }
 
+    public void setExchangedCardsPlayerId(int id) {
+        exchangedCardsPlayerId=id;
+    }
+
+    public int getExchangedCardsPlayerId() {
+        return exchangedCardsPlayerId;
+    }
+
     public void setCoinsWonByColorCards(int coins) {
         coinsWonByColorCards=coins;
     }
@@ -150,5 +174,13 @@ public class RoundSummary {
 
     public boolean hasWonCoinsByColorCards() {
         return coinsWonByColorCards>0;
+    }
+
+    public void setHasExchangedCardsWithPileAsMagician(boolean hasExchanged) {
+        hasExchangedCardsWithPileAsMagician=hasExchanged;
+    }
+
+    public boolean hasExchangedCardsWithPileAsMagician() {
+        return hasExchangedCardsWithPileAsMagician;
     }
 }

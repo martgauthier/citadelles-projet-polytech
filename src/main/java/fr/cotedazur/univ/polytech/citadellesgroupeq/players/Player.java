@@ -3,7 +3,6 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import org.json.simple.parser.ParseException;
 
 import java.util.*;
 
@@ -31,12 +30,6 @@ public abstract class Player implements Comparable<Player> {
     private List<District> city;//la cité, où le joueur pose ses cartes
 
     private Role role;
-
-    /**
-     * public Player(int id) throws IOException {this(id, DEFAULT_CASH);deal2Cards();}
-     * public Player(int id, int cash){
-     *      this(id,cash,new ArrayList<>());}
-     */
 
     protected Player(int id) {
         this(id, DEFAULT_CASH, new ArrayList<>(),false);
@@ -73,6 +66,10 @@ public abstract class Player implements Comparable<Player> {
 
     public void setCash(int cash) {
         this.cash=(cash >= 0) ? cash : this.cash;
+    }
+
+    public void setCardInHand(int index, District card) {
+        this.cardsInHand.set(index, card);
     }
     public void setCardsInHand(List<District> cards) {this.cardsInHand = cards;}
 
@@ -190,20 +187,15 @@ public abstract class Player implements Comparable<Player> {
      * Permet de générer 2 cartes aléatoires. Utile pour proposer à un joueur 2 cartes parmi lesquelles choisir
      */
     public List<District> generate2Cards(){
-        try {
-            DistrictsJSONReader districtsReader = new DistrictsJSONReader();
-            List<District> districtsList = districtsReader.getDistrictsList();
-            List<District> dealCards = new ArrayList<>();
-            for (int i = 0; i < 2; i++) {
-                int randomIndex = randomGenerator.nextInt(districtsList.size());
-                District randomDistrict = districtsList.get(randomIndex);
-                dealCards.add(randomDistrict);
-            }
-            return dealCards;
+        DistrictsJSONReader districtsReader = new DistrictsJSONReader();
+        List<District> districtsList = districtsReader.getDistrictsList();
+        List<District> dealCards = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            int randomIndex = randomGenerator.nextInt(districtsList.size());
+            District randomDistrict = districtsList.get(randomIndex);
+            dealCards.add(randomDistrict);
         }
-        catch (ParseException e) {
-            throw new RuntimeException("Impossible de lire les cartes dans le fichier JSON", e);
-        }
+        return dealCards;
     }
 
     /**
@@ -301,13 +293,7 @@ public abstract class Player implements Comparable<Player> {
      *
      * @return la citadelle que le joueur a choisi d'acheter (par défaut, la moins chère). Si le joueur n'est pas en mesure d'acheter une citadelle, l'Optional est empty
      */
-    public Optional<District> getChoosenDistrictToBuy() {
-        List<District> buyableDistricts =getBuyableCards();
-
-        if(buyableDistricts.isEmpty()) return Optional.empty();
-
-        return Optional.of(Collections.min(buyableDistricts));
-    }
+    public abstract Optional<District> getChoosenDistrictToBuy();
 
     public void getCoinsFromColorCards(RoundSummary summary) {
         for(District cartePosee: city) {
@@ -329,9 +315,19 @@ public abstract class Player implements Comparable<Player> {
         }
     }
 
+    public abstract Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playerList);
+
+    /**
+     *
+     * @return true si il échange avec un joueur, false si il veut échanger certaines de ses cartes avec des cartes de la pile (d'après règle du jeu)
+     */
+    public abstract boolean choosesToExchangeCardWithPlayer();
+
     public void clearHand() {
         cardsInHand.clear();
     }
 
     public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
+
+    public abstract int[] selectCardsToExchangeWithPileAsMagicien();//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
 }
