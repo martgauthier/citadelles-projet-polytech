@@ -89,7 +89,6 @@ class RolePowerTest {
 
         voleurPlayer.playPlayerTurn(summary, game);
 
-
         assertEquals(7, summary.getDrawnCoins()); // Le voleur doit avoir volé 5 pièces et tiré 2 pièces
         assertEquals(0, otherRolePlayer.getCash()); // Le joueur volé doit être à sec
         assertTrue(summary.hasUsedPower());
