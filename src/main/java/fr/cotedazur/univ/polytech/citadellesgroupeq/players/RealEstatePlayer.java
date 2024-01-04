@@ -1,11 +1,10 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * La classe alwaysSpendPlayer représente un joueur spécifique dans le jeu Citadelles,
@@ -18,7 +17,7 @@ public class RealEstatePlayer extends Player {
         super(id);
     }
 
-    public RealEstatePlayer(int id, int cash, List<Citadel> cards) {
+    public RealEstatePlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
     }
 
@@ -30,24 +29,16 @@ public class RealEstatePlayer extends Player {
      */
     @Override
     public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
-        super.playPlayerTurn(summary, game);
+        super.getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);
-        summary.setHasUsedPower();
 
         if (getCardsInHand().size() != 8) {
             pickCard(summary);
         }
-        else{
+        else {
             draw2Coins(summary);
-            Optional<Citadel> choosenCitadel = getChoosenCitadelToBuy();
-            if (choosenCitadel.isPresent()) {
-                Citadel citadel = choosenCitadel.get();
-                addCitadelToCity(citadel);
-                summary.addBoughtCitadel(citadel);
-                removeCardFromHand(citadel);
-                removeCoins(citadel.getCost());
-            }
+            super.buyDistrictsDuringTurn(summary);
         }
     }
 

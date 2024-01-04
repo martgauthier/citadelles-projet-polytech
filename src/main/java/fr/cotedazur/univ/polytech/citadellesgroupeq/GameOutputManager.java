@@ -93,12 +93,12 @@ public class GameOutputManager {
             }
         }
 
-        if(summary.hasBoughtCitadels()) {
+        if(summary.hasBoughtDistricts()) {
             System.out.println("Il a acheté cette carte:");
-            System.out.println(getDescriptionOfCards(summary.getBoughtCitadels()));
+            System.out.println(getDescriptionOfCards(summary.getBoughtDistricts()));
         }
         if(summary.hasWonDuringTurn()) {
-            System.out.println("Il a gagné, car il possède dans sa cité " + GameLogicManager.NUMBER_OF_CITADELS_TO_WIN + " citadelles.\n");
+            System.out.println("Il a gagné, car il possède dans sa cité " + GameLogicManager.NUMBER_OF_DISTRICTS_TO_WIN + " citadelles.\n");
             System.out.println("Voici sa cité");
             System.out.println(getDescriptionOfCards(player.getCity()));
         }
@@ -128,10 +128,10 @@ public class GameOutputManager {
      *
      * @return Un {@link String} contenant la liste des cartes dans la main du joueur. PAS CELLES POSEES DANS SA CITE
      */
-    public String getDescriptionOfCards(List<Citadel> cards) {
+    public String getDescriptionOfCards(List<District> cards) {
         if(!cards.isEmpty()) {
             StringBuilder output = new StringBuilder("Cartes : \n");
-            for (Citadel card : cards) {
+            for (District card : cards) {
                 output.append("\t*").append(card.getName()).append(" : ");
                 output.append(card.getCost());
                 output.append(" (").append(card.getColor().name()).append(")");

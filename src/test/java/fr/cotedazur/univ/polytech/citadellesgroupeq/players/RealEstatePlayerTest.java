@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -19,18 +19,18 @@ class RealEstatePlayerTest {
 
     @BeforeEach
     public void setUp(){
-        List<Citadel> citadelList = new ArrayList<>();
+        List<District> districtList = new ArrayList<>();
 
-        citadelList.add(new Citadel("Temple", 9, "blue"));
-        citadelList.add(new Citadel("Eglise", 8, "blue"));
-        citadelList.add(new Citadel("Monastere", 7, "blue"));
-        citadelList.add(new Citadel("Cathedrale", 6, "blue"));
-        citadelList.add(new Citadel("Chateau", 4, "yellow"));
-        citadelList.add(new Citadel("Palais", 5, "yellow"));
-        citadelList.add(new Citadel("Port", 4, "green"));
-        citadelList.add(new Citadel("Hotel de ville", 5, "green"));
+        districtList.add(new District("Temple", 9, "blue"));
+        districtList.add(new District("Eglise", 8, "blue"));
+        districtList.add(new District("Monastere", 7, "blue"));
+        districtList.add(new District("Cathedrale", 6, "blue"));
+        districtList.add(new District("Chateau", 4, "yellow"));
+        districtList.add(new District("Palais", 5, "yellow"));
+        districtList.add(new District("Port", 4, "green"));
+        districtList.add(new District("Hotel de ville", 5, "green"));
 
-        botWithEightCards = new RealEstatePlayer(0,0,citadelList);
+        botWithEightCards = new RealEstatePlayer(0,0, districtList);
         botWithoutCards = new RealEstatePlayer(1,0,new ArrayList<>());
         summary = new RoundSummary();
     }

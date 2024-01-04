@@ -26,9 +26,9 @@ public abstract class Player implements Comparable<Player> {
     /**
      * Cartes que le joueur contient dans sa main. PAS LES CARTES POSÉES DANS SA CITE
      */
-    private List<Citadel> cardsInHand;
+    private List<District> cardsInHand;
 
-    private List<Citadel> city;//la cité, où le joueur pose ses cartes
+    private List<District> city;//la cité, où le joueur pose ses cartes
 
     private Role role;
 
@@ -44,7 +44,7 @@ public abstract class Player implements Comparable<Player> {
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    protected Player(int id, int cash, List<Citadel> cards, boolean deadForThisTurn) {
+    protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
@@ -61,7 +61,7 @@ public abstract class Player implements Comparable<Player> {
         return cash;
     }
 
-    public List<Citadel> getCardsInHand() {return cardsInHand;}
+    public List<District> getCardsInHand() {return cardsInHand;}
 
     public Role getRole() {
         return role;
@@ -74,7 +74,7 @@ public abstract class Player implements Comparable<Player> {
     public void setCash(int cash) {
         this.cash=(cash >= 0) ? cash : this.cash;
     }
-    public void setCardsInHand(List<Citadel> cards) {this.cardsInHand = cards;}
+    public void setCardsInHand(List<District> cards) {this.cardsInHand = cards;}
 
     public boolean stillHasCash() {
         return (cash > 0);
@@ -104,6 +104,17 @@ public abstract class Player implements Comparable<Player> {
         return assassinatedRole;
     }
 
+
+    public Role selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) throws Exception {
+        for (int i = 0; i < availableRoles.size(); i++) {
+            Role stealedRole = availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
+            if (!unstealableRoles.contains(stealedRole)) {
+                return stealedRole;
+            }
+        }
+        throw new Exception("Aucuns rôles à voler");
+    }
+
     /**
      * Ajoute 2 au cash du joueur. Utile pour chaque début de tour
      */
@@ -124,19 +135,19 @@ public abstract class Player implements Comparable<Player> {
         }
     }
 
-    public boolean removeCardFromHand(Citadel cardToRemove) {
+    public boolean removeCardFromHand(District cardToRemove) {
         return cardsInHand.remove(cardToRemove);
     }
 
-    public void addCardToHand(Citadel cardToAdd) {
+    public void addCardToHand(District cardToAdd) {
         cardsInHand.add(cardToAdd);
     }
 
-    public void addAllCardsToHand(List<Citadel> cardsToAdd){
+    public void addAllCardsToHand(List<District> cardsToAdd){
         cardsInHand.addAll(cardsToAdd);
     }
 
-    public void addAllCardsToHand(Citadel ...cardsToAdd) {
+    public void addAllCardsToHand(District...cardsToAdd) {
         addAllCardsToHand(List.of(cardsToAdd));
     }
 
@@ -154,9 +165,9 @@ public abstract class Player implements Comparable<Player> {
 
     /**
      *
-     * @return les {@link Citadel} que le joueur a dans sa main et qu'il est capable d'acheter
+     * @return les {@link District} que le joueur a dans sa main et qu'il est capable d'acheter
      */
-    public List<Citadel> getBuyableCards() {
+    public List<District> getBuyableCards() {
         return getBuyableCards(getCash());
     }
 
@@ -165,9 +176,9 @@ public abstract class Player implements Comparable<Player> {
      * @param cashAvailable le montant maximal des cartes
      * @return La liste des cartes de sa main que le joueur est capable de payer
      */
-    public List<Citadel> getBuyableCards(int cashAvailable) {
-        List<Citadel> buyableCards = new ArrayList<>();
-        for(Citadel card : cardsInHand) {
+    public List<District> getBuyableCards(int cashAvailable) {
+        List<District> buyableCards = new ArrayList<>();
+        for(District card : cardsInHand) {
             if(card.getCost() <= cashAvailable) {
                 buyableCards.add(card);
             }
@@ -178,15 +189,15 @@ public abstract class Player implements Comparable<Player> {
     /**
      * Permet de générer 2 cartes aléatoires. Utile pour proposer à un joueur 2 cartes parmi lesquelles choisir
      */
-    public List<Citadel> generate2Cards(){
+    public List<District> generate2Cards(){
         try {
-            CitadelsJSONReader citadelsReader = new CitadelsJSONReader();
-            List<Citadel> citadelsList = citadelsReader.getCitadelsList();
-            List<Citadel> dealCards = new ArrayList<>();
+            DistrictsJSONReader districtsReader = new DistrictsJSONReader();
+            List<District> districtsList = districtsReader.getDistrictsList();
+            List<District> dealCards = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
-                int randomIndex = randomGenerator.nextInt(citadelsList.size());
-                Citadel randomCitadel = citadelsList.get(randomIndex);
-                dealCards.add(randomCitadel);
+                int randomIndex = randomGenerator.nextInt(districtsList.size());
+                District randomDistrict = districtsList.get(randomIndex);
+                dealCards.add(randomDistrict);
             }
             return dealCards;
         }
@@ -200,11 +211,11 @@ public abstract class Player implements Comparable<Player> {
      * @param cards les cartes proposées
      * @return la carte choisie
      */
-    public Citadel pickCard(RoundSummary summary, List<Citadel> cards) {
+    public District pickCard(RoundSummary summary, List<District> cards) {
         if(cards.isEmpty()) {
             throw new IllegalArgumentException("cards must not be empty.");
         }
-        Citadel choosenCard=cards.get(randomGenerator.nextInt(cards.size()));
+        District choosenCard=cards.get(randomGenerator.nextInt(cards.size()));
 
         addCardToHand(choosenCard);
 
@@ -217,7 +228,7 @@ public abstract class Player implements Comparable<Player> {
      * Appelle {@link #pickCard(RoundSummary, List)}, avec 2 cartes choisies aléatoirement.
      * @return la carte choisie par le joueur
      */
-    public Citadel pickCard(RoundSummary summary) {
+    public District pickCard(RoundSummary summary) {
         return pickCard(summary, generate2Cards());
     }
 
@@ -247,22 +258,22 @@ public abstract class Player implements Comparable<Player> {
     }
 
 
-    public List<Citadel> getCity() { return city; }
+    public List<District> getCity() { return city; }
 
-    public void setCity(List<Citadel> city) {
+    public void setCity(List<District> city) {
         this.city = city;
     }
 
-    public void addCitadelToCity(Citadel citadelToAdd) {
-        this.city.add(citadelToAdd);
+    public void addDistrictToCity(District districtToAdd) {
+        this.city.add(districtToAdd);
     }
 
-    public void addAllCitadelsToCity(List<Citadel> citadelsToAdd) {
-        this.city.addAll(citadelsToAdd);
+    public void addAllDistrictsToCity(List<District> districtsToAdd) {
+        this.city.addAll(districtsToAdd);
     }
 
-    public boolean removeCitadelFromCity(Citadel citadelToRemove) {
-        return city.remove(citadelToRemove);
+    public boolean removeDistrictFromCity(District districtToRemove) {
+        return city.remove(districtToRemove);
     }
 
     public void clearCity() {
@@ -275,8 +286,8 @@ public abstract class Player implements Comparable<Player> {
      */
     public int getTotalCityPrice() {
         int sum=0;
-        for(Citadel citadel: city) {
-            sum+=citadel.getCost();
+        for(District district: city) {
+            sum+=district.getCost();
         }
 
         return sum;
@@ -290,16 +301,16 @@ public abstract class Player implements Comparable<Player> {
      *
      * @return la citadelle que le joueur a choisi d'acheter (par défaut, la moins chère). Si le joueur n'est pas en mesure d'acheter une citadelle, l'Optional est empty
      */
-    public Optional<Citadel> getChoosenCitadelToBuy() {
-        List<Citadel> buyableCitadels=getBuyableCards();
+    public Optional<District> getChoosenDistrictToBuy() {
+        List<District> buyableDistricts =getBuyableCards();
 
-        if(buyableCitadels.isEmpty()) return Optional.empty();
+        if(buyableDistricts.isEmpty()) return Optional.empty();
 
-        return Optional.of(Collections.min(buyableCitadels));
+        return Optional.of(Collections.min(buyableDistricts));
     }
 
-    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
-        for(Citadel cartePosee: city) {
+    public void getCoinsFromColorCards(RoundSummary summary) {
+        for(District cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
                 addCoins(1);
                 summary.addCoinsWonByColorCards(1);
@@ -307,7 +318,20 @@ public abstract class Player implements Comparable<Player> {
         }
     }
 
+    public void buyDistrictsDuringTurn(RoundSummary summary) {
+        Optional<District> choosenDistrict = getChoosenDistrictToBuy();
+        if (choosenDistrict.isPresent()) {
+            District district = choosenDistrict.get();
+            addDistrictToCity(district);
+            summary.addBoughtDistrict(district);
+            removeCardFromHand(district);
+            removeCoins(district.getCost());
+        }
+    }
+
     public void clearHand() {
         cardsInHand.clear();
     }
+
+    public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
 }
