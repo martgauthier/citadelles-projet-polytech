@@ -3,7 +3,6 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
-import org.json.simple.parser.ParseException;
 
 import java.util.List;
 
@@ -46,18 +45,15 @@ public enum Role {
             }
             else {//wants to draw some cards from the pile
                 int[] cardsToExchange=magicien.selectCardsToExchangeWithPileAsMagicien();
-                try {
-                    DistrictsJSONReader districtsJSONReader = new DistrictsJSONReader();
 
-                    for(int cardIndex: cardsToExchange) {
-                        magicien.getCardsInHand().set(cardIndex, districtsJSONReader.getRandomDistrict());
-                    }
+                DistrictsJSONReader districtsJSONReader = new DistrictsJSONReader();
 
-                    summary.setHasExchangedCardsWithPileAsMagician(true);
+                for(int cardIndex: cardsToExchange) {
+                    magicien.setCardInHand(cardIndex, districtsJSONReader.getRandomDistrict());
                 }
-                catch(ParseException e) {
-                    throw new RuntimeException("Error while parsing district JSON file.");
-                }
+
+                summary.setHasExchangedCardsWithPileAsMagician(true);
+                summary.setExchangedCardsWithPileIndex(cardsToExchange);
             }
         }
     },

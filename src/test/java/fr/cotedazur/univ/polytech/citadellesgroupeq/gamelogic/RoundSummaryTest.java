@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
-import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +12,6 @@ class RoundSummaryTest {
 
     RoundSummary firstBasicRound;
     RoundSummary secondBasicRound;
-
-    RoundSummaryTest() throws ParseException { }
 
     @BeforeEach
     void setup() {

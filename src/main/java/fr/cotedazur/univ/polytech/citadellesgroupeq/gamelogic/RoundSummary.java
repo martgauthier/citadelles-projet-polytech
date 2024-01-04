@@ -29,7 +29,15 @@ public class RoundSummary {
     /**
      * Id du joueur avec qui il a échangé ses cartes en tant que magicien. -1 si personne
      */
-    private int exchangedCardsPlayerId;
+    private int exchangedCardsPlayerId=-1;
+
+    private int[] exchangedCardsWithPileIndex=new int[0];
+
+    public int[] getExchangedCardsWithPileIndex() { return exchangedCardsWithPileIndex; }
+
+    public void setExchangedCardsWithPileIndex(int[] exchangedCardsWithPileIndex) {
+        this.exchangedCardsWithPileIndex = exchangedCardsWithPileIndex;
+    }
 
     private List<District> drawnCards;
 

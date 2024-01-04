@@ -26,14 +26,14 @@ public class DistrictsJSONReader {
     private Random randomGenerator=new Random();
 
 
-    public static final String DEFAULT_PATH= "high_cards_districts.json";
+    public static final String DEFAULT_PATH= "districts.json";
 
     /**
      * Construit un objet DistrictsJSONReader en lisant les données du fichier JSON contenant la liste des districts
      *
-     * @throws IOException Si une erreur se produit lors de la lecture du fichier ou si le format du fichier est incorrect.
+     * @throws BadlyInitializedReader Si une erreur se produit lors de la lecture du fichier ou si le format du fichier est incorrect.
      */
-    public DistrictsJSONReader(String path) throws ParseException {
+    public DistrictsJSONReader(String path) {
         try {
             // Lis les données du fichier JSON
             jsonArray = (JSONArray) new JSONParser().parse(new FileReader(getClass().getClassLoader().getResource(path).getFile()));
@@ -51,12 +51,12 @@ public class DistrictsJSONReader {
                 }
             }
         }
-        catch(IOException | NullPointerException e) {
-            throw new ParseException(0);//arbitrary value
+        catch(IOException | NullPointerException | ParseException e) {
+            throw new BadlyInitializedReader("Error while initializing reader");//arbitrary value
         }
     }
 
-    public DistrictsJSONReader() throws ParseException {
+    public DistrictsJSONReader() {
         this(DEFAULT_PATH);
     }
 
@@ -85,7 +85,7 @@ public class DistrictsJSONReader {
         return output.toString();
     }
 
-    public District getFromIndex(int index) throws BadlyInitializedReader, IllegalArgumentException {
+    public District getFromIndex(int index) throws BadlyInitializedReader {
         if(index<0||index>= districtsList.size()) {
             throw new IllegalArgumentException("index must be in districts list");
         }
@@ -101,7 +101,7 @@ public class DistrictsJSONReader {
         return districtsList.get(randomGenerator.nextInt(districtsList.size()));
     }
 
-    private class BadlyInitializedReader extends ExceptionInInitializerError {
+    public static class BadlyInitializedReader extends RuntimeException {
         public BadlyInitializedReader(Throwable error) {
             super(error);
         }

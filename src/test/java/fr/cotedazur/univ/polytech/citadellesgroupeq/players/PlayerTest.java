@@ -3,7 +3,6 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ class PlayerTest {
     Player bot;
     DistrictsJSONReader reader;
     @BeforeEach
-    void setup() throws ParseException {
+    void setup() {
         bot = new AlwaysSpendPlayer(0);
         reader = new DistrictsJSONReader();
     }

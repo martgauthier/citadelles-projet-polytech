@@ -1,6 +1,5 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
-import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,16 +25,16 @@ class DistrictsJSONReaderTest {
 
     @Test
     void testIncorrectPath() {
-        assertThrows(ParseException.class, () -> new DistrictsJSONReader(INCORRECT_PATH));
+        assertThrows(DistrictsJSONReader.BadlyInitializedReader.class, () -> new DistrictsJSONReader(INCORRECT_PATH));
     }
 
     @Test
     void testNotJsonFile() {
-        assertThrows(ParseException.class, () -> new DistrictsJSONReader(NOT_JSON_FORMATTED_FILE));
+        assertThrows(DistrictsJSONReader.BadlyInitializedReader.class, () -> new DistrictsJSONReader(NOT_JSON_FORMATTED_FILE));
     }
 
     @Test
     void testMissingKeysJsonFile() {
-        assertThrows(ParseException.class, () -> new DistrictsJSONReader(JSON_MISSING_KEYS_FILE));
+        assertThrows(DistrictsJSONReader.BadlyInitializedReader.class, () -> new DistrictsJSONReader(JSON_MISSING_KEYS_FILE));
     }
 }
