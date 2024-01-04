@@ -10,6 +10,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.Random;
 
@@ -23,7 +24,12 @@ class RandomPlayerTest {
     void setUp() {
         summary = new RoundSummary();
         randomPlayer = new RandomPlayer(0);
-        trickedRandom = mock(Random.class);
+        if(trickedRandom != null) {//limits creation of new mocks
+            reset(trickedRandom);
+        }
+        else {
+            trickedRandom = Mockito.mock(Random.class);
+        }
     }
 
     @Test

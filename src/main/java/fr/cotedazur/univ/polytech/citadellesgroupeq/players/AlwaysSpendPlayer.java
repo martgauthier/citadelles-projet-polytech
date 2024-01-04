@@ -1,11 +1,10 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * La classe alwaysSpendPlayer représente un joueur spécifique dans le jeu Citadelles,
@@ -18,7 +17,7 @@ public class AlwaysSpendPlayer extends Player{
         super(id);
     }
 
-    public AlwaysSpendPlayer(int id, int cash, List<Citadel> cards) {
+    public AlwaysSpendPlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
     }
 
@@ -30,22 +29,15 @@ public class AlwaysSpendPlayer extends Player{
      */
     @Override
     public void playPlayerTurn(RoundSummary summary, GameManager game) {
-        super.playPlayerTurn(summary, game);
+        super.getCoinsFromColorCards(summary);
 
-        getRole().power(game, this, summary);
+        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
 
         if (!getCardsInHand().isEmpty()) {
             draw2Coins(summary);
-            Optional<Citadel> choosenCitadel = getChoosenCitadelToBuy();
-            if (choosenCitadel.isPresent()) {
-                Citadel citadel = choosenCitadel.get();
-                addCitadelToCity(citadel);
-                summary.addBoughtCitadel(citadel);
-                removeCardFromHand(citadel);
-                removeCoins(citadel.getCost());
-            }
+            super.buyDistrictsDuringTurn(summary);
         }
-        else{
+        else {
             pickCard(summary);
         }
     }

@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Citadel;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,15 +15,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class ColorPlayerTest {
     GameManager game;
     ColorPlayer firstPlayer, secondPlayer;
-    Citadel highPriceRedCitadel, lowPriceRedCitadel;
+    District highPriceRedDistrict, lowPriceRedDistrict;
     @BeforeEach
     void setup() {
         firstPlayer=new ColorPlayer(0);
         secondPlayer=new ColorPlayer(0);
         game=new GameManager(List.of(firstPlayer, secondPlayer));
 
-        highPriceRedCitadel=new Citadel("temple", 80, Color.RED);
-        lowPriceRedCitadel=new Citadel("temple", 1, Color.RED);
+        highPriceRedDistrict =new District("temple", 80, Color.RED);
+        lowPriceRedDistrict =new District("temple", 1, Color.RED);
 
         firstPlayer.clearHand();
         secondPlayer.clearHand();
@@ -43,37 +42,37 @@ class ColorPlayerTest {
     }
 
     @RepeatedTest(50)
-    void testChoosesColorCitadel() {
+    void testChoosesColorDistrict() {
         firstPlayer.setRole(Role.CONDOTTIERE);
-        firstPlayer.addAllCardsToHand(new Citadel("temple", 8, Color.PURPLE), new Citadel("temple", 7, Color.PURPLE), highPriceRedCitadel);
+        firstPlayer.addAllCardsToHand(new District("temple", 8, Color.PURPLE), new District("temple", 7, Color.PURPLE), highPriceRedDistrict);
         firstPlayer.addCoins(1000);//to make him rich
-        assertTrue(firstPlayer.getChoosenCitadelToBuy().isPresent());
-        assertEquals(highPriceRedCitadel.getName(), firstPlayer.getChoosenCitadelToBuy().get().getName());
+        assertTrue(firstPlayer.getChoosenDistrictToBuy().isPresent());
+        assertEquals(highPriceRedDistrict.getName(), firstPlayer.getChoosenDistrictToBuy().get().getName());
     }
 
 
     @Test
-    void testBuysLowestColorCitadel() {
+    void testBuysLowestColorDistrict() {
         firstPlayer.setRole(Role.CONDOTTIERE);
-        firstPlayer.addAllCardsToHand(highPriceRedCitadel, lowPriceRedCitadel, new Citadel("temple", 1, Color.GRAY));
+        firstPlayer.addAllCardsToHand(highPriceRedDistrict, lowPriceRedDistrict, new District("temple", 1, Color.GRAY));
         firstPlayer.addCoins(1000);//to make him rich
-        assertTrue(firstPlayer.getChoosenCitadelToBuy().isPresent());
-        assertEquals(lowPriceRedCitadel, firstPlayer.getChoosenCitadelToBuy().get());
+        assertTrue(firstPlayer.getChoosenDistrictToBuy().isPresent());
+        assertEquals(lowPriceRedDistrict, firstPlayer.getChoosenDistrictToBuy().get());
     }
 
     @Test
     void testBuysOtherLowestCard() {
-        Citadel lowPriceGrayCitadel=new Citadel("temple", 2, Color.PURPLE);
-        firstPlayer.addAllCardsToHand(highPriceRedCitadel, lowPriceGrayCitadel);
+        District lowPriceGrayDistrict =new District("temple", 2, Color.PURPLE);
+        firstPlayer.addAllCardsToHand(highPriceRedDistrict, lowPriceGrayDistrict);
         firstPlayer.addCoins(3);
-        assertTrue(firstPlayer.getChoosenCitadelToBuy().isPresent());
-        assertEquals(lowPriceGrayCitadel, firstPlayer.getChoosenCitadelToBuy().get());
+        assertTrue(firstPlayer.getChoosenDistrictToBuy().isPresent());
+        assertEquals(lowPriceGrayDistrict, firstPlayer.getChoosenDistrictToBuy().get());
     }
 
     @Test
     void testBuysNoCardIfTooExpensive() {
-        Citadel highPriceGrayCitadel=new Citadel("temple", 50, Color.GRAY);
-        firstPlayer.addAllCardsToHand(highPriceGrayCitadel, highPriceRedCitadel);
-        assertFalse(firstPlayer.getChoosenCitadelToBuy().isPresent());
+        District highPriceGrayDistrict =new District("temple", 50, Color.GRAY);
+        firstPlayer.addAllCardsToHand(highPriceGrayDistrict, highPriceRedDistrict);
+        assertFalse(firstPlayer.getChoosenDistrictToBuy().isPresent());
     }
 }

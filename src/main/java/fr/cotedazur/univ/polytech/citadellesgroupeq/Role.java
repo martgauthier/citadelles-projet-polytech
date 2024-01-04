@@ -17,18 +17,20 @@ public enum Role {
     ASSASSIN(Color.GRAY) {
         @Override
         public void power (GameManager g, Player assassin, RoundSummary summary) {
+            super.power(g, assassin, summary);
             Role assassinatedRole=assassin.selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
                     player.dieForThisTurn();
                 }
             }
-            summary.setHasUsedPower();
         }
     },
     VOLEUR(Color.GRAY) {
         @Override
         public void power(GameManager g,Player voleur,RoundSummary summary) {
+            //TODO
+            super.power(g, voleur, summary);
 
             List<Role> unstealableRoles = new ArrayList<>(Arrays.asList(ASSASSIN, VOLEUR));
             //On récupère le joueur assassiné ce tour
@@ -60,36 +62,42 @@ public enum Role {
         @Override
         public void power(GameManager g,Player magicien,RoundSummary summary) {
             //TODO
+            super.power(g, magicien, summary);
         }
     },
     ROI (Color.YELLOW) {
         @Override
         public void power(GameManager g,Player roi,RoundSummary summary) {
             //TODO
+            super.power(g, roi, summary);
         }
     },
     EVEQUE(Color.BLUE) {
         @Override
         public void power(GameManager g,Player eveque,RoundSummary summary) {
             //TODO
+            super.power(g, eveque, summary);
         }
     },
     MARCHAND (Color.GREEN) {
         @Override
         public void power(GameManager g,Player marchand,RoundSummary summary) {
             //TODO
+            super.power(g, marchand, summary);
         }
     },
     ARCHITECTE (Color.GRAY) {
         @Override
         public void power(GameManager g,Player architecte,RoundSummary summary) {
             //TODO
+            super.power(g, architecte, summary);
         }
     },
     CONDOTTIERE (Color.RED) {
         @Override
         public void power(GameManager g,Player condottiere,RoundSummary summary) {
             //TODO
+            super.power(g, condottiere, summary);
         }
     };
 
@@ -98,7 +106,7 @@ public enum Role {
      * Méthode pour utiliser le pouvoir du rôle. PAS ENCORE IMPLEMENTE
      */
     public void power(GameManager g,Player player,RoundSummary summary) {
-        throw new UnsupportedOperationException();
+        summary.setHasUsedPower();
     }
 
     private Color color;
