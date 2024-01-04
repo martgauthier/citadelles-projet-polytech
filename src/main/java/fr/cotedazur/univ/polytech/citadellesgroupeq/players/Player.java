@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.json.simple.parser.ParseException;
 
@@ -333,5 +333,5 @@ public abstract class Player implements Comparable<Player> {
         cardsInHand.clear();
     }
 
-    public abstract void playPlayerTurn(RoundSummary summary, GameManager game);
+    public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
 }

@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
@@ -9,15 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class RolePowerTest {
-    GameManager game;
+    GameLogicManager game;
     RoundSummary summary;
     Player assassinPlayer;
     Player otherRolePlayer;
@@ -28,7 +26,7 @@ class RolePowerTest {
         assassinPlayer = new AlwaysSpendPlayer(0);
         voleurPlayer = new AlwaysSpendPlayer(1);
         otherRolePlayer = new RealEstatePlayer(2);
-        game=new GameManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer));
+        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer));
         summary=new RoundSummary();
     }
 

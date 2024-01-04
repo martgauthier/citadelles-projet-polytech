@@ -15,13 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class GameManagerTest {
-    GameManager game;
+class GameLogicManagerTest {
+    GameLogicManager game;
     DistrictsJSONReader reader;
     public static final List<Role> TOO_SHORT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI));
     public static final List<Role> CORRECT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI, Role.ASSASSIN, Role.ARCHITECTE,Role.MARCHAND,Role.VOLEUR));
@@ -29,7 +28,7 @@ class GameManagerTest {
 
     @BeforeEach
     void setup() throws ParseException {
-        game = new GameManager();
+        game = new GameLogicManager();
         reader=new DistrictsJSONReader();
     }
 
@@ -94,8 +93,8 @@ class GameManagerTest {
 
     @Test
     void testGameCreatesDifferentInstancesFromDefaultPlayerList() {
-        GameManager firstGame = new GameManager();
-        GameManager secondGame = new GameManager();
+        GameLogicManager firstGame = new GameLogicManager();
+        GameLogicManager secondGame = new GameLogicManager();
         for(int i=0; i < firstGame.getPlayersList().size(); i++) {
             assertNotEquals(firstGame.getPlayersList().get(i), secondGame.getPlayersList().get(i));
         }
@@ -107,7 +106,7 @@ class GameManagerTest {
 
     @RepeatedTest(50)
     void testPlayerTurn() {
-        game = new GameManager();
+        game = new GameLogicManager();
         game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes
         game.getPlayersList().get(0).setRole(Role.MARCHAND);
         assertEquals(2,game.getPlayersList().get(0).getCardsInHand().size());

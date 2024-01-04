@@ -3,7 +3,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
@@ -37,7 +37,7 @@ class RandomPlayerTest {
         randomPlayer.setRole(Role.ASSASSIN);
         when(trickedRandom.nextInt(anyInt())).thenReturn(1);
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary, new GameManager());
+        randomPlayer.playPlayerTurn(summary, new GameLogicManager());
         assertTrue(summary.hasPickedCash());
     }
 
@@ -47,7 +47,7 @@ class RandomPlayerTest {
         randomPlayer.setRole(Role.ASSASSIN);
         when(trickedRandom.nextInt(anyInt())).thenReturn(0);
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary, new GameManager());
+        randomPlayer.playPlayerTurn(summary, new GameLogicManager());
         assertTrue(summary.hasPickedCards());
     }
 }
