@@ -1,5 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 
 import java.util.ArrayList;
@@ -20,13 +22,12 @@ public class RoundSummary {
     private int coinsWonByColorCards;
     private boolean hasUsedPower;
     private boolean hasBeenKilledDuringTurn;
-
-
+    private Role stealedRole;
     private boolean hasWonDuringTurn;
 
     private List<District> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasWonDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn) {
+    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasWonDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn, Role stealedRole) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtDistricts =new ArrayList<>(boughtDistricts);
@@ -34,10 +35,11 @@ public class RoundSummary {
         this.coinsWonByColorCards=coinsWonByColorCards;
         this.hasUsedPower = hasUsedPower;
         this.hasBeenKilledDuringTurn=hasBeenKilledDuringTurn;
+        this.stealedRole = stealedRole;
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_DISTRICT_LIST, EMPTY_DISTRICT_LIST, false, 0, false, false);
+        this(DEFAULT_DRAWN_COINS, EMPTY_DISTRICT_LIST, EMPTY_DISTRICT_LIST, false, 0, false, false, Role.EMPTY_ROLE);
     }
 
     public List<District> getBoughtDistricts() { return boughtDistricts; }
@@ -104,6 +106,12 @@ public class RoundSummary {
     public boolean hasBeenKilled(){return hasBeenKilledDuringTurn;}
     public void setHasBeenKilledDuringTurn(){
         hasBeenKilledDuringTurn =true;
+    }
+
+    public void setStealedRole(Role stealedRole){this.stealedRole = stealedRole;}
+
+    public Role getStealedRole(){
+        return stealedRole;
     }
 
     public boolean hasWonDuringTurn() {

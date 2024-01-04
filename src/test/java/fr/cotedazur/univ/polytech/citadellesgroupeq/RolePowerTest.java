@@ -21,12 +21,14 @@ class RolePowerTest {
     RoundSummary summary;
     Player assassinPlayer;
     Player otherRolePlayer;
+    Player voleurPlayer;
 
     @BeforeEach
     void setup() {
         assassinPlayer = new AlwaysSpendPlayer(0);
-        otherRolePlayer = new RealEstatePlayer(1);
-        game=new GameManager(List.of(assassinPlayer, otherRolePlayer));
+        voleurPlayer = new AlwaysSpendPlayer(1);
+        otherRolePlayer = new RealEstatePlayer(2);
+        game=new GameManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer));
         summary=new RoundSummary();
     }
 
@@ -71,4 +73,51 @@ class RolePowerTest {
         assertTrue(summary.hasUsedPower());
         assertFalse(otherRolePlayer.isDeadForThisTurn());
     }
+
+    @Test
+    void testVoleurStealsGold() throws Exception {
+        voleurPlayer = Mockito.spy(new AlwaysSpendPlayer(1));
+        voleurPlayer.setRole(Mockito.spy(Role.VOLEUR));
+
+        game.getPlayersList().set(1, voleurPlayer);
+
+        otherRolePlayer.setCash(5); // Le joueur à voler est à 5 pièces
+        voleurPlayer.setCash(0);
+        assertEquals(5, otherRolePlayer.getCash());
+        otherRolePlayer.setRole(Role.MARCHAND);
+        assassinPlayer.setRole(Role.ASSASSIN);
+
+        doReturn(otherRolePlayer.getRole()).when(voleurPlayer).selectRoleToSteal(anyList(),anyList());
+
+        voleurPlayer.playPlayerTurn(summary, game);
+
+
+        assertEquals(7, summary.getDrawnCoins()); // Le voleur doit avoir volé 5 pièces et tiré 2 pièces
+        assertEquals(0, otherRolePlayer.getCash()); // Le joueur volé doit être à sec
+        assertTrue(summary.hasUsedPower());
+    }
+    @Test
+    void testVoleurCannotStealFromAssassinOrAssassinated() {
+        voleurPlayer = Mockito.spy(new AlwaysSpendPlayer(1));
+        voleurPlayer.setRole(Mockito.spy(Role.VOLEUR));
+
+        game.getPlayersList().set(1, voleurPlayer);
+
+        otherRolePlayer.setRole(Role.MAGICIEN);
+        otherRolePlayer.dieForThisTurn();
+        voleurPlayer.setCash(0);
+        otherRolePlayer.setCash(5);
+        assassinPlayer.setCash(6);
+
+        assertEquals(5, otherRolePlayer.getCash());
+        assertEquals(6, assassinPlayer.getCash());
+
+        voleurPlayer.playPlayerTurn(summary, game);
+
+        assertEquals(2, voleurPlayer.getCash()); // Le voleur ne devrait pas avoir volé de pièces, il en a seulement pioché 2
+        assertEquals(5, otherRolePlayer.getCash()); // Les autres devraient avoir le même nombre de pièces
+        assertEquals(6, assassinPlayer.getCash());
+        assertFalse(summary.hasUsedPower());
+    }
+
 }

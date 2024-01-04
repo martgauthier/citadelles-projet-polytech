@@ -3,8 +3,10 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RandomPlayer extends Player {
     public RandomPlayer(int id) {

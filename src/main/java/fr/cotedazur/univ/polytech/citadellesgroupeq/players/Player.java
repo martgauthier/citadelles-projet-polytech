@@ -104,6 +104,17 @@ public abstract class Player implements Comparable<Player> {
         return assassinatedRole;
     }
 
+
+    public Role selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) throws Exception {
+        for (int i = 0; i < availableRoles.size(); i++) {
+            Role stealedRole = availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
+            if (!unstealableRoles.contains(stealedRole)) {
+                return stealedRole;
+            }
+        }
+        throw new Exception("Aucuns rôles à voler");
+    }
+
     /**
      * Ajoute 2 au cash du joueur. Utile pour chaque début de tour
      */
