@@ -89,7 +89,6 @@ public enum Role {
     EVEQUE(Color.BLUE) {
         @Override
         public void power(GameLogicManager g, Player eveque, RoundSummary summary) {
-            //TODO
             super.power(g, eveque, summary);
         }
     },
@@ -118,7 +117,10 @@ public enum Role {
                     throw new IllegalArgumentException("Player index is out of bounds.");
                 }
 
-                if(!g.getPlayersList().get(playerChoice.getKey()).getCity().contains(playerChoice.getValue())){
+
+                Player selectedPlayer=g.getPlayersList().get(playerChoice.getKey());
+
+                if(!selectedPlayer.getCity().contains(playerChoice.getValue())){
                     throw new IllegalArgumentException("Player doesn't own this district.");
                 }
 
@@ -126,8 +128,13 @@ public enum Role {
                     throw new IllegalArgumentException("Condottiere doesn't have enough cash to destroy this city.");
                 }
 
+                if(selectedPlayer.getRole() == Role.EVEQUE && !selectedPlayer.isDeadForThisTurn()) {
+                    throw new IllegalArgumentException("Can't destroy District of an alive Eveque.");
+                }
+
+
                 condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
-                g.getPlayersList().get(playerChoice.getKey()).removeDistrictFromCity(playerChoice.getValue());
+                selectedPlayer.removeDistrictFromCity(playerChoice.getValue());
 
                 summary.setDestroyedDistrict(playerChoice);
 
