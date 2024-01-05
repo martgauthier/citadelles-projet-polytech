@@ -4,9 +4,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Enum that represents roles. Each enum overrides the "power" method. You can use ".name()" and ".ordinal()" to get their number
@@ -112,8 +110,29 @@ public enum Role {
     CONDOTTIERE (Color.RED) {
         @Override
         public void power(GameLogicManager g, Player condottiere, RoundSummary summary) {
-            //TODO
-            super.power(g, condottiere, summary);
+            Optional<AbstractMap.SimpleEntry<Integer, District>> optionalPlayerChoice=condottiere.selectDistrictToDestroyAsCondottiere(g.getPlayersList());
+            if(optionalPlayerChoice.isPresent()) {
+                AbstractMap.SimpleEntry<Integer, District> playerChoice = optionalPlayerChoice.get();
+
+                if(playerChoice.getKey() < 0 || playerChoice.getKey() >= g.getPlayersList().size()){
+                    throw new IllegalArgumentException("Player index is out of bounds.");
+                }
+
+                if(!g.getPlayersList().get(playerChoice.getKey()).getCity().contains(playerChoice.getValue())){
+                    throw new IllegalArgumentException("Player doesn't own this district.");
+                }
+
+                if(playerChoice.getValue().getCost() - 1 > condottiere.getCash())  {
+                    throw new IllegalArgumentException("Condottiere doesn't have enough cash to destroy this city.");
+                }
+
+                condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
+                g.getPlayersList().get(playerChoice.getKey()).removeDistrictFromCity(playerChoice.getValue());
+
+                summary.setDestroyedDistrict(playerChoice);
+
+                super.power(g, condottiere, summary);
+            }
         }
     };
 

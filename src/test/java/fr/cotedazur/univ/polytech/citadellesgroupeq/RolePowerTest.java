@@ -2,18 +2,13 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.ColorPlayer;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -27,13 +22,19 @@ class RolePowerTest {
 
     Player magicienPlayer;
 
+    Player condottierePlayer;
+
+    District basicDistrict;
+
     @BeforeEach
     void setup() {
         assassinPlayer = new AlwaysSpendPlayer(0);
         voleurPlayer = new AlwaysSpendPlayer(1);
         otherRolePlayer = new RealEstatePlayer(2);
         magicienPlayer=new ColorPlayer(3);
-        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer));
+        condottierePlayer=new RandomPlayer(4);
+        basicDistrict=new District("temple", 5, Color.PURPLE);
+        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer));
         summary=new RoundSummary();
     }
 
@@ -212,7 +213,100 @@ class RolePowerTest {
         int coins= otherRolePlayer.getCash();
         otherRolePlayer.playPlayerTurn(summary,game);
         assertEquals(coins,otherRolePlayer.getCash()-1);
+    }
 
 
+    /**
+     * CONDOTTIERE POWER TESTS
+     */
+    void initSpyCondottiere() {
+        condottierePlayer.setRole(Role.CONDOTTIERE);
+        condottierePlayer=Mockito.spy(condottierePlayer);
+
+        doReturn(Optional.empty()).when(condottierePlayer).getChoosenDistrictToBuy();
+    }
+
+    Optional<AbstractMap.SimpleEntry<Integer, District>> createOptionalEntry(int id, District district) {
+        return Optional.of(new AbstractMap.SimpleEntry<>(id, district));
+    }
+
+    @Test
+    void testCondottierePowerThrows() {
+        initSpyCondottiere();
+        doReturn(createOptionalEntry(-1, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        assertThrows(IllegalArgumentException.class, () -> Role.CONDOTTIERE.power(game, condottierePlayer, summary));//negative index
+
+        doReturn(createOptionalEntry(game.getPlayersList().size(), basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        assertThrows(IllegalArgumentException.class, () -> Role.CONDOTTIERE.power(game, condottierePlayer, summary));//too big index
+
+        basicDistrict.setCost(condottierePlayer.getCash()+2);//make it just too much expensive
+        game.getPlayersList().get(1).addDistrictToCity(basicDistrict);
+        doReturn(createOptionalEntry(1, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        assertThrows(IllegalArgumentException.class, () -> Role.CONDOTTIERE.power(game, condottierePlayer, summary));//too expensive
+
+        basicDistrict.setCost(1);//make it buyable
+        doReturn(createOptionalEntry(0, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        assertThrows(IllegalArgumentException.class, () -> Role.CONDOTTIERE.power(game, condottierePlayer, summary));//not present in player city
+
+        doReturn(createOptionalEntry(1, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        Role.CONDOTTIERE.power(game, condottierePlayer, summary);//asserts it doesn't throw anything, as it has good price and is present in player city
+
+        doReturn(Optional.empty()).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        Role.CONDOTTIERE.power(game, condottierePlayer, summary);//asserts it can receive empty optional
+    }
+
+    @Test
+    void testDistrictRemovedFromCityAndCoinsRemovedFromCondottiere() {
+        initSpyCondottiere();
+
+        basicDistrict.setCost(2);
+        condottierePlayer.setCash(8);//make him able to destroy it
+        game.getPlayersList().get(0).addDistrictToCity(basicDistrict);
+
+        doReturn(createOptionalEntry(0, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+
+        assertTrue(game.getPlayersList().get(0).getCity().contains(basicDistrict));
+
+        condottierePlayer.playPlayerTurn(summary, game);
+
+        verify(condottierePlayer).removeCoins(1);
+
+        assertFalse(game.getPlayersList().get(0).getCity().contains(basicDistrict));
+    }
+
+    @Test
+    void testNoDestroyWhenEmptyChoice() {
+        initSpyCondottiere();
+        doReturn(Optional.empty()).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        condottierePlayer.playPlayerTurn(summary, game);
+        verify(condottierePlayer, never()).removeCoins(anyInt());
+    }
+
+    @Test
+    void testCondottiereSummaryIsWritten() {
+        initSpyCondottiere();
+
+        basicDistrict.setCost(2);
+        condottierePlayer.setCash(8);//make him able to destroy it
+        game.getPlayersList().get(0).addDistrictToCity(basicDistrict);
+
+        doReturn(createOptionalEntry(0, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+
+        condottierePlayer.playPlayerTurn(summary, game);
+
+        assertTrue(summary.getOptionalDestroyedDistrict().isPresent());
+        assertEquals(0, summary.getOptionalDestroyedDistrict().get().getKey());
+        assertEquals(basicDistrict, summary.getOptionalDestroyedDistrict().get().getValue());
+        assertTrue(summary.hasUsedPower());
+    }
+
+    @Test
+    void testCondottiereSummaryIsNotWritten() {
+        initSpyCondottiere();
+        doReturn(Optional.empty()).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        condottierePlayer.playPlayerTurn(summary, game);
+
+        assertFalse(summary.hasUsedPower());
+        assertTrue(summary.getOptionalDestroyedDistrict().isEmpty());
     }
 }
