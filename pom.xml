@@ -7,15 +7,14 @@
     <version>0.1</version>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8
-        </project.build.sourceEncoding> <!-- CHANGE ME IF NEEDED, other : ISO-8859-1 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- CHANGE ME IF NEEDED, other : ISO-8859-1 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <junit.bom.version>5.10.1</junit.bom.version>
         <mockito.bom.version>5.8.0</mockito.bom.version>
     </properties>
-
     <dependencyManagement> <!-- helps maven to resolve conflicting transitive dependencies -->
         <dependencies>
             <dependency>
@@ -74,6 +73,9 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.1</version>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
             </plugin>
 
             <plugin>

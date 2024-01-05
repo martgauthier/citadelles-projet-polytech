@@ -3,9 +3,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Classe représentant le bilan d'un tour: pièces tirées, cartes tirées, citadelles achetées
@@ -25,6 +23,13 @@ public class RoundSummary {
 
     private boolean hasExchangedCardsWithPileAsMagician;
 
+    private Optional<AbstractMap.SimpleEntry<Integer, District>> optionalDestroyedDistrict=Optional.empty();
+
+    public Optional<AbstractMap.SimpleEntry<Integer, District>> getOptionalDestroyedDistrict() { return optionalDestroyedDistrict; }
+
+    public void setDestroyedDistrict(AbstractMap.SimpleEntry<Integer, District> destroyedDistrict) {
+        this.optionalDestroyedDistrict = Optional.of(destroyedDistrict);
+    }
 
     private boolean hasWonDuringTurn;
 
