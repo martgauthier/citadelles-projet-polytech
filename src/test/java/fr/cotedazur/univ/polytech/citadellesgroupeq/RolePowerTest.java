@@ -24,6 +24,8 @@ class RolePowerTest {
 
     Player condottierePlayer;
 
+    Player evequePlayer;
+
     District basicDistrict;
 
     @BeforeEach
@@ -33,8 +35,16 @@ class RolePowerTest {
         otherRolePlayer = new RealEstatePlayer(2);
         magicienPlayer=new ColorPlayer(3);
         condottierePlayer=new RandomPlayer(4);
+        evequePlayer=new ColorPlayer(5);
+
+        assassinPlayer.setRole(Role.ASSASSIN);
+        voleurPlayer.setRole(Role.VOLEUR);
+        magicienPlayer.setRole(Role.MAGICIEN);
+        condottierePlayer.setRole(Role.CONDOTTIERE);
+        evequePlayer.setRole(Role.EVEQUE);
+
         basicDistrict=new District("temple", 5, Color.PURPLE);
-        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer));
+        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer, evequePlayer));
         summary=new RoundSummary();
     }
 
@@ -150,6 +160,9 @@ class RolePowerTest {
         voleurPlayer.setCash(0);
         otherRolePlayer.setCash(5);
         assassinPlayer.setCash(6);
+
+        evequePlayer.dieForThisTurn();
+        condottierePlayer.dieForThisTurn();
 
         assertEquals(5, otherRolePlayer.getCash());
         assertEquals(6, assassinPlayer.getCash());
@@ -316,5 +329,31 @@ class RolePowerTest {
         otherRolePlayer.setRole(Mockito.spy(Role.ROI));
         otherRolePlayer.playPlayerTurn(summary,game);
         assertEquals(otherRolePlayer.getId(),game.getMasterOfTheGameIndex());
+    }
+
+
+    /**
+     * EVEQUE POWER TESTS
+     */
+
+    @Test
+    void testTryToDestroyEvequeDistrictThrowsIllegalArg () {
+        initSpyCondottiere();
+        condottierePlayer.setCash(1000);
+        evequePlayer.addDistrictToCity(basicDistrict);
+        doReturn(createOptionalEntry(evequePlayer.getId(), basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+
+        assertThrows(IllegalArgumentException.class, () -> condottierePlayer.playPlayerTurn(summary, game));
+    }
+
+    @Test
+    void testCanDestroyDeadEvequeDistrict() {
+        initSpyCondottiere();
+        evequePlayer.addDistrictToCity(basicDistrict);
+        evequePlayer.dieForThisTurn();
+        condottierePlayer.setCash(1000);
+        doReturn(createOptionalEntry(evequePlayer.getId(), basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+
+        condottierePlayer.playPlayerTurn(summary, game);//assert it doesn't throw
     }
 }

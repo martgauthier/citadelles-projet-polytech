@@ -358,8 +358,6 @@ public abstract class Player implements Comparable<Player> {
      * @return un optional rempli avec un seul couple idjoueur/district. Optional est empty si le condottiere ne veut/peut rien détruire
      */
     public Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players) {
-        //TODO: adapt choice to the Eveque power
-
         for(Player testedPlayer: players) {//Default strategy: returns first destroyable district not from the current player
             if(testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn())){
                 //un eveque peut se faire détruire un district si il est mort.
