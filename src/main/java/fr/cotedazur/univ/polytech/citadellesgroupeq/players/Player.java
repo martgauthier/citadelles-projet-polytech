@@ -69,6 +69,8 @@ public abstract class Player implements Comparable<Player> {
     }
 
     public void setCardInHand(int index, District card) {
+        if(index < 0 | index >= cardsInHand.size()) throw new IllegalArgumentException("Index must be in list bounds.");
+
         this.cardsInHand.set(index, card);
     }
     public void setCardsInHand(List<District> cards) {this.cardsInHand = cards;}
@@ -329,5 +331,23 @@ public abstract class Player implements Comparable<Player> {
 
     public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
 
-    public abstract int[] selectCardsToExchangeWithPileAsMagicien();//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
+    public int[] selectCardsToExchangeWithPileAsMagicien() {//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
+        if(!getCardsInHand().isEmpty()) {
+            int start = randomGenerator.nextInt(getCardsInHand().size());
+            int end = randomGenerator.nextInt(start, getCardsInHand().size());
+            int size = end - start + 1;
+
+            int[] returnedArray = new int[size];
+
+            // Fill the array with values between start and end
+            for (int i = 0; i < size; i++) {
+                returnedArray[i] = start + i;
+            }
+
+            return returnedArray;
+        }
+        else {
+            return new int[0];
+        }
+    }
 }
