@@ -4,6 +4,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 public class GameOutputManager {
@@ -74,11 +75,17 @@ public class GameOutputManager {
         else {
             if (summary.hasUsedPower()) {
                 System.out.println("Ce joueur utilise son pouvoir de " + player.getRole().name());
-                for (Player p : game.getPlayersList()) {
-                    if (player.getRole().equals(Role.ASSASSIN) && p.isDeadForThisTurn()) {
-                        System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
-                        break;
+                if(player.getRole().equals(Role.ASSASSIN)) {
+                    for (Player p : game.getPlayersList()) {
+                        if (p.isDeadForThisTurn()) {
+                            System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
+                            break;
+                        }
                     }
+                }
+                else if (player.getRole() == Role.CONDOTTIERE && summary.getOptionalDestroyedDistrict().isPresent()) {
+                    AbstractMap.SimpleEntry<Integer, District> districtDestroyed=summary.getOptionalDestroyedDistrict().get();
+                    System.out.println(" et a détruit le district " + districtDestroyed.getValue().getName() + " du joueur d'id " + districtDestroyed.getKey());
                 }
             }
 
