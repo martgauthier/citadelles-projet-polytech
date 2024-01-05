@@ -7,6 +7,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.ColorPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -82,6 +83,7 @@ class RolePowerTest {
         magicienPlayer = Mockito.spy(magicienPlayer);
         magicienPlayer.setRole(Role.MAGICIEN);
         doReturn(choosesToExchangeWithPlayer).when(magicienPlayer).choosesToExchangeCardWithPlayer();
+        doReturn(new District("temple", 8, Color.GRAY)).when(magicienPlayer).pickCard(summary);//prevents card from being picked
 
         game.getPlayersList().set(magicienPlayer.getId(), magicienPlayer);
     }
@@ -167,23 +169,29 @@ class RolePowerTest {
     @Test
     void testExchangedCardsFromPileAreDifferent() {
         initSpyMagicien(false);
-        List<District> cardsBeforeTurn=new ArrayList<>(magicienPlayer.getCardsInHand());//shallow copy of list
+        List<District> cardsBeforeTurn;
 
         List<List<Integer>> testedCombinaisons=List.of(
                 List.of(),//vide
                 List.of(1),//un seul élement, qui n'est pas le premier
-                List.of(0, 1)//tout
+                List.of(0),
+                List.of(0,1)
         );
 
         for(List<Integer> combinaison: testedCombinaisons) {
-            doReturn(combinaison.stream().mapToInt(i -> i).toArray()).when(magicienPlayer).selectCardsToExchangeWithPileAsMagicien();
+            cardsBeforeTurn=new ArrayList<>(magicienPlayer.getCardsInHand());//shallow copy of list
+
+            int[] combinaisonAsIntArray=combinaison.stream().mapToInt(i -> i).toArray();//convert from list to primitive array
+            doReturn(combinaisonAsIntArray).when(magicienPlayer).selectCardsToExchangeWithPileAsMagicien();
+
             magicienPlayer.playPlayerTurn(summary, game);
 
-            assertTrue(summary.hasExchangedCardsWithPileAsMagician());
+            assertTrue(summary.hasExchangedCardsWithPileAsMagician());//car on a appelé initSpy(false)
 
-            List<Integer> cardsChanged=Arrays.stream(summary.getExchangedCardsWithPileIndex()).boxed().toList();
+            List<Integer> cardsChanged=Arrays.stream(summary.getExchangedCardsWithPileIndex()).boxed().toList();//convert from primitive array to list
 
             assertTrue(cardsChanged.size() <= cardsBeforeTurn.size());
+            assertEquals(cardsChanged.size(), combinaison.size());
 
 
             //pour chacune des combinaisons plus haut, vérifie que les cartes changées changent et les cartes non-changées restent

@@ -67,25 +67,4 @@ public class RealEstatePlayer extends Player {
     public boolean choosesToExchangeCardWithPlayer() {
         return randomGenerator.nextBoolean();//pas de logique particulière à ce sujet
     }
-
-    @Override
-    public int[] selectCardsToExchangeWithPileAsMagicien() {//Randomize it
-        if(!getCardsInHand().isEmpty()) {
-            int start = randomGenerator.nextInt(getCardsInHand().size());
-            int end = randomGenerator.nextInt(start, getCardsInHand().size());
-            int size = end - start + 1;
-
-            int[] returnedArray = new int[size];
-
-            // Fill the array with values between start and end
-            for (int i = 0; i < size; i++) {
-                returnedArray[i] = start + i;
-            }
-
-            return returnedArray;
-        }
-        else {
-            return new int[0];
-        }
-    }
 }
