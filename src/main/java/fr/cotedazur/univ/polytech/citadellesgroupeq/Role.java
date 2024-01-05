@@ -96,7 +96,7 @@ public enum Role {
     MARCHAND (Color.GREEN) {
         @Override
         public void power(GameLogicManager g, Player marchand, RoundSummary summary) {
-            //TODO
+            marchand.addCoins(1);
             super.power(g, marchand, summary);
         }
     },

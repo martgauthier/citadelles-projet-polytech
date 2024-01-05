@@ -92,6 +92,9 @@ public class GameOutputManager {
                         System.out.println("et décide d'échanger ses cartes avec le joueur " + exchangedWith.getRole() + " qui est le joueur " + exchangedWith.getId());
                     }
                 }
+                else if(player.getRole().equals(Role.MARCHAND)){
+                    System.out.println("et gagne une pièce bonus");
+                }
                 else if(player.getRole().equals(Role.VOLEUR)){
                     System.out.println("et a volé le joueur " + summary.getStealedRole());
                 }
