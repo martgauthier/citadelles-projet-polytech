@@ -4,6 +4,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 public class GameOutputManager {
@@ -74,21 +75,29 @@ public class GameOutputManager {
         else {
             if (summary.hasUsedPower()) {
                 System.out.println("Ce joueur utilise son pouvoir de " + player.getRole().name());
-                for (Player p : game.getPlayersList()) {
-                    if (player.getRole().equals(Role.ASSASSIN) && p.isDeadForThisTurn()) {
-                        System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
-                        break;
-                    }
-                    if(player.getRole().equals(Role.MAGICIEN) && p.getId()==(summary.getExchangedCardsPlayerId())){
-                        System.out.println("et décide d'échanger ses cartes avec le joueur "+p.getRole()+" qui est le joueur "+p.getId());
-                        break;
-                    }
-                    if(player.getRole().equals(Role.VOLEUR) && p.getRole().equals(summary.getStealedRole())){
-                        System.out.println("et a volé le joueur "+p.getRole()+" qui est le joueur "+p.getId());
+                if(player.getRole().equals(Role.ASSASSIN)) {
+                    for (Player p : game.getPlayersList()) {
+                        if (p.isDeadForThisTurn()) {
+                            System.out.println("et a tué le joueur " + p.getRole() + " d'id " + p.getId());
+                            break;
+                        }
                     }
                 }
-                if(player.getRole().equals(Role.MAGICIEN)&&summary.hasExchangedCardsWithPileAsMagician()){
-                    System.out.println("et décide d'échanger ses cartes avec la pioche et il a échangé "+summary.getExchangedCardsWithPileIndex().length+" cartes.");
+                else if(player.getRole().equals(Role.MAGICIEN)){
+                    if(summary.hasExchangedCardsWithPileAsMagician()) {
+                        System.out.println("et décide d'échanger ses cartes avec la pioche et il a échangé "+summary.getExchangedCardsWithPileIndex().length+" cartes.");
+                    }
+                    else {
+                        Player exchangedWith = game.getPlayersList().get(summary.getExchangedCardsPlayerId());
+                        System.out.println("et décide d'échanger ses cartes avec le joueur " + exchangedWith.getRole() + " qui est le joueur " + exchangedWith.getId());
+                    }
+                }
+                else if(player.getRole().equals(Role.VOLEUR)){
+                    System.out.println("et a volé le joueur " + summary.getStealedRole());
+                }
+                else if (player.getRole() == Role.CONDOTTIERE && summary.getOptionalDestroyedDistrict().isPresent()) {
+                    AbstractMap.SimpleEntry<Integer, District> districtDestroyed=summary.getOptionalDestroyedDistrict().get();
+                    System.out.println(" et a détruit le district " + districtDestroyed.getValue().getName() + " du joueur d'id " + districtDestroyed.getKey());
                 }
             }
 

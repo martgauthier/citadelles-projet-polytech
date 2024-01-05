@@ -69,7 +69,7 @@ public abstract class Player implements Comparable<Player> {
     }
 
     public void setCardInHand(int index, District card) {
-        if(index < 0 | index >= cardsInHand.size()) throw new IllegalArgumentException("Index must be in list bounds.");
+        if(index < 0 || index >= cardsInHand.size()) throw new IllegalArgumentException("Index must be in list bounds.");
 
         this.cardsInHand.set(index, card);
     }
@@ -332,7 +332,7 @@ public abstract class Player implements Comparable<Player> {
     public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
 
     public int[] selectCardsToExchangeWithPileAsMagicien() {//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
-        if(!getCardsInHand().isEmpty()) {
+        if (!getCardsInHand().isEmpty()) {
             int start = randomGenerator.nextInt(getCardsInHand().size());
             int end = randomGenerator.nextInt(start, getCardsInHand().size());
             int size = end - start + 1;
@@ -345,9 +345,32 @@ public abstract class Player implements Comparable<Player> {
             }
 
             return returnedArray;
-        }
-        else {
+        } else {
             return new int[0];
         }
+    }
+
+    /**
+     * Le choix du district à détruire si le rôle est condottiere. Ne contient qu'UN couple IdPlayer/District au maximum.
+     * Le district choisi doit coûter au maximum cashdujoueur+1.
+     * L'Optional est empty si le condottiere ne veut/peut rien détruire.
+     * @param players liste des joueurs.
+     * @return un optional rempli avec un seul couple idjoueur/district. Optional est empty si le condottiere ne veut/peut rien détruire
+     */
+    public Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players) {
+        //TODO: adapt choice to the Eveque power
+
+        for(Player testedPlayer: players) {//Default strategy: returns first destroyable district not from the current player
+            if(testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn())){
+                //un eveque peut se faire détruire un district si il est mort.
+                for(District district: testedPlayer.getCity()) {
+                    if(district.getCost() - 1 <= this.getCash()) {
+                        return Optional.of(new AbstractMap.SimpleEntry<>(testedPlayer.getId(), district));
+                    }
+                }
+            }
+        }
+
+        return Optional.empty();
     }
 }
