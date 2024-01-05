@@ -78,10 +78,22 @@ public class GameOutputManager {
                 if(player.getRole().equals(Role.ASSASSIN)) {
                     for (Player p : game.getPlayersList()) {
                         if (p.isDeadForThisTurn()) {
-                            System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
+                            System.out.println("et a tué le joueur " + p.getRole() + " d'id " + p.getId());
                             break;
                         }
                     }
+                }
+                else if(player.getRole().equals(Role.MAGICIEN)){
+                    if(summary.hasExchangedCardsWithPileAsMagician()) {
+                        System.out.println("et décide d'échanger ses cartes avec la pioche et il a échangé "+summary.getExchangedCardsWithPileIndex().length+" cartes.");
+                    }
+                    else {
+                        Player exchangedWith = game.getPlayersList().get(summary.getExchangedCardsPlayerId());
+                        System.out.println("et décide d'échanger ses cartes avec le joueur " + exchangedWith.getRole() + " qui est le joueur " + exchangedWith.getId());
+                    }
+                }
+                else if(player.getRole().equals(Role.VOLEUR)){
+                    System.out.println("et a volé le joueur " + summary.getStealedRole());
                 }
                 else if (player.getRole() == Role.CONDOTTIERE && summary.getOptionalDestroyedDistrict().isPresent()) {
                     AbstractMap.SimpleEntry<Integer, District> districtDestroyed=summary.getOptionalDestroyedDistrict().get();
