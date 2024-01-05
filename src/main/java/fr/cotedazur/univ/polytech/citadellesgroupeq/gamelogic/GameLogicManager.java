@@ -98,7 +98,7 @@ public class GameLogicManager {
         List<Player> playersInRolePickingOrder=new ArrayList<>();
 
         playerTreeSet.clear();
-        setRandomMasterOfGame();//pour débuter par un joueur aléatoire
+        //setRandomMasterOfGame();//pour débuter par un joueur aléatoire
         for(int i=0; i < playersList.size(); i++) {
             int selectedPlayerIndex=(i+masterOfTheGameIndex) % playersList.size();//permet de boucler toutes les valeurs dans l'ordre, à partir du masterOfGame
             Player selectedPlayer = playersList.get(selectedPlayerIndex);

@@ -82,7 +82,7 @@ public enum Role {
     ROI (Color.YELLOW) {
         @Override
         public void power(GameLogicManager g, Player roi, RoundSummary summary) {
-            //TODO
+            g.setMasterOfTheGameIndex(roi.getId());
             super.power(g, roi, summary);
         }
     },

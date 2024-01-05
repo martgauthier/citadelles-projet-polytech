@@ -309,4 +309,12 @@ class RolePowerTest {
         assertFalse(summary.hasUsedPower());
         assertTrue(summary.getOptionalDestroyedDistrict().isEmpty());
     }
+
+    @Test
+    void testMasterOfTheGameWithPowerKing(){
+        otherRolePlayer= Mockito.spy(otherRolePlayer);
+        otherRolePlayer.setRole(Mockito.spy(Role.ROI));
+        otherRolePlayer.playPlayerTurn(summary,game);
+        assertEquals(otherRolePlayer.getId(),game.getMasterOfTheGameIndex());
+    }
 }
