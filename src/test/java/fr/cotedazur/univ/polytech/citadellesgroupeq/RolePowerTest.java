@@ -205,4 +205,14 @@ class RolePowerTest {
             }
         }
     }
+    @Test
+    void testCoinsBonusMarchand(){
+        otherRolePlayer = Mockito.spy(otherRolePlayer);
+        otherRolePlayer.setRole(Role.MARCHAND);
+        int coins= otherRolePlayer.getCash();
+        otherRolePlayer.playPlayerTurn(summary,game);
+        assertEquals(coins,otherRolePlayer.getCash()-1);
+
+
+    }
 }

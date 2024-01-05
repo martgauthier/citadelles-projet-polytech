@@ -87,6 +87,9 @@ public class GameOutputManager {
                         System.out.println("et a volé le joueur "+p.getRole()+" qui est le joueur "+p.getId());
                     }
                 }
+                if(player.getRole().equals(Role.MARCHAND)){
+                    System.out.println("et gagne une pièce bonus");
+                }
                 if(player.getRole().equals(Role.MAGICIEN)&&summary.hasExchangedCardsWithPileAsMagician()){
                     System.out.println("et décide d'échanger ses cartes avec la pioche et il a échangé "+summary.getExchangedCardsWithPileIndex().length+" cartes.");
                 }
