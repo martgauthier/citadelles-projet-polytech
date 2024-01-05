@@ -79,6 +79,16 @@ public class GameOutputManager {
                         System.out.println("et a tué le joueur " + p.getRole() + " qui est le joueur " + p.getId());
                         break;
                     }
+                    if(player.getRole().equals(Role.MAGICIEN) && p.getId()==(summary.getExchangedCardsPlayerId())){
+                        System.out.println("et décide d'échanger ses cartes avec le joueur "+p.getRole()+" qui est le joueur "+p.getId());
+                        break;
+                    }
+                    if(player.getRole().equals(Role.VOLEUR) && p.getRole().equals(summary.getStealedRole())){
+                        System.out.println("et a volé le joueur "+p.getRole()+" qui est le joueur "+p.getId());
+                    }
+                }
+                if(player.getRole().equals(Role.MAGICIEN)&&summary.hasExchangedCardsWithPileAsMagician()){
+                    System.out.println("et décide d'échanger ses cartes avec la pioche et il a échangé "+summary.getExchangedCardsWithPileIndex().length+" cartes.");
                 }
             }
 
