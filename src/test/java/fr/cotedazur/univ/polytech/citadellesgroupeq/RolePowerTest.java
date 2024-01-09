@@ -26,6 +26,8 @@ class RolePowerTest {
 
     Player evequePlayer;
 
+    Player architectePlayer;
+
     District basicDistrict;
 
     @BeforeEach
@@ -36,15 +38,17 @@ class RolePowerTest {
         magicienPlayer=new ColorPlayer(3);
         condottierePlayer=new RandomPlayer(4);
         evequePlayer=new ColorPlayer(5);
+        architectePlayer=new RealEstatePlayer(6);
 
         assassinPlayer.setRole(Role.ASSASSIN);
         voleurPlayer.setRole(Role.VOLEUR);
         magicienPlayer.setRole(Role.MAGICIEN);
         condottierePlayer.setRole(Role.CONDOTTIERE);
         evequePlayer.setRole(Role.EVEQUE);
+        architectePlayer.setRole(Role.ARCHITECTE);
 
         basicDistrict=new District("temple", 5, Color.PURPLE);
-        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer, evequePlayer));
+        game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer, evequePlayer, architectePlayer));
         summary=new RoundSummary();
     }
 
@@ -141,7 +145,7 @@ class RolePowerTest {
         otherRolePlayer.setRole(Role.MARCHAND);
         assassinPlayer.setRole(Role.ASSASSIN);
 
-        doReturn(otherRolePlayer.getRole()).when(voleurPlayer).selectRoleToSteal(anyList(),anyList());
+        doReturn(Optional.of(otherRolePlayer.getRole())).when(voleurPlayer).selectRoleToSteal(anyList(),anyList());
 
         voleurPlayer.playPlayerTurn(summary, game);
 
@@ -163,6 +167,7 @@ class RolePowerTest {
 
         evequePlayer.dieForThisTurn();
         condottierePlayer.dieForThisTurn();
+        architectePlayer.dieForThisTurn();
 
         assertEquals(5, otherRolePlayer.getCash());
         assertEquals(6, assassinPlayer.getCash());
@@ -356,4 +361,42 @@ class RolePowerTest {
 
         condottierePlayer.playPlayerTurn(summary, game);//assert it doesn't throw
     }
+
+    /**
+     * ARCHITECTE Test
+     */
+    void initSpyArchitecte() {
+        architectePlayer=Mockito.spy(architectePlayer);
+    }
+
+    @Test
+    void testArchitecteAlwaysPicks3Cards() {
+        initSpyArchitecte();
+        architectePlayer.playPlayerTurn(summary, game);
+        verify(architectePlayer, times(3)).pickCard(any());//il a pioché 2 fois grâce au rôle + 1 FOIS CAR IL EST REALESTATEPLAYER
+    }
+
+    @Test
+    void testArchitecteCanBuy3Districts() {
+        initSpyArchitecte();
+        architectePlayer.setCash(11000);//make him rich
+
+        List<District> architecteHand = new ArrayList<>(List.of(
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY)));
+
+        architectePlayer.setCardsInHand(architecteHand); // il a 8 cartes en main, et le real estate player veut toujours acheter à 8 cartes
+
+        architectePlayer.playPlayerTurn(summary, game);
+
+        verify(architectePlayer, times(3)).buyDistrictsDuringTurn(any());
+        assertEquals(3, summary.getBoughtDistricts().size());
+    }
+
 }

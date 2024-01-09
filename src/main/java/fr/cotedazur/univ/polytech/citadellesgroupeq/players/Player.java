@@ -104,14 +104,14 @@ public abstract class Player implements Comparable<Player> {
     }
 
 
-    public Role selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) throws Exception {
+    public Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) {
         for (int i = 0; i < availableRoles.size(); i++) {
             Role stealedRole = availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
             if (!unstealableRoles.contains(stealedRole)) {
-                return stealedRole;
+                return Optional.of(stealedRole);
             }
         }
-        throw new Exception("Aucuns rôles à voler");
+        return Optional.empty();
     }
 
     /**
