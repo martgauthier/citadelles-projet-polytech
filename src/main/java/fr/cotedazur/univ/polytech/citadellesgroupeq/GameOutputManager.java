@@ -102,6 +102,9 @@ public class GameOutputManager {
                     AbstractMap.SimpleEntry<Integer, District> districtDestroyed=summary.getOptionalDestroyedDistrict().get();
                     System.out.println(" et a détruit le district " + districtDestroyed.getValue().getName() + " du joueur d'id " + districtDestroyed.getKey());
                 }
+                else if(player.getRole() == Role.ARCHITECTE) {
+                    System.out.println("Il a donc automatiquement gagné 2 cartes de plus.");
+                }
             }
 
             if (summary.hasWonCoinsByColorCards()) {
@@ -116,7 +119,7 @@ public class GameOutputManager {
         }
 
         if(summary.hasBoughtDistricts()) {
-            System.out.println("Il a acheté cette carte:");
+            System.out.println("Il a acheté cette/ces carte(s):");
             System.out.println(getDescriptionOfCards(summary.getBoughtDistricts()));
         }
         if(summary.hasWonDuringTurn()) {

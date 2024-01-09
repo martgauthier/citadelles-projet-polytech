@@ -15,7 +15,7 @@ public enum Role {
     ASSASSIN(Color.GRAY) {
         @Override
         public void power (GameLogicManager g, Player assassin, RoundSummary summary) {
-            super.power(g, assassin, summary);
+            summary.setHasUsedPower();
             Role assassinatedRole=assassin.selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
@@ -37,26 +37,26 @@ public enum Role {
             }
             List<Role> availableRoles = g.generateAvailableRoles(g.getPlayersList().size());
 
-            try {
-                Role stealedRole = voleur.selectRoleToSteal(availableRoles, unstealableRoles);
+            Optional<Role> stealedRole = voleur.selectRoleToSteal(availableRoles, unstealableRoles);
 
+            if(stealedRole.isPresent()) {
                 for (Player player : g.getPlayersList()) {
-                    if (player.getRole().equals(stealedRole)) {
+                    if (player.getRole() == stealedRole.get()) {
                         int totalCash = player.getCash();
                         player.removeCoins(totalCash);
                         voleur.addCoins(totalCash);
                         summary.setDrawnCoins(totalCash);
-                        summary.setStealedRole(stealedRole);
+                        summary.setStealedRole(stealedRole.get());
                         summary.setHasUsedPower();
                     }
                 }
-            } catch (Exception ignored) {}
+            }
         }
     },
     MAGICIEN(Color.GRAY) {
         @Override
         public void power(GameLogicManager g, Player magicien, RoundSummary summary) {
-            super.power(g, magicien, summary);
+            summary.setHasUsedPower();
 
             if(magicien.choosesToExchangeCardWithPlayer()) {
                 Player selectedPlayerToExchangeWith = magicien.selectPlayerToExchangeCardsWithAsMagicien(g.getPlayersList());
@@ -83,27 +83,31 @@ public enum Role {
         @Override
         public void power(GameLogicManager g, Player roi, RoundSummary summary) {
             g.setMasterOfTheGameIndex(roi.getId());
-            super.power(g, roi, summary);
+            summary.setHasUsedPower();
         }
     },
     EVEQUE(Color.BLUE) {
         @Override
         public void power(GameLogicManager g, Player eveque, RoundSummary summary) {
-            super.power(g, eveque, summary);
+            summary.setHasUsedPower();
         }
     },
     MARCHAND (Color.GREEN) {
         @Override
         public void power(GameLogicManager g, Player marchand, RoundSummary summary) {
             marchand.addCoins(1);
-            super.power(g, marchand, summary);
+            summary.setHasUsedPower();
         }
     },
     ARCHITECTE (Color.GRAY) {
         @Override
         public void power(GameLogicManager g, Player architecte, RoundSummary summary) {
-            //TODO
-            super.power(g, architecte, summary);
+            summary.setHasUsedPower();
+            architecte.pickCard(summary);
+            architecte.pickCard(summary);//"l'architecte pioche d'office 2 cartes de plus"
+
+            architecte.buyDistrictsDuringTurn(summary);
+            architecte.buyDistrictsDuringTurn(summary);//il peut acheter jusqu'à 3 cartes
         }
     },
     CONDOTTIERE (Color.RED) {
@@ -138,17 +142,14 @@ public enum Role {
 
                 summary.setDestroyedDistrict(playerChoice);
 
-                super.power(g, condottiere, summary);
+                summary.setHasUsedPower();
             }
         }
     };
 
 
-    /**
-     * Méthode pour utiliser le pouvoir du rôle. Toujours appeler "super.power", car c'est lui qui écrit dans le summary que le pouvoir a été utilisé
-     */
     public void power(GameLogicManager g, Player player, RoundSummary summary) {
-        summary.setHasUsedPower();
+        throw new UnsupportedOperationException();
     }
 
     private Color color;
