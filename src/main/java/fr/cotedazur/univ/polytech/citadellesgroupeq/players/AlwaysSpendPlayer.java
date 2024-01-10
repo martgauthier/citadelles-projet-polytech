@@ -45,6 +45,11 @@ public class AlwaysSpendPlayer extends Player{
     }
 
     @Override
+    public String getPlayerStrategyName() {
+        return "AlwaysSpendPlayer";
+    }
+
+    @Override
     public Optional<District> getChoosenDistrictToBuy() {
         List<District> buyableDistricts =getBuyableCards();
 

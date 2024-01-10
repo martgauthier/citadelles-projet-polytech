@@ -49,6 +49,11 @@ public class RandomPlayer extends Player {
         super.buyDistrictsDuringTurn(summary);
     }
 
+    @Override
+    public String getPlayerStrategyName() {
+        return "RandomPlayer";
+    }
+
 
     @Override
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playersList) {

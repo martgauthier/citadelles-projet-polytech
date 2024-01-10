@@ -371,4 +371,5 @@ public abstract class Player implements Comparable<Player> {
 
         return Optional.empty();
     }
+    public abstract String getPlayerStrategyName();
 }

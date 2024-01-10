@@ -58,6 +58,11 @@ public class ColorPlayer extends Player {
     }
 
     @Override
+    public String getPlayerStrategyName() {
+        return "ColorPlayer";
+    }
+
+    @Override
     public Optional<District> getChoosenDistrictToBuy() {
         Optional<District> minCardWithColor=Optional.empty();
 

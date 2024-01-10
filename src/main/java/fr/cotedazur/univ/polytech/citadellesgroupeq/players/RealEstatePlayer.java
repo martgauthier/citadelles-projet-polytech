@@ -45,6 +45,11 @@ public class RealEstatePlayer extends Player {
     }
 
     @Override
+    public String getPlayerStrategyName() {
+        return "RealEstatePlayer";
+    }
+
+    @Override
     public Optional<District> getChoosenDistrictToBuy() {
         List<District> buyableDistricts =getBuyableCards();
 
