@@ -136,6 +136,10 @@ public enum Role {
                     throw new IllegalArgumentException("Can't destroy District of an alive Eveque.");
                 }
 
+                if(playerChoice.getValue().getName().equalsIgnoreCase("donjon") && playerChoice.getValue().getColor() == Color.PURPLE) {
+                    throw new IllegalArgumentException("Can't destroy Donjon merveille.");
+                }
+
 
                 condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
                 selectedPlayer.removeDistrictFromCity(playerChoice.getValue());

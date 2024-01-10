@@ -362,7 +362,7 @@ public abstract class Player implements Comparable<Player> {
             if(testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn())){
                 //un eveque peut se faire détruire un district si il est mort.
                 for(District district: testedPlayer.getCity()) {
-                    if(district.getCost() - 1 <= this.getCash()) {
+                    if(district.getCost() - 1 <= this.getCash() && !(district.getColor() == Color.PURPLE && district.getName().equalsIgnoreCase("donjon"))) {
                         return Optional.of(new AbstractMap.SimpleEntry<>(testedPlayer.getId(), district));
                     }
                 }

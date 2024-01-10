@@ -336,6 +336,18 @@ class RolePowerTest {
         assertEquals(otherRolePlayer.getId(),game.getMasterOfTheGameIndex());
     }
 
+    @Test
+    void testCantDestroyDonjonMerveille() {
+        initSpyCondottiere();
+
+        District donjon = new District("donjon", 1, Color.PURPLE);
+        condottierePlayer.setCash(8);//make him able to destroy it
+        game.getPlayersList().get(0).addDistrictToCity(donjon);
+
+        doReturn(createOptionalEntry(0, donjon)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+        assertThrows(IllegalArgumentException.class, () -> condottierePlayer.playPlayerTurn(summary, game));
+    }
+
 
     /**
      * EVEQUE POWER TESTS
