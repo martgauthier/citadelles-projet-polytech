@@ -98,11 +98,8 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
 
-    /**
-     * Choisi un rôle à Assasiner
-     * @param availableRoles les rôles disponible
-     * @return un rôle
-     */
+
+    @Override
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
         Role assassinatedRole;
         do { //boucle while pour éviter qu'il se tue lui même
@@ -112,6 +109,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
 
+    @Override
     public Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) {
         for (int i = 0; i < availableRoles.size(); i++) {
             Role stealedRole = availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
@@ -296,10 +294,6 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         return this.city.isEmpty();
     }
 
-
-    @Override
-    public abstract Optional<District> getChoosenDistrictToBuy();
-
     public void getCoinsFromColorCards(RoundSummary summary) {
         for(District cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
@@ -310,7 +304,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public void buyDistrictsDuringTurn(RoundSummary summary) {
-        Optional<District> choosenDistrict = getChoosenDistrictToBuy();
+        Optional<District> choosenDistrict = strategy.getChoosenDistrictToBuy();
         if (choosenDistrict.isPresent()) {
             District district = choosenDistrict.get();
             addDistrictToCity(district);
@@ -320,15 +314,9 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         }
     }
 
-    @Override
-    public abstract Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playerList);
-
     public void clearHand() {
         cardsInHand.clear();
     }
-
-    @Override
-    public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
 
     @Override
     public int[] selectCardsToExchangeWithPileAsMagicien() {//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
@@ -366,7 +354,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         return Optional.empty();
     }
 
-    public IStrategy getOptionalStrategy() {
+    public IStrategy getStrategy() {
         return strategy;
     }
 

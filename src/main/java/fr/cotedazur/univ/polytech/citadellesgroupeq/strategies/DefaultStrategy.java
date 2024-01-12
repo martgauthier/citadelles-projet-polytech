@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DefaultStrategy implements IStrategy {
-    private final Player player;
+    protected final Player player;
     public DefaultStrategy(Player player) {
         this.player=player;
     }

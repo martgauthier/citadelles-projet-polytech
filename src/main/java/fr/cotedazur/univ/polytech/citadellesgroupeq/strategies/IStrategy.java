@@ -45,6 +45,12 @@ public interface IStrategy {
     int selectRole(List<Role> availableRoles);
 
     Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles);
+
+    /**
+     * Choisi un rôle à Assasiner
+     * @param availableRoles les rôles disponible
+     * @return un rôle
+     */
     Role selectRoleToKillAsAssassin(List<Role> availableRoles);
 
     Player getPlayer();

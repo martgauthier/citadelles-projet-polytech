@@ -5,6 +5,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,7 @@ class GameLogicManagerTest {
     void testRolesSelected() {
         for(int i=0; i < game.getPlayersList().size(); i++) {
             game.getPlayersList().set(i, Mockito.spy(game.getPlayersList().get(i)));
+            game.getPlayersList().get(i).setStrategy(new DefaultStrategy(game.getPlayersList().get(i)));
         }
 
         game.makeAllPlayersSelectRole();
