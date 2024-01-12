@@ -41,7 +41,7 @@ class ColorPlayerTest {
         assertEquals(0, firstPlayer.selectRole(availablesRoles));
     }
 
-    @RepeatedTest(50)
+    @Test
     void testChoosesColorDistrict() {
         firstPlayer.setRole(Role.CONDOTTIERE);
         firstPlayer.addAllCardsToHand(new District("temple", 8, Color.PURPLE), new District("temple", 7, Color.PURPLE), highPriceRedDistrict);

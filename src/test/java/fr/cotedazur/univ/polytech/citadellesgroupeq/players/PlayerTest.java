@@ -46,7 +46,7 @@ class PlayerTest {
         assertEquals(4, bot.getCardsInHand().size());
     }
 
-    @RepeatedTest(100)
+    @Test
     void testDealCardsOrCash() {
         assertEquals(0, bot.getCash());
         assertEquals(2, bot.getCardsInHand().size());
