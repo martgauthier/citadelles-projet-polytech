@@ -38,6 +38,7 @@ public class GameLogicManager {
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
+    private Map<Player, Integer> ScoreOfEnd=new HashMap<>();
 
 
     //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
@@ -72,6 +73,9 @@ public class GameLogicManager {
 
     public List<Player> getPlayersList() {
         return playersList;
+    }
+    public Map<Player, Integer> getScoreOfEnd() {
+        return ScoreOfEnd;
     }
 
     /**
@@ -129,13 +133,19 @@ public class GameLogicManager {
         else {
             player.playPlayerTurn(summary, this);
             if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN) {
-                summary.setHasWonDuringTurn(true);
-                finishGame();
+                if(isFinished){
+                    makeScoreofPlayer(player,summary);
+                }else{
+                    summary.setHasFinishDuringTurn(true);
+                    makeScoreofPlayer(player,summary);
+                    finishGame();
+                }
             }
+            makeScoreofPlayer(player,summary);
         }
         return summary;
     }
-
+    //TODO créer une méthode qui compte les points
     /**
      *
      * @return la liste des joueurs dans leur ordre de passage dû à leur rôle (un Assassin joue avant un Condottiere, quel que soit son id de joueur).
@@ -206,6 +216,31 @@ public class GameLogicManager {
             newAvailableRoles.add(randomRole);
         }
         return newAvailableRoles;
+    }
+    public void makeScoreofPlayer(Player player,RoundSummary summary){
+        int score=0;
+        score=score+player.getTotalCityPrice();
+        if(!summary.hasFinishDuringTurn() && player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN){
+            score=score+2;
+        }
+        if(summary.hasFinishDuringTurn()){
+            score=score+4;
+        }
+        if(player.getColorCombo()){
+            score=score+3;
+        }
+        ScoreOfEnd.put(player,score);
+    }
+    public Player whoIsTheWinner(){
+        int higherScore=0;
+        Player winner=null;
+        for (Player player : ScoreOfEnd.keySet()) {
+            if(higherScore<ScoreOfEnd.get(player)){
+                higherScore=ScoreOfEnd.get(player);
+                winner=player;
+            }
+        }
+        return winner;
     }
 
     public void resuscitateAllPlayers() {

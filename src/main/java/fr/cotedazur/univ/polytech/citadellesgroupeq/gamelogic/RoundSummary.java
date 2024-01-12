@@ -31,7 +31,8 @@ public class RoundSummary {
         this.optionalDestroyedDistrict = Optional.of(destroyedDistrict);
     }
 
-    private boolean hasWonDuringTurn;
+    private boolean hasFinishDuringTurn;
+
 
     /**
      * Id du joueur avec qui il a échangé ses cartes en tant que magicien. -1 si personne
@@ -48,11 +49,11 @@ public class RoundSummary {
 
     private List<District> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasWonDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn, Role stealedRole) {
+    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasFinishDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn, Role stealedRole) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtDistricts =new ArrayList<>(boughtDistricts);
-        this.hasWonDuringTurn = hasWonDuringTurn;
+        this.hasFinishDuringTurn = hasFinishDuringTurn;
         this.coinsWonByColorCards=coinsWonByColorCards;
         this.hasUsedPower = hasUsedPower;
         this.hasBeenKilledDuringTurn=hasBeenKilledDuringTurn;
@@ -135,12 +136,12 @@ public class RoundSummary {
         return stealedRole;
     }
 
-    public boolean hasWonDuringTurn() {
-        return hasWonDuringTurn;
+    public boolean hasFinishDuringTurn() {
+        return hasFinishDuringTurn;
     }
 
-    public void setHasWonDuringTurn(boolean hasWonDuringTurn) {
-        this.hasWonDuringTurn=hasWonDuringTurn;
+    public void setHasFinishDuringTurn(boolean hasWonDuringTurn) {
+        this.hasFinishDuringTurn =hasWonDuringTurn;
     }
 
     @Override
@@ -148,7 +149,7 @@ public class RoundSummary {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoundSummary summary = (RoundSummary) o;
-        return drawnCoins == summary.drawnCoins && Objects.equals(boughtDistricts, summary.boughtDistricts) && Objects.equals(drawnCards, summary.drawnCards) && hasWonDuringTurn == summary.hasWonDuringTurn();
+        return drawnCoins == summary.drawnCoins && Objects.equals(boughtDistricts, summary.boughtDistricts) && Objects.equals(drawnCards, summary.drawnCards) && hasFinishDuringTurn == summary.hasFinishDuringTurn();
     }
 
     @Override

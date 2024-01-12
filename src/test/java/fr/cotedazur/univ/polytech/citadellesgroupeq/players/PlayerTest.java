@@ -72,4 +72,15 @@ class PlayerTest {
         bot.rescucitate();
         assertFalse(bot.isDeadForThisTurn());
     }
+    @Test
+    void testGetColorCombo(){
+        List<District> districts =new ArrayList<>();
+        districts.add(new District("Temple",9,"blue"));
+        districts.add(new District("Eglise",8, "green"));
+        districts.add(new District("Monastere",7, "red"));
+        districts.add(new District("Prison",9,"yellow"));
+        districts.add(new District("Donjon",8, "purple"));//arbitrary colors just for the test
+        bot.addAllDistrictsToCity(districts);
+        assertTrue(bot.getColorCombo());
+    }
 }

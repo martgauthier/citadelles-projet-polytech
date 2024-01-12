@@ -286,6 +286,35 @@ public abstract class Player implements Comparable<Player> {
 
         return sum;
     }
+    public boolean getColorCombo(){
+        boolean blue=false;
+        boolean green=false;
+        boolean yellow=false;
+        boolean red=false;
+        boolean purple=false;
+        for(District district: city){
+            if(district.getColor()==Color.BLUE){
+                blue=true;
+            }
+            if(district.getColor()==Color.GREEN){
+                green=true;
+            }
+            if(district.getColor()==Color.YELLOW){
+                yellow=true;
+            }
+            if(district.getColor()==Color.RED){
+                red=true;
+            }
+            if(district.getColor()==Color.PURPLE){
+                purple=true;
+            }
+        }
+        if(blue && green && yellow && red && purple){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public boolean hasEmptyCity() {
         return this.city.isEmpty();
