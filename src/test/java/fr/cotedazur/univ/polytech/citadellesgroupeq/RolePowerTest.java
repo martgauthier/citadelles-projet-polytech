@@ -47,7 +47,7 @@ class RolePowerTest {
         evequePlayer.setRole(Role.EVEQUE);
         architectePlayer.setRole(Role.ARCHITECTE);
 
-        basicDistrict=new District("temple", 5, Color.PURPLE);
+        basicDistrict=new District("temple", 5, Color.PURPLE, "null");
         game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer, evequePlayer, architectePlayer));
         summary=new RoundSummary();
     }
@@ -98,7 +98,7 @@ class RolePowerTest {
         magicienPlayer = Mockito.spy(magicienPlayer);
         magicienPlayer.setRole(Role.MAGICIEN);
         doReturn(choosesToExchangeWithPlayer).when(magicienPlayer).choosesToExchangeCardWithPlayer();
-        doReturn(new District("temple", 8, Color.GRAY)).when(magicienPlayer).pickCard(summary);//prevents card from being picked
+        doReturn(new District("temple", 8, Color.GRAY, "null")).when(magicienPlayer).pickCard(summary);//prevents card from being picked
 
         game.getPlayersList().set(magicienPlayer.getId(), magicienPlayer);
     }
@@ -340,7 +340,7 @@ class RolePowerTest {
     void testCantDestroyDonjonMerveille() {
         initSpyCondottiere();
 
-        District donjon = new District("donjon", 1, Color.PURPLE);
+        District donjon = new District("donjon", 1, Color.PURPLE, "null");
         condottierePlayer.setCash(8);//make him able to destroy it
         game.getPlayersList().get(0).addDistrictToCity(donjon);
 
@@ -394,14 +394,14 @@ class RolePowerTest {
         architectePlayer.setCash(11000);//make him rich
 
         List<District> architecteHand = new ArrayList<>(List.of(
-                new District("temple", 8, Color.GRAY),
-                new District("temple", 8, Color.GRAY),
-                new District("temple", 8, Color.GRAY),
-                new District("temple", 8, Color.GRAY),
-                new District("temple", 8, Color.GRAY),
-                new District("temple", 8, Color.GRAY),
-                new District("temple", 8, Color.GRAY),
-                new District("temple", 8, Color.GRAY)));
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null")));
 
         architectePlayer.setCardsInHand(architecteHand); // il a 8 cartes en main, et le real estate player veut toujours acheter à 8 cartes
 

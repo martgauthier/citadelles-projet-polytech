@@ -59,9 +59,9 @@ class PlayerTest {
     @Test
     void testGetTotalCityPrice(){
         List<District> districts =new ArrayList<>();
-        districts.add(new District("Temple",9,"gray"));
-        districts.add(new District("Eglise",8, "gray"));
-        districts.add(new District("Monastere",7, "gray"));//arbitrary colors just for price
+        districts.add(new District("Temple",9,"gray", "null"));
+        districts.add(new District("Eglise",8, "gray", "null"));
+        districts.add(new District("Monastere",7, "gray", "null"));//arbitrary colors just for price
         bot.addAllDistrictsToCity(districts);
         assertEquals(24,bot.getTotalCityPrice());
     }

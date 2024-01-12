@@ -5,17 +5,22 @@ import java.util.Objects;
 public class District implements Comparable<District> {
     private String name;
     private int cost;
-
     private Color color;
+    private String power;
 
-    public District(String name, int cost, Color color) {
+    public District(String name, int cost, Color color, String power) {
         this.name=name;
         this.cost=cost;
         this.color=color;
+        this.power=power;
     }
 
-    public District(String name, int cost, String colorString) {
-        this(name, cost, Color.valueOf(colorString.toUpperCase()));
+    public District(String name, int cost, String colorString, String power) {
+        this(name, cost, Color.valueOf(colorString.toUpperCase()), power);
+    }
+
+    public String getPower(){
+        return power;
     }
 
     public int getCost() {
@@ -30,6 +35,10 @@ public class District implements Comparable<District> {
         if(0<=cost) {
             this.cost=cost;
         }
+    }
+
+    public void setColor(Color color){
+        this.color = color;
     }
 
     public Color getColor() {

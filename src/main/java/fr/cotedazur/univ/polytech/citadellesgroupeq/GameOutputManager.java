@@ -111,6 +111,7 @@ public class GameOutputManager {
                 System.out.println("Grâce à sa couleur et à ses cartes, il a gagné " + summary.getCoinsWonByColorCards() + " pièces.");
             }
 
+
             if (summary.hasPickedCards()) {
                 System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
             } else if (!player.isDeadForThisTurn()) {

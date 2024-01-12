@@ -22,8 +22,8 @@ class ColorPlayerTest {
         secondPlayer=new ColorPlayer(0);
         game=new GameLogicManager(List.of(firstPlayer, secondPlayer));
 
-        highPriceRedDistrict =new District("temple", 80, Color.RED);
-        lowPriceRedDistrict =new District("temple", 1, Color.RED);
+        highPriceRedDistrict =new District("temple", 80, Color.RED, "null");
+        lowPriceRedDistrict =new District("temple", 1, Color.RED, "null");
 
         firstPlayer.clearHand();
         secondPlayer.clearHand();
@@ -44,7 +44,7 @@ class ColorPlayerTest {
     @RepeatedTest(50)
     void testChoosesColorDistrict() {
         firstPlayer.setRole(Role.CONDOTTIERE);
-        firstPlayer.addAllCardsToHand(new District("temple", 8, Color.PURPLE), new District("temple", 7, Color.PURPLE), highPriceRedDistrict);
+        firstPlayer.addAllCardsToHand(new District("temple", 8, Color.PURPLE, "null"), new District("temple", 7, Color.PURPLE, "null"), highPriceRedDistrict);
         firstPlayer.addCoins(1000);//to make him rich
         assertTrue(firstPlayer.getChoosenDistrictToBuy().isPresent());
         assertEquals(highPriceRedDistrict.getName(), firstPlayer.getChoosenDistrictToBuy().get().getName());
@@ -54,7 +54,7 @@ class ColorPlayerTest {
     @Test
     void testBuysLowestColorDistrict() {
         firstPlayer.setRole(Role.CONDOTTIERE);
-        firstPlayer.addAllCardsToHand(highPriceRedDistrict, lowPriceRedDistrict, new District("temple", 1, Color.GRAY));
+        firstPlayer.addAllCardsToHand(highPriceRedDistrict, lowPriceRedDistrict, new District("temple", 1, Color.GRAY, "null"));
         firstPlayer.addCoins(1000);//to make him rich
         assertTrue(firstPlayer.getChoosenDistrictToBuy().isPresent());
         assertEquals(lowPriceRedDistrict, firstPlayer.getChoosenDistrictToBuy().get());
@@ -62,7 +62,7 @@ class ColorPlayerTest {
 
     @Test
     void testBuysOtherLowestCard() {
-        District lowPriceGrayDistrict =new District("temple", 2, Color.PURPLE);
+        District lowPriceGrayDistrict =new District("temple", 2, Color.PURPLE, "null");
         firstPlayer.addAllCardsToHand(highPriceRedDistrict, lowPriceGrayDistrict);
         firstPlayer.addCoins(3);
         assertTrue(firstPlayer.getChoosenDistrictToBuy().isPresent());
@@ -71,7 +71,7 @@ class ColorPlayerTest {
 
     @Test
     void testBuysNoCardIfTooExpensive() {
-        District highPriceGrayDistrict =new District("temple", 50, Color.GRAY);
+        District highPriceGrayDistrict =new District("temple", 50, Color.GRAY, "null");
         firstPlayer.addAllCardsToHand(highPriceGrayDistrict, highPriceRedDistrict);
         assertFalse(firstPlayer.getChoosenDistrictToBuy().isPresent());
     }
