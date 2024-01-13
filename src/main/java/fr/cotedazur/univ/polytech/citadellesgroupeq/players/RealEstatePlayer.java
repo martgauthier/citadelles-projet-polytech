@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
@@ -31,6 +32,8 @@ public class RealEstatePlayer extends Player {
      */
     @Override
     public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
+        PowerManager powerManager = new PowerManager(game);
+        powerManager.applyCityPowers(this);
         super.getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);

@@ -18,20 +18,18 @@ public class PowerManager {
         return game;
     }
 
-    public static List<String> setPowersFromCity(List<District> city) {
-        List<String> powerList = new ArrayList<>();
 
-        for (District district : city) {
+    public void applyCityPowers(Player player){
+        for (District district : player.getCity()) {
             String power = district.getPower();
-            if (!Objects.equals(power, "null")) {
-                powerList.add(power);
+            if (power != null) {
+                applyCityPowers(district,player);
             }
         }
-
-        return powerList;
     }
 
-    public void applyPower(District district, Player joueur){
+
+    public void applyCityPowers(District district, Player joueur){
         String pouvoir = district.getPower();
         switch (pouvoir) {
             case "Ecole de magie power":

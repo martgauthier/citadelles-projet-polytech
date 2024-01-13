@@ -72,4 +72,15 @@ class PlayerTest {
         bot.rescucitate();
         assertFalse(bot.isDeadForThisTurn());
     }
+
+    @Test
+    void testIsDistrictInCity(){
+        List<District> districts =new ArrayList<>();
+        districts.add(new District("Temple",9,"gray", "null"));
+        districts.add(new District("Eglise",8, "gray", "null"));
+        districts.add(new District("Ecole de Magie",7, "gray", "null"));
+        bot.addAllDistrictsToCity(districts);
+        assertTrue(bot.isDistrictInCity("Ecole de Magie"));
+        assertFalse(bot.isDistrictInCity("Dojon"));
+    }
 }

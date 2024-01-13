@@ -371,4 +371,28 @@ public abstract class Player implements Comparable<Player> {
 
         return Optional.empty();
     }
+
+    public boolean isDistrictInCity(String districtToCheck){
+        List<District> city = this.getCity();
+        for(District district: city){
+            String districtName = district.getName();
+            if(districtToCheck.equals(districtName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Optional<District> getDistrictInCity(String districtToGet) {
+        List<District> city = this.getCity();
+        for (District district : city) {
+            String districtName = district.getName();
+            if (districtToGet.equals(districtName)) {
+                return Optional.of(district);
+            }
+        }
+        return Optional.empty();
+    }
+
+
 }
