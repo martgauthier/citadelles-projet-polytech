@@ -112,7 +112,7 @@ public class GameOutputManager {
             if (summary.hasWonCoinsByColorCards()) {
                 System.out.println("Grâce à sa couleur et à ses cartes, il a gagné " + summary.getCoinsWonByColorCards() + " pièces.");
             }
-            Optional<District> optionalEcoleDeMagie = player.getDistrictInCity("Ecole de Magie");
+            Optional<District> optionalEcoleDeMagie = player.getDistrictInCity("Ecole de magie");
             if (optionalEcoleDeMagie.isPresent()){
                 District ecoleDeMagie = optionalEcoleDeMagie.get();
                 if(ecoleDeMagie.getColor() == player.getRole().getColor()){

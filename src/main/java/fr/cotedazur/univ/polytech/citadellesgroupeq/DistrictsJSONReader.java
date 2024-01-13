@@ -47,7 +47,7 @@ public class DistrictsJSONReader {
                     String name = (String) districtObject.get("name");
                     int cost = ((Long) districtObject.get("cost")).intValue();
                     String color = (String) districtObject.get("color");
-                    String pouvoir = (String) districtObject.get("pouvoir");
+                    String pouvoir = (String) districtObject.get("power");
 
                     districtsList.add(new District(name, cost, color, pouvoir));
                 }

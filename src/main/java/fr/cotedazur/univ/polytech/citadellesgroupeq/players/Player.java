@@ -376,7 +376,7 @@ public abstract class Player implements Comparable<Player> {
         List<District> city = this.getCity();
         for(District district: city){
             String districtName = district.getName();
-            if(districtToCheck.equals(districtName)) {
+            if(districtToCheck.equalsIgnoreCase(districtName)) {
                 return true;
             }
         }
@@ -384,10 +384,11 @@ public abstract class Player implements Comparable<Player> {
     }
 
     public Optional<District> getDistrictInCity(String districtToGet) {
+        //TODO Refactor it with "list.indexOf"
         List<District> city = this.getCity();
         for (District district : city) {
             String districtName = district.getName();
-            if (districtToGet.equals(districtName)) {
+            if (districtToGet.equalsIgnoreCase(districtName)) {
                 return Optional.of(district);
             }
         }
