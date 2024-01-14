@@ -3,6 +3,8 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.IStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -64,6 +66,7 @@ class RolePowerTest {
     void testPlayerIsDead() {
         assassinPlayer= Mockito.spy(new AlwaysSpendPlayer(0));
         assassinPlayer.setRole(Mockito.spy(Role.ASSASSIN));
+        assassinPlayer.setStrategy(new DefaultStrategy(assassinPlayer));
 
         game.getPlayersList().set(assassinPlayer.getId(), assassinPlayer);
 
@@ -81,6 +84,7 @@ class RolePowerTest {
     void testPlayerIsNotKilled() {
         assassinPlayer= Mockito.spy(new AlwaysSpendPlayer(0));
         assassinPlayer.setRole(Mockito.spy(Role.ASSASSIN));
+        assassinPlayer.setStrategy(new DefaultStrategy(assassinPlayer));
 
         game.getPlayersList().set(assassinPlayer.getId(), assassinPlayer);
 
@@ -97,6 +101,7 @@ class RolePowerTest {
     void initSpyMagicien(boolean choosesToExchangeWithPlayer) {
         magicienPlayer = Mockito.spy(magicienPlayer);
         magicienPlayer.setRole(Role.MAGICIEN);
+        magicienPlayer.setStrategy(new DefaultStrategy(magicienPlayer));
         doReturn(choosesToExchangeWithPlayer).when(magicienPlayer).choosesToExchangeCardWithPlayer();
         doReturn(new District("temple", 8, Color.GRAY)).when(magicienPlayer).pickCard(summary);//prevents card from being picked
 
@@ -135,6 +140,7 @@ class RolePowerTest {
     @Test
     void testVoleurStealsGold() throws Exception {
         voleurPlayer = Mockito.spy(new AlwaysSpendPlayer(1));
+        voleurPlayer.setStrategy(new DefaultStrategy(voleurPlayer));
         voleurPlayer.setRole(Mockito.spy(Role.VOLEUR));
 
         game.getPlayersList().set(voleurPlayer.getId(), voleurPlayer);
@@ -240,6 +246,7 @@ class RolePowerTest {
     void initSpyCondottiere() {
         condottierePlayer.setRole(Role.CONDOTTIERE);
         condottierePlayer=Mockito.spy(condottierePlayer);
+        condottierePlayer.setStrategy(new DefaultStrategy(condottierePlayer));
 
         doReturn(Optional.empty()).when(condottierePlayer).getChoosenDistrictToBuy();
     }
@@ -367,6 +374,7 @@ class RolePowerTest {
      */
     void initSpyArchitecte() {
         architectePlayer=Mockito.spy(architectePlayer);
+        architectePlayer.setStrategy(new DefaultStrategy(architectePlayer));
     }
 
     @Test
@@ -395,7 +403,7 @@ class RolePowerTest {
 
         architectePlayer.playPlayerTurn(summary, game);
 
-        verify(architectePlayer, times(3)).buyDistrictsDuringTurn(any());
+        verify(architectePlayer, times(3)).buyDistrictsDuringTurn(summary);
         assertEquals(3, summary.getBoughtDistricts().size());
     }
 

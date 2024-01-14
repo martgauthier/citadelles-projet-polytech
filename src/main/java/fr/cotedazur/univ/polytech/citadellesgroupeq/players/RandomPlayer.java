@@ -46,7 +46,7 @@ public class RandomPlayer extends Player {
             pickCard(summary);
         }
 
-        super.buyDistrictsDuringTurn(summary);
+        buyDistrictsDuringTurn(summary);
     }
 
 
