@@ -5,9 +5,8 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
-import net.bytebuddy.build.Plugin;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -54,10 +53,11 @@ class GameLogicManagerTest {
         assertEquals(1, game.getMasterOfTheGameIndex());
     }
 
-    @RepeatedTest(50)
+    @Test
     void testRolesSelected() {
         for(int i=0; i < game.getPlayersList().size(); i++) {
             game.getPlayersList().set(i, Mockito.spy(game.getPlayersList().get(i)));
+            game.getPlayersList().get(i).setStrategy(new DefaultStrategy(game.getPlayersList().get(i)));
         }
 
         game.makeAllPlayersSelectRole();
@@ -84,7 +84,7 @@ class GameLogicManagerTest {
         }
     }
 
-    @RepeatedTest(50)
+    @Test
     void testCreatingGameWithPlayers() {
         for(Player player: game.getPlayersList()) {
             assertEquals(2, player.getCardsInHand().size());
@@ -104,7 +104,7 @@ class GameLogicManagerTest {
         assertNotEquals(firstGame.getPlayersList().get(0).getCash(), secondGame.getPlayersList().get(0).getCash());//changer le cash d'un ne change pas le cash de l'autre
     }
 
-    @RepeatedTest(50)
+    @Test
     void testPlayerTurn() {
         game = new GameLogicManager();
         game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes

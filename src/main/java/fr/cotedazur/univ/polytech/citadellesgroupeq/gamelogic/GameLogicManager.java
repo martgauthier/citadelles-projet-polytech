@@ -109,7 +109,7 @@ public class GameLogicManager {
 
             playersInRolePickingOrder.add(selectedPlayer);
 
-            int selectedRoleIndex=selectedPlayer.selectRole(availableRoles);
+            int selectedRoleIndex=selectedPlayer.getStrategy().selectRole(availableRoles);
             if(availableRoles.get(selectedRoleIndex) == Role.EMPTY_ROLE) {
                 throw new IllegalArgumentException("Roles can't be EMPTY_ROLE.");
             }
@@ -131,17 +131,16 @@ public class GameLogicManager {
             summary.setHasBeenKilledDuringTurn();
         }
         else {
-            player.playPlayerTurn(summary, this);
+            player.getStrategy().playPlayerTurn(summary, this);
             if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN && !isFinished) {
-                    summary.setHasFinishDuringTurn(true);
-                    finishGame();
+                summary.setHasFinishDuringTurn(true);
+                finishGame();
             }
 
             makeScoreofPlayer(player, summary);//is read only at end of game, but is useful for tests
         }
         return summary;
     }
-
 
     /**
      *

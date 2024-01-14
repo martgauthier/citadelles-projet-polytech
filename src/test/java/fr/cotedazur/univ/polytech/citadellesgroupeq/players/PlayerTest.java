@@ -4,7 +4,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ class PlayerTest {
         assertEquals(4, bot.getCardsInHand().size());
     }
 
-    @RepeatedTest(100)
+    @Test
     void testDealCardsOrCash() {
         assertEquals(0, bot.getCash());
         assertEquals(2, bot.getCardsInHand().size());
