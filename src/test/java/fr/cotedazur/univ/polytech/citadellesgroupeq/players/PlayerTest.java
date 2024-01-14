@@ -81,6 +81,6 @@ class PlayerTest {
         districts.add(new District("Prison",9,"yellow"));
         districts.add(new District("Donjon",8, "purple"));//arbitrary colors just for the test
         bot.addAllDistrictsToCity(districts);
-        assertTrue(bot.getColorCombo());
+        assertTrue(bot.hasAllColorsInCity());
     }
 }

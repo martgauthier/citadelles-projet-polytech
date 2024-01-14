@@ -286,7 +286,7 @@ public abstract class Player implements Comparable<Player> {
 
         return sum;
     }
-    public boolean getColorCombo(){
+    public boolean hasAllColorsInCity(){
         boolean blue=false;
         boolean green=false;
         boolean yellow=false;

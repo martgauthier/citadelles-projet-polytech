@@ -132,20 +132,17 @@ public class GameLogicManager {
         }
         else {
             player.playPlayerTurn(summary, this);
-            if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN) {
-                if(isFinished){
-                    makeScoreofPlayer(player,summary);
-                }else{
+            if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN && !isFinished) {
                     summary.setHasFinishDuringTurn(true);
-                    makeScoreofPlayer(player,summary);
                     finishGame();
-                }
             }
-            makeScoreofPlayer(player,summary);
+
+            makeScoreofPlayer(player, summary);//is read only at end of game, but is useful for tests
         }
         return summary;
     }
-    //TODO créer une méthode qui compte les points
+
+
     /**
      *
      * @return la liste des joueurs dans leur ordre de passage dû à leur rôle (un Assassin joue avant un Condottiere, quel que soit son id de joueur).
@@ -218,26 +215,25 @@ public class GameLogicManager {
         return newAvailableRoles;
     }
     public void makeScoreofPlayer(Player player,RoundSummary summary){
-        int score=0;
-        score=score+player.getTotalCityPrice();
+        int score=player.getTotalCityPrice();
         if(!summary.hasFinishDuringTurn() && player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN){
-            score=score+2;
+            score+=2;
         }
         if(summary.hasFinishDuringTurn()){
-            score=score+4;
+            score+=4;
         }
-        if(player.getColorCombo()){
-            score=score+3;
+        if(player.hasAllColorsInCity()){
+            score+=3;
         }
         ScoreOfEnd.put(player,score);
     }
     public Player whoIsTheWinner(){
         int higherScore=0;
-        Player winner=null;
-        for (Player player : ScoreOfEnd.keySet()) {
-            if(higherScore<ScoreOfEnd.get(player)){
-                higherScore=ScoreOfEnd.get(player);
-                winner=player;
+        Player winner=playerTreeSet.last();//en cas d'égalité, le joueur qui gagne est celui qui a le plus haut rôle au dernier tour
+        for (Map.Entry<Player, Integer> entry : ScoreOfEnd.entrySet()) {
+            if(higherScore<entry.getValue()){
+                higherScore=entry.getValue();
+                winner=entry.getKey();
             }
         }
         return winner;
