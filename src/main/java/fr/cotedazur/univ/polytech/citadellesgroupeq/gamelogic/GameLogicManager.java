@@ -38,6 +38,7 @@ public class GameLogicManager {
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
+    private Map<Player, Integer> ScoreOfEnd=new HashMap<>();
 
 
     //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
@@ -72,6 +73,9 @@ public class GameLogicManager {
 
     public List<Player> getPlayersList() {
         return playersList;
+    }
+    public Map<Player, Integer> getScoreOfEnd() {
+        return ScoreOfEnd;
     }
 
     /**
@@ -128,10 +132,12 @@ public class GameLogicManager {
         }
         else {
             player.getStrategy().playPlayerTurn(summary, this);
-            if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN) {
-                summary.setHasWonDuringTurn(true);
+            if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN && !isFinished) {
+                summary.setHasFinishDuringTurn(true);
                 finishGame();
             }
+
+            makeScoreofPlayer(player, summary);//is read only at end of game, but is useful for tests
         }
         return summary;
     }
@@ -206,6 +212,30 @@ public class GameLogicManager {
             newAvailableRoles.add(randomRole);
         }
         return newAvailableRoles;
+    }
+    public void makeScoreofPlayer(Player player,RoundSummary summary){
+        int score=player.getTotalCityPrice();
+        if(!summary.hasFinishDuringTurn() && player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN){
+            score+=2;
+        }
+        if(summary.hasFinishDuringTurn()){
+            score+=4;
+        }
+        if(player.hasAllColorsInCity()){
+            score+=3;
+        }
+        ScoreOfEnd.put(player,score);
+    }
+    public Player whoIsTheWinner(){
+        int higherScore=0;
+        Player winner=playerTreeSet.last();//en cas d'égalité, le joueur qui gagne est celui qui a le plus haut rôle au dernier tour
+        for (Map.Entry<Player, Integer> entry : ScoreOfEnd.entrySet()) {
+            if(higherScore<entry.getValue()){
+                higherScore=entry.getValue();
+                winner=entry.getKey();
+            }
+        }
+        return winner;
     }
 
     public void resuscitateAllPlayers() {

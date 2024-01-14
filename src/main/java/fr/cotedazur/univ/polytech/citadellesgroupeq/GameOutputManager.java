@@ -34,15 +34,14 @@ public class GameOutputManager {
             describeRolePicking(game.makeAllPlayersSelectRole(availableRoles), game.getMasterOfTheGameIndex());//décrit les rôles choisis par chaque joueur
 
             for(Player player : game.getPlayerTreeSet()) {
-                if(!game.isFinished()) {//actuellement, on s'arrête DES qu'un joueur a 8 cartes. Dans la version finale, il faudra laisser la fin du tour
-                    describePlayerRound(player, game);
-                }
+                describePlayerRound(player, game);
             }
 
 
             game.resuscitateAllPlayers();
             System.out.println("--------------");
         }
+        System.out.println("Le joueur "+game.whoIsTheWinner().getId()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
         System.out.println("Jeu fini !");
     }
 
@@ -122,11 +121,12 @@ public class GameOutputManager {
             System.out.println("Il a acheté cette/ces carte(s):");
             System.out.println(getDescriptionOfCards(summary.getBoughtDistricts()));
         }
-        if(summary.hasWonDuringTurn()) {
-            System.out.println("Il a gagné, car il possède dans sa cité " + GameLogicManager.NUMBER_OF_DISTRICTS_TO_WIN + " citadelles.\n");
+        if(summary.hasFinishDuringTurn()) {
+            System.out.println("Il est le premier premier à finir, car il possède dans sa cité " + GameLogicManager.NUMBER_OF_DISTRICTS_TO_WIN + " citadelles.\n");
             System.out.println("Voici sa cité");
             System.out.println(getDescriptionOfCards(player.getCity()));
         }
+        //TODO faire un affichage pour ceux qui finisse apres le premier dans le meme tour et affichage du grand gagnant
         System.out.println("\n");
     }
 
