@@ -49,6 +49,11 @@ public class RandomPlayer extends Player {
         buyDistrictsDuringTurn(summary);
     }
 
+    @Override
+    public String getBotLogicName() {
+        return "RandomPlayer";
+    }
+
 
     @Override
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playersList) {

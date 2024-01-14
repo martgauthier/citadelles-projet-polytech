@@ -8,10 +8,8 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;

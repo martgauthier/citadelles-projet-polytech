@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.IStrategy;
@@ -366,4 +365,6 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public Player getPlayer() {
         return this;
     }
+
+    public abstract String getBotLogicName();
 }

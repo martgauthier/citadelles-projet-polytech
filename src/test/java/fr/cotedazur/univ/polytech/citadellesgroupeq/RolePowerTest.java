@@ -4,9 +4,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.IStrategy;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
