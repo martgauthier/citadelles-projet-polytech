@@ -1,8 +1,9 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.IStrategy;
 
 import java.util.*;
 
@@ -10,7 +11,7 @@ import java.util.*;
  * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
  * d'argent (cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
  */
-public abstract class Player implements Comparable<Player> {
+public abstract class Player implements Comparable<Player>, IStrategy {
 
     public Random randomGenerator=new Random();
     private int cash;
@@ -31,6 +32,11 @@ public abstract class Player implements Comparable<Player> {
 
     private Role role;
 
+    /**
+     * Strategy used by Player
+     */
+    private IStrategy strategy;
+
     protected Player(int id) {
         this(id, DEFAULT_CASH, new ArrayList<>(),false);
         pickCard(new RoundSummary());
@@ -44,6 +50,7 @@ public abstract class Player implements Comparable<Player> {
         this.cardsInHand =new ArrayList<>(cards);//to make sure List is modifiable
         this.city=new ArrayList<>();
         this.deadForThisTurn = deadForThisTurn;
+        this.strategy=new DefaultStrategy(this);
     }
 
     public void setRandomGenerator(Random customRandom) {
@@ -90,11 +97,8 @@ public abstract class Player implements Comparable<Player> {
     }
 
 
-    /**
-     * Choisi un rôle à Assasiner
-     * @param availableRoles les rôles disponible
-     * @return un rôle
-     */
+
+    @Override
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
         Role assassinatedRole;
         do { //boucle while pour éviter qu'il se tue lui même
@@ -104,6 +108,7 @@ public abstract class Player implements Comparable<Player> {
     }
 
 
+    @Override
     public Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) {
         for (int i = 0; i < availableRoles.size(); i++) {
             Role stealedRole = availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
@@ -151,11 +156,8 @@ public abstract class Player implements Comparable<Player> {
     }
 
 
-    /**
-     * Sélectionne un rôle aléatoirement dans la liste availableRoles pour le joueur
-     * @param availableRoles les rôles disponibles
-     * @return l'id dans la liste fournie du rôle sélectionné
-     */
+
+    @Override
     public int selectRole(List<Role> availableRoles) {
         int selectedRoleIndex=randomGenerator.nextInt(availableRoles.size());//la sélection est pour l'instant aléatoire
         setRole(availableRoles.get(selectedRoleIndex));
@@ -291,12 +293,6 @@ public abstract class Player implements Comparable<Player> {
         return this.city.isEmpty();
     }
 
-    /**
-     *
-     * @return la citadelle que le joueur a choisi d'acheter (par défaut, la moins chère). Si le joueur n'est pas en mesure d'acheter une citadelle, l'Optional est empty
-     */
-    public abstract Optional<District> getChoosenDistrictToBuy();
-
     public void getCoinsFromColorCards(RoundSummary summary) {
         for(District cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
@@ -307,7 +303,7 @@ public abstract class Player implements Comparable<Player> {
     }
 
     public void buyDistrictsDuringTurn(RoundSummary summary) {
-        Optional<District> choosenDistrict = getChoosenDistrictToBuy();
+        Optional<District> choosenDistrict = strategy.getChoosenDistrictToBuy();
         if (choosenDistrict.isPresent()) {
             District district = choosenDistrict.get();
             addDistrictToCity(district);
@@ -317,20 +313,11 @@ public abstract class Player implements Comparable<Player> {
         }
     }
 
-    public abstract Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playerList);
-
-    /**
-     *
-     * @return true si il échange avec un joueur, false si il veut échanger certaines de ses cartes avec des cartes de la pile (d'après règle du jeu)
-     */
-    public abstract boolean choosesToExchangeCardWithPlayer();
-
     public void clearHand() {
         cardsInHand.clear();
     }
 
-    public abstract void playPlayerTurn(RoundSummary summary, GameLogicManager game);
-
+    @Override
     public int[] selectCardsToExchangeWithPileAsMagicien() {//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
         if (!getCardsInHand().isEmpty()) {
             int start = randomGenerator.nextInt(getCardsInHand().size());
@@ -350,13 +337,7 @@ public abstract class Player implements Comparable<Player> {
         }
     }
 
-    /**
-     * Le choix du district à détruire si le rôle est condottiere. Ne contient qu'UN couple IdPlayer/District au maximum.
-     * Le district choisi doit coûter au maximum cashdujoueur+1.
-     * L'Optional est empty si le condottiere ne veut/peut rien détruire.
-     * @param players liste des joueurs.
-     * @return un optional rempli avec un seul couple idjoueur/district. Optional est empty si le condottiere ne veut/peut rien détruire
-     */
+    @Override
     public Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players) {
         for(Player testedPlayer: players) {//Default strategy: returns first destroyable district not from the current player
             if(testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn())){
@@ -371,5 +352,19 @@ public abstract class Player implements Comparable<Player> {
 
         return Optional.empty();
     }
-    public abstract String getPlayerStrategyName();
+
+    public IStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(IStrategy strategy) {
+        this.strategy=strategy;
+    }
+
+    @Override
+    public Player getPlayer() {
+        return this;
+    }
+
+    public abstract String getBotLogicName();
 }
