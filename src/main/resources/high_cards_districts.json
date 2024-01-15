@@ -72,7 +72,8 @@
   {
     "name": "Ecole de magie",
     "cost": 6,
-    "color": "purple"
+    "color": "purple",
+    "power": "Ecole de magie power"
   },
   {
     "name": "Université",

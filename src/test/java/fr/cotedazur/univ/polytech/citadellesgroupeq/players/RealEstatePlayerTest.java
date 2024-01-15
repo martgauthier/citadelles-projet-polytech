@@ -21,14 +21,14 @@ class RealEstatePlayerTest {
     public void setUp(){
         List<District> districtList = new ArrayList<>();
 
-        districtList.add(new District("Temple", 9, "blue"));
-        districtList.add(new District("Eglise", 8, "blue"));
-        districtList.add(new District("Monastere", 7, "blue"));
-        districtList.add(new District("Cathedrale", 6, "blue"));
-        districtList.add(new District("Chateau", 4, "yellow"));
-        districtList.add(new District("Palais", 5, "yellow"));
-        districtList.add(new District("Port", 4, "green"));
-        districtList.add(new District("Hotel de ville", 5, "green"));
+        districtList.add(new District("Temple", 9, "blue", "null"));
+        districtList.add(new District("Eglise", 8, "blue", "null"));
+        districtList.add(new District("Monastere", 7, "blue", "null"));
+        districtList.add(new District("Cathedrale", 6, "blue", "null"));
+        districtList.add(new District("Chateau", 4, "yellow", "null"));
+        districtList.add(new District("Palais", 5, "yellow", "null"));
+        districtList.add(new District("Port", 4, "green", "null"));
+        districtList.add(new District("Hotel de ville", 5, "green", "null"));
 
         botWithEightCards = new RealEstatePlayer(0,0, districtList);
         botWithoutCards = new RealEstatePlayer(1,0,new ArrayList<>());

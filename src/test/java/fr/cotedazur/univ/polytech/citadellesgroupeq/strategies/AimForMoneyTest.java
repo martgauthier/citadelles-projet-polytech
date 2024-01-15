@@ -68,7 +68,7 @@ class AimForMoneyTest {
 
     @Test
     void testAimForMoneyNeverBuys() {
-        mainPlayer.addCardToHand(new District("temple", 1, Color.RED));//really cheap card
+        mainPlayer.addCardToHand(new District("temple", 1, Color.RED, "null"));//really cheap card
         mainPlayer.setCash(10000);//make him rich
         summary=game.playPlayerTurn(mainPlayer);
         assertFalse(summary.hasBoughtDistricts());

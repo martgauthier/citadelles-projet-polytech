@@ -288,6 +288,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
 
         return sum;
     }
+
     public boolean hasAllColorsInCity(){
         boolean blue=false;
         boolean green=false;
@@ -372,7 +373,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
             if(testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn())){
                 //un eveque peut se faire détruire un district si il est mort.
                 for(District district: testedPlayer.getCity()) {
-                    if(district.getCost() - 1 <= this.getCash()) {
+                    if(district.getCost() - 1 <= this.getCash() && !(district.getColor() == Color.PURPLE && district.getName().equalsIgnoreCase("donjon"))) {
                         return Optional.of(new AbstractMap.SimpleEntry<>(testedPlayer.getId(), district));
                     }
                 }
@@ -396,4 +397,29 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public abstract String getBotLogicName();
+
+    public boolean isDistrictInCity(String districtToCheck){
+        List<District> city = this.getCity();
+        for(District district: city){
+            String districtName = district.getName();
+            if(districtToCheck.equalsIgnoreCase(districtName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Optional<District> getDistrictInCity(String districtToGet) {
+        //TODO Refactor it with "list.indexOf"
+        List<District> city = this.getCity();
+        for (District district : city) {
+            String districtName = district.getName();
+            if (districtToGet.equalsIgnoreCase(districtName)) {
+                return Optional.of(district);
+            }
+        }
+        return Optional.empty();
+    }
+
+
 }

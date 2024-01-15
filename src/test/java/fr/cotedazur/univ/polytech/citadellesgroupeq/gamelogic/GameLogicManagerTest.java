@@ -139,25 +139,25 @@ class GameLogicManagerTest {
     @Test
     void testMakeScoreOfPlayer(){
         List<District> districts=new ArrayList<>();
-        districts.add(new District("Temple",1,"blue"));
-        districts.add(new District("Eglise",2, "green"));
-        districts.add(new District("Monastere",1, "red"));
-        districts.add(new District("Prison",2,"yellow"));
-        districts.add(new District("Donjon",1, "purple"));
+        districts.add(new District("Temple",1,"blue", "null"));
+        districts.add(new District("Eglise",2, "green", "null"));
+        districts.add(new District("Monastere",1, "red", "null"));
+        districts.add(new District("Prison",2,"yellow", "null"));
+        districts.add(new District("Donjon",1, "purple", "null"));
         game.getPlayersList().get(0).addAllDistrictsToCity(districts);
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
         game.playPlayerTurn(game.getPlayersList().get(0));
         assertEquals(10,game.getScoreOfEnd().get(game.getPlayersList().get(0)));
 
         List<District> districts2=new ArrayList<>();
-        districts2.add(new District("Temple",1,"blue"));
-        districts2.add(new District("Eglise",2, "green"));
-        districts2.add(new District("Monastere",1, "red"));
-        districts2.add(new District("Prison",2,"yellow"));
-        districts2.add(new District("Donjon",1, "purple"));
-        districts2.add(new District("Marché",1, "purple"));
-        districts2.add(new District("Chateau",1, "purple"));
-        districts2.add(new District("Palais",1, "purple"));
+        districts2.add(new District("Temple",1,"blue", "null"));
+        districts2.add(new District("Eglise",2, "green", "null"));
+        districts2.add(new District("Monastere",1, "red", "null"));
+        districts2.add(new District("Prison",2,"yellow", "null"));
+        districts2.add(new District("Donjon",1, "purple", "null"));
+        districts2.add(new District("Marché",1, "purple", "null"));
+        districts2.add(new District("Chateau",1, "purple", "null"));
+        districts2.add(new District("Palais",1, "purple", "null"));
         RoundSummary summary=new RoundSummary();
         summary.setHasFinishDuringTurn(true);
         game.getPlayersList().get(1).addAllDistrictsToCity(districts2);

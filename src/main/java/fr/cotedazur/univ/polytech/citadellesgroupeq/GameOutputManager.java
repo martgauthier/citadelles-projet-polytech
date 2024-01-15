@@ -6,6 +6,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.util.AbstractMap;
 import java.util.List;
+import java.util.Optional;
 
 public class GameOutputManager {
     private GameLogicManager game;
@@ -68,6 +69,7 @@ public class GameOutputManager {
         describePlayerState(player);
 
         RoundSummary summary = game.playPlayerTurn(player);
+        PowerManager powerManager = new PowerManager(game);
         if(summary.hasBeenKilled()){
             System.out.println("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
         }
@@ -109,6 +111,14 @@ public class GameOutputManager {
             if (summary.hasWonCoinsByColorCards()) {
                 System.out.println("Grâce à sa couleur et à ses cartes, il a gagné " + summary.getCoinsWonByColorCards() + " pièces.");
             }
+            Optional<District> optionalEcoleDeMagie = player.getDistrictInCity("Ecole de magie");
+            if (optionalEcoleDeMagie.isPresent()){
+                District ecoleDeMagie = optionalEcoleDeMagie.get();
+                if(ecoleDeMagie.getColor() == player.getRole().getColor()){
+                    System.out.println("Dont une pièce grâce à l'Ecole de magie");
+                }
+            }
+
 
             if (summary.hasPickedCards()) {
                 System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());

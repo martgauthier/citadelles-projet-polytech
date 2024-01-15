@@ -58,9 +58,9 @@ class PlayerTest {
     @Test
     void testGetTotalCityPrice(){
         List<District> districts =new ArrayList<>();
-        districts.add(new District("Temple",9,"gray"));
-        districts.add(new District("Eglise",8, "gray"));
-        districts.add(new District("Monastere",7, "gray"));//arbitrary colors just for price
+        districts.add(new District("Temple",9,"gray", "null"));
+        districts.add(new District("Eglise",8, "gray", "null"));
+        districts.add(new District("Monastere",7, "gray", "null"));//arbitrary colors just for price
         bot.addAllDistrictsToCity(districts);
         assertEquals(24,bot.getTotalCityPrice());
     }
@@ -74,12 +74,23 @@ class PlayerTest {
     @Test
     void testGetColorCombo(){
         List<District> districts =new ArrayList<>();
-        districts.add(new District("Temple",9,"blue"));
-        districts.add(new District("Eglise",8, "green"));
-        districts.add(new District("Monastere",7, "red"));
-        districts.add(new District("Prison",9,"yellow"));
-        districts.add(new District("Donjon",8, "purple"));//arbitrary colors just for the test
+        districts.add(new District("Temple",9,"blue", "null"));
+        districts.add(new District("Eglise",8, "green", "null"));
+        districts.add(new District("Monastere",7, "red", "null"));
+        districts.add(new District("Prison",9,"yellow", "null"));
+        districts.add(new District("Donjon",8, "purple", "null"));//arbitrary colors just for the test
         bot.addAllDistrictsToCity(districts);
         assertTrue(bot.hasAllColorsInCity());
+    }
+
+    @Test
+    void testIsDistrictInCity(){
+        List<District> districts =new ArrayList<>();
+        districts.add(new District("Temple",9,"gray", "null"));
+        districts.add(new District("Eglise",8, "gray", "null"));
+        districts.add(new District("Ecole de Magie",7, "gray", "null"));
+        bot.addAllDistrictsToCity(districts);
+        assertTrue(bot.isDistrictInCity("Ecole de Magie"));
+        assertFalse(bot.isDistrictInCity("Dojon"));
     }
 }
