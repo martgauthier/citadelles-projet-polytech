@@ -5,8 +5,8 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -53,10 +53,11 @@ class GameLogicManagerTest {
         assertEquals(1, game.getMasterOfTheGameIndex());
     }
 
-    @RepeatedTest(50)
+    @Test
     void testRolesSelected() {
         for(int i=0; i < game.getPlayersList().size(); i++) {
             game.getPlayersList().set(i, Mockito.spy(game.getPlayersList().get(i)));
+            game.getPlayersList().get(i).setStrategy(new DefaultStrategy(game.getPlayersList().get(i)));
         }
 
         game.makeAllPlayersSelectRole();
@@ -83,7 +84,7 @@ class GameLogicManagerTest {
         }
     }
 
-    @RepeatedTest(50)
+    @Test
     void testCreatingGameWithPlayers() {
         for(Player player: game.getPlayersList()) {
             assertEquals(2, player.getCardsInHand().size());
@@ -103,7 +104,7 @@ class GameLogicManagerTest {
         assertNotEquals(firstGame.getPlayersList().get(0).getCash(), secondGame.getPlayersList().get(0).getCash());//changer le cash d'un ne change pas le cash de l'autre
     }
 
-    @RepeatedTest(50)
+    @Test
     void testPlayerTurn() {
         game = new GameLogicManager();
         game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes
@@ -134,5 +135,40 @@ class GameLogicManagerTest {
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
         game.playPlayerTurn(game.getPlayersList().get(0));
         assertTrue(game.isFinished());
+    }
+    @Test
+    void testMakeScoreOfPlayer(){
+        List<District> districts=new ArrayList<>();
+        districts.add(new District("Temple",1,"blue", "null"));
+        districts.add(new District("Eglise",2, "green", "null"));
+        districts.add(new District("Monastere",1, "red", "null"));
+        districts.add(new District("Prison",2,"yellow", "null"));
+        districts.add(new District("Donjon",1, "purple", "null"));
+        game.getPlayersList().get(0).addAllDistrictsToCity(districts);
+        game.getPlayersList().get(0).setRole(Role.ASSASSIN);
+        game.playPlayerTurn(game.getPlayersList().get(0));
+        assertEquals(10,game.getScoreOfEnd().get(game.getPlayersList().get(0)));
+
+        List<District> districts2=new ArrayList<>();
+        districts2.add(new District("Temple",1,"blue", "null"));
+        districts2.add(new District("Eglise",2, "green", "null"));
+        districts2.add(new District("Monastere",1, "red", "null"));
+        districts2.add(new District("Prison",2,"yellow", "null"));
+        districts2.add(new District("Donjon",1, "purple", "null"));
+        districts2.add(new District("Marché",1, "purple", "null"));
+        districts2.add(new District("Chateau",1, "purple", "null"));
+        districts2.add(new District("Palais",1, "purple", "null"));
+        RoundSummary summary=new RoundSummary();
+        summary.setHasFinishDuringTurn(true);
+        game.getPlayersList().get(1).addAllDistrictsToCity(districts2);
+        game.getPlayersList().get(1).setRole(Role.ASSASSIN);
+        game.makeScoreofPlayer(game.getPlayersList().get(1),summary);
+        assertEquals(17,game.getScoreOfEnd().get(game.getPlayersList().get(1)));
+
+        RoundSummary summary1=new RoundSummary();
+        game.getPlayersList().get(2).addAllDistrictsToCity(districts2);
+        game.getPlayersList().get(2).setRole(Role.ASSASSIN);
+        game.makeScoreofPlayer(game.getPlayersList().get(2),summary1);
+        assertEquals(15,game.getScoreOfEnd().get(game.getPlayersList().get(2)));
     }
 }

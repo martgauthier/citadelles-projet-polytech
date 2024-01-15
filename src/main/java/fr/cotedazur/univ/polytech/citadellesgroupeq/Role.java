@@ -16,7 +16,7 @@ public enum Role {
         @Override
         public void power (GameLogicManager g, Player assassin, RoundSummary summary) {
             summary.setHasUsedPower();
-            Role assassinatedRole=assassin.selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
+            Role assassinatedRole=assassin.getStrategy().selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
                     player.dieForThisTurn();
@@ -37,7 +37,7 @@ public enum Role {
             }
             List<Role> availableRoles = g.generateAvailableRoles(g.getPlayersList().size());
 
-            Optional<Role> stealedRole = voleur.selectRoleToSteal(availableRoles, unstealableRoles);
+            Optional<Role> stealedRole = voleur.getStrategy().selectRoleToSteal(availableRoles, unstealableRoles);
 
             if(stealedRole.isPresent()) {
                 for (Player player : g.getPlayersList()) {
@@ -59,14 +59,14 @@ public enum Role {
             summary.setHasUsedPower();
 
             if(magicien.choosesToExchangeCardWithPlayer()) {
-                Player selectedPlayerToExchangeWith = magicien.selectPlayerToExchangeCardsWithAsMagicien(g.getPlayersList());
+                Player selectedPlayerToExchangeWith = magicien.getStrategy().selectPlayerToExchangeCardsWithAsMagicien(g.getPlayersList());
                 List<District> districtListCopy=selectedPlayerToExchangeWith.getCardsInHand();
                 selectedPlayerToExchangeWith.setCardsInHand(magicien.getCardsInHand());
                 magicien.setCardsInHand(districtListCopy);
                 summary.setExchangedCardsPlayerId(selectedPlayerToExchangeWith.getId());
             }
             else {//wants to draw some cards from the pile
-                int[] cardsToExchange=magicien.selectCardsToExchangeWithPileAsMagicien();
+                int[] cardsToExchange=magicien.getStrategy().selectCardsToExchangeWithPileAsMagicien();
 
                 DistrictsJSONReader districtsJSONReader = new DistrictsJSONReader();
 

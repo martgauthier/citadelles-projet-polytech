@@ -57,7 +57,12 @@ public class ColorPlayer extends Player {
             draw2Coins(summary);
         }
 
-        super.buyDistrictsDuringTurn(summary);
+        buyDistrictsDuringTurn(summary);
+    }
+
+    @Override
+    public String getBotLogicName() {
+        return "ColorPlayer";
     }
 
     @Override

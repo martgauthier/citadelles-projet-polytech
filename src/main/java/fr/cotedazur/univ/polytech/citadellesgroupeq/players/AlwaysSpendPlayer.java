@@ -40,11 +40,16 @@ public class AlwaysSpendPlayer extends Player{
 
         if (!getCardsInHand().isEmpty()) {
             draw2Coins(summary);
-            super.buyDistrictsDuringTurn(summary);
+            buyDistrictsDuringTurn(summary);
         }
         else {
             pickCard(summary);
         }
+    }
+
+    @Override
+    public String getBotLogicName() {
+        return "AlwaysSpendPlayer";
     }
 
     @Override

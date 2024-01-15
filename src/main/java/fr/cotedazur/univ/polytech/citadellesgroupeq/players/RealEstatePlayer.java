@@ -38,13 +38,18 @@ public class RealEstatePlayer extends Player {
 
         getRole().power(game, this, summary);
 
-        if (getCardsInHand().size() != 8) {
+        if (getCardsInHand().size() < 8) {
             pickCard(summary);
         }
         else {
             draw2Coins(summary);
-            super.buyDistrictsDuringTurn(summary);
+            buyDistrictsDuringTurn(summary);
         }
+    }
+
+    @Override
+    public String getBotLogicName() {
+        return "RealEstatePlayer";
     }
 
     @Override

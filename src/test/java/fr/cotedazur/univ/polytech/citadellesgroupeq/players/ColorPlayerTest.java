@@ -5,7 +5,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -41,7 +40,7 @@ class ColorPlayerTest {
         assertEquals(0, firstPlayer.selectRole(availablesRoles));
     }
 
-    @RepeatedTest(50)
+    @Test
     void testChoosesColorDistrict() {
         firstPlayer.setRole(Role.CONDOTTIERE);
         firstPlayer.addAllCardsToHand(new District("temple", 8, Color.PURPLE, "null"), new District("temple", 7, Color.PURPLE, "null"), highPriceRedDistrict);

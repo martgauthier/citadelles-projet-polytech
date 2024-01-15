@@ -35,15 +35,14 @@ public class GameOutputManager {
             describeRolePicking(game.makeAllPlayersSelectRole(availableRoles), game.getMasterOfTheGameIndex());//décrit les rôles choisis par chaque joueur
 
             for(Player player : game.getPlayerTreeSet()) {
-                if(!game.isFinished()) {//actuellement, on s'arrête DES qu'un joueur a 8 cartes. Dans la version finale, il faudra laisser la fin du tour
-                    describePlayerRound(player, game);
-                }
+                describePlayerRound(player, game);
             }
 
 
             game.resuscitateAllPlayers();
             System.out.println("--------------");
         }
+        System.out.println("Le joueur "+game.whoIsTheWinner().getId()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
         System.out.println("Jeu fini !");
     }
 
@@ -58,7 +57,7 @@ public class GameOutputManager {
 
     public void describeRolePicking(List<Player> players, int masterOfTheGameIndex) {
         for(Player player: players) {
-            System.out.print("Le joueur " + player.getId());
+            System.out.print("Le joueur " + player.getBotLogicName());
             if(player.getId() == masterOfTheGameIndex) {
                 System.out.print(" (maitre du jeu)");
             }
@@ -80,7 +79,7 @@ public class GameOutputManager {
                 if(player.getRole().equals(Role.ASSASSIN)) {
                     for (Player p : game.getPlayersList()) {
                         if (p.isDeadForThisTurn()) {
-                            System.out.println("et a tué le joueur " + p.getRole() + " d'id " + p.getId());
+                            System.out.println("et a tué le joueur " + p.getRole() + " de nom " + p.getBotLogicName());
                             break;
                         }
                     }
@@ -91,7 +90,7 @@ public class GameOutputManager {
                     }
                     else {
                         Player exchangedWith = game.getPlayersList().get(summary.getExchangedCardsPlayerId());
-                        System.out.println("et décide d'échanger ses cartes avec le joueur " + exchangedWith.getRole() + " qui est le joueur " + exchangedWith.getId());
+                        System.out.println("et décide d'échanger ses cartes avec le joueur " + exchangedWith.getRole() + " qui est le joueur " + exchangedWith.getBotLogicName());
                     }
                 }
                 else if(player.getRole().equals(Role.MARCHAND)){
@@ -132,11 +131,12 @@ public class GameOutputManager {
             System.out.println("Il a acheté cette/ces carte(s):");
             System.out.println(getDescriptionOfCards(summary.getBoughtDistricts()));
         }
-        if(summary.hasWonDuringTurn()) {
-            System.out.println("Il a gagné, car il possède dans sa cité " + GameLogicManager.NUMBER_OF_DISTRICTS_TO_WIN + " citadelles.\n");
+        if(summary.hasFinishDuringTurn()) {
+            System.out.println("Il est le premier premier à finir, car il possède dans sa cité " + GameLogicManager.NUMBER_OF_DISTRICTS_TO_WIN + " citadelles.\n");
             System.out.println("Voici sa cité");
             System.out.println(getDescriptionOfCards(player.getCity()));
         }
+        //TODO faire un affichage pour ceux qui finisse apres le premier dans le meme tour et affichage du grand gagnant
         System.out.println("\n");
     }
 
@@ -146,7 +146,7 @@ public class GameOutputManager {
      * @param player
      */
     public void describePlayerState(Player player) {
-        System.out.print("Joueur " + player.getId());
+        System.out.print("Joueur " + player.getBotLogicName());
         System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+"-" + player.getRole().getColor().name()+").");
         System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes en main: ");
         System.out.println(getDescriptionOfCards(player.getCardsInHand()));

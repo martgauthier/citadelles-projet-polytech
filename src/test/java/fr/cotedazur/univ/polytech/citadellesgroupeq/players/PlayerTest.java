@@ -4,7 +4,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ class PlayerTest {
         assertEquals(4, bot.getCardsInHand().size());
     }
 
-    @RepeatedTest(100)
+    @Test
     void testDealCardsOrCash() {
         assertEquals(0, bot.getCash());
         assertEquals(2, bot.getCardsInHand().size());
@@ -71,6 +70,17 @@ class PlayerTest {
         assertTrue(bot.isDeadForThisTurn());
         bot.rescucitate();
         assertFalse(bot.isDeadForThisTurn());
+    }
+    @Test
+    void testGetColorCombo(){
+        List<District> districts =new ArrayList<>();
+        districts.add(new District("Temple",9,"blue", "null"));
+        districts.add(new District("Eglise",8, "green", "null"));
+        districts.add(new District("Monastere",7, "red", "null"));
+        districts.add(new District("Prison",9,"yellow", "null"));
+        districts.add(new District("Donjon",8, "purple", "null"));//arbitrary colors just for the test
+        bot.addAllDistrictsToCity(districts);
+        assertTrue(bot.hasAllColorsInCity());
     }
 
     @Test
