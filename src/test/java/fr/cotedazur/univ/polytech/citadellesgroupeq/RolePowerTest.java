@@ -244,9 +244,9 @@ class RolePowerTest {
     void initSpyCondottiere() {
         condottierePlayer.setRole(Role.CONDOTTIERE);
         condottierePlayer=Mockito.spy(condottierePlayer);
-        condottierePlayer.setStrategy(new DefaultStrategy(condottierePlayer));
 
         doReturn(Optional.empty()).when(condottierePlayer).getChoosenDistrictToBuy();
+        condottierePlayer.setStrategy(new DefaultStrategy(condottierePlayer));
     }
 
     Optional<AbstractMap.SimpleEntry<Integer, District>> createOptionalEntry(int id, District district) {
@@ -332,6 +332,28 @@ class RolePowerTest {
         assertFalse(summary.hasUsedPower());
         assertTrue(summary.getOptionalDestroyedDistrict().isEmpty());
     }
+
+    @Test
+    void testCondottiereCantKillAtLastRound() {
+        initSpyCondottiere();
+
+        basicDistrict.setCost(1);
+        condottierePlayer.setCash(1000);
+
+        game.getPlayersList().get(0).addDistrictToCity(basicDistrict);
+
+        doReturn(createOptionalEntry(0, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+
+        game.finishGame();
+        game.playPlayerTurn(condottierePlayer);
+
+        assertTrue(game.getPlayersList().get(0).getCity().contains(basicDistrict));//would be false if game wasn't finished
+    }
+
+
+    /**
+     * ROI POWER
+     */
 
     @Test
     void testMasterOfTheGameWithPowerKing(){

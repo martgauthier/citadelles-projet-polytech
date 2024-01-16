@@ -113,40 +113,42 @@ public enum Role {
     CONDOTTIERE (Color.RED) {
         @Override
         public void power(GameLogicManager g, Player condottiere, RoundSummary summary) {
-            Optional<AbstractMap.SimpleEntry<Integer, District>> optionalPlayerChoice=condottiere.selectDistrictToDestroyAsCondottiere(g.getPlayersList());
-            if(optionalPlayerChoice.isPresent()) {
-                AbstractMap.SimpleEntry<Integer, District> playerChoice = optionalPlayerChoice.get();
+            if (!g.isFinished()) {
+                Optional<AbstractMap.SimpleEntry<Integer, District>> optionalPlayerChoice = condottiere.selectDistrictToDestroyAsCondottiere(g.getPlayersList());
+                if (optionalPlayerChoice.isPresent()) {
+                    AbstractMap.SimpleEntry<Integer, District> playerChoice = optionalPlayerChoice.get();
 
-                if(playerChoice.getKey() < 0 || playerChoice.getKey() >= g.getPlayersList().size()){
-                    throw new IllegalArgumentException("Player index is out of bounds.");
+                    if (playerChoice.getKey() < 0 || playerChoice.getKey() >= g.getPlayersList().size()) {
+                        throw new IllegalArgumentException("Player index is out of bounds.");
+                    }
+
+
+                    Player selectedPlayer = g.getPlayersList().get(playerChoice.getKey());
+
+                    if (!selectedPlayer.getCity().contains(playerChoice.getValue())) {
+                        throw new IllegalArgumentException("Player doesn't own this district.");
+                    }
+
+                    if (playerChoice.getValue().getCost() - 1 > condottiere.getCash()) {
+                        throw new IllegalArgumentException("Condottiere doesn't have enough cash to destroy this city.");
+                    }
+
+                    if (selectedPlayer.getRole() == Role.EVEQUE && !selectedPlayer.isDeadForThisTurn()) {
+                        throw new IllegalArgumentException("Can't destroy District of an alive Eveque.");
+                    }
+
+                    if (playerChoice.getValue().getName().equalsIgnoreCase("donjon") && playerChoice.getValue().getColor() == Color.PURPLE) {
+                        throw new IllegalArgumentException("Can't destroy Donjon merveille.");
+                    }
+
+
+                    condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
+                    selectedPlayer.removeDistrictFromCity(playerChoice.getValue());
+
+                    summary.setDestroyedDistrict(playerChoice);
+
+                    summary.setHasUsedPower();
                 }
-
-
-                Player selectedPlayer=g.getPlayersList().get(playerChoice.getKey());
-
-                if(!selectedPlayer.getCity().contains(playerChoice.getValue())){
-                    throw new IllegalArgumentException("Player doesn't own this district.");
-                }
-
-                if(playerChoice.getValue().getCost() - 1 > condottiere.getCash())  {
-                    throw new IllegalArgumentException("Condottiere doesn't have enough cash to destroy this city.");
-                }
-
-                if(selectedPlayer.getRole() == Role.EVEQUE && !selectedPlayer.isDeadForThisTurn()) {
-                    throw new IllegalArgumentException("Can't destroy District of an alive Eveque.");
-                }
-
-                if(playerChoice.getValue().getName().equalsIgnoreCase("donjon") && playerChoice.getValue().getColor() == Color.PURPLE) {
-                    throw new IllegalArgumentException("Can't destroy Donjon merveille.");
-                }
-
-
-                condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
-                selectedPlayer.removeDistrictFromCity(playerChoice.getValue());
-
-                summary.setDestroyedDistrict(playerChoice);
-
-                summary.setHasUsedPower();
             }
         }
     };
