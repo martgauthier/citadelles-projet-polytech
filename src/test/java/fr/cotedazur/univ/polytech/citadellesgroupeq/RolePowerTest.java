@@ -56,7 +56,7 @@ class RolePowerTest {
     void testPowerIsCalledOnce() {
         Role mockedRole = mock(Role.class);
         assassinPlayer.setRole(mockedRole);
-        assassinPlayer.playPlayerTurn(summary, game);
+        assassinPlayer.playTurn(summary, game);
         verify(mockedRole, times(1)).power(game, assassinPlayer, summary);
     }
 
@@ -71,7 +71,7 @@ class RolePowerTest {
         doReturn(Role.VOLEUR).when(assassinPlayer).selectRoleToKillAsAssassin(anyList());
         otherRolePlayer.setRole(Role.VOLEUR);
 
-        assassinPlayer.playPlayerTurn(summary, game);
+        assassinPlayer.playTurn(summary, game);
         verify(assassinPlayer, times(1)).selectRoleToKillAsAssassin(anyList());
         verify(assassinPlayer.getRole(), times(1)).power(game, assassinPlayer, summary);
         assertTrue(summary.hasUsedPower());
@@ -89,7 +89,7 @@ class RolePowerTest {
         doReturn(Role.VOLEUR).when(assassinPlayer).selectRoleToKillAsAssassin(anyList());
         otherRolePlayer.setRole(Role.CONDOTTIERE);//other role than the one killed
 
-        assassinPlayer.playPlayerTurn(summary, game);
+        assassinPlayer.playTurn(summary, game);
         verify(assassinPlayer, times(1)).selectRoleToKillAsAssassin(anyList());
         verify(assassinPlayer.getRole(), times(1)).power(game, assassinPlayer, summary);
         assertTrue(summary.hasUsedPower());
@@ -113,7 +113,7 @@ class RolePowerTest {
 
         assertEquals(-1, summary.getExchangedCardsPlayerId());//la personne avec qui il a échangé n'est pas encore défini
 
-        magicienPlayer.playPlayerTurn(summary, game);
+        magicienPlayer.playTurn(summary, game);
 
         assertFalse(summary.hasExchangedCardsWithPileAsMagician());
 
@@ -129,7 +129,7 @@ class RolePowerTest {
         initSpyMagicien(false);
 
         assertEquals(-1, summary.getExchangedCardsPlayerId());
-        magicienPlayer.playPlayerTurn(summary, game);
+        magicienPlayer.playTurn(summary, game);
 
         assertEquals(-1, summary.getExchangedCardsPlayerId());//il n'échange pas avec le joueur, donc pas d'échange défini
         assertTrue(summary.hasExchangedCardsWithPileAsMagician());
@@ -151,7 +151,7 @@ class RolePowerTest {
 
         doReturn(Optional.of(otherRolePlayer.getRole())).when(voleurPlayer).selectRoleToSteal(anyList(),anyList());
 
-        voleurPlayer.playPlayerTurn(summary, game);
+        voleurPlayer.playTurn(summary, game);
 
         assertEquals(7, summary.getDrawnCoins()); // Le voleur doit avoir volé 5 pièces et tiré 2 pièces
         assertEquals(0, otherRolePlayer.getCash()); // Le joueur volé doit être à sec
@@ -176,7 +176,7 @@ class RolePowerTest {
         assertEquals(5, otherRolePlayer.getCash());
         assertEquals(6, assassinPlayer.getCash());
 
-        voleurPlayer.playPlayerTurn(summary, game);
+        voleurPlayer.playTurn(summary, game);
 
         assertEquals(voleurPlayer.getCash(), 2 - summary.getBoughtDistricts().stream().mapToInt(District::getCost).sum()); // Le voleur ne devrait pas avoir volé de pièces, il en a seulement pioché 2
         assertEquals(5, otherRolePlayer.getCash()); // Les autres devraient avoir le même nombre de pièces
@@ -207,7 +207,7 @@ class RolePowerTest {
             int[] combinaisonAsIntArray=combinaison.stream().mapToInt(i -> i).toArray();//convert from list to primitive array
             doReturn(combinaisonAsIntArray).when(magicienPlayer).selectCardsToExchangeWithPileAsMagicien();
 
-            magicienPlayer.playPlayerTurn(summary, game);
+            magicienPlayer.playTurn(summary, game);
 
             assertTrue(summary.hasExchangedCardsWithPileAsMagician());//car on a appelé initSpy(false)
 
@@ -233,7 +233,7 @@ class RolePowerTest {
         otherRolePlayer = Mockito.spy(otherRolePlayer);
         otherRolePlayer.setRole(Role.MARCHAND);
         int coins= otherRolePlayer.getCash();
-        otherRolePlayer.playPlayerTurn(summary,game);
+        otherRolePlayer.playTurn(summary,game);
         assertEquals(coins,otherRolePlayer.getCash()-1);
     }
 
@@ -290,7 +290,7 @@ class RolePowerTest {
 
         assertTrue(game.getPlayersList().get(0).getCity().contains(basicDistrict));
 
-        condottierePlayer.playPlayerTurn(summary, game);
+        condottierePlayer.playTurn(summary, game);
 
         verify(condottierePlayer).removeCoins(1);
 
@@ -301,7 +301,7 @@ class RolePowerTest {
     void testNoDestroyWhenEmptyChoice() {
         initSpyCondottiere();
         doReturn(Optional.empty()).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
-        condottierePlayer.playPlayerTurn(summary, game);
+        condottierePlayer.playTurn(summary, game);
         verify(condottierePlayer, never()).removeCoins(anyInt());
     }
 
@@ -315,7 +315,7 @@ class RolePowerTest {
 
         doReturn(createOptionalEntry(0, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
 
-        condottierePlayer.playPlayerTurn(summary, game);
+        condottierePlayer.playTurn(summary, game);
 
         assertTrue(summary.getOptionalDestroyedDistrict().isPresent());
         assertEquals(0, summary.getOptionalDestroyedDistrict().get().getKey());
@@ -327,7 +327,7 @@ class RolePowerTest {
     void testCondottiereSummaryIsNotWritten() {
         initSpyCondottiere();
         doReturn(Optional.empty()).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
-        condottierePlayer.playPlayerTurn(summary, game);
+        condottierePlayer.playTurn(summary, game);
 
         assertFalse(summary.hasUsedPower());
         assertTrue(summary.getOptionalDestroyedDistrict().isEmpty());
@@ -337,7 +337,7 @@ class RolePowerTest {
     void testMasterOfTheGameWithPowerKing(){
         otherRolePlayer= Mockito.spy(otherRolePlayer);
         otherRolePlayer.setRole(Mockito.spy(Role.ROI));
-        otherRolePlayer.playPlayerTurn(summary,game);
+        otherRolePlayer.playTurn(summary,game);
         assertEquals(otherRolePlayer.getId(),game.getMasterOfTheGameIndex());
     }
 
@@ -350,7 +350,7 @@ class RolePowerTest {
         game.getPlayersList().get(0).addDistrictToCity(donjon);
 
         doReturn(createOptionalEntry(0, donjon)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
-        assertThrows(IllegalArgumentException.class, () -> condottierePlayer.playPlayerTurn(summary, game));
+        assertThrows(IllegalArgumentException.class, () -> condottierePlayer.playTurn(summary, game));
     }
 
 
@@ -365,7 +365,7 @@ class RolePowerTest {
         evequePlayer.addDistrictToCity(basicDistrict);
         doReturn(createOptionalEntry(evequePlayer.getId(), basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
 
-        assertThrows(IllegalArgumentException.class, () -> condottierePlayer.playPlayerTurn(summary, game));
+        assertThrows(IllegalArgumentException.class, () -> condottierePlayer.playTurn(summary, game));
     }
 
     @Test
@@ -376,7 +376,7 @@ class RolePowerTest {
         condottierePlayer.setCash(1000);
         doReturn(createOptionalEntry(evequePlayer.getId(), basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
 
-        condottierePlayer.playPlayerTurn(summary, game);//assert it doesn't throw
+        condottierePlayer.playTurn(summary, game);//assert it doesn't throw
     }
 
     /**
@@ -390,7 +390,7 @@ class RolePowerTest {
     @Test
     void testArchitecteAlwaysPicks3Cards() {
         initSpyArchitecte();
-        architectePlayer.playPlayerTurn(summary, game);
+        architectePlayer.playTurn(summary, game);
         verify(architectePlayer, times(3)).pickCard(any());//il a pioché 2 fois grâce au rôle + 1 FOIS CAR IL EST REALESTATEPLAYER
     }
 
@@ -411,7 +411,7 @@ class RolePowerTest {
 
         architectePlayer.setCardsInHand(architecteHand); // il a 8 cartes en main, et le real estate player veut toujours acheter à 8 cartes
 
-        architectePlayer.playPlayerTurn(summary, game);
+        architectePlayer.playTurn(summary, game);
 
         verify(architectePlayer, times(3)).buyDistrictsDuringTurn(summary);
         assertEquals(3, summary.getBoughtDistricts().size());
