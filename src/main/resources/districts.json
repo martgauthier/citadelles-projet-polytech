@@ -92,7 +92,8 @@
   {
     "name": "Laboratoire",
     "cost": 5,
-    "color": "purple"
+    "color": "purple",
+    "power": "Laboratoire power"
   },
   {
     "name": "Manufacture",
