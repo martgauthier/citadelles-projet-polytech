@@ -18,8 +18,10 @@ public class RoundSummary {
 
     private int coinsWonByColorCards;
     private boolean hasUsedPower;
+    private boolean hasUsedMerveillePower;
     private boolean hasBeenKilledDuringTurn;
     private Role stealedRole;
+    private List<String> usedMerveille=new ArrayList<>();
 
     private boolean hasExchangedCardsWithPileAsMagician;
 
@@ -125,9 +127,14 @@ public class RoundSummary {
     public void setHasUsedPower() {
         hasUsedPower=true;
     }
+    public boolean hasUsedMerveillePower(){return hasUsedMerveillePower;}
+    public void setHasUsedMerveillePower(){hasUsedMerveillePower=true;}
     public boolean hasBeenKilled(){return hasBeenKilledDuringTurn;}
     public void setHasBeenKilledDuringTurn(){
         hasBeenKilledDuringTurn =true;
+    }
+    public List<String> getUsedMerveille(){
+        return usedMerveille;
     }
 
     public void setStealedRole(Role stealedRole){this.stealedRole = stealedRole;}
@@ -188,5 +195,14 @@ public class RoundSummary {
 
     public boolean hasExchangedCardsWithPileAsMagician() {
         return hasExchangedCardsWithPileAsMagician;
+    }
+
+    public boolean containsCourDesMiracles() {
+        for(District district: boughtDistricts) {
+            if(district.getName().equals("Cour des miracles")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

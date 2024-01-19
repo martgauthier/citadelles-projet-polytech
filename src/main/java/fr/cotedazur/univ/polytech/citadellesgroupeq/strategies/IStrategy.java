@@ -44,7 +44,7 @@ public interface IStrategy {
      * @param playerList
      * @return l'id dans la liste fournie du rôle sélectionné
      */
-    int selectRole(List<Role> availableRoles, List<Player> playerList);
+    int selectAndSetRole(List<Role> availableRoles, List<Player> playerList);
 
     Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles);
 
@@ -56,4 +56,6 @@ public interface IStrategy {
     Role selectRoleToKillAsAssassin(List<Role> availableRoles);
 
     Player getPlayer();
+
+    String getStrategyName();
 }

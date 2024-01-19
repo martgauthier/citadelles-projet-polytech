@@ -4,6 +4,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.PreventArchitectStrategy;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * qui choisit toujours de dépenser ou de récupérer des pièces lors de son tour.
  * Cette classe hérite de la classe abstraite {@link Player}.
  */
-public class AlwaysSpendPlayer extends Player{
+public class AlwaysSpendPlayer extends Player {
 
     public AlwaysSpendPlayer(int id) {
         super(id);
