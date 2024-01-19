@@ -153,4 +153,21 @@ public class CondottiereTest {
         doReturn(createOptionalEntry(0, donjon)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
         assertThrows(IllegalArgumentException.class, () -> condottierePlayer.playTurn(summary, game));
     }
+
+    @Test
+    void testCondottiereCantKillAtLastRound() {
+        initSpyCondottiere();
+
+        basicDistrict.setCost(1);
+        condottierePlayer.setCash(1000);
+
+        game.getPlayersList().get(0).addDistrictToCity(basicDistrict);
+
+        doReturn(createOptionalEntry(0, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
+
+        game.finishGame();
+        game.playPlayerTurn(condottierePlayer);
+
+        assertTrue(game.getPlayersList().get(0).getCity().contains(basicDistrict));//would be false if game wasn't finished
+    }
 }
