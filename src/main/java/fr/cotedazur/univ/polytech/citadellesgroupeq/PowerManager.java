@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
 import java.util.ArrayList;
@@ -19,17 +20,17 @@ public class PowerManager {
     }
 
 
-    public void applyCityPowers(Player player){
+    public void applyCityPowers(Player player, RoundSummary summary){
         for (District district : player.getCity()) {
             String power = district.getPower();
             if (power != null) {
-                applyCityPowers(district,player);
+                applyCityPowers(district,player, summary);
             }
         }
     }
 
 
-    public void applyCityPowers(District district, Player joueur){
+    public void applyCityPowers(District district, Player joueur, RoundSummary summary){
         String pouvoir = district.getPower();
         switch (pouvoir) {
             case "Ecole de magie power":
@@ -43,9 +44,8 @@ public class PowerManager {
 
 
     private void PouvoirEcoleDeMagie(Player joueur, District district) {
-        Color playerColor = joueur.getRole().getColor();
-        if(!Objects.equals(playerColor, Color.GRAY)){
-            district.setColor(playerColor);
+        if(joueur.getRole().getColor()!=Color.GRAY){
+            joueur.addCoins(1);//si il a une couleur, il va gagner une pièce car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
         }
     }
 

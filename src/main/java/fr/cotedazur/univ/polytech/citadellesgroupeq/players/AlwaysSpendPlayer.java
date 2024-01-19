@@ -32,8 +32,6 @@ public class AlwaysSpendPlayer extends Player{
      */
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
-        PowerManager powerManager = new PowerManager(game);
-        powerManager.applyCityPowers(this);
         super.getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
@@ -45,6 +43,10 @@ public class AlwaysSpendPlayer extends Player{
         else {
             pickCard(summary);
         }
+
+
+        PowerManager powerManager = new PowerManager(game);
+        powerManager.applyCityPowers(this, summary);
     }
 
     @Override

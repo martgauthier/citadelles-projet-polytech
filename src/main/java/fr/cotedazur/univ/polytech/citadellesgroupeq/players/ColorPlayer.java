@@ -44,9 +44,7 @@ public class ColorPlayer extends Player {
      */
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
-        PowerManager powerManager = new PowerManager(game);
-        powerManager.applyCityPowers(this);
-        super.getCoinsFromColorCards(summary);
+        getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
 
@@ -56,6 +54,10 @@ public class ColorPlayer extends Player {
         else {
             draw2Coins(summary);
         }
+
+
+        PowerManager powerManager = new PowerManager(game);
+        powerManager.applyCityPowers(this, summary);
 
         buyDistrictsDuringTurn(summary);
     }
