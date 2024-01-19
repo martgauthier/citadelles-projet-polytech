@@ -47,8 +47,8 @@ public class DefaultStrategy implements IStrategy {
     }
 
     @Override
-    public int selectRole(List<Role> availableRoles) {
-        return player.selectRole(availableRoles);
+    public int selectRole(List<Role> availableRoles, List<Player> playerList) {
+        return player.selectRole(availableRoles, playerList);
     }
 
     @Override

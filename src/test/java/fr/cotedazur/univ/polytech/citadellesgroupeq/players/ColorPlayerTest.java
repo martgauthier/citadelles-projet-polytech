@@ -31,13 +31,13 @@ class ColorPlayerTest {
     @Test
     void testChoosesColorRole() {
         List<Role> availablesRoles=List.of(Role.ASSASSIN, Role.VOLEUR, Role.CONDOTTIERE, Role.MARCHAND);
-        assertEquals(2, firstPlayer.selectRole(availablesRoles));
+        assertEquals(2, firstPlayer.selectRole(availablesRoles, List.of()));//any list
     }
 
     @Test
     void testChoosesAssassinIfNoColorRole() {
         List<Role> availablesRoles=List.of(Role.ARCHITECTE, Role.VOLEUR, Role.MAGICIEN);
-        assertEquals(0, firstPlayer.selectRole(availablesRoles));
+        assertEquals(0, firstPlayer.selectRole(availablesRoles, List.of()));
     }
 
     @Test
