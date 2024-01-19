@@ -8,7 +8,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
-import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doReturn;
 
 public class PreventArchitectTest {
@@ -38,9 +36,9 @@ public class PreventArchitectTest {
     @Test
     void testIsPlayerCloseToWin() {
         List<Role> availableRoles=List.of(Role.ARCHITECTE, Role.CONDOTTIERE, Role.EVEQUE);
-        doReturn(2).when(player).selectRole(availableRoles, game.getPlayersList());
+        doReturn(2).when(player).selectAndSetRole(availableRoles, game.getPlayersList());
 
-        assertEquals(2, player.getStrategy().selectRole(availableRoles, game.getPlayersList()));//no players are close to win, so player uses default selectRole
+        assertEquals(2, player.getStrategy().selectAndSetRole(availableRoles, game.getPlayersList()));//no players are close to win, so player uses default selectRole
 
 
         otherPlayer.setCash(10);
@@ -54,7 +52,7 @@ public class PreventArchitectTest {
                 new District("temple", 8, Color.GRAY)//adds 6 cards to his city
         ));
 
-        int roleSelectedIndex=player.getStrategy().selectRole(availableRoles, game.getPlayersList());
+        int roleSelectedIndex=player.getStrategy().selectAndSetRole(availableRoles, game.getPlayersList());
         assertEquals(1, roleSelectedIndex);//a player is close to win, player uses PreventArchitect strategy and chooses condottiere
     }
 
@@ -62,5 +60,10 @@ public class PreventArchitectTest {
     void testRoleToKillIsArchitect() {
         player.setRole(Role.ASSASSIN);
         assertEquals(Role.ARCHITECTE, player.getStrategy().selectRoleToKillAsAssassin(List.of(Role.ASSASSIN, Role.VOLEUR, Role.ARCHITECTE)));
+    }
+
+    @Test
+    void testName() {
+        assertEquals("[PreventArchitect Strategy]", player.getStrategy().getStrategyName());
     }
 }

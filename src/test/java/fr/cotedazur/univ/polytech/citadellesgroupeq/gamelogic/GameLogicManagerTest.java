@@ -63,7 +63,7 @@ class GameLogicManagerTest {
         game.makeAllPlayersSelectRole();
         List<Role> rolesSelected = new ArrayList<>();
         for (Player player : game.getPlayersList()) {
-            verify(player, times(1)).selectRole(anyList(), anyList());
+            verify(player, times(1)).selectAndSetRole(anyList(), anyList());
             assertFalse(rolesSelected.contains(player.getRole()));
             assertNotSame(Role.EMPTY_ROLE, player.getRole());//checks that role cannot be empty
             rolesSelected.add(player.getRole());

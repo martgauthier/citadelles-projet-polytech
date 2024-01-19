@@ -13,10 +13,11 @@ import java.util.Optional;
 public class PreventArchitectStrategy extends DefaultStrategy {
     public PreventArchitectStrategy(Player copiedPlayer) {
         super(copiedPlayer);
+        strategyName="[PreventArchitect Strategy]";
     }
 
     @Override
-    public int selectRole(List<Role> availableRoles, List<Player> playerList) {
+    public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
         Optional<Player> playerCloseToWin=Optional.empty();
 
         for(Player checkedPlayer: playerList) {
@@ -25,15 +26,21 @@ public class PreventArchitectStrategy extends DefaultStrategy {
             }
         }
 
+
+        int selectedRoleIndex=player.selectAndSetRole(availableRoles, playerList);
+
         if(playerCloseToWin.isPresent()) {
             if(availableRoles.contains(Role.CONDOTTIERE)) {
-                return availableRoles.indexOf(Role.CONDOTTIERE);
+                selectedRoleIndex=availableRoles.indexOf(Role.CONDOTTIERE);
             }
             else if (availableRoles.contains(Role.ARCHITECTE)) {
-                return availableRoles.indexOf(Role.ARCHITECTE);
+                selectedRoleIndex=availableRoles.indexOf(Role.ARCHITECTE);
             }
         }
-        return player.selectRole(availableRoles, playerList);
+
+        player.setRole(availableRoles.get(selectedRoleIndex));
+
+        return selectedRoleIndex;
     }
 
     @Override
@@ -42,5 +49,10 @@ public class PreventArchitectStrategy extends DefaultStrategy {
             return Role.ARCHITECTE;
         }
         return player.selectRoleToKillAsAssassin(availableRoles);//else
+    }
+
+    @Override
+    public String getStrategyName() {
+        return strategyName;
     }
 }
