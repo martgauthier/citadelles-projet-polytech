@@ -18,10 +18,12 @@ public class RealEstatePlayer extends Player {
 
     public RealEstatePlayer(int id) {
         super(id);
+        botLogicName="RealEstatePlayer";
     }
 
     public RealEstatePlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
+        botLogicName="RealEstatePlayer";
     }
 
     /**

@@ -19,10 +19,12 @@ public class AlwaysSpendPlayer extends Player {
 
     public AlwaysSpendPlayer(int id) {
         super(id);
+        botLogicName="AlwaysSpendPlayer";
     }
 
     public AlwaysSpendPlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
+        botLogicName="AlwaysSpendPlayer";
     }
 
     /**

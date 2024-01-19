@@ -18,6 +18,8 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     private boolean deadForThisTurn;
     public static final int DEFAULT_CASH=0;
 
+    protected String botLogicName="player";
+
     /**
      * Identification du bot: bot numéro 0 -> id=0, bot numéro 1 -> id=1...
      */
@@ -370,7 +372,9 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         return this;
     }
 
-    public abstract String getBotLogicName();
+    public String getBotLogicName() {
+        return botLogicName;
+    }
 
     public boolean isDistrictInCity(String districtToCheck){
         List<District> city = this.getCity();

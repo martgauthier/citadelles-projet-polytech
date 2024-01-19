@@ -12,10 +12,12 @@ import java.util.Optional;
 public class RandomPlayer extends Player {
     public RandomPlayer(int id) {
         super(id);
+        botLogicName="RandomPlayer";
     }
 
     public RandomPlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
+        botLogicName="RandomPlayer";
     }
 
     @Override

@@ -14,10 +14,12 @@ import java.util.Optional;
 public class ColorPlayer extends Player {
     public ColorPlayer(int id) {
         super(id);
+        botLogicName="ColorPlayer";
     }
 
     public ColorPlayer(int id, int cash, List<District> cards) {
         super(id, cash, cards, false);
+        botLogicName="ColorPlayer";
     }
 
     @Override
