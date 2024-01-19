@@ -39,10 +39,12 @@ public interface IStrategy {
 
     /**
      * Sélectionne un rôle aléatoirement dans la liste availableRoles pour le joueur
+     *
      * @param availableRoles les rôles disponibles
+     * @param playerList
      * @return l'id dans la liste fournie du rôle sélectionné
      */
-    int selectRole(List<Role> availableRoles);
+    int selectRole(List<Role> availableRoles, List<Player> playerList);
 
     Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles);
 

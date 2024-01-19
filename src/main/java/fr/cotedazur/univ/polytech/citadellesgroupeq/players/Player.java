@@ -158,7 +158,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
 
 
     @Override
-    public int selectRole(List<Role> availableRoles) {
+    public int selectRole(List<Role> availableRoles, List<Player> playerList) {
         int selectedRoleIndex=randomGenerator.nextInt(availableRoles.size());//la sélection est pour l'instant aléatoire
         setRole(availableRoles.get(selectedRoleIndex));
         return selectedRoleIndex;

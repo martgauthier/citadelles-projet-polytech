@@ -21,7 +21,7 @@ public class AimForMoneyStrategy extends DefaultStrategy {
     }
 
     @Override
-    public int selectRole(List<Role> availableRoles) {
+    public int selectRole(List<Role> availableRoles, List<Player> playerList) {
         int voleurIndex=availableRoles.indexOf(Role.VOLEUR);
         if(voleurIndex!=-1) {
             player.setRole(availableRoles.get(voleurIndex));

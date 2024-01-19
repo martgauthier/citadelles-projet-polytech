@@ -101,6 +101,8 @@ public class GameLogicManager {
 
         List<Player> playersInRolePickingOrder=new ArrayList<>();
 
+        playersList.forEach(player -> player.setRole(Role.EMPTY_ROLE));
+
         playerTreeSet.clear();
         //setRandomMasterOfGame();//pour débuter par un joueur aléatoire
         for(int i=0; i < playersList.size(); i++) {
@@ -109,7 +111,7 @@ public class GameLogicManager {
 
             playersInRolePickingOrder.add(selectedPlayer);
 
-            int selectedRoleIndex=selectedPlayer.getStrategy().selectRole(availableRoles);
+            int selectedRoleIndex=selectedPlayer.getStrategy().selectRole(availableRoles, playersList);
             if(availableRoles.get(selectedRoleIndex) == Role.EMPTY_ROLE) {
                 throw new IllegalArgumentException("Roles can't be EMPTY_ROLE.");
             }

@@ -21,7 +21,7 @@ public class ColorPlayer extends Player {
     }
 
     @Override
-    public int selectRole(List<Role> availableRoles) {
+    public int selectRole(List<Role> availableRoles, List<Player> playerList) {
         if(availableRoles.isEmpty()) throw new IllegalArgumentException("availableRoles cannot be empty.");
 
         for(int i=0; i < availableRoles.size(); i++) {
