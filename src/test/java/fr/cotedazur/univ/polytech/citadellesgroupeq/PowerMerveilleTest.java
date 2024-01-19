@@ -2,15 +2,15 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
 
-class PowerManagerTest {
+class PowerMerveilleTest {
 
     @Test
     void applyPowerEcoleDeMagie() {
@@ -42,6 +42,8 @@ class PowerManagerTest {
 
         gameOutputManager.describePlayerRound(player, game);
     }
+
+    /** TEST OF DONJON IN CondottiereTest **/
 
 
 }

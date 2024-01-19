@@ -33,7 +33,7 @@ public class RandomPlayer extends Player {
      * @param summary Résumé du tour actuel.
      */
     @Override
-    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
+    public void playTurn(RoundSummary summary, GameLogicManager game) {
         PowerManager powerManager = new PowerManager(game);
         powerManager.applyCityPowers(this);
         super.getCoinsFromColorCards(summary);

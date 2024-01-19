@@ -42,7 +42,7 @@ public class GameOutputManager {
             game.resuscitateAllPlayers();
             System.out.println("--------------");
         }
-        System.out.println("Le joueur "+game.whoIsTheWinner().getId()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
+        System.out.println("Le joueur "+game.whoIsTheWinner().getBotLogicName()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
         System.out.println("Jeu fini !");
     }
 

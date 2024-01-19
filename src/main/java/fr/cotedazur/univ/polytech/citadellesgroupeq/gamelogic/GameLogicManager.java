@@ -131,7 +131,7 @@ public class GameLogicManager {
             summary.setHasBeenKilledDuringTurn();
         }
         else {
-            player.getStrategy().playPlayerTurn(summary, this);
+            player.getStrategy().playTurn(summary, this);
             if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN && !isFinished) {
                 summary.setHasFinishDuringTurn(true);
                 finishGame();

@@ -13,14 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doReturn;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 class AimForMoneyTest {
     Player mainPlayer, otherPlayer;
@@ -56,13 +54,13 @@ class AimForMoneyTest {
     void testAimForMoneyChoosesCoins() {
         mainPlayer.setCardsInHand(new ArrayList<>());//default AlwaysSpendPlayer will make him pick card, if empty hand
 
-        mainPlayer.getStrategy().playPlayerTurn(summary, game);
+        mainPlayer.getStrategy().playTurn(summary, game);
         assertTrue(summary.hasPickedCash());//because of AimForMoneyStrategy
 
         summary=new RoundSummary();//reset it
 
         mainPlayer.setStrategy(new DefaultStrategy(mainPlayer));
-        mainPlayer.getStrategy().playPlayerTurn(summary, game);
+        mainPlayer.getStrategy().playTurn(summary, game);
         assertFalse(summary.hasPickedCash());//because of DefaultStrategy
     }
 
