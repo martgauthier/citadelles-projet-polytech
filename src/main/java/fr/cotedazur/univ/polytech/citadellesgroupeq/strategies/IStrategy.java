@@ -21,7 +21,7 @@ public interface IStrategy {
      */
     Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players);
     int[] selectCardsToExchangeWithPileAsMagicien();
-    void playPlayerTurn(RoundSummary summary, GameLogicManager game);
+    void playTurn(RoundSummary summary, GameLogicManager game);
 
     /**
      *

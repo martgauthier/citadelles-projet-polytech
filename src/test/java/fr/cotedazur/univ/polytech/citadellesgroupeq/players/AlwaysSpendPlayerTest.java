@@ -26,7 +26,7 @@ class AlwaysSpendPlayerTest {
     void testPlayerTurnWithCardsInHand(){
         assertEquals(2, botWithCards.getCardsInHand().size());
         botWithCards.setRole(Role.ASSASSIN);
-        botWithCards.playPlayerTurn(summary, new GameLogicManager());
+        botWithCards.playTurn(summary, new GameLogicManager());
 
         assertTrue(summary.hasPickedCash());
     }
@@ -35,12 +35,12 @@ class AlwaysSpendPlayerTest {
     void testPlayerTurnWithEmptyHand(){
         assertEquals(0,botWithoutCards.getCardsInHand().size());
         botWithoutCards.setRole(Role.ASSASSIN);
-        botWithoutCards.playPlayerTurn(summary, new GameLogicManager());
+        botWithoutCards.playTurn(summary, new GameLogicManager());
 
         // il n'a plus de carte en main donc il pioche
         assertTrue(summary.hasPickedCards());
 
-        botWithoutCards.playPlayerTurn(summary, new GameLogicManager());
+        botWithoutCards.playTurn(summary, new GameLogicManager());
 
         // il a maintenant une carte en main, son objectif avoir plus d'argent
         assertTrue(summary.hasPickedCash());

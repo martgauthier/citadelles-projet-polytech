@@ -27,8 +27,8 @@ public class DefaultStrategy implements IStrategy {
     }
 
     @Override
-    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
-        player.playPlayerTurn(summary, game);
+    public void playTurn(RoundSummary summary, GameLogicManager game) {
+        player.playTurn(summary, game);
     }
 
     @Override

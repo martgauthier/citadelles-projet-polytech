@@ -43,7 +43,7 @@ class RandomPlayerTest {
         randomPlayer.setRole(Role.ROI);
         doReturn(1).when(trickedRandom).nextInt(anyInt());
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary, game);
+        randomPlayer.playTurn(summary, game);
         assertTrue(summary.hasPickedCash());
     }
 
@@ -53,7 +53,7 @@ class RandomPlayerTest {
         randomPlayer.setRole(Role.ROI);
         when(trickedRandom.nextInt(anyInt())).thenReturn(0);
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary, game);
+        randomPlayer.playTurn(summary, game);
         assertTrue(summary.hasPickedCards());
     }
 }
