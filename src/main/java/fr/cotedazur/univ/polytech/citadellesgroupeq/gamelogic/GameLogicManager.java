@@ -1,5 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
@@ -215,18 +217,49 @@ public class GameLogicManager {
         }
         return newAvailableRoles;
     }
-    public void makeScoreofPlayer(Player player,RoundSummary summary){
+
+    /**
+     * Makes score of given player, and adds it to score list.
+     * @param player
+     * @param summary
+     * @return player's score
+     */
+    public int makeScoreofPlayer(Player player,RoundSummary summary){
         int score=player.getTotalCityPrice();
+
+        if(player.getDistrictInCity("Université").isPresent()) {
+            score+=2;//the card originally costs 6, but its value is 8 for score counting (source: règle du jeu)
+        }
+        if(player.getDistrictInCity("Dracoport").isPresent()) {
+            score+=2;//the card originally costs 6, but its value is 8 for score counting (source: règle du jeu)
+        }
+
+
+
         if(!summary.hasFinishDuringTurn() && player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN){
             score+=2;
         }
         if(summary.hasFinishDuringTurn()){
             score+=4;
         }
+
         if(player.hasAllColorsInCity()){
             score+=3;
         }
+        else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity("Cour des miracles").isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
+            player.removeDistrictFromCity(player.getDistrictInCity("Cour des miracles").get());//remove it from colorMap, to check if there is another purple card
+            Map<Color, Boolean> colorMap=player.getColorsContainedInCityMap();
+            if(Boolean.TRUE.equals(colorMap.get(Color.PURPLE))) {//si il y a une autre carte violette que la cour des miracles, cela veut dire qu'on peut
+                // remplacer la couleur manquante grâce au pouvoir de la cour des miracles
+                score+=3;
+            }
+
+            player.addDistrictToCity(new District("Cour des miracles", 2, Color.PURPLE));
+        }
+
+
         ScoreOfEnd.put(player,score);
+        return score;
     }
     public Player whoIsTheWinner(){
         int higherScore=0;

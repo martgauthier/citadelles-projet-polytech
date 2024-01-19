@@ -290,33 +290,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public boolean hasAllColorsInCity(){
-        boolean blue=false;
-        boolean green=false;
-        boolean yellow=false;
-        boolean red=false;
-        boolean purple=false;
-        for(District district: city){
-            if(district.getColor()==Color.BLUE){
-                blue=true;
-            }
-            if(district.getColor()==Color.GREEN){
-                green=true;
-            }
-            if(district.getColor()==Color.YELLOW){
-                yellow=true;
-            }
-            if(district.getColor()==Color.RED){
-                red=true;
-            }
-            if(district.getColor()==Color.PURPLE){
-                purple=true;
-            }
-        }
-        if(blue && green && yellow && red && purple){
-            return true;
-        }else{
-            return false;
-        }
+        return numberOfColorsInCity()==5;
     }
 
     public boolean hasEmptyCity() {
@@ -422,8 +396,6 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
 
-
-
     /**
      *
      * @return True si verifiedPlayer possède 4 pièces ou plus, 2 carte en main ou plus, 6 quartiers posés ou plus
@@ -434,5 +406,32 @@ public abstract class Player implements Comparable<Player>, IStrategy {
 
     public String getStrategyName() {
         return strategy.getStrategyName();
+    }
+
+    public Map<Color, Boolean> getColorsContainedInCityMap() {
+        Map<Color, Boolean> colorsContainedMap=new HashMap<>();
+        colorsContainedMap.put(Color.BLUE, false);
+        colorsContainedMap.put(Color.RED, false);
+        colorsContainedMap.put(Color.GREEN, false);
+        colorsContainedMap.put(Color.YELLOW, false);
+        colorsContainedMap.put(Color.PURPLE, false);
+
+        for(District district : city) {
+            if(district.getColor() != Color.GRAY) {
+                colorsContainedMap.put(district.getColor(), true);
+            }
+        }
+
+        return colorsContainedMap;
+    }
+
+    public int numberOfColorsInCity() {
+        int colorsInCity=0;
+        for(Boolean value: getColorsContainedInCityMap().values()) {
+            if(value) {
+                colorsInCity++;
+            }
+        }
+        return colorsInCity;
     }
 }

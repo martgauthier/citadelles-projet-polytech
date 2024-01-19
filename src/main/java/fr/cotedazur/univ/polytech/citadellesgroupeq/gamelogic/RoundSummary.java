@@ -189,4 +189,13 @@ public class RoundSummary {
     public boolean hasExchangedCardsWithPileAsMagician() {
         return hasExchangedCardsWithPileAsMagician;
     }
+
+    public boolean containsCourDesMiracles() {
+        for(District district: boughtDistricts) {
+            if(district.getName().equals("Cour des miracles")) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

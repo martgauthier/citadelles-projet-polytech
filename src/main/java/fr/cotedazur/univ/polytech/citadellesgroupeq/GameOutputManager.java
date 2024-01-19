@@ -43,6 +43,12 @@ public class GameOutputManager {
             System.out.println("--------------");
         }
         System.out.println("Le joueur "+game.whoIsTheWinner().getBotLogicName()+game.whoIsTheWinner().getStrategyName()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
+        System.out.println("A noter pour le décompte des points, qu'il possédait ces merveilles: (rien si pas de cartes violettes)");
+        for(District district: game.whoIsTheWinner().getCity()) {
+            if(district.getColor() == Color.PURPLE) {
+                System.out.println("* " + district.getName());
+            }
+        }
         System.out.println("Jeu fini !");
     }
 
