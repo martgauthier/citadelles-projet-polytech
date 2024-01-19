@@ -111,7 +111,7 @@ public class GameLogicManager {
 
             playersInRolePickingOrder.add(selectedPlayer);
 
-            int selectedRoleIndex=selectedPlayer.getStrategy().selectRole(availableRoles, playersList);
+            int selectedRoleIndex=selectedPlayer.getStrategy().selectAndSetRole(availableRoles, playersList);
             if(availableRoles.get(selectedRoleIndex) == Role.EMPTY_ROLE) {
                 throw new IllegalArgumentException("Roles can't be EMPTY_ROLE.");
             }

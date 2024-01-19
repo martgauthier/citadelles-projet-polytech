@@ -158,7 +158,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
 
 
     @Override
-    public int selectRole(List<Role> availableRoles, List<Player> playerList) {
+    public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
         int selectedRoleIndex=randomGenerator.nextInt(availableRoles.size());//la sélection est pour l'instant aléatoire
         setRole(availableRoles.get(selectedRoleIndex));
         return selectedRoleIndex;
@@ -430,5 +430,9 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      */
     public boolean isCloseToWin() {
         return getCash() >= 4 && getCardsInHand().size() >= 2 && getCity().size() >= 6;
+    }
+
+    public String getStrategyName() {
+        return strategy.getStrategyName();
     }
 }
