@@ -15,21 +15,12 @@ public class PreventArchitectStrategy extends DefaultStrategy {
         super(copiedPlayer);
     }
 
-    /**
-     *
-     * @param verifiedPlayer
-     * @return True si verifiedPlayer possède 4 pièces ou plus, 2 carte en main ou plus, 6 quartiers posés ou plus
-     */
-    private boolean isPlayerCloseToWin(Player verifiedPlayer) {
-        return verifiedPlayer.getCash() >= 4 && verifiedPlayer.getCardsInHand().size() >= 2 && verifiedPlayer.getCity().size() >= 6;
-    }
-
     @Override
     public int selectRole(List<Role> availableRoles, List<Player> playerList) {
         Optional<Player> playerCloseToWin=Optional.empty();
 
         for(Player checkedPlayer: playerList) {
-            if(isPlayerCloseToWin(checkedPlayer) && checkedPlayer!=player) {
+            if(checkedPlayer.isCloseToWin() && checkedPlayer!=player) {
                 playerCloseToWin=Optional.of(checkedPlayer);
             }
         }
