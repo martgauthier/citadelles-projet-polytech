@@ -136,6 +136,12 @@ public class GameOutputManager {
             System.out.println("Voici sa cité");
             System.out.println(getDescriptionOfCards(player.getCity()));
         }
+        if(summary.hasUsedMerveillePower()){
+            System.out.println("Des pouvoirs de merveilles sont actifs. Les voici:");
+            for(String city: summary.getUsedMerveille()){
+                System.out.println(city);
+            }
+        }
         //TODO faire un affichage pour ceux qui finisse apres le premier dans le meme tour et affichage du grand gagnant
         System.out.println("\n");
     }
