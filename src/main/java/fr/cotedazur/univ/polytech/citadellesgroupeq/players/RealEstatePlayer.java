@@ -32,8 +32,6 @@ public class RealEstatePlayer extends Player {
      */
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
-        PowerManager powerManager = new PowerManager(game);
-        powerManager.applyCityPowers(this);
         super.getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);
@@ -45,6 +43,10 @@ public class RealEstatePlayer extends Player {
             draw2Coins(summary);
             buyDistrictsDuringTurn(summary);
         }
+
+
+        PowerManager powerManager = new PowerManager(game);
+        powerManager.applyCityPowers(this, summary);
     }
 
     @Override

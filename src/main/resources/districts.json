@@ -112,7 +112,8 @@
   {
     "name": "Bibliotheque",
     "cost": 6,
-    "color": "purple"
+    "color": "purple",
+    "power": "Bibliotheque power"
   },
   {
     "name": "Ecole de magie",

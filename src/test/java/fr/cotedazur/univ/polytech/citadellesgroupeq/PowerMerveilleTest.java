@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ class PowerMerveilleTest {
 
     @Test
     void applyPowerEcoleDeMagie() {
-
         GameLogicManager game = new GameLogicManager();
         GameOutputManager gameOutputManager = new GameOutputManager();
         Player player = new RealEstatePlayer(0);
@@ -27,16 +27,8 @@ class PowerMerveilleTest {
 
 
         PowerManager powerManager = new PowerManager(game);
+        game.playPlayerTurn(player);//will call PowerManager in player turn
 
-
-        powerManager.applyCityPowers(player);
-
-        Optional<District> OptionalEcoleDeMagie = player.getDistrictInCity("Ecole de Magie");
-        District ecoleDeMagie = OptionalEcoleDeMagie.get();
-
-        assertEquals(player.getRole().getColor(), ecoleDeMagie.getColor());
-
-        game.playPlayerTurn(player);
 
         assertEquals(2,player.getCash());// Une pièce grace au pouvoir du marchand et une grace au pouvoir de l'ecole de magie
 
@@ -44,6 +36,18 @@ class PowerMerveilleTest {
     }
 
     /** TEST OF DONJON IN CondottiereTest **/
+    @Test
+    void applyPowerBibliotheque(){
+        GameLogicManager game = new GameLogicManager();
+        GameOutputManager gameOutputManager = new GameOutputManager();
+        Player player = new RealEstatePlayer(0);
+        player.setRole(Role.MARCHAND);
 
+        District biblio =new District("Bibliotheque",6,"Purple","Bibliotheque power");
+        player.addDistrictToCity(biblio);
+        game.playPlayerTurn(player);
+        assertEquals(4,player.getCardsInHand().toArray().length);
+
+    }
 
 }

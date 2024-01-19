@@ -144,7 +144,7 @@ public class GameOutputManager {
         }
         if(summary.hasUsedMerveillePower()){
             System.out.println("Des pouvoirs de merveilles sont actifs. Les voici:");
-            for(String city: summary.getUsedMerveille()){
+            for(String city: summary.getUsedMerveilles()){
                 System.out.println(city);
             }
         }
