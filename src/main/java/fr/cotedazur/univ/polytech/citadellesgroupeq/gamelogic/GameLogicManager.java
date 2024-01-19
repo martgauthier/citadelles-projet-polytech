@@ -217,7 +217,14 @@ public class GameLogicManager {
         }
         return newAvailableRoles;
     }
-    public void makeScoreofPlayer(Player player,RoundSummary summary){
+
+    /**
+     * Makes score of given player, and adds it to score list.
+     * @param player
+     * @param summary
+     * @return player's score
+     */
+    public int makeScoreofPlayer(Player player,RoundSummary summary){
         int score=player.getTotalCityPrice();
 
         if(player.getDistrictInCity("Université").isPresent()) {
@@ -239,7 +246,7 @@ public class GameLogicManager {
         if(player.hasAllColorsInCity()){
             score+=3;
         }
-        else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity("Cour des miracles").isPresent()) {//il lui en manque une
+        else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity("Cour des miracles").isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
             player.removeDistrictFromCity(player.getDistrictInCity("Cour des miracles").get());//remove it from colorMap, to check if there is another purple card
             Map<Color, Boolean> colorMap=player.getColorsContainedInCityMap();
             if(Boolean.TRUE.equals(colorMap.get(Color.PURPLE))) {//si il y a une autre carte violette que la cour des miracles, cela veut dire qu'on peut
@@ -252,6 +259,7 @@ public class GameLogicManager {
 
 
         ScoreOfEnd.put(player,score);
+        return score;
     }
     public Player whoIsTheWinner(){
         int higherScore=0;

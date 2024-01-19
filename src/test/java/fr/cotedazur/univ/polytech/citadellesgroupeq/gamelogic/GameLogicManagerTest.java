@@ -1,10 +1,12 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -170,5 +172,23 @@ class GameLogicManagerTest {
         game.getPlayersList().get(2).setRole(Role.ASSASSIN);
         game.makeScoreofPlayer(game.getPlayersList().get(2),summary1);
         assertEquals(15,game.getScoreOfEnd().get(game.getPlayersList().get(2)));
+    }
+
+    @Test
+    void testScoreTakesAccountOfMerveille() {
+        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>());
+        scorePlayer.addDistrictToCity(new District("Dracoport", 6, Color.PURPLE));
+        scorePlayer.addDistrictToCity(new District("Université", 6, Color.PURPLE));
+
+        assertEquals(16, game.makeScoreofPlayer(scorePlayer, new RoundSummary()));//8 + 8, car ces cartes valent 8 au décompte
+        scorePlayer.setCity(new ArrayList<>(List.of(
+                new District("temple", 1, Color.PURPLE),
+                new District("temple", 1, Color.RED),
+                new District("temple", 1, Color.GREEN),
+                new District("temple", 1, Color.BLUE),
+                new District("Cour des miracles", 1, Color.PURPLE)
+        )));
+
+        assertEquals(5+3, game.makeScoreofPlayer(scorePlayer, new RoundSummary()));//5 points avec le coût de la cité + 3 points car la cour des miracles remplace la couleur jaune manquante
     }
 }
