@@ -36,7 +36,9 @@ public class PowerManager {
             case "Ecole de magie power":
                 PouvoirEcoleDeMagie(joueur, district);
                 break;
-            // Ajoutez des cas pour d'autres pouvoirs
+            case "Bibliotheque power":
+                bibliothequePower(joueur,district,summary);
+                break;
             default:
                 break;
         }
@@ -46,6 +48,11 @@ public class PowerManager {
     private void PouvoirEcoleDeMagie(Player joueur, District district) {
         if(joueur.getRole().getColor()!=Color.GRAY){
             joueur.addCoins(1);//si il a une couleur, il va gagner une pièce car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
+        }
+    }
+    private void bibliothequePower(Player joueur, District district,RoundSummary summary){
+        if(summary.hasPickedCards()){
+            joueur.pickCard(summary);
         }
     }
 

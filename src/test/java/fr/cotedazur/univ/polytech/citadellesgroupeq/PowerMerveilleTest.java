@@ -36,6 +36,18 @@ class PowerMerveilleTest {
     }
 
     /** TEST OF DONJON IN CondottiereTest **/
+    @Test
+    void applyPowerBibliotheque(){
+        GameLogicManager game = new GameLogicManager();
+        GameOutputManager gameOutputManager = new GameOutputManager();
+        Player player = new RealEstatePlayer(0);
+        player.setRole(Role.MARCHAND);
 
+        District biblio =new District("Bibliotheque",6,"Purple","Bibliotheque power");
+        player.addDistrictToCity(biblio);
+        game.playPlayerTurn(player);
+        assertEquals(4,player.getCardsInHand().toArray().length);
+
+    }
 
 }
