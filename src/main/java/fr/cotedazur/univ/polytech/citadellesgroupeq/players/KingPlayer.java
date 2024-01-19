@@ -6,15 +6,18 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.AimForMoneyStrategy;
 
 import java.util.List;
 import java.util.Optional;
 
 public class KingPlayer extends Player {
+    private boolean shouldUseAimForMoneyStrategy=true;
 
     public KingPlayer(int id) {
         super(id);
         botLogicName="KingPlayer";
+        setStrategy(new AimForMoneyStrategy(this));
     }
 
     private boolean hasCardLessThan4Coins() {
@@ -58,21 +61,21 @@ public class KingPlayer extends Player {
     public Optional<District> getChoosenDistrictToBuy() {
         List<District> buyableCards = getBuyableCards();
         Optional<District> boughtDistrict = Optional.empty();
-        for(District district: buyableCards) {
-            if(boughtDistrict.isEmpty()) {
-                boughtDistrict=Optional.of(district);
-            }
-            else if(boughtDistrict.get().getColor()!=Color.YELLOW &&
-                    (district.getColor()==Color.YELLOW ||
-                    boughtDistrict.get().getCost() < 4
-                    || district.getCost() >= 4
-                    || boughtDistrict.get().getCost() < district.getCost()
-                    || (district.getCost() < boughtDistrict.get().getCost() && district.getCost() >= 4))) {
-                    boughtDistrict=Optional.of(district);//condition compliquée, mais qui résume la condition écrite sur le github
-            }
-            else {//bought districtt == yellow
-                if(district.getColor() == Color.YELLOW && district.getCost() < boughtDistrict.get().getCost()) {
-                    boughtDistrict=Optional.of(district);
+        if(getCardsInHand().size() >= 7) {
+            for (District district : buyableCards) {
+                if (boughtDistrict.isEmpty()) {
+                    boughtDistrict = Optional.of(district);
+                } else if (boughtDistrict.get().getColor() != Color.YELLOW &&
+                        (district.getColor() == Color.YELLOW ||
+                                boughtDistrict.get().getCost() < 4
+                                || district.getCost() >= 4
+                                || boughtDistrict.get().getCost() < district.getCost()
+                                || (district.getCost() < boughtDistrict.get().getCost() && district.getCost() >= 4))) {
+                    boughtDistrict = Optional.of(district);//condition compliquée, mais qui résume la condition écrite sur le github
+                } else {//bought districtt == yellow
+                    if (district.getColor() == Color.YELLOW && district.getCost() < boughtDistrict.get().getCost()) {
+                        boughtDistrict = Optional.of(district);
+                    }
                 }
             }
         }

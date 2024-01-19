@@ -56,11 +56,17 @@ public class AimForMoneyStrategy extends DefaultStrategy {
 
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
-        player.getCoinsFromColorCards(summary);
-        player.getRole().power(game, player, summary);
+        if(player.getCash() < 6) {
+            player.getCoinsFromColorCards(summary);
+            player.getRole().power(game, player, summary);
 
-        player.draw2Coins(summary);
+            player.draw2Coins(summary);
 
-        player.buyDistrictsDuringTurn(summary);
+            player.buyDistrictsDuringTurn(summary);
+        }
+        else {
+            player.setStrategy(new DefaultStrategy(player));
+            player.playTurn(summary, game);
+        }
     }
 }
