@@ -18,10 +18,10 @@ public class RoundSummary {
 
     private int coinsWonByColorCards;
     private boolean hasUsedPower;
-    private boolean hasUsedMerveillePower;
+    private boolean hasUsedMerveillesPower;
     private boolean hasBeenKilledDuringTurn;
     private Role stealedRole;
-    private List<String> usedMerveille=new ArrayList<>();
+    private List<String> usedMerveilles =new ArrayList<>();
 
     private boolean hasExchangedCardsWithPileAsMagician;
 
@@ -127,14 +127,14 @@ public class RoundSummary {
     public void setHasUsedPower() {
         hasUsedPower=true;
     }
-    public boolean hasUsedMerveillePower(){return hasUsedMerveillePower;}
-    public void setHasUsedMerveillePower(){hasUsedMerveillePower=true;}
+    public boolean hasUsedMerveillePower(){return hasUsedMerveillesPower;}
+    public void setHasUsedMerveillesPower(){ hasUsedMerveillesPower =true;}
     public boolean hasBeenKilled(){return hasBeenKilledDuringTurn;}
     public void setHasBeenKilledDuringTurn(){
         hasBeenKilledDuringTurn =true;
     }
-    public List<String> getUsedMerveille(){
-        return usedMerveille;
+    public List<String> getUsedMerveilles(){
+        return usedMerveilles;
     }
 
     public void setStealedRole(Role stealedRole){this.stealedRole = stealedRole;}

@@ -4,10 +4,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 public class PowerManager {
     private GameLogicManager game;
 
@@ -35,9 +31,13 @@ public class PowerManager {
         switch (pouvoir) {
             case "Ecole de magie power":
                 PouvoirEcoleDeMagie(joueur, district);
+                summary.setHasUsedMerveillesPower();
+                summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Bibliotheque power":
                 bibliothequePower(joueur,district,summary);
+                summary.setHasUsedMerveillesPower();
+                summary.getUsedMerveilles().add(district.getName());
                 break;
             default:
                 break;
