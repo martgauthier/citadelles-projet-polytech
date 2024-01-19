@@ -422,4 +422,13 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
 
+
+
+    /**
+     *
+     * @return True si verifiedPlayer possède 4 pièces ou plus, 2 carte en main ou plus, 6 quartiers posés ou plus
+     */
+    public boolean isCloseToWin() {
+        return getCash() >= 4 && getCardsInHand().size() >= 2 && getCity().size() >= 6;
+    }
 }
