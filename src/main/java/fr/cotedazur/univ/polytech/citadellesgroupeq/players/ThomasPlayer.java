@@ -10,15 +10,14 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.AimForMoneyStrate
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.PreventArchitectStrategy;
 
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Stratégie proposée par notre collège Thomas
  */
 public class ThomasPlayer extends Player {
+    public static List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.EVEQUE));
+    public static int PICK_CARD_FOR_MORE_THAN=0;
     public ThomasPlayer(int id) {
         super(id);
     }
@@ -31,17 +30,11 @@ public class ThomasPlayer extends Player {
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
         boolean aPlayerIsCloseToWin=game.getPlayersList().stream().anyMatch(joueur -> joueur.isCloseToWin() && joueur!=this);
-        /*if(aPlayerIsCloseToWin) {
-            setStrategy(new PreventArchitectStrategy(this));
-        }
-        else {
-            setStrategy(new DefaultStrategy(this));
-        }*/
 
         getCoinsFromColorCards(summary);
         getRole().power(game, this, summary);
 
-        boolean hasCardsOver3Coins=getCardsInHand().stream().anyMatch(district -> district.getCost() >= 3);
+        boolean hasCardsOver3Coins=getCardsInHand().stream().anyMatch(district -> district.getCost() >= PICK_CARD_FOR_MORE_THAN);
 
         if(hasCardsOver3Coins) {
             draw2Coins(summary);
@@ -59,14 +52,15 @@ public class ThomasPlayer extends Player {
     @Override
     public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
         Role selectedRole=availableRoles.get(0);
-        if(availableRoles.contains(Role.VOLEUR)) {
-            selectedRole=Role.VOLEUR;
+        if(availableRoles.contains(ROLES_TO_PICK_IN_ORDER.get(0))) {
+            selectedRole=ROLES_TO_PICK_IN_ORDER.get(0);
         }
-        else if(availableRoles.contains(Role.CONDOTTIERE)) {
-            selectedRole=Role.CONDOTTIERE;
+
+        else if(availableRoles.contains(ROLES_TO_PICK_IN_ORDER.get(1))) {
+            selectedRole=ROLES_TO_PICK_IN_ORDER.get(1);
         }
-        else if(availableRoles.contains(Role.ARCHITECTE)) {
-            selectedRole=Role.ARCHITECTE;
+        else if(availableRoles.contains(ROLES_TO_PICK_IN_ORDER.get(2))) {
+            selectedRole=ROLES_TO_PICK_IN_ORDER.get(2);
         }
 
 
