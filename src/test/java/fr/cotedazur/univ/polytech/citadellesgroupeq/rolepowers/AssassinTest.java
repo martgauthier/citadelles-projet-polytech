@@ -1,4 +1,5 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq.power;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.rolepowers;
+
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
@@ -9,10 +10,12 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-class KingTest {
+class AssassinTest {
     GameLogicManager game;
     RoundSummary summary;
     Player assassinPlayer;
@@ -51,10 +54,38 @@ class KingTest {
         summary=new RoundSummary();
     }
     @Test
-    void testMasterOfTheGameWithPowerKing(){
-        otherRolePlayer= Mockito.spy(otherRolePlayer);
-        otherRolePlayer.setRole(Mockito.spy(Role.ROI));
-        otherRolePlayer.playTurn(summary,game);
-        assertEquals(otherRolePlayer.getId(),game.getMasterOfTheGameIndex());
+    void testPlayerIsDead() {
+        assassinPlayer= Mockito.spy(new AlwaysSpendPlayer(0));
+        assassinPlayer.setRole(Mockito.spy(Role.ASSASSIN));
+        assassinPlayer.setStrategy(new DefaultStrategy(assassinPlayer));
+
+        game.getPlayersList().set(assassinPlayer.getId(), assassinPlayer);
+
+        doReturn(Role.VOLEUR).when(assassinPlayer).selectRoleToKillAsAssassin(anyList());
+        otherRolePlayer.setRole(Role.VOLEUR);
+
+        assassinPlayer.playTurn(summary, game);
+        verify(assassinPlayer, times(1)).selectRoleToKillAsAssassin(anyList());
+        verify(assassinPlayer.getRole(), times(1)).power(game, assassinPlayer, summary);
+        assertTrue(summary.hasUsedPower());
+        assertTrue(otherRolePlayer.isDeadForThisTurn());
+    }
+
+    @Test
+    void testPlayerIsNotKilled() {
+        assassinPlayer= Mockito.spy(new AlwaysSpendPlayer(0));
+        assassinPlayer.setRole(Mockito.spy(Role.ASSASSIN));
+        assassinPlayer.setStrategy(new DefaultStrategy(assassinPlayer));
+
+        game.getPlayersList().set(assassinPlayer.getId(), assassinPlayer);
+
+        doReturn(Role.VOLEUR).when(assassinPlayer).selectRoleToKillAsAssassin(anyList());
+        otherRolePlayer.setRole(Role.CONDOTTIERE);//other role than the one killed
+
+        assassinPlayer.playTurn(summary, game);
+        verify(assassinPlayer, times(1)).selectRoleToKillAsAssassin(anyList());
+        verify(assassinPlayer.getRole(), times(1)).power(game, assassinPlayer, summary);
+        assertTrue(summary.hasUsedPower());
+        assertFalse(otherRolePlayer.isDeadForThisTurn());
     }
 }

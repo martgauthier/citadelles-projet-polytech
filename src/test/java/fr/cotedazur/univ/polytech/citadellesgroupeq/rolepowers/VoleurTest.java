@@ -1,4 +1,4 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq.power;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.rolepowers;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
