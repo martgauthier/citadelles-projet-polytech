@@ -8,6 +8,7 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("java:S106")//asks for printing with a logger instead of System.out.println
 public class GameOutputManager {
     private GameLogicManager game;
     private int rounds;
@@ -75,7 +76,7 @@ public class GameOutputManager {
         describePlayerState(player);
 
         RoundSummary summary = game.playPlayerTurn(player);
-        PowerManager powerManager = new PowerManager(game);
+
         if(summary.hasBeenKilled()){
             System.out.println("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
         }
@@ -148,7 +149,6 @@ public class GameOutputManager {
                 System.out.println(city);
             }
         }
-        //TODO faire un affichage pour ceux qui finisse apres le premier dans le meme tour et affichage du grand gagnant
         System.out.println("\n");
     }
 

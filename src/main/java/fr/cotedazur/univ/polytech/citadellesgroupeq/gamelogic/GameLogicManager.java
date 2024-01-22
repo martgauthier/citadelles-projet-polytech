@@ -40,11 +40,11 @@ public class GameLogicManager {
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
-    private Map<Player, Integer> ScoreOfEnd=new HashMap<>();
+    private Map<Player, Integer> scoreOfEnd =new HashMap<>();
 
 
     //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
-    public static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ColorPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
+    protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ColorPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
 
     public GameLogicManager() {
         this(List.of());//liste de joueurs vide
@@ -77,7 +77,7 @@ public class GameLogicManager {
         return playersList;
     }
     public Map<Player, Integer> getScoreOfEnd() {
-        return ScoreOfEnd;
+        return scoreOfEnd;
     }
 
     /**
@@ -95,6 +95,7 @@ public class GameLogicManager {
      * @return la liste des joueurs dans leur ordre de choix du rôle
      * @throws IllegalArgumentException Si certains rôles sont EMPTY ou qu'il y a moins de rôles que de joueurs.
      */
+    @SuppressWarnings("java:S5413")//unsafe usage of "List.remove" in a loop, not matching our case because it is safe
     public List<Player> makeAllPlayersSelectRole(List<Role> availableRoles) throws IllegalArgumentException {
         availableRoles=new ArrayList<>(availableRoles);//used to prevent original list to be modified
         if(availableRoles.size() <= playersList.size()) {
@@ -224,7 +225,9 @@ public class GameLogicManager {
      * @param summary
      * @return player's score
      */
+    @SuppressWarnings("java:S3655")//false positive for checking for Optional.isPresent()
     public int makeScoreofPlayer(Player player,RoundSummary summary){
+        String coursDesMiraclesName="Cour des miracles";
         int score=player.getTotalCityPrice();
 
         if(player.getDistrictInCity("Université").isPresent()) {
@@ -246,25 +249,25 @@ public class GameLogicManager {
         if(player.hasAllColorsInCity()){
             score+=3;
         }
-        else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity("Cour des miracles").isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
-            player.removeDistrictFromCity(player.getDistrictInCity("Cour des miracles").get());//remove it from colorMap, to check if there is another purple card
+        else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity(coursDesMiraclesName).isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
+            player.removeDistrictFromCity(player.getDistrictInCity(coursDesMiraclesName).get());//remove it from colorMap, to check if there is another purple card
             Map<Color, Boolean> colorMap=player.getColorsContainedInCityMap();
             if(Boolean.TRUE.equals(colorMap.get(Color.PURPLE))) {//si il y a une autre carte violette que la cour des miracles, cela veut dire qu'on peut
                 // remplacer la couleur manquante grâce au pouvoir de la cour des miracles
                 score+=3;
             }
 
-            player.addDistrictToCity(new District("Cour des miracles", 2, Color.PURPLE));
+            player.addDistrictToCity(new District(coursDesMiraclesName, 2, Color.PURPLE));
         }
 
 
-        ScoreOfEnd.put(player,score);
+        scoreOfEnd.put(player,score);
         return score;
     }
     public Player whoIsTheWinner(){
         int higherScore=0;
         Player winner=playerTreeSet.last();//en cas d'égalité, le joueur qui gagne est celui qui a le plus haut rôle au dernier tour
-        for (Map.Entry<Player, Integer> entry : ScoreOfEnd.entrySet()) {
+        for (Map.Entry<Player, Integer> entry : scoreOfEnd.entrySet()) {
             if(higherScore<entry.getValue()){
                 higherScore=entry.getValue();
                 winner=entry.getKey();
