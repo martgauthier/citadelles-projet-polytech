@@ -2,18 +2,30 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 class PowerMerveilleTest {
+    RoundSummary summary;
+    GameLogicManager game;
+
+    @BeforeEach
+    void setup() {
+        summary = new RoundSummary();
+        game=new GameLogicManager();
+    }
 
     @Test
     void applyPowerEcoleDeMagie() {
@@ -77,7 +89,63 @@ class PowerMerveilleTest {
         player2.addDistrictToCity(labo2);
         game2.playPlayerTurn(player);
         assertEquals(0,player2.getCash());
+    }
 
+
+    /**
+     * Tests for manufacture merveille
+     */
+
+    @Test
+    void testDefaultPlayerBehavior() {//should want to use manufacture power if cash > 5 and cards in hand < 3
+        Player player = new AlwaysSpendPlayer(0);
+        player.setCash(1000);
+        player.setCardsInHand(new ArrayList<>());
+        assertTrue(player.wantsToUseManufacturePower());
+
+        player.setCash(3);
+        assertFalse(player.wantsToUseManufacturePower());
+
+        player.setCash(1000);
+        player.setCardsInHand(new ArrayList<>(List.of(
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null"),
+                new District("temple", 8, Color.GRAY, "null")
+        )));
+
+        assertFalse(player.wantsToUseManufacturePower());
+    }
+
+    @Test
+    void testManufactureThrowsIfNotEnoughCash() {
+        Player player = Mockito.spy(new AlwaysSpendPlayer(0));
+
+        doReturn(true).when(player).wantsToUseManufacturePower();
+        player.setCash(0);
+        player.setRole(Role.ARCHITECTE);//arbitrary role
+        player.addDistrictToCity(new District("Manufacture", 5, Color.PURPLE, "Manufacture power"));
+        assertThrows(IllegalArgumentException.class, () -> player.playTurn(summary, game));
+    }
+
+    @Test
+    void testPlayerUsesManufacturePower() {
+        Player player = Mockito.spy(new AlwaysSpendPlayer(0));
+        player.setCash(1000);
+
+        doNothing().when(player).draw2Coins(any());
+        doNothing().when(player).buyDistrictsDuringTurn(any());
+
+        player.setCardsInHand(new ArrayList<>(List.of(new District("temple", 8, Color.BLUE, "null"))));
+        player.setRole(Role.EVEQUE);//arbitrary role that does nothing
+        player.addDistrictToCity(new District("Manufacture", 5, Color.PURPLE, "Manufacture power"));
+
+        player.playTurn(summary, game);//AlwaysSpendPlayer will try to pick coins, and buy districts, in these conditions
+        verify(player, times(3)).pickCard(any());
+
+        assertEquals(1000 - 3, player.getCash());
+        assertEquals(4, player.getCardsInHand().size());
+        assertTrue(summary.hasUsedMerveillePower());
+        assertTrue(summary.getUsedMerveilles().contains("Manufacture"));
     }
 
 }

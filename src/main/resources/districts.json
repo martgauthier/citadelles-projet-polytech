@@ -98,7 +98,8 @@
   {
     "name": "Manufacture",
     "cost": 5,
-    "color": "purple"
+    "color": "purple",
+    "power": "Manufacture power"
   },
   {
     "name": "Observatoire",
