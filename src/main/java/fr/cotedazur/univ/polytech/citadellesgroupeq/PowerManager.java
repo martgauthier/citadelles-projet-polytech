@@ -4,6 +4,9 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
+import java.util.List;
+import java.util.Optional;
+
 public class PowerManager {
     private GameLogicManager game;
 
@@ -44,6 +47,11 @@ public class PowerManager {
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
+            case "Manufacture power":
+                manufacturePower(joueur);
+                summary.setHasUsedMerveillesPower();
+                summary.getUsedMerveilles().add(district.getName());
+                break;
             default:
                 break;
         }
@@ -70,6 +78,19 @@ public class PowerManager {
             }
             player.removeCardFromHand(bigcity);
             player.addCoins(1);
+        }
+    }
+
+    private void manufacturePower(Player player) {
+        if(player.wantsToUseManufacturePower()) {
+            if(player.getCash() < 3) {
+                throw new IllegalArgumentException("Player must have enough cash to use manufacture power.");
+            }
+
+            player.removeCoins(3);
+            player.pickCard(new RoundSummary());
+            player.pickCard(new RoundSummary());
+            player.pickCard(new RoundSummary());//no need to write in summary
         }
     }
 

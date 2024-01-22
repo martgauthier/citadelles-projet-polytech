@@ -71,4 +71,9 @@ public class DefaultStrategy implements IStrategy {
     public String getStrategyName() {
         return strategyName;
     }
+
+    @Override
+    public boolean wantsToUseManufacturePower() {
+        return player.wantsToUseManufacturePower();
+    }
 }

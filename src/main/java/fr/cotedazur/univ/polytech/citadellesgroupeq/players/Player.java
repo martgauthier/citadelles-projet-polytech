@@ -429,4 +429,9 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public Random getRandomGenerator() {
         return randomGenerator;
     }
+
+    @Override
+    public boolean wantsToUseManufacturePower() {
+        return cash > 5 && cardsInHand.size() < 3;
+    }
 }
