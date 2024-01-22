@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-public class EvequeTest {
+class EvequeTest {
     GameLogicManager game;
     RoundSummary summary;
     Player assassinPlayer;
@@ -73,6 +73,7 @@ public class EvequeTest {
     }
 
     @Test
+    @SuppressWarnings("java:S2699")//add assertion to this case
     void testCanDestroyDeadEvequeDistrict() {
         initSpyCondottiere();
         evequePlayer.addDistrictToCity(basicDistrict);

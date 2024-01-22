@@ -30,17 +30,17 @@ public class PowerManager {
         String pouvoir = district.getPower();
         switch (pouvoir) {
             case "Ecole de magie power":
-                PouvoirEcoleDeMagie(joueur, district);
+                ecoleMagiePower(joueur);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Bibliotheque power":
-                bibliothequePower(joueur,district,summary);
+                bibliothequePower(joueur,summary);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Laboratoire power":
-                laboratoirePower(joueur,district,summary);
+                laboratoirePower(joueur);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
@@ -50,17 +50,17 @@ public class PowerManager {
     }
 
 
-    private void PouvoirEcoleDeMagie(Player joueur, District district) {
+    private void ecoleMagiePower(Player joueur) {
         if(joueur.getRole().getColor()!=Color.GRAY){
             joueur.addCoins(1);//si il a une couleur, il va gagner une pièce car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
         }
     }
-    private void bibliothequePower(Player joueur, District district,RoundSummary summary){
+    private void bibliothequePower(Player joueur, RoundSummary summary){
         if(summary.hasPickedCards()){
             joueur.pickCard(summary);
         }
     }
-    private void laboratoirePower(Player player, District district,RoundSummary summary){
+    private void laboratoirePower(Player player){
         if(player.getCash()<2 && player.getCardsInHand().toArray().length>2){
             District bigcity=player.getCardsInHand().get(0);
             for(District city : player.getCardsInHand()){

@@ -13,7 +13,7 @@ import java.util.*;
  */
 public abstract class Player implements Comparable<Player>, IStrategy {
 
-    public Random randomGenerator=new Random();
+    private Random randomGenerator=new Random();
     private int cash;
     private boolean deadForThisTurn;
     public static final int DEFAULT_CASH=0;
@@ -373,7 +373,6 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public abstract String getBotLogicName();
 
     public boolean isDistrictInCity(String districtToCheck){
-        List<District> city = this.getCity();
         for(District district: city){
             String districtName = district.getName();
             if(districtToCheck.equalsIgnoreCase(districtName)) {
@@ -384,15 +383,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public Optional<District> getDistrictInCity(String districtToGet) {
-        //TODO Refactor it with "list.indexOf"
-        List<District> city = this.getCity();
-        for (District district : city) {
-            String districtName = district.getName();
-            if (districtToGet.equalsIgnoreCase(districtName)) {
-                return Optional.of(district);
-            }
-        }
-        return Optional.empty();
+        return city.stream().filter(district -> district.getName().equalsIgnoreCase(districtToGet)).findFirst();
     }
 
 
@@ -409,7 +400,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public Map<Color, Boolean> getColorsContainedInCityMap() {
-        Map<Color, Boolean> colorsContainedMap=new HashMap<>();
+        Map<Color, Boolean> colorsContainedMap=new EnumMap<>(Color.class);
         colorsContainedMap.put(Color.BLUE, false);
         colorsContainedMap.put(Color.RED, false);
         colorsContainedMap.put(Color.GREEN, false);
@@ -428,10 +419,14 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public int numberOfColorsInCity() {
         int colorsInCity=0;
         for(Boolean value: getColorsContainedInCityMap().values()) {
-            if(value) {
+            if(Boolean.TRUE.equals(value)) {
                 colorsInCity++;
             }
         }
         return colorsInCity;
+    }
+
+    public Random getRandomGenerator() {
+        return randomGenerator;
     }
 }

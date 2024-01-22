@@ -4,7 +4,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.PreventArchitectStrategy;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +67,7 @@ public class AlwaysSpendPlayer extends Player {
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playersList) {
         Player selectedPlayer=playersList.get(0);
         while(selectedPlayer==this) {
-            selectedPlayer=playersList.get(randomGenerator.nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
+            selectedPlayer=playersList.get(getRandomGenerator().nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
         }
 
         return selectedPlayer;
@@ -76,7 +75,7 @@ public class AlwaysSpendPlayer extends Player {
 
     @Override
     public boolean choosesToExchangeCardWithPlayer() {
-        return randomGenerator.nextBoolean();//pas de logique particulière à ce sujet
+        return getRandomGenerator().nextBoolean();//pas de logique particulière à ce sujet
     }
 
 }

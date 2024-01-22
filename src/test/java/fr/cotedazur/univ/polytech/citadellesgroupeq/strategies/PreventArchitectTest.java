@@ -14,11 +14,10 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
-public class PreventArchitectTest {
+class PreventArchitectTest {
     Player player;
     Player otherPlayer;
     GameLogicManager game;

@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-public class CondottiereTest {
+class CondottiereTest {
     GameLogicManager game;
     RoundSummary summary;
     Player assassinPlayer;

@@ -12,6 +12,7 @@ class DistrictsJSONReaderTest {
     public static final String JSON_MISSING_KEYS_FILE="src/main/resources/test_json_file/file_missing_keys.json";
 
     @Test
+    @SuppressWarnings("java:S2699")//add assertion to this case
     void testCorrectFile() {
         DistrictsJSONReader reader;
         try {

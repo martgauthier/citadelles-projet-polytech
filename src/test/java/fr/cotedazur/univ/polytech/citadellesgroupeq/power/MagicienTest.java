@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-public class MagicienTest {
+class MagicienTest {
     GameLogicManager game;
     RoundSummary summary;
     Player assassinPlayer;
