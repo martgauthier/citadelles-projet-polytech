@@ -6,6 +6,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,10 @@ public class AimForMoneyStrategy extends DefaultStrategy {
         if(voleurIndex!=-1) {
             player.setRole(availableRoles.get(voleurIndex));
             return voleurIndex;
+        }
+        else if(availableRoles.contains(Role.MARCHAND)){
+            player.setRole(Role.MARCHAND);
+            return availableRoles.indexOf(Role.MARCHAND);
         }
         else {
             player.setRole(availableRoles.get(0));
@@ -51,16 +56,22 @@ public class AimForMoneyStrategy extends DefaultStrategy {
 
     @Override
     public Optional<District> getChoosenDistrictToBuy() {
-        return Optional.empty();//to save money
+        return Optional.empty();//don't buy for first rounds
     }
 
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
-        player.getCoinsFromColorCards(summary);
-        player.getRole().power(game, player, summary);
+        if(player.getCash() < 4) {
+            player.getCoinsFromColorCards(summary);
+            player.getRole().power(game, player, summary);
 
-        player.draw2Coins(summary);
+            player.draw2Coins(summary);
 
-        player.buyDistrictsDuringTurn(summary);
+            player.buyDistrictsDuringTurn(summary);
+        }
+        else {
+            player.setStrategy(new DefaultStrategy(player));
+            player.playTurn(summary, game);
+        }
     }
 }
