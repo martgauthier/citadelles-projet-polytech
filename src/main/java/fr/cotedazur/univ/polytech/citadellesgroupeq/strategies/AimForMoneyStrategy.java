@@ -66,8 +66,6 @@ public class AimForMoneyStrategy extends DefaultStrategy {
             player.getRole().power(game, player, summary);
 
             player.draw2Coins(summary);
-
-            player.buyDistrictsDuringTurn(summary);
         }
         else {
             player.setStrategy(new DefaultStrategy(player));

@@ -148,8 +148,7 @@ class GameLogicManagerTest {
         districts.add(new District("Donjon",1, "purple", "null"));
         game.getPlayersList().get(0).addAllDistrictsToCity(districts);
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        game.playPlayerTurn(game.getPlayersList().get(0));
-        assertEquals(10,game.getScoreOfEnd().get(game.getPlayersList().get(0)));
+        assertEquals(10,game.makeScoreofPlayer(game.getPlayersList().get(0), new RoundSummary()));
 
         List<District> districts2=new ArrayList<>();
         districts2.add(new District("Temple",1,"blue", "null"));
