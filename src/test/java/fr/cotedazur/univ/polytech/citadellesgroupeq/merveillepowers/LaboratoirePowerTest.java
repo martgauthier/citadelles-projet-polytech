@@ -24,9 +24,9 @@ class LaboratoirePowerTest {
 
     @BeforeEach
     void setup() {
-        player= Mockito.spy(new AlwaysSpendPlayer(0));
         summary=new RoundSummary();
         game=new GameLogicManager();
+        player= Mockito.spy(new AlwaysSpendPlayer(0, game.getDistrictsJSONReader()));
         game.getPlayersList().set(0, player);
     }
 
@@ -39,7 +39,7 @@ class LaboratoirePowerTest {
         districts2.add(new District("Eglise",2, "green", "null"));
         districts2.add(new District("Monastere",1, "red", "null"));
         districts2.add(new District("Prison",2,"yellow", "null"));
-        Player player = new RealEstatePlayer(0,0,districts2);
+        Player player = new RealEstatePlayer(0,0,districts2, game.getDistrictsJSONReader());
         player.setRole(Role.ASSASSIN);
         District labo =new District("Laboratoire",6,"Purple","Laboratoire power");
         player.addDistrictToCity(labo);
@@ -50,7 +50,7 @@ class LaboratoirePowerTest {
         List<District> districts=new ArrayList<>();
         districts.add(new District("Temple",1,"blue", "null"));
         districts.add(new District("Eglise",2, "green", "null"));
-        Player player2 = new RealEstatePlayer(0,0,districts);
+        Player player2 = new RealEstatePlayer(0,0,districts, game.getDistrictsJSONReader());
         player2.setRole(Role.ASSASSIN);
         District labo2 =new District("Laboratoire",6,"Purple","Laboratoire power");
         player2.addDistrictToCity(labo2);

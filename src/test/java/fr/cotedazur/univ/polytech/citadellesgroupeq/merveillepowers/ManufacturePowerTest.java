@@ -28,9 +28,9 @@ class ManufacturePowerTest {
 
     @BeforeEach
     void setup() {
-        player= Mockito.spy(new AlwaysSpendPlayer(0));
         summary=new RoundSummary();
         game=new GameLogicManager();
+        player= Mockito.spy(new AlwaysSpendPlayer(0, game.getDistrictsJSONReader()));
         game.getPlayersList().set(0, player);
     }
 

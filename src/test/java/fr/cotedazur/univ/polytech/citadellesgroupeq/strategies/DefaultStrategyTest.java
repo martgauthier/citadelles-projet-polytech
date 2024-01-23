@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
@@ -19,11 +20,14 @@ class DefaultStrategyTest {
     Player basicPlayer;
     IStrategy defaultStrat;
     GameLogicManager game;
+    DistrictsJSONReader pioche;
     @BeforeEach
     void initPlayer() {
-        basicPlayer=new AlwaysSpendPlayer(0);
+        pioche=new DistrictsJSONReader();
+        basicPlayer=new AlwaysSpendPlayer(0, pioche);
         defaultStrat=basicPlayer.getStrategy();
         game=new GameLogicManager(List.of(basicPlayer));
+        game.setDistrictsJSONReader(pioche);
         basicPlayer.setRole(Role.EVEQUE);//set arbitrary role
     }
 
