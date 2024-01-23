@@ -2,6 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -14,22 +15,24 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
-public class PreventArchitectTest {
+class PreventArchitectTest {
     Player player;
     Player otherPlayer;
     GameLogicManager game;
+    DistrictsJSONReader pioche;
     RoundSummary summary;
     @BeforeEach
     void setup() {
-        player= Mockito.spy(new RealEstatePlayer(0));
+        pioche=new DistrictsJSONReader();
+        player= Mockito.spy(new RealEstatePlayer(0, pioche));
         player.setStrategy(new PreventArchitectStrategy(player));
-        otherPlayer=Mockito.spy(new AlwaysSpendPlayer(1));//arbitrary choice of players
+        otherPlayer=Mockito.spy(new AlwaysSpendPlayer(1, pioche));//arbitrary choice of players
         otherPlayer.setStrategy(new DefaultStrategy(otherPlayer));
         game=new GameLogicManager(List.of(player, otherPlayer));
+        game.setDistrictsJSONReader(pioche);
         summary=new RoundSummary();
     }
 

@@ -2,134 +2,167 @@
   {
     "name": "Temple",
     "cost": 9,
-    "color": "blue"
+    "color": "blue",
+    "quantity": 3
   },
   {
     "name": "Eglise",
     "cost": 8,
-    "color": "blue"
+    "color": "blue",
+    "quantity": 4
   },
   {
     "name": "Monastere",
     "cost" : 7,
-    "color": "blue"
+    "color": "blue",
+    "quantity": 3
   },
   {
     "name": "Cathedrale",
     "cost": 6,
-    "color": "blue"
+    "color": "blue",
+    "quantity": 2
   },
   {
     "name": "Manoir",
     "cost": 3,
-    "color": "yellow"
+    "color": "yellow",
+    "quantity": 5
   },
   {
     "name": "Chateau",
     "cost": 4,
-    "color": "yellow"
+    "color": "yellow",
+    "quantity": 4
   },
   {
     "name": "Palais",
     "cost": 5,
-    "color": "yellow"
+    "color": "yellow",
+    "quantity": 2
   },
   {
     "name": "Taverne",
     "cost": 1,
-    "color": "green"
+    "color": "green",
+    "quantity": 5
+  },
+  {
+    "name": "Echoppe",
+    "cost": 2,
+    "color": "green",
+    "quantity": 3
   },
   {
     "name": "Marché",
     "cost": 2,
-    "color": "green"
+    "color": "green",
+    "quantity": 4
   },
   {
     "name": "Comptoir",
     "cost": 3,
-    "color": "green"
+    "color": "green",
+    "quantity": 3
   },
   {
     "name": "Port",
     "cost": 4,
-    "color": "green"
+    "color": "green",
+    "quantity": 3
   },
   {
     "name": "Hotel de ville",
     "cost": 5,
-    "color": "green"
+    "color": "green",
+    "quantity": 2
   },
   {
     "name": "Tour de guet",
     "cost": 1,
-    "color": "red"
+    "color": "red",
+    "quantity": 3
   },
   {
     "name": "Prison",
     "cost": 2,
-    "color": "red"
+    "color": "red",
+    "quantity": 3
   },
   {
     "name": "Caserne",
     "cost": 3,
-    "color": "red"
+    "color": "red",
+    "quantity": 3
   },
   {
     "name": "Forteresse",
     "cost": 5,
-    "color": "red"
+    "color": "red",
+    "quantity": 2
   },
   {
     "name": "Cour des miracles",
     "cost": 2,
-    "color": "purple"
+    "color": "purple",
+    "quantity": 1
   },
   {
     "name": "Donjon",
     "cost": 3,
-    "color": "purple"
+    "color": "purple",
+    "quantity": 2
   },
   {
     "name": "Laboratoire",
     "cost": 5,
     "color": "purple",
-    "power": "Laboratoire power"
+    "power": "Laboratoire power",
+    "quantity": 1
   },
   {
     "name": "Manufacture",
     "cost": 5,
-    "color": "purple"
+    "color": "purple",
+    "power": "Manufacture power",
+    "quantity": 1
   },
   {
     "name": "Observatoire",
     "cost": 5,
-    "color": "purple"
+    "color": "purple",
+    "quantity": 1
   },
   {
     "name": "Cimetiere",
     "cost": 5,
-    "color": "purple"
+    "color": "purple",
+    "quantity": 1
   },
   {
     "name": "Bibliotheque",
     "cost": 6,
     "color": "purple",
-    "power": "Bibliotheque power"
+    "power": "Bibliotheque power",
+    "quantity": 1
   },
   {
     "name": "Ecole de magie",
     "cost": 6,
     "color": "purple",
-    "power": "Ecole de magie power"
+    "power": "Ecole de magie power",
+    "quantity": 1
   },
   {
     "name": "Université",
     "cost": 8,
-    "color": "purple"
+    "color": "purple",
+    "quantity": 1
   },
   {
     "name": "Dracoport",
     "cost": 8,
-    "color": "purple"
+    "color": "purple",
+    "quantity": 1
   }
 ]

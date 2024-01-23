@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -16,12 +17,12 @@ import java.util.Optional;
  */
 public class RealEstatePlayer extends Player {
 
-    public RealEstatePlayer(int id) {
-        super(id);
+    public RealEstatePlayer(int id, DistrictsJSONReader pioche) {
+        super(id, pioche);
     }
 
-    public RealEstatePlayer(int id, int cash, List<District> cards) {
-        super(id, cash, cards, false);
+    public RealEstatePlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+        super(id, cash, cards, false, pioche);
     }
 
     /**
@@ -67,7 +68,7 @@ public class RealEstatePlayer extends Player {
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playersList) {
         Player selectedPlayer=playersList.get(0);
         while(selectedPlayer==this) {
-            selectedPlayer=playersList.get(randomGenerator.nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
+            selectedPlayer=playersList.get(getRandomGenerator().nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
         }
 
         return selectedPlayer;
@@ -75,6 +76,6 @@ public class RealEstatePlayer extends Player {
 
     @Override
     public boolean choosesToExchangeCardWithPlayer() {
-        return randomGenerator.nextBoolean();//pas de logique particulière à ce sujet
+        return getRandomGenerator().nextBoolean();//pas de logique particulière à ce sujet
     }
 }

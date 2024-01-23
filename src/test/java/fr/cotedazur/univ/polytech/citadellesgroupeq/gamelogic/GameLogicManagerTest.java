@@ -125,14 +125,14 @@ class GameLogicManagerTest {
     @Test
     void testFinishCondition(){
         List<District> districts =new ArrayList<>();
-        districts.add(reader.getFromIndex(0));
-        districts.add(reader.getFromIndex(1));
-        districts.add(reader.getFromIndex(2));
-        districts.add(reader.getFromIndex(3));
-        districts.add(reader.getFromIndex(4));
-        districts.add(reader.getFromIndex(5));
-        districts.add(reader.getFromIndex(6));
-        districts.add(reader.getFromIndex(7));
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
         game.getPlayersList().get(0).addAllDistrictsToCity(districts);
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
         game.playPlayerTurn(game.getPlayersList().get(0));
@@ -175,7 +175,7 @@ class GameLogicManagerTest {
 
     @Test
     void testScoreTakesAccountOfMerveille() {
-        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>());
+        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getDistrictsJSONReader());
         scorePlayer.addDistrictToCity(new District("Dracoport", 6, Color.PURPLE));
         scorePlayer.addDistrictToCity(new District("Université", 6, Color.PURPLE));
 

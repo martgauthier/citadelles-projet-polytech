@@ -9,7 +9,7 @@ public class District implements Comparable<District> {
     private String power;
 
     public District(String name, int cost, Color color) {
-        this(name, cost, color, null);
+        this(name, cost, color, "null");
     }
 
     public District(String name, int cost, Color color, String power) {

@@ -1,7 +1,8 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq.power;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.rolepowers;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -13,7 +14,7 @@ import org.mockito.Mockito;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-public class EvequeTest {
+class EvequeTest {
     GameLogicManager game;
     RoundSummary summary;
     Player assassinPlayer;
@@ -30,15 +31,18 @@ public class EvequeTest {
 
     District basicDistrict;
 
+    DistrictsJSONReader pioche;
+
     @BeforeEach
     void setup() {
-        assassinPlayer = new AlwaysSpendPlayer(0);
-        voleurPlayer = new AlwaysSpendPlayer(1);
-        otherRolePlayer = new RealEstatePlayer(2);
-        magicienPlayer=new ColorPlayer(3);
-        condottierePlayer=new RandomPlayer(4);
-        evequePlayer=new ColorPlayer(5);
-        architectePlayer=new RealEstatePlayer(6);
+        pioche=new DistrictsJSONReader();
+        assassinPlayer = new AlwaysSpendPlayer(0, pioche);
+        voleurPlayer = new AlwaysSpendPlayer(1, pioche);
+        otherRolePlayer = new RealEstatePlayer(2, pioche);
+        magicienPlayer=new ColorPlayer(3, pioche);
+        condottierePlayer=new RandomPlayer(4, pioche);
+        evequePlayer=new ColorPlayer(5, pioche);
+        architectePlayer=new RealEstatePlayer(6, pioche);
 
         assassinPlayer.setRole(Role.ASSASSIN);
         voleurPlayer.setRole(Role.VOLEUR);
@@ -49,8 +53,10 @@ public class EvequeTest {
 
         basicDistrict=new District("temple", 5, Color.PURPLE, "null");
         game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer, evequePlayer, architectePlayer));
+        game.setDistrictsJSONReader(pioche);
         summary=new RoundSummary();
     }
+
     void initSpyCondottiere() {
         condottierePlayer.setRole(Role.CONDOTTIERE);
         condottierePlayer=Mockito.spy(condottierePlayer);
@@ -73,6 +79,7 @@ public class EvequeTest {
     }
 
     @Test
+    @SuppressWarnings("java:S2699")//add assertion to this case
     void testCanDestroyDeadEvequeDistrict() {
         initSpyCondottiere();
         evequePlayer.addDistrictToCity(basicDistrict);

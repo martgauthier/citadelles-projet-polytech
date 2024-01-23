@@ -1,9 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
@@ -12,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class ColorPlayer extends Player {
-    public ColorPlayer(int id) {
-        super(id);
+    public ColorPlayer(int id, DistrictsJSONReader pioche) {
+        super(id, pioche);
     }
 
-    public ColorPlayer(int id, int cash, List<District> cards) {
-        super(id, cash, cards, false);
+    public ColorPlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+        super(id, cash, cards, false, pioche);
     }
 
     @Override
@@ -71,7 +68,7 @@ public class ColorPlayer extends Player {
     public Optional<District> getChoosenDistrictToBuy() {
         Optional<District> minCardWithColor=Optional.empty();
 
-        for(District card: getCardsInHand()) {
+        for(District card: getBuyableCards()) {
             if(card.getColor() == getRole().getColor() && (minCardWithColor.isEmpty() || card.compareTo(minCardWithColor.get()) < 0)) {
                 minCardWithColor=Optional.of(card);
             }
@@ -80,8 +77,8 @@ public class ColorPlayer extends Player {
         if(minCardWithColor.isPresent() && minCardWithColor.get().getCost() <= getCash()) {
             return minCardWithColor;
         }
-        else if(!getCardsInHand().isEmpty()){//no card with color are buyable, but some cards are present in hand. Let's try to buy the cheapest
-            District minCard=Collections.min(getCardsInHand());
+        else if(!getBuyableCards().isEmpty()){//no card with color are buyable, but some cards are present in hand. Let's try to buy the cheapest
+            District minCard=Collections.min(getBuyableCards());
             if(minCard.getCost() <= getCash()){
                 return Optional.of(minCard);
             }
@@ -94,7 +91,7 @@ public class ColorPlayer extends Player {
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playersList) {
         Player selectedPlayer=playersList.get(0);
         while(selectedPlayer==this) {
-            selectedPlayer=playersList.get(randomGenerator.nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
+            selectedPlayer=playersList.get(getRandomGenerator().nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
         }
 
         return selectedPlayer;
@@ -102,6 +99,6 @@ public class ColorPlayer extends Player {
 
     @Override
     public boolean choosesToExchangeCardWithPlayer() {
-        return randomGenerator.nextBoolean();//pas de logique particulière à ce sujet
+        return getRandomGenerator().nextBoolean();//pas de logique particulière à ce sujet
     }
 }

@@ -11,7 +11,8 @@ import java.util.*;
 public class RoundSummary {
 
     public static final int DEFAULT_DRAWN_COINS=0;
-    public static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
+
+    protected static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
 
     private List<District> boughtDistricts;
     private int drawnCoins;

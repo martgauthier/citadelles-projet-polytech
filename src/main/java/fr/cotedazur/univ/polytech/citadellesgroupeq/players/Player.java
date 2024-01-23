@@ -13,7 +13,7 @@ import java.util.*;
  */
 public abstract class Player implements Comparable<Player>, IStrategy {
 
-    public Random randomGenerator=new Random();
+    private Random randomGenerator=new Random();
     private int cash;
     private boolean deadForThisTurn;
     public static final int DEFAULT_CASH=0;
@@ -37,13 +37,15 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      */
     private IStrategy strategy;
 
-    protected Player(int id) {
-        this(id, DEFAULT_CASH, new ArrayList<>(),false);
+    private DistrictsJSONReader pioche;
+
+    protected Player(int id, DistrictsJSONReader pioche) {
+        this(id, DEFAULT_CASH, new ArrayList<>(),false, pioche);
         pickCard(new RoundSummary());
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn) {
+    protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn, DistrictsJSONReader pioche) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
@@ -51,6 +53,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         this.city=new ArrayList<>();
         this.deadForThisTurn = deadForThisTurn;
         this.strategy=new DefaultStrategy(this);
+        this.pioche=pioche;
     }
 
     public void setRandomGenerator(Random customRandom) {
@@ -180,7 +183,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public List<District> getBuyableCards(int cashAvailable) {
         List<District> buyableCards = new ArrayList<>();
         for(District card : cardsInHand) {
-            if(card.getCost() <= cashAvailable) {
+            if(card.getCost() <= cashAvailable && !city.contains(card)) {
                 buyableCards.add(card);
             }
         }
@@ -203,29 +206,18 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     /**
-     * Choisit une carte parmi celles proposées pour l'ajouter au jeu du joueur.
-     * @param cards les cartes proposées
-     * @return la carte choisie
-     */
-    public District pickCard(RoundSummary summary, List<District> cards) {
-        if(cards.isEmpty()) {
-            throw new IllegalArgumentException("cards must not be empty.");
-        }
-        District choosenCard=cards.get(randomGenerator.nextInt(cards.size()));
-
-        addCardToHand(choosenCard);
-
-        summary.addDrawnCard(choosenCard);
-
-        return choosenCard;
-    }
-
-    /**
-     * Appelle {@link #pickCard(RoundSummary, List)}, avec 2 cartes choisies aléatoirement.
-     * @return la carte choisie par le joueur
+     * Choisit une carte dans la pioche
+     * @return la carte du haut de la pioche
      */
     public District pickCard(RoundSummary summary) {
-        return pickCard(summary, generate2Cards());
+        District choosenCard=pioche.pickTopCard();
+
+        if(choosenCard!=null) {
+            addCardToHand(choosenCard);
+            summary.addDrawnCard(choosenCard);
+        }
+
+        return choosenCard;
     }
 
     /**
@@ -261,6 +253,9 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public void addDistrictToCity(District districtToAdd) {
+        if(city.contains(districtToAdd)) {
+            throw new IllegalArgumentException("Can't have the same district multiple times in city.");
+        }
         this.city.add(districtToAdd);
     }
 
@@ -373,7 +368,6 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public abstract String getBotLogicName();
 
     public boolean isDistrictInCity(String districtToCheck){
-        List<District> city = this.getCity();
         for(District district: city){
             String districtName = district.getName();
             if(districtToCheck.equalsIgnoreCase(districtName)) {
@@ -384,15 +378,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public Optional<District> getDistrictInCity(String districtToGet) {
-        //TODO Refactor it with "list.indexOf"
-        List<District> city = this.getCity();
-        for (District district : city) {
-            String districtName = district.getName();
-            if (districtToGet.equalsIgnoreCase(districtName)) {
-                return Optional.of(district);
-            }
-        }
-        return Optional.empty();
+        return city.stream().filter(district -> district.getName().equalsIgnoreCase(districtToGet)).findFirst();
     }
 
 
@@ -409,7 +395,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public Map<Color, Boolean> getColorsContainedInCityMap() {
-        Map<Color, Boolean> colorsContainedMap=new HashMap<>();
+        Map<Color, Boolean> colorsContainedMap=new EnumMap<>(Color.class);
         colorsContainedMap.put(Color.BLUE, false);
         colorsContainedMap.put(Color.RED, false);
         colorsContainedMap.put(Color.GREEN, false);
@@ -428,10 +414,19 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public int numberOfColorsInCity() {
         int colorsInCity=0;
         for(Boolean value: getColorsContainedInCityMap().values()) {
-            if(value) {
+            if(Boolean.TRUE.equals(value)) {
                 colorsInCity++;
             }
         }
         return colorsInCity;
+    }
+
+    public Random getRandomGenerator() {
+        return randomGenerator;
+    }
+
+    @Override
+    public boolean wantsToUseManufacturePower() {
+        return cash > 5 && cardsInHand.size() < 3;
     }
 }

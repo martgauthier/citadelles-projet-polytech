@@ -58,4 +58,6 @@ public interface IStrategy {
     Player getPlayer();
 
     String getStrategyName();
+
+    boolean wantsToUseManufacturePower();
 }

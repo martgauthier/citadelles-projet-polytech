@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -10,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class RandomPlayer extends Player {
-    public RandomPlayer(int id) {
-        super(id);
+    public RandomPlayer(int id, DistrictsJSONReader pioche) {
+        super(id, pioche);
     }
 
-    public RandomPlayer(int id, int cash, List<District> cards) {
-        super(id, cash, cards, false);
+    public RandomPlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+        super(id, cash, cards, false, pioche);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class RandomPlayer extends Player {
 
         getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
 
-        int randomChoice = randomGenerator.nextInt(2);
+        int randomChoice = getRandomGenerator().nextInt(2);
 
         if (randomChoice == 1) {
             draw2Coins(summary);
@@ -63,7 +64,7 @@ public class RandomPlayer extends Player {
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playersList) {
         Player selectedPlayer=playersList.get(0);
         while(selectedPlayer==this) {
-            selectedPlayer=playersList.get(randomGenerator.nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
+            selectedPlayer=playersList.get(getRandomGenerator().nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
         }
 
         return selectedPlayer;
@@ -71,6 +72,6 @@ public class RandomPlayer extends Player {
 
     @Override
     public boolean choosesToExchangeCardWithPlayer() {
-        return randomGenerator.nextBoolean();//pas de logique particulière à ce sujet
+        return getRandomGenerator().nextBoolean();//pas de logique particulière à ce sujet
     }
 }

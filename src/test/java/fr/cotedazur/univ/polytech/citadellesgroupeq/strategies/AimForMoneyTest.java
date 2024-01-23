@@ -2,6 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -24,15 +25,18 @@ class AimForMoneyTest {
     Player mainPlayer, otherPlayer;
     RoundSummary summary;
     GameLogicManager game;
+    DistrictsJSONReader pioche;
 
     @BeforeEach
     void setup() {
-        mainPlayer=new AlwaysSpendPlayer(0);
+        pioche=new DistrictsJSONReader();
+        mainPlayer=new AlwaysSpendPlayer(0, pioche);
         mainPlayer.setStrategy(new AimForMoneyStrategy(mainPlayer));
         mainPlayer.setRole(Role.ASSASSIN);
-        otherPlayer=new ColorPlayer(1);
+        otherPlayer=new ColorPlayer(1, pioche);
         otherPlayer.setRole(Role.CONDOTTIERE);
         game=new GameLogicManager(List.of(mainPlayer, otherPlayer));
+        game.setDistrictsJSONReader(pioche);
         summary=new RoundSummary();
     }
 

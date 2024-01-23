@@ -1,9 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.AimForMoneyStrategy;
@@ -18,8 +15,8 @@ import java.util.*;
 public class ThomasPlayer extends Player {
     public static List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.EVEQUE));
     public static int PICK_CARD_FOR_MORE_THAN=0;
-    public ThomasPlayer(int id) {
-        super(id);
+    public ThomasPlayer(int id, DistrictsJSONReader pioche) {
+        super(id, pioche);
     }
 
     @Override
