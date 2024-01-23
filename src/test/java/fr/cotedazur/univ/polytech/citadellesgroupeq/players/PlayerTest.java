@@ -111,4 +111,13 @@ class PlayerTest {
 
         assertTrue(bot.isCloseToWin());
     }
+
+    @SuppressWarnings("java:S5778")
+    @Test
+    void testBuyingSameDistrictThrowsIllegalArg() {
+        District basicDistrict=new District("temple", 8, Color.YELLOW);
+
+        bot.addDistrictToCity(basicDistrict);
+        assertThrows(IllegalArgumentException.class, () -> bot.addDistrictToCity(new District(basicDistrict.getName(), basicDistrict.getCost(), basicDistrict.getColor())));
+    }
 }

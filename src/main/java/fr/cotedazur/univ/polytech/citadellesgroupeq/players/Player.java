@@ -180,7 +180,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public List<District> getBuyableCards(int cashAvailable) {
         List<District> buyableCards = new ArrayList<>();
         for(District card : cardsInHand) {
-            if(card.getCost() <= cashAvailable) {
+            if(card.getCost() <= cashAvailable && !city.contains(card)) {
                 buyableCards.add(card);
             }
         }
@@ -261,6 +261,9 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     public void addDistrictToCity(District districtToAdd) {
+        if(city.contains(districtToAdd)) {
+            throw new IllegalArgumentException("Can't have the same district multiple times in city.");
+        }
         this.city.add(districtToAdd);
     }
 
