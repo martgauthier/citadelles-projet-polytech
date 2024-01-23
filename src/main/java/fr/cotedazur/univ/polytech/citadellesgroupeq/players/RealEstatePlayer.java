@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -16,12 +17,12 @@ import java.util.Optional;
  */
 public class RealEstatePlayer extends Player {
 
-    public RealEstatePlayer(int id) {
-        super(id);
+    public RealEstatePlayer(int id, DistrictsJSONReader pioche) {
+        super(id, pioche);
     }
 
-    public RealEstatePlayer(int id, int cash, List<District> cards) {
-        super(id, cash, cards, false);
+    public RealEstatePlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+        super(id, cash, cards, false, pioche);
     }
 
     /**

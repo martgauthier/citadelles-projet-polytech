@@ -22,10 +22,10 @@ class BibliothequePowerTest {
 
     @BeforeEach
     void setup() {
-        player= Mockito.spy(new RealEstatePlayer(0));
-        player.setStrategy(new DefaultStrategy(player));
         summary=new RoundSummary();
         game=new GameLogicManager();
+        player= Mockito.spy(new RealEstatePlayer(0, game.getDistrictsJSONReader()));
+        player.setStrategy(new DefaultStrategy(player));
         game.getPlayersList().set(0, player);
     }
 

@@ -2,6 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
@@ -36,6 +37,8 @@ public class GameLogicManager {
      */
     private boolean isFinished;
 
+    private DistrictsJSONReader districtsJSONReader;
+
     /**
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
@@ -56,13 +59,19 @@ public class GameLogicManager {
         int ids=0;
         for(Class<? extends Player> playerStrategy: DEFAULT_PLAYER_CLASS_LIST) {
             try {
-                Constructor<? extends Player> constructor = playerStrategy.getDeclaredConstructor(int.class);
-                this.playersList.add(constructor.newInstance(ids++));
+                Constructor<? extends Player> constructor = playerStrategy.getDeclaredConstructor(int.class, DistrictsJSONReader.class);
+                this.playersList.add(constructor.newInstance(ids++, districtsJSONReader));
             }
             catch(Exception e) {
-                throw new RuntimeException("pas de constructeur prenant un int en paramètre trouvé pour la classe " + playerStrategy.getName() + "! Erreur de code");
+                throw new RuntimeException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "! Erreur de code");
             }
         }
+    }
+
+    public DistrictsJSONReader getDistrictsJSONReader() { return districtsJSONReader; }
+
+    public void setDistrictsJSONReader(DistrictsJSONReader districtsJSONReader) {
+        this.districtsJSONReader = districtsJSONReader;
     }
 
     public GameLogicManager(List<Player> playersList) {
@@ -71,6 +80,7 @@ public class GameLogicManager {
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;
+        districtsJSONReader=new DistrictsJSONReader();
     }
 
     public List<Player> getPlayersList() {

@@ -4,10 +4,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InvalidPropertiesFormatException;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
@@ -23,7 +20,7 @@ public class DistrictsJSONReader {
     /** La liste des districts lue à partir du fichier JSON. */
     private List<District> districtsList;
 
-    private Random randomGenerator=new Random();
+    private Queue<District> districtQueue;
 
 
     public static final String DEFAULT_PATH= "districts.json";
@@ -41,17 +38,20 @@ public class DistrictsJSONReader {
             districtsList = new ArrayList<>();
             // Parcours chaque élément du tableau JSON et crée un objet District correspondant
             for (JSONObject districtObject : (Iterable<JSONObject>) jsonArray) {
-                if (districtObject.get("name") == null || districtObject.get("cost") == null || districtObject.get("color") == null) {
+                if (districtObject.get("name") == null || districtObject.get("cost") == null || districtObject.get("color") == null || districtObject.get("quantity") == null) {
                     throw new InvalidPropertiesFormatException("Format du fichier JSON incorrect");
                 } else {
                     String name = (String) districtObject.get("name");
                     int cost = ((Long) districtObject.get("cost")).intValue();
                     String color = (String) districtObject.get("color");
                     String pouvoir = (String) districtObject.get("power");
+                    Long quantity = (Long) districtObject.get("quantity");
 
-                    districtsList.add(new District(name, cost, color, pouvoir));
+                    for(int i=0; i < quantity; i++) districtsList.add(new District(name, cost, color, pouvoir));//l'ajoute autant de fois que sa quantité
                 }
             }
+            Collections.shuffle(districtsList);
+            districtQueue=new PriorityQueue<>(districtsList);
         }
         catch(IOException | NullPointerException | ParseException e) {
             throw new BadlyInitializedReader("Error while initializing reader");//arbitrary value
@@ -65,6 +65,11 @@ public class DistrictsJSONReader {
     public List<District> getDistrictsList() {
         return districtsList;
     }
+
+    public Queue<District> getDistrictQueue() {
+        return districtQueue;
+    }
+
 
 
     /**
@@ -96,11 +101,15 @@ public class DistrictsJSONReader {
         }
     }
 
-    public District getRandomDistrict() throws BadlyInitializedReader {
-        if (districtsList.isEmpty()) {
+    public District pickTopCard() throws BadlyInitializedReader {
+        if (districtQueue.isEmpty()) {
             throw new BadlyInitializedReader("District list is empty");
         }
-        return districtsList.get(randomGenerator.nextInt(districtsList.size()));
+        return districtQueue.remove();
+    }
+
+    public void addDistrictUnderCardsPile(District district) {
+        districtQueue.add(district);
     }
 
     public static class BadlyInitializedReader extends RuntimeException {

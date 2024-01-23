@@ -71,7 +71,9 @@ public enum Role {
                 DistrictsJSONReader districtsJSONReader = new DistrictsJSONReader();
 
                 for(int cardIndex: cardsToExchange) {
-                    magicien.setCardInHand(cardIndex, districtsJSONReader.getRandomDistrict());
+                    District oldCard=magicien.getCardsInHand().get(cardIndex);
+                    districtsJSONReader.addDistrictUnderCardsPile(oldCard);
+                    magicien.setCardInHand(cardIndex, districtsJSONReader.pickTopCard());
                 }
 
                 summary.setHasExchangedCardsWithPileAsMagician(true);
@@ -144,6 +146,8 @@ public enum Role {
 
                     condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
                     selectedPlayer.removeDistrictFromCity(playerChoice.getValue());
+
+                    g.getDistrictsJSONReader().addDistrictUnderCardsPile(playerChoice.getValue());
 
                     summary.setDestroyedDistrict(playerChoice);
 

@@ -37,13 +37,15 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      */
     private IStrategy strategy;
 
-    protected Player(int id) {
-        this(id, DEFAULT_CASH, new ArrayList<>(),false);
+    private DistrictsJSONReader pioche;
+
+    protected Player(int id, DistrictsJSONReader pioche) {
+        this(id, DEFAULT_CASH, new ArrayList<>(),false, pioche);
         pickCard(new RoundSummary());
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn) {
+    protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn, DistrictsJSONReader pioche) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
@@ -51,6 +53,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         this.city=new ArrayList<>();
         this.deadForThisTurn = deadForThisTurn;
         this.strategy=new DefaultStrategy(this);
+        this.pioche=pioche;
     }
 
     public void setRandomGenerator(Random customRandom) {
@@ -203,29 +206,17 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     /**
-     * Choisit une carte parmi celles proposées pour l'ajouter au jeu du joueur.
-     * @param cards les cartes proposées
-     * @return la carte choisie
+     * Choisit une carte dans la pioche
+     * @return la carte du haut de la pioche
      */
-    public District pickCard(RoundSummary summary, List<District> cards) {
-        if(cards.isEmpty()) {
-            throw new IllegalArgumentException("cards must not be empty.");
-        }
-        District choosenCard=cards.get(randomGenerator.nextInt(cards.size()));
+    public District pickCard(RoundSummary summary) {
+        District choosenCard=pioche.pickTopCard();
 
         addCardToHand(choosenCard);
 
         summary.addDrawnCard(choosenCard);
 
         return choosenCard;
-    }
-
-    /**
-     * Appelle {@link #pickCard(RoundSummary, List)}, avec 2 cartes choisies aléatoirement.
-     * @return la carte choisie par le joueur
-     */
-    public District pickCard(RoundSummary summary) {
-        return pickCard(summary, generate2Cards());
     }
 
     /**

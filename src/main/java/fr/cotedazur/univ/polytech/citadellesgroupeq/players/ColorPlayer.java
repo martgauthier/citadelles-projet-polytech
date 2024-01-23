@@ -1,9 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 
@@ -12,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class ColorPlayer extends Player {
-    public ColorPlayer(int id) {
-        super(id);
+    public ColorPlayer(int id, DistrictsJSONReader pioche) {
+        super(id, pioche);
     }
 
-    public ColorPlayer(int id, int cash, List<District> cards) {
-        super(id, cash, cards, false);
+    public ColorPlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+        super(id, cash, cards, false, pioche);
     }
 
     @Override

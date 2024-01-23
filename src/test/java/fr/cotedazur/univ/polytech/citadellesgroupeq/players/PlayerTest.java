@@ -17,8 +17,8 @@ class PlayerTest {
     DistrictsJSONReader reader;
     @BeforeEach
     void setup() {
-        bot = new AlwaysSpendPlayer(0);
         reader = new DistrictsJSONReader();
+        bot = new AlwaysSpendPlayer(0, reader);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -16,10 +17,13 @@ class RealEstatePlayerTest {
     Player botWithEightCards;
     Player botWithoutCards;
     RoundSummary summary;
+    DistrictsJSONReader pioche;
 
     @BeforeEach
     public void setUp(){
         List<District> districtList = new ArrayList<>();
+
+        pioche=new DistrictsJSONReader();
 
         districtList.add(new District("Temple", 9, "blue", "null"));
         districtList.add(new District("Eglise", 8, "blue", "null"));
@@ -30,8 +34,8 @@ class RealEstatePlayerTest {
         districtList.add(new District("Port", 4, "green", "null"));
         districtList.add(new District("Hotel de ville", 5, "green", "null"));
 
-        botWithEightCards = new RealEstatePlayer(0,0, districtList);
-        botWithoutCards = new RealEstatePlayer(1,0,new ArrayList<>());
+        botWithEightCards = new RealEstatePlayer(0,0, districtList, pioche);
+        botWithoutCards = new RealEstatePlayer(1,0,new ArrayList<>(), pioche);
         summary = new RoundSummary();
     }
 
