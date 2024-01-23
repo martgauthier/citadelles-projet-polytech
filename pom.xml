@@ -141,6 +141,9 @@
                     </plugin>
                 </plugins>
             </build>
+            <properties>
+                <sonar.coverage.exclusions>**/Main.java, **/GameOutputManager.java</sonar.coverage.exclusions>
+            </properties>
         </profile>
     </profiles>
 

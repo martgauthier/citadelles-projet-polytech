@@ -69,14 +69,14 @@ class ArchitecteTest {
         architectePlayer.setCash(11000);//make him rich
 
         List<District> architecteHand = new ArrayList<>(List.of(
-                new District("temple", 8, Color.GRAY, "null"),
-                new District("temple", 8, Color.GRAY, "null"),
-                new District("temple", 8, Color.GRAY, "null"),
-                new District("temple", 8, Color.GRAY, "null"),
-                new District("temple", 8, Color.GRAY, "null"),
-                new District("temple", 8, Color.GRAY, "null"),
-                new District("temple", 8, Color.GRAY, "null"),
-                new District("temple", 8, Color.GRAY, "null")));
+                new District("temple0", 8, Color.GRAY, "null"),
+                new District("temple1", 8, Color.GRAY, "null"),
+                new District("temple2", 8, Color.GRAY, "null"),
+                new District("temple3", 8, Color.GRAY, "null"),
+                new District("temple4", 8, Color.GRAY, "null"),
+                new District("temple5", 8, Color.GRAY, "null"),
+                new District("temple6", 8, Color.GRAY, "null"),
+                new District("temple7", 8, Color.GRAY, "null")));
 
         architectePlayer.setCardsInHand(architecteHand); // il a 8 cartes en main, et le real estate player veut toujours acheter à 8 cartes
 

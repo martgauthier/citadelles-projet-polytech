@@ -71,7 +71,7 @@ public class ColorPlayer extends Player {
     public Optional<District> getChoosenDistrictToBuy() {
         Optional<District> minCardWithColor=Optional.empty();
 
-        for(District card: getCardsInHand()) {
+        for(District card: getBuyableCards()) {
             if(card.getColor() == getRole().getColor() && (minCardWithColor.isEmpty() || card.compareTo(minCardWithColor.get()) < 0)) {
                 minCardWithColor=Optional.of(card);
             }
@@ -80,8 +80,8 @@ public class ColorPlayer extends Player {
         if(minCardWithColor.isPresent() && minCardWithColor.get().getCost() <= getCash()) {
             return minCardWithColor;
         }
-        else if(!getCardsInHand().isEmpty()){//no card with color are buyable, but some cards are present in hand. Let's try to buy the cheapest
-            District minCard=Collections.min(getCardsInHand());
+        else if(!getBuyableCards().isEmpty()){//no card with color are buyable, but some cards are present in hand. Let's try to buy the cheapest
+            District minCard=Collections.min(getBuyableCards());
             if(minCard.getCost() <= getCash()){
                 return Optional.of(minCard);
             }
