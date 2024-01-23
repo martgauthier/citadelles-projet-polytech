@@ -21,7 +21,7 @@ public interface IStrategy {
      */
     Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players);
     int[] selectCardsToExchangeWithPileAsMagicien();
-    void playPlayerTurn(RoundSummary summary, GameLogicManager game);
+    void playTurn(RoundSummary summary, GameLogicManager game);
 
     /**
      *
@@ -39,10 +39,12 @@ public interface IStrategy {
 
     /**
      * Sélectionne un rôle aléatoirement dans la liste availableRoles pour le joueur
+     *
      * @param availableRoles les rôles disponibles
+     * @param playerList
      * @return l'id dans la liste fournie du rôle sélectionné
      */
-    int selectRole(List<Role> availableRoles);
+    int selectAndSetRole(List<Role> availableRoles, List<Player> playerList);
 
     Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles);
 
@@ -54,4 +56,8 @@ public interface IStrategy {
     Role selectRoleToKillAsAssassin(List<Role> availableRoles);
 
     Player getPlayer();
+
+    String getStrategyName();
+
+    boolean wantsToUseManufacturePower();
 }

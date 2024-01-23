@@ -1,5 +1,8 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
@@ -34,15 +37,17 @@ public class GameLogicManager {
      */
     private boolean isFinished;
 
+    private DistrictsJSONReader districtsJSONReader;
+
     /**
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
-    private Map<Player, Integer> ScoreOfEnd=new HashMap<>();
+    private Map<Player, Integer> scoreOfEnd =new HashMap<>();
 
 
     //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
-    public static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ColorPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
+    protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ColorPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
 
     public GameLogicManager() {
         this(List.of());//liste de joueurs vide
@@ -54,13 +59,19 @@ public class GameLogicManager {
         int ids=0;
         for(Class<? extends Player> playerStrategy: DEFAULT_PLAYER_CLASS_LIST) {
             try {
-                Constructor<? extends Player> constructor = playerStrategy.getDeclaredConstructor(int.class);
-                this.playersList.add(constructor.newInstance(ids++));
+                Constructor<? extends Player> constructor = playerStrategy.getDeclaredConstructor(int.class, DistrictsJSONReader.class);
+                this.playersList.add(constructor.newInstance(ids++, districtsJSONReader));
             }
             catch(Exception e) {
-                throw new RuntimeException("pas de constructeur prenant un int en paramètre trouvé pour la classe " + playerStrategy.getName() + "! Erreur de code");
+                throw new RuntimeException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "! Erreur de code");
             }
         }
+    }
+
+    public DistrictsJSONReader getDistrictsJSONReader() { return districtsJSONReader; }
+
+    public void setDistrictsJSONReader(DistrictsJSONReader districtsJSONReader) {
+        this.districtsJSONReader = districtsJSONReader;
     }
 
     public GameLogicManager(List<Player> playersList) {
@@ -69,13 +80,14 @@ public class GameLogicManager {
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;
+        districtsJSONReader=new DistrictsJSONReader();
     }
 
     public List<Player> getPlayersList() {
         return playersList;
     }
     public Map<Player, Integer> getScoreOfEnd() {
-        return ScoreOfEnd;
+        return scoreOfEnd;
     }
 
     /**
@@ -93,6 +105,7 @@ public class GameLogicManager {
      * @return la liste des joueurs dans leur ordre de choix du rôle
      * @throws IllegalArgumentException Si certains rôles sont EMPTY ou qu'il y a moins de rôles que de joueurs.
      */
+    @SuppressWarnings("java:S5413")//unsafe usage of "List.remove" in a loop, not matching our case because it is safe
     public List<Player> makeAllPlayersSelectRole(List<Role> availableRoles) throws IllegalArgumentException {
         availableRoles=new ArrayList<>(availableRoles);//used to prevent original list to be modified
         if(availableRoles.size() <= playersList.size()) {
@@ -100,6 +113,8 @@ public class GameLogicManager {
         }
 
         List<Player> playersInRolePickingOrder=new ArrayList<>();
+
+        playersList.forEach(player -> player.setRole(Role.EMPTY_ROLE));
 
         playerTreeSet.clear();
         //setRandomMasterOfGame();//pour débuter par un joueur aléatoire
@@ -109,7 +124,7 @@ public class GameLogicManager {
 
             playersInRolePickingOrder.add(selectedPlayer);
 
-            int selectedRoleIndex=selectedPlayer.getStrategy().selectRole(availableRoles);
+            int selectedRoleIndex=selectedPlayer.getStrategy().selectAndSetRole(availableRoles, playersList);
             if(availableRoles.get(selectedRoleIndex) == Role.EMPTY_ROLE) {
                 throw new IllegalArgumentException("Roles can't be EMPTY_ROLE.");
             }
@@ -131,7 +146,7 @@ public class GameLogicManager {
             summary.setHasBeenKilledDuringTurn();
         }
         else {
-            player.getStrategy().playPlayerTurn(summary, this);
+            player.getStrategy().playTurn(summary, this);
             if (player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN && !isFinished) {
                 summary.setHasFinishDuringTurn(true);
                 finishGame();
@@ -213,23 +228,56 @@ public class GameLogicManager {
         }
         return newAvailableRoles;
     }
-    public void makeScoreofPlayer(Player player,RoundSummary summary){
+
+    /**
+     * Makes score of given player, and adds it to score list.
+     * @param player
+     * @param summary
+     * @return player's score
+     */
+    @SuppressWarnings("java:S3655")//false positive for checking for Optional.isPresent()
+    public int makeScoreofPlayer(Player player,RoundSummary summary){
+        String coursDesMiraclesName="Cour des miracles";
         int score=player.getTotalCityPrice();
+
+        if(player.getDistrictInCity("Université").isPresent()) {
+            score+=2;//the card originally costs 6, but its value is 8 for score counting (source: règle du jeu)
+        }
+        if(player.getDistrictInCity("Dracoport").isPresent()) {
+            score+=2;//the card originally costs 6, but its value is 8 for score counting (source: règle du jeu)
+        }
+
+
+
         if(!summary.hasFinishDuringTurn() && player.getCity().size() == NUMBER_OF_DISTRICTS_TO_WIN){
             score+=2;
         }
         if(summary.hasFinishDuringTurn()){
             score+=4;
         }
+
         if(player.hasAllColorsInCity()){
             score+=3;
         }
-        ScoreOfEnd.put(player,score);
+        else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity(coursDesMiraclesName).isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
+            player.removeDistrictFromCity(player.getDistrictInCity(coursDesMiraclesName).get());//remove it from colorMap, to check if there is another purple card
+            Map<Color, Boolean> colorMap=player.getColorsContainedInCityMap();
+            if(Boolean.TRUE.equals(colorMap.get(Color.PURPLE))) {//si il y a une autre carte violette que la cour des miracles, cela veut dire qu'on peut
+                // remplacer la couleur manquante grâce au pouvoir de la cour des miracles
+                score+=3;
+            }
+
+            player.addDistrictToCity(new District(coursDesMiraclesName, 2, Color.PURPLE));
+        }
+
+
+        scoreOfEnd.put(player,score);
+        return score;
     }
     public Player whoIsTheWinner(){
         int higherScore=0;
         Player winner=playerTreeSet.last();//en cas d'égalité, le joueur qui gagne est celui qui a le plus haut rôle au dernier tour
-        for (Map.Entry<Player, Integer> entry : ScoreOfEnd.entrySet()) {
+        for (Map.Entry<Player, Integer> entry : scoreOfEnd.entrySet()) {
             if(higherScore<entry.getValue()){
                 higherScore=entry.getValue();
                 winner=entry.getKey();

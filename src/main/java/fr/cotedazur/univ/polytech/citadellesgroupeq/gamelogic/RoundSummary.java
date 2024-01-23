@@ -11,15 +11,18 @@ import java.util.*;
 public class RoundSummary {
 
     public static final int DEFAULT_DRAWN_COINS=0;
-    public static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
+
+    protected static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
 
     private List<District> boughtDistricts;
     private int drawnCoins;
 
     private int coinsWonByColorCards;
     private boolean hasUsedPower;
+    private boolean hasUsedMerveillesPower;
     private boolean hasBeenKilledDuringTurn;
     private Role stealedRole;
+    private List<String> usedMerveilles =new ArrayList<>();
 
     private boolean hasExchangedCardsWithPileAsMagician;
 
@@ -125,9 +128,14 @@ public class RoundSummary {
     public void setHasUsedPower() {
         hasUsedPower=true;
     }
+    public boolean hasUsedMerveillePower(){return hasUsedMerveillesPower;}
+    public void setHasUsedMerveillesPower(){ hasUsedMerveillesPower =true;}
     public boolean hasBeenKilled(){return hasBeenKilledDuringTurn;}
     public void setHasBeenKilledDuringTurn(){
         hasBeenKilledDuringTurn =true;
+    }
+    public List<String> getUsedMerveilles(){
+        return usedMerveilles;
     }
 
     public void setStealedRole(Role stealedRole){this.stealedRole = stealedRole;}
@@ -188,5 +196,14 @@ public class RoundSummary {
 
     public boolean hasExchangedCardsWithPileAsMagician() {
         return hasExchangedCardsWithPileAsMagician;
+    }
+
+    public boolean containsCourDesMiracles() {
+        for(District district: boughtDistricts) {
+            if(district.getName().equals("Cour des miracles")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
