@@ -45,7 +45,9 @@ public class RandomPlayer extends Player {
             draw2Coins(summary);
         }
         else{
-            pickCard(summary);
+            if(!haveObservatoryInCity()){
+                pickCard(summary);
+            }
         }
 
         PowerManager powerManager = new PowerManager(game);

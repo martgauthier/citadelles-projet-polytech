@@ -120,4 +120,10 @@ class PlayerTest {
         bot.addDistrictToCity(basicDistrict);
         assertThrows(IllegalArgumentException.class, () -> bot.addDistrictToCity(new District(basicDistrict.getName(), basicDistrict.getCost(), basicDistrict.getColor())));
     }
+    @Test
+    void testHaveObservatoryInCity(){
+        District obs= new District("Observatoire",8,Color.PURPLE);
+        bot.addDistrictToCity(obs);
+        assertTrue(bot.haveObservatoryInCity());
+    }
 }
