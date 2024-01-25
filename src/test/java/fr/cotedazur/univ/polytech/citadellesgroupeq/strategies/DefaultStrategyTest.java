@@ -1,14 +1,12 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -20,10 +18,10 @@ class DefaultStrategyTest {
     Player basicPlayer;
     IStrategy defaultStrat;
     GameLogicManager game;
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
     @BeforeEach
     void initPlayer() {
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
         basicPlayer=new AlwaysSpendPlayer(0, pioche);
         defaultStrat=basicPlayer.getStrategy();
         game=new GameLogicManager(List.of(basicPlayer));

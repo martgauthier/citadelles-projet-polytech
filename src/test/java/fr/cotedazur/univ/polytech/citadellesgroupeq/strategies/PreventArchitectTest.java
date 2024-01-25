@@ -2,7 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -22,11 +22,11 @@ class PreventArchitectTest {
     Player player;
     Player otherPlayer;
     GameLogicManager game;
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
     RoundSummary summary;
     @BeforeEach
     void setup() {
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
         player= Mockito.spy(new RealEstatePlayer(0, pioche));
         player.setStrategy(new PreventArchitectStrategy(player));
         otherPlayer=Mockito.spy(new AlwaysSpendPlayer(1, pioche));//arbitrary choice of players

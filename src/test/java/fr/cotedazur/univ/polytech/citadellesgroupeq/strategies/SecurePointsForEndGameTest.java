@@ -2,7 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
@@ -10,7 +10,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +19,10 @@ class SecurePointsForEndGameTest {
     Player secureLastPlayer;
     IStrategy secureLastStrat;
     GameLogicManager game;
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
     @BeforeEach
     void setUp() {
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
         secureLastPlayer = new AlwaysSpendPlayer(0, pioche);
         secureLastStrat = new SecurePointsForEndGame(secureLastPlayer);
         secureLastPlayer.setStrategy(secureLastStrat);

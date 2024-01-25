@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class RandomPlayer extends Player {
-    public RandomPlayer(int id, DistrictsJSONReader pioche) {
+    public RandomPlayer(int id, CardDeck pioche) {
         super(id, pioche);
     }
 
-    public RandomPlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+    public RandomPlayer(int id, int cash, List<District> cards, CardDeck pioche) {
         super(id, cash, cards, false, pioche);
     }
 

@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.rolepowers;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -29,11 +29,11 @@ class KingTest {
 
     District basicDistrict;
 
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
 
     @BeforeEach
     void setup() {
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
         assassinPlayer = new AlwaysSpendPlayer(0, pioche);
         voleurPlayer = new AlwaysSpendPlayer(1, pioche);
         otherRolePlayer = new RealEstatePlayer(2, pioche);

@@ -3,13 +3,10 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -24,11 +21,11 @@ class RandomPlayerTest {
     RoundSummary summary;
     Random trickedRandom;
     GameLogicManager game;
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
 
     @BeforeEach
     void setUp() {
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
         randomPlayer=new RandomPlayer(0, pioche);
         otherPlayer=new RealEstatePlayer(1, pioche);
         game=new GameLogicManager(List.of(randomPlayer, otherPlayer));

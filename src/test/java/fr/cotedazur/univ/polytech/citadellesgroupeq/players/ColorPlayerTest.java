@@ -2,7 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +16,10 @@ class ColorPlayerTest {
     GameLogicManager game;
     ColorPlayer firstPlayer, secondPlayer;
     District highPriceRedDistrict, lowPriceRedDistrict;
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
     @BeforeEach
     void setup() {
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
         firstPlayer=new ColorPlayer(0, pioche);
         secondPlayer=new ColorPlayer(1, pioche);
 

@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -17,11 +17,11 @@ import java.util.Optional;
  */
 public class AlwaysSpendPlayer extends Player {
 
-    public AlwaysSpendPlayer(int id, DistrictsJSONReader pioche) {
+    public AlwaysSpendPlayer(int id, CardDeck pioche) {
         super(id, pioche);
     }
 
-    public AlwaysSpendPlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+    public AlwaysSpendPlayer(int id, int cash, List<District> cards, CardDeck pioche) {
         super(id, cash, cards, false, pioche);
     }
 

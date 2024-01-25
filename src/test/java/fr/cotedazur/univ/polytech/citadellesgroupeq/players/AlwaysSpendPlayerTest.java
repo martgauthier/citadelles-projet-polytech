@@ -1,6 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -15,11 +15,11 @@ class AlwaysSpendPlayerTest {
     Player botWithCards;
     Player botWithoutCards;
     RoundSummary summary;
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
 
     @BeforeEach
     public void setUp(){
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
         botWithCards = new AlwaysSpendPlayer(0, pioche);
         botWithoutCards = new AlwaysSpendPlayer(1,0,new ArrayList<>(), pioche);
         summary = new RoundSummary();
