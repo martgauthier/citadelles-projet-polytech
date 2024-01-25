@@ -15,7 +15,7 @@ import java.util.*;
 public class ThomasPlayer extends Player {
     public static List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.CONDOTTIERE));
     public static int PICK_CARD_FOR_MORE_THAN=1;
-    public ThomasPlayer(int id, DistrictsJSONReader pioche) {
+    public ThomasPlayer(int id, CardDeck pioche) {
         super(id, pioche);
     }
 
