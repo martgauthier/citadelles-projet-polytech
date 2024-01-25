@@ -27,7 +27,7 @@ public class BestScoreCalculator {
                 winPerPlayerMap.put(game.whoIsTheWinner().getBotLogicName(), winPerPlayerMap.getOrDefault(game.whoIsTheWinner().getBotLogicName(), 0) + 1);
             }
             catch (Exception e) {
-                throw new RuntimeException(Integer.toString(i));
+                throw new RuntimeException(e.toString());
             }
         }
 

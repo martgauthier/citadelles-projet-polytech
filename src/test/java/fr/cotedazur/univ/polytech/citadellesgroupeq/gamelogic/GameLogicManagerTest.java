@@ -133,9 +133,9 @@ class GameLogicManagerTest {
         districts.add(reader.pickTopCard());
         districts.add(reader.pickTopCard());
         districts.add(reader.pickTopCard());
-        game.getPlayersList().get(0).addAllDistrictsToCity(districts);
-        game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        game.playPlayerTurn(game.getPlayersList().get(0));
+        game.getPlayersList().get(1).addAllDistrictsToCity(districts);
+        game.getPlayersList().get(1).setRole(Role.ASSASSIN);
+        game.playPlayerTurn(game.getPlayersList().get(1));
         assertTrue(game.isFinished());
     }
     @Test
