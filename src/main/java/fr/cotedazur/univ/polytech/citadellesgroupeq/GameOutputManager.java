@@ -8,6 +8,7 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("java:S106")//asks for printing with a logger instead of System.out.println
 public class GameOutputManager {
     private GameLogicManager game;
     private int rounds;
@@ -42,7 +43,13 @@ public class GameOutputManager {
             game.resuscitateAllPlayers();
             System.out.println("--------------");
         }
-        System.out.println("Le joueur "+game.whoIsTheWinner().getId()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
+        System.out.println("Le joueur "+game.whoIsTheWinner().getBotLogicName()+game.whoIsTheWinner().getStrategyName()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
+        System.out.println("A noter pour le décompte des points, qu'il possédait ces merveilles: (rien si pas de cartes violettes)");
+        for(District district: game.whoIsTheWinner().getCity()) {
+            if(district.getColor() == Color.PURPLE) {
+                System.out.println("* " + district.getName());
+            }
+        }
         System.out.println("Jeu fini !");
     }
 
@@ -57,7 +64,7 @@ public class GameOutputManager {
 
     public void describeRolePicking(List<Player> players, int masterOfTheGameIndex) {
         for(Player player: players) {
-            System.out.print("Le joueur " + player.getBotLogicName());
+            System.out.print("Le joueur " + player.getBotLogicName()+player.getStrategyName());
             if(player.getId() == masterOfTheGameIndex) {
                 System.out.print(" (maitre du jeu)");
             }
@@ -69,7 +76,7 @@ public class GameOutputManager {
         describePlayerState(player);
 
         RoundSummary summary = game.playPlayerTurn(player);
-        PowerManager powerManager = new PowerManager(game);
+
         if(summary.hasBeenKilled()){
             System.out.println("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
         }
@@ -79,7 +86,7 @@ public class GameOutputManager {
                 if(player.getRole().equals(Role.ASSASSIN)) {
                     for (Player p : game.getPlayersList()) {
                         if (p.isDeadForThisTurn()) {
-                            System.out.println("et a tué le joueur " + p.getRole() + " de nom " + p.getBotLogicName());
+                            System.out.println("et a tué le joueur " + p.getRole() + " de nom " + p.getBotLogicName()+p.getStrategyName());
                             break;
                         }
                     }
@@ -90,7 +97,7 @@ public class GameOutputManager {
                     }
                     else {
                         Player exchangedWith = game.getPlayersList().get(summary.getExchangedCardsPlayerId());
-                        System.out.println("et décide d'échanger ses cartes avec le joueur " + exchangedWith.getRole() + " qui est le joueur " + exchangedWith.getBotLogicName());
+                        System.out.println("et décide d'échanger ses cartes avec le joueur " + exchangedWith.getRole() + " qui est le joueur " + exchangedWith.getBotLogicName()+exchangedWith.getStrategyName());
                     }
                 }
                 else if(player.getRole().equals(Role.MARCHAND)){
@@ -136,7 +143,12 @@ public class GameOutputManager {
             System.out.println("Voici sa cité");
             System.out.println(getDescriptionOfCards(player.getCity()));
         }
-        //TODO faire un affichage pour ceux qui finisse apres le premier dans le meme tour et affichage du grand gagnant
+        if(summary.hasUsedMerveillePower()){
+            System.out.println("Des pouvoirs de merveilles sont actifs. Les voici:");
+            for(String city: summary.getUsedMerveilles()){
+                System.out.println(city);
+            }
+        }
         System.out.println("\n");
     }
 
@@ -146,7 +158,7 @@ public class GameOutputManager {
      * @param player
      */
     public void describePlayerState(Player player) {
-        System.out.print("Joueur " + player.getBotLogicName());
+        System.out.print("Joueur " + player.getBotLogicName()+player.getStrategyName());
         System.out.println(" joue son tour, en tant que " + player.getRole().name() + "("+player.getRole().ordinal()+"-" + player.getRole().getColor().name()+").");
         System.out.println("Il possede actuellement " + player.getCash() + " pieces, et ces cartes en main: ");
         System.out.println(getDescriptionOfCards(player.getCardsInHand()));

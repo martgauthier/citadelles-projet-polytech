@@ -1,6 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -14,14 +15,14 @@ import java.util.Optional;
  * qui choisit toujours de dépenser ou de récupérer des pièces lors de son tour.
  * Cette classe hérite de la classe abstraite {@link Player}.
  */
-public class AlwaysSpendPlayer extends Player{
+public class AlwaysSpendPlayer extends Player {
 
-    public AlwaysSpendPlayer(int id) {
-        super(id);
+    public AlwaysSpendPlayer(int id, DistrictsJSONReader pioche) {
+        super(id, pioche);
     }
 
-    public AlwaysSpendPlayer(int id, int cash, List<District> cards) {
-        super(id, cash, cards, false);
+    public AlwaysSpendPlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+        super(id, cash, cards, false, pioche);
     }
 
     /**
@@ -31,9 +32,7 @@ public class AlwaysSpendPlayer extends Player{
      * @param game
      */
     @Override
-    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
-        PowerManager powerManager = new PowerManager(game);
-        powerManager.applyCityPowers(this);
+    public void playTurn(RoundSummary summary, GameLogicManager game) {
         super.getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
@@ -45,6 +44,10 @@ public class AlwaysSpendPlayer extends Player{
         else {
             pickCard(summary);
         }
+
+
+        PowerManager powerManager = new PowerManager(game);
+        powerManager.applyCityPowers(this, summary);
     }
 
     @Override
@@ -65,7 +68,7 @@ public class AlwaysSpendPlayer extends Player{
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playersList) {
         Player selectedPlayer=playersList.get(0);
         while(selectedPlayer==this) {
-            selectedPlayer=playersList.get(randomGenerator.nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
+            selectedPlayer=playersList.get(getRandomGenerator().nextInt(playersList.size()));//joueur aléatoire, pas de logique particulière pour l'instant
         }
 
         return selectedPlayer;
@@ -73,7 +76,7 @@ public class AlwaysSpendPlayer extends Player{
 
     @Override
     public boolean choosesToExchangeCardWithPlayer() {
-        return randomGenerator.nextBoolean();//pas de logique particulière à ce sujet
+        return getRandomGenerator().nextBoolean();//pas de logique particulière à ce sujet
     }
 
 }

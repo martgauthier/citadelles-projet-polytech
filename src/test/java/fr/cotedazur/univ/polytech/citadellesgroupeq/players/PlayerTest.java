@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -16,8 +17,8 @@ class PlayerTest {
     DistrictsJSONReader reader;
     @BeforeEach
     void setup() {
-        bot = new AlwaysSpendPlayer(0);
         reader = new DistrictsJSONReader();
+        bot = new AlwaysSpendPlayer(0, reader);
     }
 
     @Test
@@ -92,5 +93,31 @@ class PlayerTest {
         bot.addAllDistrictsToCity(districts);
         assertTrue(bot.isDistrictInCity("Ecole de Magie"));
         assertFalse(bot.isDistrictInCity("Dojon"));
+    }
+
+    @Test
+    void testCloseToWin() {
+        assertFalse(bot.isCloseToWin());//n'est pas proche de la victoire dans les conditions initiales
+        bot.setCash(10);
+        bot.addAllCardsToHand(new District("temple", 8, Color.RED), new District("temple2", 8, Color.PURPLE));
+        bot.setCity(List.of(
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY),
+                new District("temple", 8, Color.GRAY)//adds 6 cards to his city
+        ));
+
+        assertTrue(bot.isCloseToWin());
+    }
+
+    @SuppressWarnings("java:S5778")
+    @Test
+    void testBuyingSameDistrictThrowsIllegalArg() {
+        District basicDistrict=new District("temple", 8, Color.YELLOW);
+
+        bot.addDistrictToCity(basicDistrict);
+        assertThrows(IllegalArgumentException.class, () -> bot.addDistrictToCity(new District(basicDistrict.getName(), basicDistrict.getCost(), basicDistrict.getColor())));
     }
 }

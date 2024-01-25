@@ -18,10 +18,11 @@ import java.util.Optional;
 public class AimForMoneyStrategy extends DefaultStrategy {
     public AimForMoneyStrategy(Player player) {
         super(player);
+        strategyName="[AimForMoney Strategy]";
     }
 
     @Override
-    public int selectRole(List<Role> availableRoles) {
+    public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
         int voleurIndex=availableRoles.indexOf(Role.VOLEUR);
         if(voleurIndex!=-1) {
             player.setRole(availableRoles.get(voleurIndex));
@@ -54,7 +55,7 @@ public class AimForMoneyStrategy extends DefaultStrategy {
     }
 
     @Override
-    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
+    public void playTurn(RoundSummary summary, GameLogicManager game) {
         player.getCoinsFromColorCards(summary);
         player.getRole().power(game, player, summary);
 

@@ -1,10 +1,12 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +65,7 @@ class GameLogicManagerTest {
         game.makeAllPlayersSelectRole();
         List<Role> rolesSelected = new ArrayList<>();
         for (Player player : game.getPlayersList()) {
-            verify(player, times(1)).selectRole(anyList());
+            verify(player, times(1)).selectAndSetRole(anyList(), anyList());
             assertFalse(rolesSelected.contains(player.getRole()));
             assertNotSame(Role.EMPTY_ROLE, player.getRole());//checks that role cannot be empty
             rolesSelected.add(player.getRole());
@@ -123,14 +125,14 @@ class GameLogicManagerTest {
     @Test
     void testFinishCondition(){
         List<District> districts =new ArrayList<>();
-        districts.add(reader.getFromIndex(0));
-        districts.add(reader.getFromIndex(1));
-        districts.add(reader.getFromIndex(2));
-        districts.add(reader.getFromIndex(3));
-        districts.add(reader.getFromIndex(4));
-        districts.add(reader.getFromIndex(5));
-        districts.add(reader.getFromIndex(6));
-        districts.add(reader.getFromIndex(7));
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
+        districts.add(reader.pickTopCard());
         game.getPlayersList().get(0).addAllDistrictsToCity(districts);
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
         game.playPlayerTurn(game.getPlayersList().get(0));
@@ -170,5 +172,23 @@ class GameLogicManagerTest {
         game.getPlayersList().get(2).setRole(Role.ASSASSIN);
         game.makeScoreofPlayer(game.getPlayersList().get(2),summary1);
         assertEquals(15,game.getScoreOfEnd().get(game.getPlayersList().get(2)));
+    }
+
+    @Test
+    void testScoreTakesAccountOfMerveille() {
+        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getDistrictsJSONReader());
+        scorePlayer.addDistrictToCity(new District("Dracoport", 6, Color.PURPLE));
+        scorePlayer.addDistrictToCity(new District("Université", 6, Color.PURPLE));
+
+        assertEquals(16, game.makeScoreofPlayer(scorePlayer, new RoundSummary()));//8 + 8, car ces cartes valent 8 au décompte
+        scorePlayer.setCity(new ArrayList<>(List.of(
+                new District("temple", 1, Color.PURPLE),
+                new District("temple", 1, Color.RED),
+                new District("temple", 1, Color.GREEN),
+                new District("temple", 1, Color.BLUE),
+                new District("Cour des miracles", 1, Color.PURPLE)
+        )));
+
+        assertEquals(5+3, game.makeScoreofPlayer(scorePlayer, new RoundSummary()));//5 points avec le coût de la cité + 3 points car la cour des miracles remplace la couleur jaune manquante
     }
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public class DefaultStrategy implements IStrategy {
     protected final Player player;
+    protected String strategyName="[Default Strategy]";
     public DefaultStrategy(Player player) {
         this.player=player;
     }
@@ -27,8 +28,8 @@ public class DefaultStrategy implements IStrategy {
     }
 
     @Override
-    public void playPlayerTurn(RoundSummary summary, GameLogicManager game) {
-        player.playPlayerTurn(summary, game);
+    public void playTurn(RoundSummary summary, GameLogicManager game) {
+        player.playTurn(summary, game);
     }
 
     @Override
@@ -47,8 +48,8 @@ public class DefaultStrategy implements IStrategy {
     }
 
     @Override
-    public int selectRole(List<Role> availableRoles) {
-        return player.selectRole(availableRoles);
+    public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
+        return player.selectAndSetRole(availableRoles, playerList);
     }
 
     @Override
@@ -64,5 +65,15 @@ public class DefaultStrategy implements IStrategy {
     @Override
     public Player getPlayer() {
         return player;
+    }
+
+    @Override
+    public String getStrategyName() {
+        return strategyName;
+    }
+
+    @Override
+    public boolean wantsToUseManufacturePower() {
+        return player.wantsToUseManufacturePower();
     }
 }

@@ -1,8 +1,10 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
@@ -22,14 +24,18 @@ class RandomPlayerTest {
     RoundSummary summary;
     Random trickedRandom;
     GameLogicManager game;
+    DistrictsJSONReader pioche;
 
     @BeforeEach
     void setUp() {
-        summary = new RoundSummary();
-        randomPlayer = new RandomPlayer(0);
-        otherPlayer=new AlwaysSpendPlayer(1);
-        otherPlayer.setRole(Role.CONDOTTIERE);
+        pioche=new DistrictsJSONReader();
+        randomPlayer=new RandomPlayer(0, pioche);
+        otherPlayer=new RealEstatePlayer(1, pioche);
         game=new GameLogicManager(List.of(randomPlayer, otherPlayer));
+        game.setDistrictsJSONReader(pioche);
+        summary = new RoundSummary();
+        otherPlayer.setRole(Role.CONDOTTIERE);
+
         if(trickedRandom != null) {//limits creation of new mocks
             reset(trickedRandom);
         }
@@ -43,7 +49,7 @@ class RandomPlayerTest {
         randomPlayer.setRole(Role.ROI);
         doReturn(1).when(trickedRandom).nextInt(anyInt());
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary, game);
+        randomPlayer.playTurn(summary, game);
         assertTrue(summary.hasPickedCash());
     }
 
@@ -53,7 +59,7 @@ class RandomPlayerTest {
         randomPlayer.setRole(Role.ROI);
         when(trickedRandom.nextInt(anyInt())).thenReturn(0);
         randomPlayer.setRandomGenerator(trickedRandom);
-        randomPlayer.playPlayerTurn(summary, game);
+        randomPlayer.playTurn(summary, game);
         assertTrue(summary.hasPickedCards());
     }
 }

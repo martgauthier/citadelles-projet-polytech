@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -14,11 +15,13 @@ class AlwaysSpendPlayerTest {
     Player botWithCards;
     Player botWithoutCards;
     RoundSummary summary;
+    DistrictsJSONReader pioche;
 
     @BeforeEach
     public void setUp(){
-        botWithCards = new AlwaysSpendPlayer(0);
-        botWithoutCards = new AlwaysSpendPlayer(1,0,new ArrayList<>());
+        pioche=new DistrictsJSONReader();
+        botWithCards = new AlwaysSpendPlayer(0, pioche);
+        botWithoutCards = new AlwaysSpendPlayer(1,0,new ArrayList<>(), pioche);
         summary = new RoundSummary();
     }
 
@@ -26,7 +29,7 @@ class AlwaysSpendPlayerTest {
     void testPlayerTurnWithCardsInHand(){
         assertEquals(2, botWithCards.getCardsInHand().size());
         botWithCards.setRole(Role.ASSASSIN);
-        botWithCards.playPlayerTurn(summary, new GameLogicManager());
+        botWithCards.playTurn(summary, new GameLogicManager());
 
         assertTrue(summary.hasPickedCash());
     }
@@ -35,12 +38,12 @@ class AlwaysSpendPlayerTest {
     void testPlayerTurnWithEmptyHand(){
         assertEquals(0,botWithoutCards.getCardsInHand().size());
         botWithoutCards.setRole(Role.ASSASSIN);
-        botWithoutCards.playPlayerTurn(summary, new GameLogicManager());
+        botWithoutCards.playTurn(summary, new GameLogicManager());
 
         // il n'a plus de carte en main donc il pioche
         assertTrue(summary.hasPickedCards());
 
-        botWithoutCards.playPlayerTurn(summary, new GameLogicManager());
+        botWithoutCards.playTurn(summary, new GameLogicManager());
 
         // il a maintenant une carte en main, son objectif avoir plus d'argent
         assertTrue(summary.hasPickedCash());

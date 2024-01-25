@@ -33,10 +33,10 @@ class ColorTest {
     void testRedColorWinCoins() {//or any other color
         firstP.setRole(Role.CONDOTTIERE);//condottiere is RED
         firstP.addDistrictToCity(new District("temple", 8, Color.GRAY, "null"));
-        firstP.addDistrictToCity(new District("temple", 8, Color.RED, "null"));
-        firstP.addDistrictToCity(new District("temple", 8, Color.BLUE, "null"));
-        firstP.addDistrictToCity(new District("temple", 8, Color.RED, "null"));
-        firstP.addDistrictToCity(new District("temple", 8, Color.PURPLE, "null"));//added some other colors to check it doesn't count other colors
+        firstP.addDistrictToCity(new District("temple1", 8, Color.RED, "null"));
+        firstP.addDistrictToCity(new District("temple2", 8, Color.BLUE, "null"));
+        firstP.addDistrictToCity(new District("anotherTemple", 8, Color.RED, "null"));
+        firstP.addDistrictToCity(new District("temple3", 8, Color.PURPLE, "null"));//added some other colors to check it doesn't count other colors
 
         RoundSummary summary=game.playPlayerTurn(firstP);
         assertEquals(2, summary.getCoinsWonByColorCards());
