@@ -20,17 +20,18 @@ public class SecurePointsForEndGame extends DefaultStrategy {
         List<District> buyableDistricts = this.player.getBuyableCards();
         if (buyableDistricts.isEmpty()) return Optional.empty();
         else {
-            District maxDistrict = getMaxDistrictCostBuyable(buyableDistricts);
+            District bestOption = getMaxDistrictCostBuyable(buyableDistricts);
             if (this.player.getRole() != Role.ARCHITECTE) {
                 List<Color> remainingColorsList = getRemainingColorsToBuy(this.player.getCity());
                 if (remainingColorsList.size() == 1) {
-                    District districtToBuyForColorfull = getMaxDistrictByColor(buyableDistricts, remainingColorsList.get(0));
-                    if (districtToBuyForColorfull.getCost() + 3 >= maxDistrict.getCost()) { // Cas ou c plus benef de faire les 5 couleurs
-                        maxDistrict = districtToBuyForColorfull;
+                    // On récupère la carte restante pour compléter la couleur
+                    District districtToBuyForColor = getMaxDistrictByColor(buyableDistricts, remainingColorsList.get(0));
+                    if (districtToBuyForColor.getCost() + 3 >= bestOption.getCost()) { // Cas ou c plus benef de faire les 5 couleurs
+                        bestOption = districtToBuyForColor;
                     }
                 }
             }
-        return Optional.of(maxDistrict);
+        return Optional.of(bestOption);
         }
     }
 
