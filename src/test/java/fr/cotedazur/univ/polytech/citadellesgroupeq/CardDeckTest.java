@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DistrictsJSONReaderTest {
-    public static final String CORRECT_PATH= DistrictsJSONReader.DEFAULT_PATH;
+class CardDeckTest {
+    public static final String CORRECT_PATH= CardDeck.DEFAULT_PATH;
     public static final String INCORRECT_PATH="jkflksdnhfkjsdfls";
     public static final String NOT_JSON_FORMATTED_FILE="src/main/resources/test_json_file/totally_incorrect_json.json";
 
@@ -14,9 +14,9 @@ class DistrictsJSONReaderTest {
     @Test
     @SuppressWarnings("java:S2699")//add assertion to this case
     void testCorrectFile() {
-        DistrictsJSONReader reader;
+        CardDeck reader;
         try {
-            reader = new DistrictsJSONReader();
+            reader = new CardDeck();
         }
         catch(Exception e) {
             throw new RuntimeException(e);
@@ -26,16 +26,16 @@ class DistrictsJSONReaderTest {
 
     @Test
     void testIncorrectPath() {
-        assertThrows(DistrictsJSONReader.BadlyInitializedReader.class, () -> new DistrictsJSONReader(INCORRECT_PATH));
+        assertThrows(CardDeck.BadlyInitializedReader.class, () -> new CardDeck(INCORRECT_PATH));
     }
 
     @Test
     void testNotJsonFile() {
-        assertThrows(DistrictsJSONReader.BadlyInitializedReader.class, () -> new DistrictsJSONReader(NOT_JSON_FORMATTED_FILE));
+        assertThrows(CardDeck.BadlyInitializedReader.class, () -> new CardDeck(NOT_JSON_FORMATTED_FILE));
     }
 
     @Test
     void testMissingKeysJsonFile() {
-        assertThrows(DistrictsJSONReader.BadlyInitializedReader.class, () -> new DistrictsJSONReader(JSON_MISSING_KEYS_FILE));
+        assertThrows(CardDeck.BadlyInitializedReader.class, () -> new CardDeck(JSON_MISSING_KEYS_FILE));
     }
 }

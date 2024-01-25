@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class ColorPlayer extends Player {
-    public ColorPlayer(int id, DistrictsJSONReader pioche) {
+    public ColorPlayer(int id, CardDeck pioche) {
         super(id, pioche);
     }
 
-    public ColorPlayer(int id, int cash, List<District> cards, DistrictsJSONReader pioche) {
+    public ColorPlayer(int id, int cash, List<District> cards, CardDeck pioche) {
         super(id, cash, cards, false, pioche);
     }
 

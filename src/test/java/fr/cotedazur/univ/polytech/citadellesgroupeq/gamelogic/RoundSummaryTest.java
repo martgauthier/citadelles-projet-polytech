@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoundSummaryTest {
 
-    DistrictsJSONReader reader = new DistrictsJSONReader();
+    CardDeck reader = new CardDeck();
 
     RoundSummary firstBasicRound;
     RoundSummary secondBasicRound;

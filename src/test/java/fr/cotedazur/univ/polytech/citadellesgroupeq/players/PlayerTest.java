@@ -2,7 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
     Player bot;
-    DistrictsJSONReader reader;
+    CardDeck reader;
     @BeforeEach
     void setup() {
-        reader = new DistrictsJSONReader();
+        reader = new CardDeck();
         bot = new AlwaysSpendPlayer(0, reader);
     }
 
