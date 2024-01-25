@@ -51,10 +51,10 @@ public class BestScoreCalculator {
                 List.of(Role.ASSASSIN, Role.ARCHITECTE, Role.VOLEUR),
                 List.of(Role.VOLEUR, Role.ROI, Role.CONDOTTIERE),
                 List.of(Role.ARCHITECTE, Role.VOLEUR, Role.ROI),
+                List.of(Role.ARCHITECTE, Role.MARCHAND, Role.EVEQUE),
                 List.of(Role.ROI, Role.VOLEUR, Role.CONDOTTIERE),
-                List.of(Role.CONDOTTIERE, Role.ARCHITECTE, Role.MARCHAND),
                 List.of(Role.ARCHITECTE, Role.MARCHAND, Role.CONDOTTIERE),
-                List.of(Role.ARCHITECTE, Role.MARCHAND, Role.EVEQUE)
+                List.of(Role.CONDOTTIERE, Role.ARCHITECTE, Role.MARCHAND)
         );
 
         for(int j=0; j<combinaisons.size(); j++) {
@@ -76,7 +76,7 @@ public class BestScoreCalculator {
                     winPerPlayerMap.put(game.whoIsTheWinner().getBotLogicName(), winPerPlayerMap.getOrDefault(game.whoIsTheWinner().getBotLogicName(), 0) + 1);
                 }
 
-                if(winPerPlayerMap.get("ThomasPlayer") > maxScore) {
+                if(winPerPlayerMap.getOrDefault("ThomasPlayer", 0)/10 > maxScore) {
                     idMaxScore=j;
                     maxScore= winPerPlayerMap.get("ThomasPlayer")/10;
                     maxPickMoreThan=k;

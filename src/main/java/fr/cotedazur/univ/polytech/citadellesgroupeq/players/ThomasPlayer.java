@@ -13,8 +13,8 @@ import java.util.*;
  * Stratégie proposée par notre collège Thomas
  */
 public class ThomasPlayer extends Player {
-    public static List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.EVEQUE));
-    public static int PICK_CARD_FOR_MORE_THAN=0;
+    public static List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.CONDOTTIERE));
+    public static int PICK_CARD_FOR_MORE_THAN=1;
     public ThomasPlayer(int id, DistrictsJSONReader pioche) {
         super(id, pioche);
     }
@@ -26,14 +26,12 @@ public class ThomasPlayer extends Player {
 
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
-        boolean aPlayerIsCloseToWin=game.getPlayersList().stream().anyMatch(joueur -> joueur.isCloseToWin() && joueur!=this);
-
         getCoinsFromColorCards(summary);
         getRole().power(game, this, summary);
 
-        boolean hasCardsOver3Coins=getCardsInHand().stream().anyMatch(district -> district.getCost() >= PICK_CARD_FOR_MORE_THAN);
+        boolean hasCardsOverLimitCoins=getCardsInHand().stream().anyMatch(district -> district.getCost() >= PICK_CARD_FOR_MORE_THAN);
 
-        if(hasCardsOver3Coins) {
+        if(hasCardsOverLimitCoins) {
             draw2Coins(summary);
             buyDistrictsDuringTurn(summary);
         }
