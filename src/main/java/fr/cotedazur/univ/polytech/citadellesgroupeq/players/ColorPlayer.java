@@ -46,7 +46,9 @@ public class ColorPlayer extends Player {
         getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
 
         if(getCardsInHand().size() < 4) {
-            pickCard(summary);
+            if(!haveObservatoryInCity()){
+                pickCard(summary);
+            }
         }
         else {
             draw2Coins(summary);

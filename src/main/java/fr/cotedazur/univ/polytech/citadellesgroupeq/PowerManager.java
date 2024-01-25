@@ -49,6 +49,11 @@ public class PowerManager {
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
+            case "Observatoire power":
+                observatoirePower(joueur,summary);
+                summary.setHasUsedMerveillesPower();
+                summary.getUsedMerveilles().add(district.getName());
+                break;
             default:
                 break;
         }
@@ -88,6 +93,11 @@ public class PowerManager {
             player.pickCard(new RoundSummary());
             player.pickCard(new RoundSummary());
             player.pickCard(new RoundSummary());//no need to write in summary
+        }
+    }
+    private void observatoirePower(Player player,RoundSummary summary){
+        if(!summary.hasPickedCash()){
+            player.pickCardForObservatory(new RoundSummary());
         }
     }
 
