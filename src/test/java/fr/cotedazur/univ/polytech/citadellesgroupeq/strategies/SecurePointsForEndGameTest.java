@@ -2,6 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
@@ -19,10 +20,11 @@ class SecurePointsForEndGameTest {
     Player secureLastPlayer;
     IStrategy secureLastStrat;
     GameLogicManager game;
-
+    DistrictsJSONReader pioche;
     @BeforeEach
     void setUp() {
-        secureLastPlayer = new AlwaysSpendPlayer(0, 50,new ArrayList<>());
+        pioche=new DistrictsJSONReader();
+        secureLastPlayer = new AlwaysSpendPlayer(0, pioche);
         secureLastStrat = new SecurePointsForEndGame(secureLastPlayer);
         secureLastPlayer.setStrategy(secureLastStrat);
         game = new GameLogicManager(List.of(secureLastPlayer));
@@ -31,6 +33,7 @@ class SecurePointsForEndGameTest {
 
     @Test
     void testGetChoosenDistrictToBuy() {
+        secureLastPlayer.setCash(200);
         District district1 = new District("avion", 5, Color.BLUE, "null");
         District district2 = new District("Université", 10, Color.YELLOW, "null");
         District district3 = new District("Donjon", 5, Color.YELLOW, "null");
