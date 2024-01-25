@@ -13,7 +13,7 @@ import org.json.simple.parser.ParseException;
  * La classe DistrictsJSONReader lit les données d'un fichier JSON contenant des informations sur les districts.
  * Elle convertit ces données en une liste d'objets District.
  */
-public class DistrictsJSONReader {
+public class CardDeck {
 
     /** Le tableau JSON contenant les données des districts. */
     private JSONArray jsonArray;
@@ -30,7 +30,7 @@ public class DistrictsJSONReader {
      *
      * @throws BadlyInitializedReader Si une erreur se produit lors de la lecture du fichier ou si le format du fichier est incorrect.
      */
-    public DistrictsJSONReader(String path) {
+    public CardDeck(String path) {
         try {
             // Lis les données du fichier JSON
             jsonArray = (JSONArray) new JSONParser().parse(new FileReader(getClass().getClassLoader().getResource(path).getFile()));
@@ -51,14 +51,14 @@ public class DistrictsJSONReader {
                 }
             }
             Collections.shuffle(districtsList);
-            districtQueue=new PriorityQueue<>(districtsList);
+            districtQueue=new LinkedList<>(districtsList);
         }
         catch(IOException | NullPointerException | ParseException e) {
             throw new BadlyInitializedReader("Error while initializing reader");//arbitrary value
         }
     }
 
-    public DistrictsJSONReader() {
+    public CardDeck() {
         this(DEFAULT_PATH);
     }
 

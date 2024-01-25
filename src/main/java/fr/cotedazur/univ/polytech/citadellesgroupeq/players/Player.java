@@ -37,15 +37,15 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      */
     private IStrategy strategy;
 
-    private DistrictsJSONReader pioche;
+    private CardDeck pioche;
 
-    protected Player(int id, DistrictsJSONReader pioche) {
+    protected Player(int id, CardDeck pioche) {
         this(id, DEFAULT_CASH, new ArrayList<>(),false, pioche);
         pickCard(new RoundSummary());
         pickCard(new RoundSummary());//no need to get summary
     }
 
-    protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn, DistrictsJSONReader pioche) {
+    protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn, CardDeck pioche) {
         this.cash=cash;
         this.role=Role.EMPTY_ROLE;
         this.id=id;
@@ -194,7 +194,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      * Permet de générer 2 cartes aléatoires. Utile pour proposer à un joueur 2 cartes parmi lesquelles choisir
      */
     public List<District> generate2Cards(){
-        DistrictsJSONReader districtsReader = new DistrictsJSONReader();
+        CardDeck districtsReader = new CardDeck();
         List<District> districtsList = districtsReader.getDistrictsList();
         List<District> dealCards = new ArrayList<>();
         for (int i = 0; i < 2; i++) {

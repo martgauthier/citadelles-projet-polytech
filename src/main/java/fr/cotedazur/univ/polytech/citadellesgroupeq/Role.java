@@ -68,12 +68,12 @@ public enum Role {
             else {//wants to draw some cards from the pile
                 int[] cardsToExchange=magicien.getStrategy().selectCardsToExchangeWithPileAsMagicien();
 
-                DistrictsJSONReader districtsJSONReader = new DistrictsJSONReader();
+                CardDeck cardDeck = new CardDeck();
 
                 for(int cardIndex: cardsToExchange) {
                     District oldCard=magicien.getCardsInHand().get(cardIndex);
-                    districtsJSONReader.addDistrictUnderCardsPile(oldCard);
-                    magicien.setCardInHand(cardIndex, districtsJSONReader.pickTopCard());
+                    cardDeck.addDistrictUnderCardsPile(oldCard);
+                    magicien.setCardInHand(cardIndex, cardDeck.pickTopCard());
                 }
 
                 summary.setHasExchangedCardsWithPileAsMagician(true);

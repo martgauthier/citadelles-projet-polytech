@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -17,13 +17,13 @@ class RealEstatePlayerTest {
     Player botWithEightCards;
     Player botWithoutCards;
     RoundSummary summary;
-    DistrictsJSONReader pioche;
+    CardDeck pioche;
 
     @BeforeEach
     public void setUp(){
         List<District> districtList = new ArrayList<>();
 
-        pioche=new DistrictsJSONReader();
+        pioche=new CardDeck();
 
         districtList.add(new District("Temple", 9, "blue", "null"));
         districtList.add(new District("Eglise", 8, "blue", "null"));

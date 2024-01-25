@@ -3,7 +3,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.DistrictsJSONReader;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 class GameLogicManagerTest {
     GameLogicManager game;
-    DistrictsJSONReader reader;
+    CardDeck reader;
     public static final List<Role> TOO_SHORT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI));
     public static final List<Role> CORRECT_ROLES_LIST = new ArrayList<>(List.of(Role.ROI, Role.ASSASSIN, Role.ARCHITECTE,Role.MARCHAND,Role.VOLEUR));
     public static final List<Role> FULL_EMPTY_ROLES_LIST = new ArrayList<>(List.of(Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE, Role.EMPTY_ROLE));
@@ -30,7 +30,7 @@ class GameLogicManagerTest {
     @BeforeEach
     void setup() {
         game = new GameLogicManager();
-        reader=new DistrictsJSONReader();
+        reader=new CardDeck();
     }
 
     @Test
