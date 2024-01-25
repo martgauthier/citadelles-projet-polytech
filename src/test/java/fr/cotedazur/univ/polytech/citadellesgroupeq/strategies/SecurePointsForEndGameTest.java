@@ -34,7 +34,6 @@ class SecurePointsForEndGameTest {
         District district1 = new District("avion", 5, Color.BLUE, "null");
         District district2 = new District("Université", 10, Color.YELLOW, "null");
         District district3 = new District("Donjon", 5, Color.YELLOW, "null");
-
         // il manque Vert et Rouge
         District district4 = new District("Bibliotheque", 10, Color.RED, "null");
         District district5 = new District("Temple", 5, Color.GREEN, "null");
