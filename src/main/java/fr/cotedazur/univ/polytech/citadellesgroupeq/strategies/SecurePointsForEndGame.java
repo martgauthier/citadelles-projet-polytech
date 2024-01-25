@@ -2,12 +2,8 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 public class SecurePointsForEndGame extends DefaultStrategy {
@@ -21,17 +17,15 @@ public class SecurePointsForEndGame extends DefaultStrategy {
         if (buyableDistricts.isEmpty()) return Optional.empty();
         else {
             District bestOption = getMaxDistrictCostBuyable(buyableDistricts);
-            if (this.player.getRole() != Role.ARCHITECTE) {
-                List<Color> remainingColorsList = getRemainingColorsToBuy(this.player.getCity());
-                if (remainingColorsList.size() == 1) {
-                    // On récupère la carte restante pour compléter la couleur
-                    District districtToBuyForColor = getMaxDistrictByColor(buyableDistricts, remainingColorsList.get(0));
-                    if (districtToBuyForColor.getCost() + 3 >= bestOption.getCost()) { // Cas ou c plus benef de faire les 5 couleurs
-                        bestOption = districtToBuyForColor;
-                    }
+            List<Color> remainingColorsList = getRemainingColorsToBuy(this.player.getCity());
+            if (remainingColorsList.size() == 1) {
+                // On récupère la carte restante pour compléter la couleur
+                District districtToBuyForColor = getMaxDistrictByColor(buyableDistricts, remainingColorsList.get(0));
+                if (districtToBuyForColor.getCost() + 3 >= bestOption.getCost()) { // Cas ou c plus benef de faire les 5 couleurs
+                    bestOption = districtToBuyForColor;
                 }
             }
-        return Optional.of(bestOption);
+            return Optional.of(bestOption);
         }
     }
 
