@@ -233,13 +233,18 @@ public abstract class Player implements Comparable<Player>, IStrategy {
                 choosenCard=district;
             }
         }
+        for(District card: d) {
+            if(card!=choosenCard) {
+                pioche.addDistrictUnderCardsPile(card);
+            }
+        }
         addCardToHand(choosenCard);
         summary.addDrawnCard(choosenCard);
         return choosenCard;
     }
     public boolean haveObservatoryInCity(){
         for(District d : this.city){
-            if(d.getName()=="Observatoire"){
+            if(d.getName().equals("Observatoire")){
                 return true;
             }
         }

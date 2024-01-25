@@ -53,6 +53,7 @@ public class PowerManager {
                 observatoirePower(joueur,summary);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
+                break;
             default:
                 break;
         }
