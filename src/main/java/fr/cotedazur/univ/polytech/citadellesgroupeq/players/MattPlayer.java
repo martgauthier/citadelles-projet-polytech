@@ -30,7 +30,7 @@ public class MattPlayer extends Player {
 
         getRole().power(game, this, summary);
 
-        if(getRole()==Role.MARCHAND) {
+        if(getRole()==Role.MARCHAND && !haveObservatoryInCity()) {
             pickCard(summary);
         }
         else if(getRole()==Role.ARCHITECTE) {
@@ -38,7 +38,7 @@ public class MattPlayer extends Player {
         }
         else {
             if(getCash() < 4) draw2Coins(summary);
-            else pickCard(summary);
+            else if(!haveObservatoryInCity()) pickCard(summary);
         }
 
 

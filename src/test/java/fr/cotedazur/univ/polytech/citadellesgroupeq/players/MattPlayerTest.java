@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
@@ -8,7 +9,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
 
 class MattPlayerTest {
     Player mattPlayer;
@@ -35,5 +39,19 @@ class MattPlayerTest {
         game.makeAllPlayersSelectRole();
         game.playPlayerTurn(mattPlayer);
         assertInstanceOf(SecurePointsForEndGame.class, mattPlayer.getStrategy());
+    }
+
+    @Test
+    void testMagicienWhenPlayerCloseToWin() {
+        doReturn(true).when(otherPlayer).isCloseToWin();
+        mattPlayer.setStrategy(new DefaultStrategy(mattPlayer));
+        mattPlayer.clearHand();
+        game.makeAllPlayersSelectRole();
+        mattPlayer.getStrategy().selectAndSetRole(List.of(Role.ROI, Role.ARCHITECTE, Role.MAGICIEN, Role.MARCHAND), game.getPlayersList());
+
+        assertInstanceOf(DefaultStrategy.class, mattPlayer.getStrategy());
+        assertEquals(Role.MAGICIEN, mattPlayer.getRole());
+        summary=game.playPlayerTurn(mattPlayer);
+        assertTrue(summary.hasUsedPower());
     }
 }
