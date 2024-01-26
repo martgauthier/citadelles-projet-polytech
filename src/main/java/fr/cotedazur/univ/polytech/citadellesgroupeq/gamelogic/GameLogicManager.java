@@ -68,9 +68,9 @@ public class GameLogicManager {
         }
     }
 
-    public CardDeck getDistrictsJSONReader() { return cardDeck; }
+    public CardDeck getCardDeck() { return cardDeck; }
 
-    public void setDistrictsJSONReader(CardDeck cardDeck) {
+    public void setCardDeck(CardDeck cardDeck) {
         this.cardDeck = cardDeck;
     }
 

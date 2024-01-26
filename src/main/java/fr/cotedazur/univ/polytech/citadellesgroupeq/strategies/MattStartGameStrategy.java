@@ -11,6 +11,7 @@ import java.util.List;
 public class MattStartGameStrategy extends DefaultStrategy {
     public MattStartGameStrategy(Player player) {
         super(player);
+        strategyName="[MattStartGame Strategy]";
     }
 
     /**
@@ -41,18 +42,32 @@ public class MattStartGameStrategy extends DefaultStrategy {
     }
 
     @Override
+    public Role selectRoleToKillAsAssassin(List<Role> availableRoles) {
+        return (availableRoles.contains(Role.ARCHITECTE) && player.getRole()!=Role.ARCHITECTE) ? Role.ARCHITECTE : availableRoles.get(0);
+    }
+
+    @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
+        if(player.getCardsInHand().size() >= 4 && player.getCash() >= 5) {//no needs to use MattStartGameStrategy anymore
+            player.setStrategy(new DefaultStrategy(player));
+            player.playTurn(summary, game);
+            return;
+        }
+
+
         player.getCoinsFromColorCards(summary);
 
-        player.getRole().power(game, player, summary);//it is no duplicate, as another Player logic could decide not to use its power
+        player.getRole().power(game, player, summary);
 
-        if(player.getCardsInHand().size() < 4) {
-            if(!player.haveObservatoryInCity()){
-                player.pickCard(summary);
-            }
+        if(player.getRole()==Role.MARCHAND) {
+            player.pickCard(summary);
+        }
+        else if(player.getRole()==Role.ARCHITECTE) {
+            player.draw2Coins(summary);
         }
         else {
-            player.draw2Coins(summary);
+            if(player.getCash() < 4) player.draw2Coins(summary);
+            else player.pickCard(summary);
         }
 
 

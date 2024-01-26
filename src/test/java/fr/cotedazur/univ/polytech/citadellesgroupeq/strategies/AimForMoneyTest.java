@@ -36,7 +36,7 @@ class AimForMoneyTest {
         otherPlayer=new ColorPlayer(1, pioche);
         otherPlayer.setRole(Role.CONDOTTIERE);
         game=new GameLogicManager(List.of(mainPlayer, otherPlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
         summary=new RoundSummary();
     }
 

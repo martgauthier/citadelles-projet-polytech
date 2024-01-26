@@ -1,11 +1,9 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.merveillepowers;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.GameOutputManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
@@ -24,7 +22,7 @@ class BibliothequePowerTest {
     void setup() {
         summary=new RoundSummary();
         game=new GameLogicManager();
-        player= Mockito.spy(new RealEstatePlayer(0, game.getDistrictsJSONReader()));
+        player= Mockito.spy(new RealEstatePlayer(0, game.getCardDeck()));
         player.setStrategy(new DefaultStrategy(player));
         game.getPlayersList().set(0, player);
     }
