@@ -102,10 +102,7 @@ public class CardDeck {
     }
 
     public District pickTopCard() throws BadlyInitializedReader {
-        if (districtQueue.isEmpty()) {
-            throw new BadlyInitializedReader("District list is empty");
-        }
-        return districtQueue.remove();
+        return districtQueue.poll();
     }
 
     public void addDistrictUnderCardsPile(District district) {

@@ -133,9 +133,9 @@ class GameLogicManagerTest {
         districts.add(reader.pickTopCard());
         districts.add(reader.pickTopCard());
         districts.add(reader.pickTopCard());
-        game.getPlayersList().get(0).addAllDistrictsToCity(districts);
-        game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        game.playPlayerTurn(game.getPlayersList().get(0));
+        game.getPlayersList().get(1).addAllDistrictsToCity(districts);
+        game.getPlayersList().get(1).setRole(Role.ASSASSIN);
+        game.playPlayerTurn(game.getPlayersList().get(1));
         assertTrue(game.isFinished());
     }
     @Test
@@ -148,8 +148,7 @@ class GameLogicManagerTest {
         districts.add(new District("Donjon",1, "purple", "null"));
         game.getPlayersList().get(0).addAllDistrictsToCity(districts);
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        game.playPlayerTurn(game.getPlayersList().get(0));
-        assertEquals(10,game.getScoreOfEnd().get(game.getPlayersList().get(0)));
+        assertEquals(10,game.makeScoreofPlayer(game.getPlayersList().get(0), new RoundSummary()));
 
         List<District> districts2=new ArrayList<>();
         districts2.add(new District("Temple",1,"blue", "null"));
@@ -176,7 +175,7 @@ class GameLogicManagerTest {
 
     @Test
     void testScoreTakesAccountOfMerveille() {
-        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getDistrictsJSONReader());
+        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getCardDeck());
         scorePlayer.addDistrictToCity(new District("Dracoport", 6, Color.PURPLE));
         scorePlayer.addDistrictToCity(new District("Université", 6, Color.PURPLE));
 

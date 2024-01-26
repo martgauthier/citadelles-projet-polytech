@@ -30,7 +30,7 @@ class ManufacturePowerTest {
     void setup() {
         summary=new RoundSummary();
         game=new GameLogicManager();
-        player= Mockito.spy(new AlwaysSpendPlayer(0, game.getDistrictsJSONReader()));
+        player= Mockito.spy(new AlwaysSpendPlayer(0, game.getCardDeck()));
         game.getPlayersList().set(0, player);
     }
 
