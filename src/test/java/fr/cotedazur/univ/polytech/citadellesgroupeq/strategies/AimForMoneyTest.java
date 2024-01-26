@@ -48,7 +48,7 @@ class AimForMoneyTest {
         game.makeAllPlayersSelectRole(rolesAvailable);
         assertEquals(Role.VOLEUR, mainPlayer.getRole());
 
-        rolesAvailable=List.of(Role.CONDOTTIERE, Role.MARCHAND, Role.MAGICIEN);//doesn't contain voleur
+        rolesAvailable=List.of(Role.CONDOTTIERE, Role.EVEQUE, Role.MAGICIEN);//doesn't contain voleur
         game.setMasterOfTheGameIndex(0);
         game.makeAllPlayersSelectRole(rolesAvailable);
         assertEquals(rolesAvailable.get(0), mainPlayer.getRole());
@@ -71,7 +71,7 @@ class AimForMoneyTest {
     @Test
     void testAimForMoneyNeverBuys() {
         mainPlayer.addCardToHand(new District("temple", 1, Color.RED, "null"));//really cheap card
-        mainPlayer.setCash(10000);//make him rich
+        mainPlayer.setCash(3);
         summary=game.playPlayerTurn(mainPlayer);
         assertFalse(summary.hasBoughtDistricts());
 
