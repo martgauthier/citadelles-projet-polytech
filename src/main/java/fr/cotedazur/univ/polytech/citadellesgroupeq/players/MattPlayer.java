@@ -11,6 +11,7 @@ public class MattPlayer extends Player {
 
     public MattPlayer(int id, CardDeck pioche) {
         super(id, pioche);
+        //TODO: set strategy to MattStartGameStrategy
     }
     @Override
     public String getBotLogicName() {
@@ -23,27 +24,37 @@ public class MattPlayer extends Player {
 
         getRole().power(game, this, summary);
 
-        //pickCard(summary);
-        //or
-        //draw2Coins(summary);
-
-
-
-        //            buyDistrictsDuringTurn(summary);
+        if(getRole()==Role.MARCHAND) {
+            pickCard(summary);
+        }
+        else if(getRole()==Role.ARCHITECTE) {
+            draw2Coins(summary);
+        }
+        else {
+            if(getCash() < 4) draw2Coins(summary);
+            else pickCard(summary);
+        }
 
 
         PowerManager powerManager = new PowerManager(game);
         powerManager.applyCityPowers(this, summary);
+
+        buyDistrictsDuringTurn(summary);
     }
 
     @Override
     public boolean choosesToExchangeCardWithPlayer() {
-        return false;
+        return getCardsInHand().size() <= 3;
     }
 
     @Override
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playerList) {
-        return null;
+        for(Player joueur: playerList) {
+            if(joueur.isCloseToWin() && joueur!=this) {
+                return joueur;
+            }
+        }
+        return (playerList.get(0) == this) ? playerList.get(1) : playerList.get(0);
     }
 
 
@@ -76,21 +87,23 @@ public class MattPlayer extends Player {
 
     @Override
     public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
-        if(availableRoles.contains(Role.MARCHAND)) {
-            setRole(Role.MARCHAND);
-            return availableRoles.indexOf(Role.MARCHAND);
-        }
-        else if(availableRoles.contains(Role.ARCHITECTE)) {
-            setRole(Role.ARCHITECTE);
-            return availableRoles.indexOf(Role.ARCHITECTE);
-        }
-        else if(availableRoles.contains(Role.EVEQUE)) {
-            setRole(Role.EVEQUE);
-            return availableRoles.indexOf(Role.EVEQUE);
-        }
-        else {
-            setRole(availableRoles.get(0));
-            return 0;
+        if (playerList.stream().anyMatch(joueur -> joueur.isCloseToWin() && joueur != this) && availableRoles.contains(Role.MAGICIEN) && getCardsInHand().size() <= 3) {
+            setRole(Role.MAGICIEN);
+            return availableRoles.indexOf(Role.MAGICIEN);
+        } else {
+            if (availableRoles.contains(Role.MARCHAND)) {
+                setRole(Role.MARCHAND);
+                return availableRoles.indexOf(Role.MARCHAND);
+            } else if (availableRoles.contains(Role.ARCHITECTE)) {
+                setRole(Role.ARCHITECTE);
+                return availableRoles.indexOf(Role.ARCHITECTE);
+            } else if (availableRoles.contains(Role.EVEQUE)) {
+                setRole(Role.EVEQUE);
+                return availableRoles.indexOf(Role.EVEQUE);
+            } else {
+                setRole(availableRoles.get(0));
+                return 0;
+            }
         }
     }
 }
