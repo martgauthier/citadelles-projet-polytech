@@ -50,30 +50,7 @@ public class MattStartGameStrategy extends DefaultStrategy {
     public void playTurn(RoundSummary summary, GameLogicManager game) {
         if(player.getCardsInHand().size() >= 4 && player.getCash() >= 5) {//no needs to use MattStartGameStrategy anymore
             player.setStrategy(new DefaultStrategy(player));
-            player.playTurn(summary, game);
-            return;
         }
-
-
-        player.getCoinsFromColorCards(summary);
-
-        player.getRole().power(game, player, summary);
-
-        if(player.getRole()==Role.MARCHAND) {
-            player.pickCard(summary);
-        }
-        else if(player.getRole()==Role.ARCHITECTE) {
-            player.draw2Coins(summary);
-        }
-        else {
-            if(player.getCash() < 4) player.draw2Coins(summary);
-            else player.pickCard(summary);
-        }
-
-
-        PowerManager powerManager = new PowerManager(game);
-        powerManager.applyCityPowers(player, summary);
-
-        player.buyDistrictsDuringTurn(summary);
+        player.playTurn(summary, game);
     }
 }
