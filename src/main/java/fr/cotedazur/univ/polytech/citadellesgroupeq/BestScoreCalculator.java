@@ -63,7 +63,7 @@ public class BestScoreCalculator {
                 winPerPlayerMap=new HashMap<>();
                 System.out.println("TENTATIVE k:" + k);
                 ThomasPlayer.ROLES_TO_PICK_IN_ORDER=combinaisons.get(j);
-                ThomasPlayer.PICK_CARD_FOR_MORE_THAN=k;
+                //ThomasPlayer.PICK_CARD_FOR_MORE_THAN=k;
                 for(int i=0; i < 1000; i++) {
                     GameLogicManager game = new GameLogicManager();
                     while(!game.isFinished()) {

@@ -15,7 +15,6 @@ import java.util.*;
  */
 public class ThomasPlayer extends Player {
     public static List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.CONDOTTIERE));
-    public static int PICK_CARD_FOR_MORE_THAN=1;
     public ThomasPlayer(int id, CardDeck pioche) {
         super(id, pioche);
     }
@@ -33,9 +32,7 @@ public class ThomasPlayer extends Player {
         getCoinsFromColorCards(summary);
         getRole().power(game, this, summary);
 
-        boolean hasCardsOverLimitCoins=getCardsInHand().stream().anyMatch(district -> district.getCost() >= PICK_CARD_FOR_MORE_THAN);
-
-        if(hasCardsOverLimitCoins) {
+        if(!getCardsInHand().isEmpty()) {
             draw2Coins(summary);
             buyDistrictsDuringTurn(summary);
         }
@@ -80,10 +77,10 @@ public class ThomasPlayer extends Player {
     @Override
     public Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) {
         if(availableRoles.contains(Role.ARCHITECTE)) {
-            return Optional.of(Role.MARCHAND);
+            return Optional.of(Role.ARCHITECTE);
         }
-        else if(availableRoles.contains(Role.VOLEUR)) {
-            return Optional.of(Role.VOLEUR);
+        else if(availableRoles.contains(Role.MARCHAND)) {
+            return Optional.of(Role.MARCHAND);
         }
         else {
             return Optional.of(availableRoles.get(0));
