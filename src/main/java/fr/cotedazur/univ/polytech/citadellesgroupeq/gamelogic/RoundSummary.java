@@ -26,7 +26,12 @@ public class RoundSummary {
 
     private boolean hasExchangedCardsWithPileAsMagician;
 
-    private Optional<AbstractMap.SimpleEntry<Integer, District>> optionalDestroyedDistrict=Optional.empty();
+    /**
+     * Cette méthode est utilisé pour stocker la paire (ID du joueur, district) indiquant
+     * quel joueur a perdu un district et quel district a été détruit. Si aucun district
+     * n'a été détruit pendant le tour, l'Optional est vide.
+     */
+    private Optional<AbstractMap.SimpleEntry<Integer, District>> optionalDestroyedDistrict = Optional.empty();
 
     public Optional<AbstractMap.SimpleEntry<Integer, District>> getOptionalDestroyedDistrict() { return optionalDestroyedDistrict; }
 

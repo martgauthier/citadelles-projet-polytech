@@ -138,6 +138,7 @@
     "name": "Cimetiere",
     "cost": 5,
     "color": "purple",
+    "power": "Cimetiere power",
     "quantity": 1
   },
   {

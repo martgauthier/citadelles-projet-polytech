@@ -4,6 +4,9 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
+import java.util.AbstractMap;
+import java.util.Optional;
+
 public class PowerManager {
     private GameLogicManager game;
 
@@ -26,48 +29,50 @@ public class PowerManager {
     }
 
 
-    public void applyCityPowers(District district, Player joueur, RoundSummary summary){
+    public void applyCityPowers(District district, Player player, RoundSummary summary){
         String pouvoir = district.getPower();
         switch (pouvoir) {
             case "Ecole de magie power":
-                ecoleMagiePower(joueur);
+                ecoleMagiePower(player);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Bibliotheque power":
-                bibliothequePower(joueur,summary);
+                bibliothequePower(player,summary);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Laboratoire power":
-                laboratoirePower(joueur);
+                laboratoirePower(player);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Manufacture power":
-                manufacturePower(joueur);
+                manufacturePower(player);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Observatoire power":
-                observatoirePower(joueur,summary);
+                observatoirePower(player,summary);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
+                break;
+            case "Cimetiere power":
+                cimetierePower(player,summary, district);
                 break;
             default:
                 break;
         }
     }
 
-
-    private void ecoleMagiePower(Player joueur) {
-        if(joueur.getRole().getColor()!=Color.GRAY){
-            joueur.addCoins(1);//si il a une couleur, il va gagner une pièce car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
+    private void ecoleMagiePower(Player player) {
+        if(player.getRole().getColor()!=Color.GRAY){
+            player.addCoins(1);//si il a une couleur, il va gagner une pièce car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
         }
     }
-    private void bibliothequePower(Player joueur, RoundSummary summary){
+    private void bibliothequePower(Player player, RoundSummary summary){
         if(summary.hasPickedCards()){
-            joueur.pickCard(summary);
+            player.pickCard(summary);
         }
     }
     private void laboratoirePower(Player player){
@@ -98,6 +103,22 @@ public class PowerManager {
     private void observatoirePower(Player player,RoundSummary summary){
         if(!summary.hasPickedCash()){
             player.pickCardForObservatory(new RoundSummary());
+        }
+    }
+
+    @SuppressWarnings("java:S3655")
+    private void cimetierePower(Player player, RoundSummary summary, District cimetiere) {
+        if (player.getRole() != Role.CONDOTTIERE && !summary.getOptionalDestroyedDistrict().isEmpty()) {
+            AbstractMap.SimpleEntry<Integer, District> destroyedDistrict= summary.getOptionalDestroyedDistrict().get();
+            if(destroyedDistrict.getKey() == player.getId()){
+                Optional<District> buyChoice = player.chooseToUseCimetierePower(destroyedDistrict.getValue());
+                if(buyChoice.isPresent()) {
+                    player.addCardToHand(buyChoice.get());
+                    player.removeCoins(1);
+                    summary.setHasUsedPower();
+                    summary.getUsedMerveilles().add(cimetiere.getName());
+                }
+            }
         }
     }
 
