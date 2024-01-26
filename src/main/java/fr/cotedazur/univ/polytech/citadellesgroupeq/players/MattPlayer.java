@@ -3,6 +3,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.MattStartGameStrategy;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.SecurePointsForEndGame;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class MattPlayer extends Player {
 
     public MattPlayer(int id, CardDeck pioche) {
         super(id, pioche);
-        //TODO: set strategy to MattStartGameStrategy
+        setStrategy(new MattStartGameStrategy(this));
     }
     @Override
     public String getBotLogicName() {

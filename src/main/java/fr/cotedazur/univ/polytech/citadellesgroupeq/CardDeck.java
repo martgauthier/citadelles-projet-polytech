@@ -102,7 +102,14 @@ public class CardDeck {
     }
 
     public District pickTopCard() throws BadlyInitializedReader {
-        return districtQueue.poll();
+        District returnedDistrict=districtQueue.poll();
+        if(returnedDistrict==null) {
+            districtQueue=new LinkedList<>(districtsList);
+            return districtQueue.poll();
+        }
+        else {
+            return returnedDistrict;
+        }
     }
 
     public void addDistrictUnderCardsPile(District district) {

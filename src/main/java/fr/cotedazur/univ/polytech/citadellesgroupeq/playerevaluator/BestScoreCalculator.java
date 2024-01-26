@@ -15,20 +15,15 @@ public class BestScoreCalculator {
         Map<String, Integer> winPerPlayerMap=new HashMap<>();
 
         for(int i=0; i < 1000; i++) {
-            try {
-                GameLogicManager game = new GameLogicManager();
-                while (!game.isFinished()) {
-                    game.makeAllPlayersSelectRole();
-                    for (Player joueur : game.getPlayerTreeSet()) {
-                        game.playPlayerTurn(joueur);
-                    }
-                    game.resuscitateAllPlayers();
+            GameLogicManager game = new GameLogicManager();
+            while (!game.isFinished()) {
+                game.makeAllPlayersSelectRole();
+                for (Player joueur : game.getPlayerTreeSet()) {
+                    game.playPlayerTurn(joueur);
                 }
-                winPerPlayerMap.put(game.whoIsTheWinner().getBotLogicName(), winPerPlayerMap.getOrDefault(game.whoIsTheWinner().getBotLogicName(), 0) + 1);
+                game.resuscitateAllPlayers();
             }
-            catch (Exception e) {
-                throw new RuntimeException(e.toString());
-            }
+            winPerPlayerMap.put(game.whoIsTheWinner().getBotLogicName(), winPerPlayerMap.getOrDefault(game.whoIsTheWinner().getBotLogicName(), 0) + 1);
         }
 
         for(Map.Entry<String, Integer> entry: winPerPlayerMap.entrySet()) {
