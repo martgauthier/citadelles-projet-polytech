@@ -37,7 +37,9 @@ public class ThomasPlayer extends Player {
             buyDistrictsDuringTurn(summary);
         }
         else {
-            pickCard(summary);
+            if(!haveObservatoryInCity()){
+                pickCard(summary);
+            }
         }
 
         PowerManager powerManager = new PowerManager(game);
