@@ -7,9 +7,11 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,7 @@ class SecurePointsForEndGameTest {
     @Test
     void testGetChoosenDistrictToBuy() {
         secureLastPlayer.setCash(200);
+        secureLastPlayer.setCardsInHand(new ArrayList<>());//removes card from his hand
         District district1 = new District("avion", 5, Color.BLUE, "null");
         District district2 = new District("Université", 10, Color.YELLOW, "null");
         District district3 = new District("Donjon", 5, Color.YELLOW, "null");
