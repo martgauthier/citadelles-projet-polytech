@@ -29,7 +29,7 @@ class RandomPlayerTest {
         randomPlayer=new RandomPlayer(0, pioche);
         otherPlayer=new RealEstatePlayer(1, pioche);
         game=new GameLogicManager(List.of(randomPlayer, otherPlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
         summary = new RoundSummary();
         otherPlayer.setRole(Role.CONDOTTIERE);
 

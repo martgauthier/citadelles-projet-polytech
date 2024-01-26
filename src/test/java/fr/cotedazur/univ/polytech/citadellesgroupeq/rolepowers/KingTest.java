@@ -51,7 +51,7 @@ class KingTest {
 
         basicDistrict=new District("temple", 5, Color.PURPLE, "null");
         game=new GameLogicManager(List.of(assassinPlayer, voleurPlayer,otherRolePlayer, magicienPlayer, condottierePlayer, evequePlayer, architectePlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
         summary=new RoundSummary();
     }
 

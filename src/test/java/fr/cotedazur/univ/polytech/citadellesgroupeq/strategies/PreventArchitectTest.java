@@ -32,7 +32,7 @@ class PreventArchitectTest {
         otherPlayer=Mockito.spy(new AlwaysSpendPlayer(1, pioche));//arbitrary choice of players
         otherPlayer.setStrategy(new DefaultStrategy(otherPlayer));
         game=new GameLogicManager(List.of(player, otherPlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
         summary=new RoundSummary();
     }
 

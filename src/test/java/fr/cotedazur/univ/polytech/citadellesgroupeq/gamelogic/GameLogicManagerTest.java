@@ -175,7 +175,7 @@ class GameLogicManagerTest {
 
     @Test
     void testScoreTakesAccountOfMerveille() {
-        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getDistrictsJSONReader());
+        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getCardDeck());
         scorePlayer.addDistrictToCity(new District("Dracoport", 6, Color.PURPLE));
         scorePlayer.addDistrictToCity(new District("Université", 6, Color.PURPLE));
 
