@@ -3,6 +3,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.MattMoreThan5CitiesStrategy;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.MattStartGameStrategy;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.SecurePointsForEndGame;
 
@@ -24,6 +25,9 @@ public class MattPlayer extends Player {
     public void playTurn(RoundSummary summary, GameLogicManager game) {
         if(game.isFinished()) {
             setStrategy(new SecurePointsForEndGame(this));
+        }
+        else if(getCity().size() >= 5) {
+            setStrategy(new MattMoreThan5CitiesStrategy(this));
         }
 
         getCoinsFromColorCards(summary);

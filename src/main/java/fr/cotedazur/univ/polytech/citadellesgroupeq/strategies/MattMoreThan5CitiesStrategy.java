@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class MattMoreThan5Cities extends DefaultStrategy {
-    public MattMoreThan5Cities(Player player) {
+public class MattMoreThan5CitiesStrategy extends DefaultStrategy {
+    public MattMoreThan5CitiesStrategy(Player player) {
         super(player);
+        strategyName="[MattMoreThan5CitiesStrategy]";
     }
 
     /**
@@ -39,12 +40,12 @@ public class MattMoreThan5Cities extends DefaultStrategy {
 
             if(choosenDistrict.isPresent()) return choosenDistrict;
             else {//can't buy card from missing colors.
-                List<District> cardsColoredLikePlayer=player.getCardsInHand().stream().filter(card -> card.getColor()==player.getRole().getColor()).toList();
+                List<District> cardsColoredLikePlayer=player.getBuyableCards().stream().filter(card -> card.getColor()==player.getRole().getColor()).toList();
                 if(!cardsColoredLikePlayer.isEmpty()) {
                     return Optional.of(Collections.min(cardsColoredLikePlayer));
                 }
                 else {//has no cards from missing color and no card from his own color
-                    for(District card: player.getCardsInHand()) {
+                    for(District card: player.getBuyableCards()) {
                         if(choosenDistrict.isEmpty() || Math.abs(3-card.getCost()) < Math.abs(3-choosenDistrict.get().getCost())) {
                             choosenDistrict=Optional.of(card);
                         }
