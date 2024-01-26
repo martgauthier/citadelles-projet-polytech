@@ -1,5 +1,6 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.ThomasPlayer;
@@ -10,8 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BestScoreCalculator {
-    @Test
-    public void getWinningRatioPerPlayer() {
+    public static void main(String[] args) {
         Map<String, Integer> winPerPlayerMap=new HashMap<>();
 
         for(int i=0; i < 1000; i++) {
@@ -39,7 +39,6 @@ public class BestScoreCalculator {
     /**
      * WARNING: REALLY LONG TO RUN !!! (5 minutes sur le pc de gauthier)
      */
-     @Test
     public void getBestCombinaisonForThomasPlayer() {
         Map<String, Integer> winPerPlayerMap;
         Integer maxScore=0;
