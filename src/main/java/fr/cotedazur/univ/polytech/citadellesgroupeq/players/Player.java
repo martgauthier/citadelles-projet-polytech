@@ -213,9 +213,10 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public District pickCard(RoundSummary summary) {
         District choosenCard=pioche.pickTopCard();
 
-        addCardToHand(choosenCard);
-
-        summary.addDrawnCard(choosenCard);
+        if(choosenCard!=null) {
+            addCardToHand(choosenCard);
+            summary.addDrawnCard(choosenCard);
+        }
 
         return choosenCard;
     }

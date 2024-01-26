@@ -4,11 +4,8 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RandomPlayer;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.ColorPlayer;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -47,7 +44,7 @@ public class GameLogicManager {
 
 
     //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
-    protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ColorPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
+    public static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ThomasPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
 
     public GameLogicManager() {
         this(List.of());//liste de joueurs vide
