@@ -38,7 +38,9 @@ public class RealEstatePlayer extends Player {
         getRole().power(game, this, summary);
 
         if (getCardsInHand().size() < 8) {
-            pickCard(summary);
+            if(!haveObservatoryInCity()){
+                pickCard(summary);
+            }
         }
         else {
             draw2Coins(summary);

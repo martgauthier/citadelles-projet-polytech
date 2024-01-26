@@ -32,6 +32,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
 
     private Role role;
 
+
     /**
      * Strategy used by Player
      */
@@ -218,6 +219,37 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         }
 
         return choosenCard;
+    }
+    public District pickCardForObservatory(RoundSummary summary){
+        District d1=pioche.pickTopCard();
+        District d2=pioche.pickTopCard();
+        District d3=pioche.pickTopCard();
+        List<District> d=new ArrayList<>();
+        d.add(d1);
+        d.add(d2);
+        d.add(d3);
+        District choosenCard=d1;
+        for(District district : d){
+            if(district.getCost()> choosenCard.getCost()){
+                choosenCard=district;
+            }
+        }
+        for(District card: d) {
+            if(card!=choosenCard) {
+                pioche.addDistrictUnderCardsPile(card);
+            }
+        }
+        addCardToHand(choosenCard);
+        summary.addDrawnCard(choosenCard);
+        return choosenCard;
+    }
+    public boolean haveObservatoryInCity(){
+        for(District d : this.city){
+            if(d.getName().equals("Observatoire")){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

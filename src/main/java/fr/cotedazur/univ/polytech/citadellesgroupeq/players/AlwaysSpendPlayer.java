@@ -42,7 +42,9 @@ public class AlwaysSpendPlayer extends Player {
             buyDistrictsDuringTurn(summary);
         }
         else {
-            pickCard(summary);
+            if(!haveObservatoryInCity()){
+                pickCard(summary);
+            }
         }
 
 

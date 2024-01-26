@@ -131,6 +131,7 @@
     "name": "Observatoire",
     "cost": 5,
     "color": "purple",
+    "power": "Observatoire power",
     "quantity": 1
   },
   {
