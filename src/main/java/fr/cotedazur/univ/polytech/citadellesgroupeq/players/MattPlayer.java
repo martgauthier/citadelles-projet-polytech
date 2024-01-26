@@ -3,6 +3,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.SecurePointsForEndGame;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,10 @@ public class MattPlayer extends Player {
 
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
+        if(game.isFinished()) {
+            setStrategy(new SecurePointsForEndGame(this));
+        }
+
         getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);

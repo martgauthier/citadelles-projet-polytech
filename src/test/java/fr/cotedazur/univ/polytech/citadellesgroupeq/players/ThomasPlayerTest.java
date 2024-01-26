@@ -27,7 +27,7 @@ public class ThomasPlayerTest {
         player2=new ThomasPlayer(1, pioche);
 
         game=new GameLogicManager(List.of(player1, player2));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
 
         player1.clearHand();
         player2.clearHand();

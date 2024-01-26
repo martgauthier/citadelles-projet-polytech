@@ -147,7 +147,7 @@ public enum Role {
                     condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
                     selectedPlayer.removeDistrictFromCity(playerChoice.getValue());
 
-                    g.getDistrictsJSONReader().addDistrictUnderCardsPile(playerChoice.getValue());
+                    g.getCardDeck().addDistrictUnderCardsPile(playerChoice.getValue());
 
                     summary.setDestroyedDistrict(playerChoice);
 
