@@ -20,9 +20,9 @@ public class SecurePointsForEndGame extends DefaultStrategy {
             List<Color> remainingColorsList = getRemainingColorsToBuy(this.player.getCity());
             if (remainingColorsList.size() == 1) {
                 // On récupère la carte restante pour compléter la couleur
-                District districtToBuyForColor = getMaxDistrictByColor(buyableDistricts, remainingColorsList.get(0));
-                if (districtToBuyForColor.getCost() + 3 >= bestOption.getCost()) { // Cas ou c plus benef de faire les 5 couleurs
-                    bestOption = districtToBuyForColor;
+                Optional<District> districtToBuyForColor = getMaxDistrictByColor(buyableDistricts, remainingColorsList.get(0));
+                if (districtToBuyForColor.isPresent() && districtToBuyForColor.get().getCost() + 3 >= bestOption.getCost()) { // Cas ou c plus benef de faire les 5 couleurs
+                    bestOption = districtToBuyForColor.get();
                 }
             }
             return Optional.of(bestOption);
@@ -45,7 +45,7 @@ public class SecurePointsForEndGame extends DefaultStrategy {
         return maxDistrict;
     }
 
-    public District getMaxDistrictByColor(List<District> city, Color color) {
+    public Optional<District> getMaxDistrictByColor(List<District> city, Color color) {
         if (city == null || city.isEmpty()) {
             throw new IllegalArgumentException("La liste de district est vide ou nulle.");
         }
@@ -60,10 +60,7 @@ public class SecurePointsForEndGame extends DefaultStrategy {
                 }
             }
         }
-        if (maxDistrict == null) {
-            throw new IllegalArgumentException("Aucun district de la couleur spécifiée trouvé dans la liste.");
-        }
-        return maxDistrict;
+        return Optional.ofNullable(maxDistrict);
     }
 
 

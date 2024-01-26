@@ -43,7 +43,7 @@ public class GameLogicManager {
 
 
     //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
-    protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ColorPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, MattPlayer.class);
+    protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ThomasPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, MattPlayer.class);
 
     public GameLogicManager() {
         this(List.of());//liste de joueurs vide
