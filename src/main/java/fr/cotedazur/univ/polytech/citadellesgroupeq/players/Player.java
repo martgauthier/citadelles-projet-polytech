@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
- * d'argent (cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
+ * d'argent (@cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
  */
 public abstract class Player implements Comparable<Player>, IStrategy {
 
@@ -24,7 +24,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     private final int id;
 
     /**
-     * Cartes que le joueur contient dans sa main. PAS LES CARTES POSÉES DANS SA CITE
+     * Cartes que le joueur contient dans sa main. PAS LES CARTES POSÉES DANS SA CITÉ
      */
     private List<District> cardsInHand;
 
@@ -96,7 +96,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public void dieForThisTurn() {
         deadForThisTurn = true;
     }
-    public void rescucitate(){
+    public void resuscitate(){
         deadForThisTurn = false;
     }
 
@@ -105,7 +105,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     @Override
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
         Role assassinatedRole;
-        do { //boucle while pour éviter qu'il se tue lui même
+        do { //boucle while pour éviter qu'il se tue lui-même
             assassinatedRole=availableRoles.get(randomGenerator.nextInt(availableRoles.size()));
         } while((assassinatedRole.equals(this.getRole())));
         return assassinatedRole;
@@ -124,7 +124,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     /**
-     * Ajoute 2 au cash du joueur. Utile pour chaque début de tour
+     * Ajoute 2 au @cash du joueur. Utile pour chaque début de tour
      */
     public void draw2Coins(RoundSummary summary) {
         this.cash+=2;
@@ -212,7 +212,6 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      */
     public District pickCard(RoundSummary summary) {
         District choosenCard=pioche.pickTopCard();
-
         if(choosenCard!=null) {
             addCardToHand(choosenCard);
             summary.addDrawnCard(choosenCard);
@@ -349,7 +348,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     @Override
-    public int[] selectCardsToExchangeWithPileAsMagicien() {//liste des index des cartes que le magicien voudrait échanger, si il choisit d'échanger des cartes avec la pile
+    public int[] selectCardsToExchangeWithPileAsMagicien() {//liste des index des cartes que le magicien voudrait échanger, s'il choisit d'échanger des cartes avec la pile
         if (!getCardsInHand().isEmpty()) {
             int start = randomGenerator.nextInt(getCardsInHand().size());
             int end = randomGenerator.nextInt(start, getCardsInHand().size());
@@ -370,9 +369,9 @@ public abstract class Player implements Comparable<Player>, IStrategy {
 
     @Override
     public Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players) {
-        for(Player testedPlayer: players) {//Default strategy: returns first destroyable district not from the current player
+        for(Player testedPlayer: players) {//Default strategy: returns first destroyable district not from the current player.
             if(testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn())){
-                //un eveque peut se faire détruire un district si il est mort.
+                //un eveque peut se faire détruire un district s'il est mort.
                 for(District district: testedPlayer.getCity()) {
                     if(district.getCost() - 1 <= this.getCash() && !(district.getColor() == Color.PURPLE && district.getName().equalsIgnoreCase("donjon"))) {
                         return Optional.of(new AbstractMap.SimpleEntry<>(testedPlayer.getId(), district));

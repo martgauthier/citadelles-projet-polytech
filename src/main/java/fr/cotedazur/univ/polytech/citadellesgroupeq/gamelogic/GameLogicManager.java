@@ -17,7 +17,7 @@ public class GameLogicManager {
     private final Random randomGenerator;
 
     /**
-     * index du joueur qui commence à tirer (le maitre du jeu, ou le roi au tour d'avant)
+     * Index du joueur qui commence à tirer (le maitre du jeu, ou le roi au tour d'avant)
      */
     private int masterOfTheGameIndex;
 
@@ -42,14 +42,14 @@ public class GameLogicManager {
     private Map<Player, Integer> scoreOfEnd =new HashMap<>();
 
 
-    //nécessaire pour régler l'issue #53 sur github: voir la doc de public GameManager()
+    //nécessaire pour régler l'issue #53 sur github : voir la doc de public GameManager()
     protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ThomasPlayer.class, RealEstatePlayer.class, AlwaysSpendPlayer.class, MattPlayer.class);
 
     public GameLogicManager() {
         this(List.of());//liste de joueurs vide
 
 
-        //nécessaire pour régler l'issue #53 sur github:
+        //nécessaire pour régler l'issue #53 sur github :
         // il est plus simple d'instancier les joueurs depuis une liste de classes, avec leur constructeur, qu'essayer de les copier en profondeur
 
         int ids=0;
@@ -96,12 +96,12 @@ public class GameLogicManager {
     }
 
     /**
-     * Fait choisir à chaque {@link Player} à partir du maitre du jeu un rôle dans `availableRoles`. Remplit la variable 'rolesSelectedMap'
+     * Fait choisir à chaque {@link Player} à partir du maitre du jeu un rôle dans 'availableRoles'. Remplit la variable 'rolesSelectedMap'
      * @param availableRoles les rôles que les joueurs peuvent choisir.
      * @return la liste des joueurs dans leur ordre de choix du rôle
      * @throws IllegalArgumentException Si certains rôles sont EMPTY ou qu'il y a moins de rôles que de joueurs.
      */
-    @SuppressWarnings("java:S5413")//unsafe usage of "List.remove" in a loop, not matching our case because it is safe
+    @SuppressWarnings("java:S5413")//unsafe usage of 'List.remove' in a loop, not matching our case because it is safe.
     public List<Player> makeAllPlayersSelectRole(List<Role> availableRoles) throws IllegalArgumentException {
         availableRoles=new ArrayList<>(availableRoles);//used to prevent original list to be modified
         if(availableRoles.size() <= playersList.size()) {
@@ -148,7 +148,7 @@ public class GameLogicManager {
                 finishGame();
             }
 
-            makeScoreofPlayer(player, summary);//is read only at end of game, but is useful for tests
+            makeScoreOfPlayer(player, summary);//is read only at the end of game, but is useful for tests.
         }
         return summary;
     }
@@ -195,17 +195,16 @@ public class GameLogicManager {
 
     /**
      * Voir {@link #generateAvailableRoles(int, List)}
-     * @return
      */
     public List<Role> generateAvailableRoles(int nombreDeJoueurs) {
         ArrayList<Role> availableRoles = new ArrayList<>(Arrays.asList(Role.values()));
-        availableRoles.remove(0);//removes EMPTY_ROLE
+        availableRoles.remove(0);//removes 'EMPTY_ROLE'
         return generateAvailableRoles(nombreDeJoueurs,availableRoles);
     }
 
     /**
-     * Défini à partir du nombre de joueur n roles aléatoirement
-     * @param nombreDeJoueur
+     * Défini à partir du nombre de joueurs n roles aléatoirement
+     * @param nombreDeJoueur indique le nombre de joueurs
      * @param availableRoles tous les roles disponibles
      * @throws IllegalArgumentException Si certains rôles sont EMPTY ou qu'il y a moins de rôles que de joueurs.
      * @return Une liste de role que le joueur pourra choisir
@@ -227,12 +226,12 @@ public class GameLogicManager {
 
     /**
      * Makes score of given player, and adds it to score list.
-     * @param player
-     * @param summary
+     * @param player joueur sur lequel appliquer la méthode
+     * @param summary summary
      * @return player's score
      */
     @SuppressWarnings("java:S3655")//false positive for checking for Optional.isPresent()
-    public int makeScoreofPlayer(Player player,RoundSummary summary){
+    public int makeScoreOfPlayer(Player player, RoundSummary summary){
         String coursDesMiraclesName="Cour des miracles";
         int score=player.getTotalCityPrice();
 
@@ -256,9 +255,9 @@ public class GameLogicManager {
             score+=3;
         }
         else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity(coursDesMiraclesName).isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
-            player.removeDistrictFromCity(player.getDistrictInCity(coursDesMiraclesName).get());//remove it from colorMap, to check if there is another purple card
+            player.removeDistrictFromCity(player.getDistrictInCity(coursDesMiraclesName).get());//remove it from colorMap, to check if there is another purple card.
             Map<Color, Boolean> colorMap=player.getColorsContainedInCityMap();
-            if(Boolean.TRUE.equals(colorMap.get(Color.PURPLE))) {//si il y a une autre carte violette que la cour des miracles, cela veut dire qu'on peut
+            if(Boolean.TRUE.equals(colorMap.get(Color.PURPLE))) {//s'il y a une autre carte violette que la cour des miracles, cela veut dire qu'on peut
                 // remplacer la couleur manquante grâce au pouvoir de la cour des miracles
                 score+=3;
             }
@@ -284,7 +283,7 @@ public class GameLogicManager {
 
     public void resuscitateAllPlayers() {
         for(Player player: playersList) {
-            player.rescucitate();
+            player.resuscitate();
         }
     }
 }
