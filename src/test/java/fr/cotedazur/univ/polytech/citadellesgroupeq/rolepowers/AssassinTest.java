@@ -86,7 +86,7 @@ class AssassinTest {
         game.getPlayersList().set(assassinPlayer.getId(), assassinPlayer);
 
         doReturn(Role.VOLEUR).when(assassinPlayer).selectRoleToKillAsAssassin(anyList());
-        otherRolePlayer.setRole(Role.CONDOTTIERE);//other role than the one killed
+        otherRolePlayer.setRole(Role.CONDOTTIERE);//another role than the one killed
 
         assassinPlayer.playTurn(summary, game);
         verify(assassinPlayer, times(1)).selectRoleToKillAsAssassin(anyList());

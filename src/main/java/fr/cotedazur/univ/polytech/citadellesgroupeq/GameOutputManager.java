@@ -154,8 +154,8 @@ public class GameOutputManager {
 
 
     /**
-     * décrit l'état actuel d'un joueur avant son tour: son rôle, ses cartes en main, et celles dans sa cité, et son cash
-     * @param player
+     * Décrit l'état actuel d'un joueur avant son tour : son rôle, ses cartes en main, et celles dans sa cité, et son cash
+     * @param player joueur
      */
     public void describePlayerState(Player player) {
         System.out.print("Joueur " + player.getBotLogicName()+player.getStrategyName());

@@ -29,7 +29,7 @@ public class RealEstatePlayer extends Player {
      * Méthode qui définit la logique du tour d'un joueur alwaysSpendPlayer.
      *
      * @param summary Résumé du tour actuel.
-     * @param game
+     * @param game game
      */
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {

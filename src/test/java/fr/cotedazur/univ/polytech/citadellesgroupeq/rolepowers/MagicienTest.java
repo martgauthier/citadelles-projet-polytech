@@ -98,7 +98,7 @@ class MagicienTest {
     /**
      * Vérifie que les cartes échangées avec la pile sont différentes, et que les autres sont égales.
      * ATTENTION, une carte pourrait être "égale" (equals), car les cartes sont présentes en plusieurs exemplaires,
-     * mais là on vérifie que la REFERENCE de l'objet a changé ou non
+     * mais là, on vérifie que la REFERENCE de l'objet a changé ou non
      */
     @Test
     void testExchangedCardsFromPileAreDifferent() {

@@ -118,8 +118,6 @@ class GameLogicManagerTest {
         assertTrue(summary.hasBoughtDistricts());
         assertEquals(1, summary.getBoughtDistricts().size());
 
-        int boughtDistrictPrice=summary.getBoughtDistricts().get(0).getCost();
-
         assertTrue(summary.hasPickedCards() ^ summary.hasPickedCash()); //opérateur XOR, pour vérifier que le joueur n'a fait qu'un des deux
     }
     @Test
@@ -188,6 +186,6 @@ class GameLogicManagerTest {
                 new District("Cour des miracles", 1, Color.PURPLE)
         )));
 
-        assertEquals(5+3, game.makeScoreOfPlayer(scorePlayer, new RoundSummary()));//5 points avec le coût de la cité + 3 points car la cour des miracles remplace la couleur jaune manquante
+        assertEquals(5+3, game.makeScoreOfPlayer(scorePlayer, new RoundSummary()));//5 points avec le coût de la cité + 3 points, car la cour des miracles remplace la couleur jaune manquante
     }
 }

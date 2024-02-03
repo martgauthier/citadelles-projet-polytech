@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.merveillepowers;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.GameOutputManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -33,7 +32,6 @@ class LaboratoirePowerTest {
     @Test
     void applyPowerLaboratoire(){
         GameLogicManager game = new GameLogicManager();
-        GameOutputManager gameOutputManager = new GameOutputManager();
         List<District> districts2=new ArrayList<>();
         districts2.add(new District("Temple",1,"blue", "null"));
         districts2.add(new District("Eglise",2, "green", "null"));

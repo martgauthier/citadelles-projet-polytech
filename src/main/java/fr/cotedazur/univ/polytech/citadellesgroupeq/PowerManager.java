@@ -62,7 +62,7 @@ public class PowerManager {
 
     private void ecoleMagiePower(Player joueur) {
         if(joueur.getRole().getColor()!=Color.GRAY){
-            joueur.addCoins(1);//si il a une couleur, il va gagner une pièce car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
+            joueur.addCoins(1);//s'il a une couleur, il va gagner une pièce, car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
         }
     }
     private void bibliothequePower(Player joueur, RoundSummary summary){
