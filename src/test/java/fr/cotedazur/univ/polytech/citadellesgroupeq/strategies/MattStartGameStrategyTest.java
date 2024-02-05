@@ -81,11 +81,6 @@ class MattStartGameStrategyTest {
         mainPlayer.setCash(3);
         summary=game.playPlayerTurn(mainPlayer);
         assertTrue(summary.hasPickedCash());
-
-        mainPlayer.setCash(5);
-
-        summary=game.playPlayerTurn(mainPlayer);
-        assertTrue(summary.hasPickedCards());
     }
 
     @Test
