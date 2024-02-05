@@ -60,6 +60,10 @@ class MagicienTest {
     void initSpyMagicien(boolean choosesToExchangeWithPlayer) {
         magicienPlayer = Mockito.spy(magicienPlayer);
         magicienPlayer.setRole(Role.MAGICIEN);
+        magicienPlayer.clearHand();
+        magicienPlayer.pickCard(new RoundSummary());
+        magicienPlayer.pickCard(new RoundSummary());//adds 2 cards in hand
+        magicienPlayer.setCash(0);
         magicienPlayer.setStrategy(new DefaultStrategy(magicienPlayer));
         doReturn(choosesToExchangeWithPlayer).when(magicienPlayer).choosesToExchangeCardWithPlayer();
         doReturn(new District("temple", 8, Color.GRAY, "null")).when(magicienPlayer).pickCard(summary);//prevents card from being picked

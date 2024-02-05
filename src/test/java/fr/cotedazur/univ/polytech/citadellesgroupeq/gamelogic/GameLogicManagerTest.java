@@ -89,7 +89,7 @@ class GameLogicManagerTest {
     @Test
     void testCreatingGameWithPlayers() {
         for(Player player: game.getPlayersList()) {
-            assertEquals(2, player.getCardsInHand().size());
+            assertEquals(4, player.getCardsInHand().size());
         }
     }
 
@@ -111,7 +111,7 @@ class GameLogicManagerTest {
         game = new GameLogicManager();
         game.getPlayersList().get(0).setCash(1000);//rend un joueur capable d'acheter toutes ses cartes
         game.getPlayersList().get(0).setRole(Role.MARCHAND);
-        assertEquals(2,game.getPlayersList().get(0).getCardsInHand().size());
+        assertEquals(4,game.getPlayersList().get(0).getCardsInHand().size());
 
         RoundSummary summary=game.playPlayerTurn(game.getPlayersList().get(0));
 
