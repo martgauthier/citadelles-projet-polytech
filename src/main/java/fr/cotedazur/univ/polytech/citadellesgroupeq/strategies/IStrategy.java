@@ -60,4 +60,9 @@ public interface IStrategy {
     String getStrategyName();
 
     boolean wantsToUseManufacturePower();
+
+    /**
+     * Choix de racheter ou npn quand on a le pouvoir du cimetière
+     */
+    Optional<District> chooseToUseCimetierePower(District destroyedDistrict);
 }

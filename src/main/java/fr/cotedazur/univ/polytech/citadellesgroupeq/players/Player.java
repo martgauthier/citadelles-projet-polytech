@@ -460,4 +460,15 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     public boolean wantsToUseManufacturePower() {
         return cash > 5 && cardsInHand.size() < 3;
     }
+
+    @Override
+    public Optional<District> chooseToUseCimetierePower(District destroyedDistrict) {
+        Map<Color, Boolean> colorsInCityMap = getColorsContainedInCityMap();
+        Boolean isColorInCity = colorsInCityMap.get(destroyedDistrict.getColor());
+        if (Boolean.FALSE.equals(isColorInCity)) {
+            return Optional.of(destroyedDistrict);
+        } else {
+            return Optional.empty();
+        }
+    }
 }

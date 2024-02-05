@@ -132,6 +132,14 @@ public class GameOutputManager {
                 }
             }
 
+            Optional<District> optionalCimetiere = player.getDistrictInCity("Cimetiere");
+            if (optionalCimetiere.isPresent() && summary.getOptionalDestroyedDistrict().isPresent()){
+                District cimetiere = optionalCimetiere.get();
+                District destroyedDistrict = summary.getOptionalDestroyedDistrict().get().getValue();
+                if(summary.getUsedMerveilles().contains(cimetiere.getName())){
+                    System.out.println("Grace au cimetiere le joueur recupere dans sa main pour une piece la carte :" + destroyedDistrict.getName());
+                }
+            }
 
             if (summary.hasPickedCards()) {
                 System.out.println("Il a choisi de piocher 1 carte: " + summary.getDrawnCards().get(0).getName());
