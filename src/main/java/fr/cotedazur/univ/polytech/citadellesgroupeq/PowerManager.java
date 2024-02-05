@@ -4,6 +4,9 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
+import java.util.AbstractMap;
+import java.util.Optional;
+
 public class PowerManager {
     private GameLogicManager game;
 
@@ -54,6 +57,9 @@ public class PowerManager {
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
+            case "Cimetiere power":
+                cimetierePower(joueur,summary, district);
+                break;
             default:
                 break;
         }
@@ -98,6 +104,22 @@ public class PowerManager {
     private void observatoirePower(Player player,RoundSummary summary){
         if(!summary.hasPickedCash()){
             player.pickCardForObservatory(new RoundSummary());
+        }
+    }
+
+    @SuppressWarnings("java:S3655")
+    private void cimetierePower(Player player, RoundSummary summary, District cimetiere) {
+        if (player.getRole() != Role.CONDOTTIERE && !summary.getOptionalDestroyedDistrict().isEmpty()) {
+            AbstractMap.SimpleEntry<Integer, District> destroyedDistrict= summary.getOptionalDestroyedDistrict().get();
+            if(destroyedDistrict.getKey() == player.getId()){
+                Optional<District> buyChoice = player.chooseToUseCimetierePower(destroyedDistrict.getValue());
+                if(buyChoice.isPresent()) {
+                    player.addCardToHand(buyChoice.get());
+                    player.removeCoins(1);
+                    summary.setHasUsedPower();
+                    summary.getUsedMerveilles().add(cimetiere.getName());
+                }
+            }
         }
     }
 

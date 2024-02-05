@@ -76,4 +76,9 @@ public class DefaultStrategy implements IStrategy {
     public boolean wantsToUseManufacturePower() {
         return player.wantsToUseManufacturePower();
     }
+
+    @Override
+    public Optional<District> chooseToUseCimetierePower(District destroyedDistrict) {
+        return player.chooseToUseCimetierePower(destroyedDistrict);
+    }
 }

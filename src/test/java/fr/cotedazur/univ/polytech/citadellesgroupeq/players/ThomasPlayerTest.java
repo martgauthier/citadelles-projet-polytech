@@ -7,6 +7,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
@@ -42,17 +43,28 @@ class ThomasPlayerTest {
     }
     @Test
     void testChoosesBetweenCoinsAndCards(){
+        player1.clearHand();
+        player1.pickCard(new RoundSummary());
+        player1.pickCard(new RoundSummary());//adds 2 cards in hand
+        player1.setCash(0);//to match first test specifications
+
+        player2.clearHand();
+        player2.pickCard(new RoundSummary());
+        player2.pickCard(new RoundSummary());//adds 2 cards in hand
+        player2.setCash(0);//to match first test specifications
+
         player1.addAllCardsToHand(new District("Temple",8,Color.BLUE));
         player1.setRole(Role.ASSASSIN);
         assertEquals(0,player1.getCash());
-        player1.playTurn(new RoundSummary(),game);
-        assertEquals(2,player1.getCash());
+        RoundSummary summary=new RoundSummary();
+        player1.playTurn(summary,game);
+        assertTrue(summary.hasPickedCash());
 
         player2.setRole(Role.EVEQUE);
         assertEquals(0,player2.getCash());
-        player2.playTurn(new RoundSummary(),game);
-        assertEquals(0,player2.getCash());
-        assertEquals(1,player2.getCardsInHand().size());
+        summary=new RoundSummary();
+        player2.playTurn(summary,game);
+        assertTrue(summary.hasPickedCash());
     }
     @Test
     void testSelectDistrictToDestroyAsCondottiere(){

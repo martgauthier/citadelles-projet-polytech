@@ -43,6 +43,7 @@ public class GameOutputManager {
             describeRoles(availableRoles);//liste les rôles rendus disponibles à choisir par le jeu
 
             describeRolePicking(game.makeAllPlayersSelectRole(availableRoles), game.getMasterOfTheGameIndex());//décrit les rôles choisis par chaque joueur
+
             for(Player player : game.getPlayerTreeSet()) {
                 describePlayerRound(player, game);
             }
@@ -163,6 +164,14 @@ public class GameOutputManager {
                 }
             }
 
+            Optional<District> optionalCimetiere = player.getDistrictInCity("Cimetiere");
+            if (optionalCimetiere.isPresent() && summary.getOptionalDestroyedDistrict().isPresent()){
+                District cimetiere = optionalCimetiere.get();
+                District destroyedDistrict = summary.getOptionalDestroyedDistrict().get().getValue();
+                if(summary.getUsedMerveilles().contains(cimetiere.getName())){
+                    System.out.println("Grace au cimetiere le joueur recupere dans sa main pour une piece la carte :" + destroyedDistrict.getName());
+                }
+            }
 
             if (summary.hasPickedCards()) {
                 GAMEPLAY_LOGGER.log(Level.INFO,"Il a choisi de piocher 1 carte: {}",

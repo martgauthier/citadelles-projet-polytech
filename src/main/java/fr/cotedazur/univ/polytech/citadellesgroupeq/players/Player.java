@@ -16,7 +16,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     private Random randomGenerator=new Random();
     private int cash;
     private boolean deadForThisTurn;
-    public static final int DEFAULT_CASH=0;
+    public static final int DEFAULT_CASH=2;
 
     /**
      * Identification du bot: bot numéro 0 -> id=0, bot numéro 1 -> id=1...
@@ -43,6 +43,8 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     protected Player(int id, CardDeck pioche) {
         this(id, DEFAULT_CASH, new ArrayList<>(),false, pioche);
         pickCard(new RoundSummary());
+        pickCard(new RoundSummary());//no need to get summary
+        pickCard(new RoundSummary());//no need to get summary
         pickCard(new RoundSummary());//no need to get summary
     }
 
@@ -459,5 +461,16 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     @Override
     public boolean wantsToUseManufacturePower() {
         return cash > 5 && cardsInHand.size() < 3;
+    }
+
+    @Override
+    public Optional<District> chooseToUseCimetierePower(District destroyedDistrict) {
+        Map<Color, Boolean> colorsInCityMap = getColorsContainedInCityMap();
+        Boolean isColorInCity = colorsInCityMap.get(destroyedDistrict.getColor());
+        if (Boolean.FALSE.equals(isColorInCity)) {
+            return Optional.of(destroyedDistrict);
+        } else {
+            return Optional.empty();
+        }
     }
 }

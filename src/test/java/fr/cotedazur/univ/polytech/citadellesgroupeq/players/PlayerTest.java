@@ -23,7 +23,7 @@ class PlayerTest {
 
     @Test
     void testCash() {
-        assertFalse(bot.stillHasCash());
+        assertTrue(bot.stillHasCash());
         bot.setCash(40);
         assertTrue(bot.stillHasCash());
         assertEquals(40, bot.getCash());
@@ -40,21 +40,21 @@ class PlayerTest {
 
     @Test
     void testAddCards(){
-        assertEquals(2, bot.getCardsInHand().size());
+        assertEquals(4, bot.getCardsInHand().size());
         List<District> cardsToAdd = List.of(reader.getFromIndex(0), reader.getFromIndex(1));
         bot.addAllCardsToHand(cardsToAdd);
-        assertEquals(4, bot.getCardsInHand().size());
+        assertEquals(6, bot.getCardsInHand().size());
     }
 
     @Test
     void testDealCardsOrCash() {
-        assertEquals(0, bot.getCash());
-        assertEquals(2, bot.getCardsInHand().size());
+        assertEquals(2, bot.getCash());
+        assertEquals(4, bot.getCardsInHand().size());
 
         bot.dealCardsOrCash(new RoundSummary());
 
         // Vérifie que le joueur a soit 2 pièces de plus, soit 1 carte de plus
-        assertTrue(bot.getCash() == 2 || bot.getCardsInHand().size() == 3);
+        assertTrue(bot.getCash() == 4 || bot.getCardsInHand().size() == 5);
     }
     @Test
     void testGetTotalCityPrice(){

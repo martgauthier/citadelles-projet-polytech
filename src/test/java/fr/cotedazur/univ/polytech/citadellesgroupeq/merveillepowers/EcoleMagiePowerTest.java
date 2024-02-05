@@ -45,6 +45,6 @@ class EcoleMagiePowerTest {
         game.playPlayerTurn(player);//will call PowerManager in player turn
 
 
-        assertEquals(2,player.getCash());// Une pièce grace au pouvoir du marchand et une grace au pouvoir de l'ecole de magie
+        assertEquals(4,player.getCash());// Une pièce grace au pouvoir du marchand et une grace au pouvoir de l'ecole de magie
     }
 }
