@@ -15,16 +15,17 @@ public class Main {
         jCommander.parse(args);
         if(main.csv){
             //faire le truc pour csv
+            System.out.println("Argument CSV");
         } else if (main.demo) {
             GameOutputManager outputManager = new GameOutputManager();
 
             outputManager.startMainOutputLoop();
         } else if (main.twoThousands) {
             //faire le truc qui fait 2x1000 parties
+            System.out.println("Argument 2000 parties");
         }else{
             //faire un truc par défault
+            System.out.println("Pas d'arguments.");
         }
-        GameOutputManager outputManager = new GameOutputManager();
-        outputManager.startMainOutputLoop();
     }
 }
