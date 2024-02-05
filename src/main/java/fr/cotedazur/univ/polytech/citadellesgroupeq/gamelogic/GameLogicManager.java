@@ -59,7 +59,7 @@ public class GameLogicManager {
                 this.playersList.add(constructor.newInstance(ids++, cardDeck));
             }
             catch(Exception e) {
-                throw new RuntimeException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "! Erreur de code");
+                throw new IllegalArgumentException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "!");
             }
         }
     }

@@ -6,14 +6,14 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BestScoreCalculator {
-    private static final Logger SCORE_LOGGER=Logger.getLogger("SCORE");
+
+    private BestScoreCalculator() {
+        //useless, but removes sonar warning
+    }
+
     public static int[] getWinPercentagePerPlayer(List<Class<? extends Player>> playerClasses) {
         int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
 
@@ -27,7 +27,7 @@ public class BestScoreCalculator {
                     players.add(constructor.newInstance(ids++, deck));
                 }
                 catch(Exception e) {
-                    throw new RuntimeException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "! Erreur de code");
+                    throw new IllegalArgumentException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "!");
                 }
             }
 

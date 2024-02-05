@@ -1,4 +1,4 @@
-package fr.cotedazur.univ.polytech.citadellesgroupeq.loggerformat;
+package fr.cotedazur.univ.polytech.citadellesgroupeq.logger;
 
 import java.util.logging.Formatter;
 import java.util.logging.*;
@@ -18,5 +18,4 @@ public class SimpleFormatterWithoutDate extends Formatter {
 
         return ANSI_WHITE + message + "\n";
     }
-
 }
