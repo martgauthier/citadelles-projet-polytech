@@ -16,8 +16,9 @@ public class MattMoreThan5CitiesStrategy extends DefaultStrategy {
     }
 
     /**
-     * Une fois qu'il a 5 districts dans sa cité, il achète à chaque fois le district le moins cher, parmi les couleurs qui lui manquent. (Si il a déjà toutes les couleurs, il pose sa plus petite de toute sa main). Sinon, il priorise les cartes de sa couleur, avec le prix le plus proche de 3. (Si il a pas sa couleur, il priorise la carte la plus proche de 3 peu importe la couleur.
-     * @return
+     * Une fois qu'il a 5 districts dans sa cité, il achète à chaque fois le district le moins cher, parmi les couleurs qui lui manquent.
+     * (S'il a déjà toutes les couleurs, il pose sa plus petite de toute sa main). Sinon, il priorise les cartes de sa couleur,
+     * avec le prix le plus proche de 3. (S'il n'a pas sa couleur, il priorise la carte la plus proche de 3 peu importe la couleur).
      */
     @Override
     public Optional<District> getChoosenDistrictToBuy() {
@@ -32,19 +33,19 @@ public class MattMoreThan5CitiesStrategy extends DefaultStrategy {
             //first step: select lowest price from missing colors
             for(District card: player.getBuyableCards()) {
                 if(choosenDistrict.isEmpty()) choosenDistrict=Optional.of(card);
-                else if(!colorsContained.get(card.getColor()) && choosenDistrict.get().getCost() > card.getCost()) {
+                else if(Boolean.TRUE.equals(!colorsContained.get(card.getColor())) && choosenDistrict.get().getCost() > card.getCost()) {
                         choosenDistrict=Optional.of(card);
 
                 }
             }
 
-            if(choosenDistrict.isPresent()) return choosenDistrict;
+            if(choosenDistrict.isPresent() && Boolean.TRUE.equals(!colorsContained.get(choosenDistrict.get().getColor()))) return choosenDistrict;
             else {//can't buy card from missing colors.
                 List<District> cardsColoredLikePlayer=player.getBuyableCards().stream().filter(card -> card.getColor()==player.getRole().getColor()).toList();
                 if(!cardsColoredLikePlayer.isEmpty()) {
                     return Optional.of(Collections.min(cardsColoredLikePlayer));
                 }
-                else {//has no cards from missing color and no card from his own color
+                else {//has no cards from missing color and no card from his own color.
                     for(District card: player.getBuyableCards()) {
                         if(choosenDistrict.isEmpty() || Math.abs(3-card.getCost()) < Math.abs(3-choosenDistrict.get().getCost())) {
                             choosenDistrict=Optional.of(card);

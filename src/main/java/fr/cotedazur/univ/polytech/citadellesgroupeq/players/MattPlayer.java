@@ -69,11 +69,10 @@ public class MattPlayer extends Player {
 
 
     /**
-     * Choisit le district selon ces règles:
+     * Choisit le district selon ces règles :
      * -Achetable
      * -De la couleur verte (marchand) si possible
-     * La carte dont le prix est le plus proche de 3
-     * @return
+     * La carte dont le prix est le plus proche de la valeur 3
      */
     @Override
     public Optional<District> getChoosenDistrictToBuy() {
@@ -89,7 +88,6 @@ public class MattPlayer extends Player {
             }
             else if(boughtCard.get().getColor()!=Color.GREEN && (Math.abs(3-boughtCard.get().getCost()) >= Math.abs(3-card.getCost()))) {
                     boughtCard=Optional.of(card);
-
             }
         }
         return boughtCard;

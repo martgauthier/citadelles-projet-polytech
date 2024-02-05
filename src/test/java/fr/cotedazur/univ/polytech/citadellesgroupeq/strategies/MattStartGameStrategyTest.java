@@ -5,12 +5,10 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.MattPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

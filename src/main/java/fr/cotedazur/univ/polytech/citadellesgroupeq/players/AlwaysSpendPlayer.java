@@ -29,13 +29,12 @@ public class AlwaysSpendPlayer extends Player {
      * Méthode qui définit la logique du tour d'un joueur alwaysSpendPlayer.
      *
      * @param summary Résumé du tour actuel.
-     * @param game
      */
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
         super.getCoinsFromColorCards(summary);
 
-        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
+        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power.
 
         if (!getCardsInHand().isEmpty()) {
             draw2Coins(summary);

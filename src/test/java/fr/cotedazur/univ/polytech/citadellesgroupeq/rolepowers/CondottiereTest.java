@@ -87,7 +87,7 @@ class CondottiereTest {
         assertThrows(IllegalArgumentException.class, () -> Role.CONDOTTIERE.power(game, condottierePlayer, summary));//not present in player city
 
         doReturn(createOptionalEntry(1, basicDistrict)).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
-        Role.CONDOTTIERE.power(game, condottierePlayer, summary);//asserts it doesn't throw anything, as it has good price and is present in player city
+        Role.CONDOTTIERE.power(game, condottierePlayer, summary);//asserts it doesn't throw anything, as it has good price and is present in player city.
 
         doReturn(Optional.empty()).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
         Role.CONDOTTIERE.power(game, condottierePlayer, summary);//asserts it can receive empty optional
@@ -173,6 +173,6 @@ class CondottiereTest {
         game.finishGame();
         game.playPlayerTurn(condottierePlayer);
 
-        assertTrue(game.getPlayersList().get(0).getCity().contains(basicDistrict));//would be false if game wasn't finished
+        assertTrue(game.getPlayersList().get(0).getCity().contains(basicDistrict));//would be false if game was not finished
     }
 }

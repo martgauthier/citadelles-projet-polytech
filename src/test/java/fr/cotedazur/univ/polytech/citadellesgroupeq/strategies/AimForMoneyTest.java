@@ -88,7 +88,7 @@ class AimForMoneyTest {
 
         List<Role> availableRoles=List.of(Role.CONDOTTIERE, Role.EVEQUE, Role.ARCHITECTE);
 
-        doReturn(Optional.of(availableRoles.get(0))).when(mainPlayer).selectRoleToSteal(anyList(), anyList());//si il n'y avait pas de stratégie, renvoyer par défaut le premier role
+        doReturn(Optional.of(availableRoles.get(0))).when(mainPlayer).selectRoleToSteal(anyList(), anyList());//s'il n'y avait pas de stratégie, renvoyer par défaut le premier role
 
         assertEquals(Optional.of(Role.ARCHITECTE), mainPlayer.getStrategy().selectRoleToSteal(availableRoles, List.of()));//c'est bien le retour de AimForMoney
 

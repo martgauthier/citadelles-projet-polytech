@@ -7,7 +7,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.AlwaysSpendPlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -56,12 +55,12 @@ class SecurePointsForEndGameTest {
         secureLastPlayer.addCardToHand(district6);
         secureLastPlayer.addCardToHand(district7);
 
-        // On peut pas compléter la couleur donc on prend la plus chère
+        // On ne peut pas compléter la couleur donc on prend la plus chère
         assertEquals(secureLastStrat.getChoosenDistrictToBuy(), Optional.of(district4));
         secureLastPlayer.addDistrictToCity(district4);
         secureLastPlayer.removeCardFromHand(district4);
 
-        // On peut compléter la couleur mais il est toujours préférable de prendre la carte la plus haute
+        // On peut compléter la couleur, mais il est toujours préférable de prendre la carte la plus haute
         assertEquals(secureLastStrat.getChoosenDistrictToBuy(), Optional.of(district7));
         secureLastPlayer.addDistrictToCity(district7);
         secureLastPlayer.removeCardFromHand(district7);
