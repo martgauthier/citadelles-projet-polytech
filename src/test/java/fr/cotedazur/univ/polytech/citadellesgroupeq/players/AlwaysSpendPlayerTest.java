@@ -27,7 +27,7 @@ class AlwaysSpendPlayerTest {
 
     @Test
     void testPlayerTurnWithCardsInHand(){
-        assertEquals(2, botWithCards.getCardsInHand().size());
+        assertEquals(4, botWithCards.getCardsInHand().size());
         botWithCards.setRole(Role.ASSASSIN);
         botWithCards.playTurn(summary, new GameLogicManager());
 
