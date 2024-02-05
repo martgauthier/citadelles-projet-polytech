@@ -35,7 +35,7 @@ class ManufacturePowerTest {
     }
 
     @Test
-    void testDefaultPlayerBehavior() {//should want to use manufacture power if cash > 5 and cards in hand < 3
+    void testDefaultPlayerBehavior() {//should want to use manufacture power if cash > 5 and cards in hand < 3.
         player.setCash(1000);
         player.setCardsInHand(new ArrayList<>());
         assertTrue(player.wantsToUseManufacturePower());
@@ -73,7 +73,7 @@ class ManufacturePowerTest {
         player.setRole(Role.EVEQUE);//arbitrary role that does nothing
         player.addDistrictToCity(new District("Manufacture", 5, Color.PURPLE, "Manufacture power"));
 
-        player.playTurn(summary, game);//AlwaysSpendPlayer will try to pick coins, and buy districts, in these conditions
+        player.playTurn(summary, game);//AlwaysSpendPlayer will try to pick coins, and buy districts, in these conditions.
         verify(player, times(3)).pickCard(any());
 
         assertEquals(1000 - 3, player.getCash());

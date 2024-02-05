@@ -6,7 +6,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,7 @@ import java.util.Optional;
  * This strategy:
  * -Tries to pick role Voleur if available
  * -pick coins at start of round (no cards)
- * -Doesn't buy anything
+ * -Doesn't buy anything.
  */
 public class AimForMoneyStrategy extends DefaultStrategy {
     public AimForMoneyStrategy(Player player) {
@@ -40,10 +39,9 @@ public class AimForMoneyStrategy extends DefaultStrategy {
     }
 
     /**
-     * Tries to steal architecte, first role stealable if architecte is not present
-     * @param availableRoles
-     * @param unstealableRoles
-     * @return
+     * Tries to steal architecte, first role stealable if architecte is not present.
+     * @param availableRoles roles disponible
+     * @param unstealableRoles roles qui ne peuvent pas être volé
      */
     @Override
     public Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) {

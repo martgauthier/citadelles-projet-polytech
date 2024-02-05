@@ -3,9 +3,6 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.players;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.*;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.AimForMoneyStrategy;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.PreventArchitectStrategy;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.SecurePointsForEndGame;
 
 import java.util.*;
@@ -14,7 +11,7 @@ import java.util.*;
  * Stratégie proposée par notre collège Thomas
  */
 public class ThomasPlayer extends Player {
-    public static List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.CONDOTTIERE));
+    protected static final List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.CONDOTTIERE));
     public ThomasPlayer(int id, CardDeck pioche) {
         super(id, pioche);
     }

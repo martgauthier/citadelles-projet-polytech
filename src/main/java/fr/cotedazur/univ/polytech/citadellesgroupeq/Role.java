@@ -7,7 +7,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import java.util.*;
 
 /**
- * Enum that represents roles. Each enum overrides the "power" method. You can use ".name()" and ".ordinal()" to get their number
+ * Enum that represents roles. Each enum overrides the 'power' method. You can use '.name()' and '.ordinal()' to get their number
  * and string representations.
  */
 public enum Role {
