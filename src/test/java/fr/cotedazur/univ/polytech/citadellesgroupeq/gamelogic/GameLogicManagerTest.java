@@ -118,8 +118,6 @@ class GameLogicManagerTest {
         assertTrue(summary.hasBoughtDistricts());
         assertEquals(1, summary.getBoughtDistricts().size());
 
-        int boughtDistrictPrice=summary.getBoughtDistricts().get(0).getCost();
-
         assertTrue(summary.hasPickedCards() ^ summary.hasPickedCash()); //opérateur XOR, pour vérifier que le joueur n'a fait qu'un des deux
     }
     @Test
@@ -133,9 +131,9 @@ class GameLogicManagerTest {
         districts.add(reader.pickTopCard());
         districts.add(reader.pickTopCard());
         districts.add(reader.pickTopCard());
-        game.getPlayersList().get(0).addAllDistrictsToCity(districts);
-        game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        game.playPlayerTurn(game.getPlayersList().get(0));
+        game.getPlayersList().get(1).addAllDistrictsToCity(districts);
+        game.getPlayersList().get(1).setRole(Role.ASSASSIN);
+        game.playPlayerTurn(game.getPlayersList().get(1));
         assertTrue(game.isFinished());
     }
     @Test
@@ -148,8 +146,7 @@ class GameLogicManagerTest {
         districts.add(new District("Donjon",1, "purple", "null"));
         game.getPlayersList().get(0).addAllDistrictsToCity(districts);
         game.getPlayersList().get(0).setRole(Role.ASSASSIN);
-        game.playPlayerTurn(game.getPlayersList().get(0));
-        assertEquals(10,game.getScoreOfEnd().get(game.getPlayersList().get(0)));
+        assertEquals(10,game.makeScoreOfPlayer(game.getPlayersList().get(0), new RoundSummary()));
 
         List<District> districts2=new ArrayList<>();
         districts2.add(new District("Temple",1,"blue", "null"));
@@ -164,23 +161,23 @@ class GameLogicManagerTest {
         summary.setHasFinishDuringTurn(true);
         game.getPlayersList().get(1).addAllDistrictsToCity(districts2);
         game.getPlayersList().get(1).setRole(Role.ASSASSIN);
-        game.makeScoreofPlayer(game.getPlayersList().get(1),summary);
+        game.makeScoreOfPlayer(game.getPlayersList().get(1),summary);
         assertEquals(17,game.getScoreOfEnd().get(game.getPlayersList().get(1)));
 
         RoundSummary summary1=new RoundSummary();
         game.getPlayersList().get(2).addAllDistrictsToCity(districts2);
         game.getPlayersList().get(2).setRole(Role.ASSASSIN);
-        game.makeScoreofPlayer(game.getPlayersList().get(2),summary1);
+        game.makeScoreOfPlayer(game.getPlayersList().get(2),summary1);
         assertEquals(15,game.getScoreOfEnd().get(game.getPlayersList().get(2)));
     }
 
     @Test
     void testScoreTakesAccountOfMerveille() {
-        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getDistrictsJSONReader());
+        Player scorePlayer = new RandomPlayer(0, 0, new ArrayList<>(), game.getCardDeck());
         scorePlayer.addDistrictToCity(new District("Dracoport", 6, Color.PURPLE));
         scorePlayer.addDistrictToCity(new District("Université", 6, Color.PURPLE));
 
-        assertEquals(16, game.makeScoreofPlayer(scorePlayer, new RoundSummary()));//8 + 8, car ces cartes valent 8 au décompte
+        assertEquals(16, game.makeScoreOfPlayer(scorePlayer, new RoundSummary()));//8 + 8, car ces cartes valent 8 au décompte
         scorePlayer.setCity(new ArrayList<>(List.of(
                 new District("temple", 1, Color.PURPLE),
                 new District("temple", 1, Color.RED),
@@ -189,6 +186,6 @@ class GameLogicManagerTest {
                 new District("Cour des miracles", 1, Color.PURPLE)
         )));
 
-        assertEquals(5+3, game.makeScoreofPlayer(scorePlayer, new RoundSummary()));//5 points avec le coût de la cité + 3 points car la cour des miracles remplace la couleur jaune manquante
+        assertEquals(5+3, game.makeScoreOfPlayer(scorePlayer, new RoundSummary()));//5 points avec le coût de la cité + 3 points, car la cour des miracles remplace la couleur jaune manquante
     }
 }

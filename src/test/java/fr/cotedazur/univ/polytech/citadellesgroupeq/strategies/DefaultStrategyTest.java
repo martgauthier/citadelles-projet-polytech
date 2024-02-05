@@ -25,7 +25,7 @@ class DefaultStrategyTest {
         basicPlayer=new AlwaysSpendPlayer(0, pioche);
         defaultStrat=basicPlayer.getStrategy();
         game=new GameLogicManager(List.of(basicPlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
         basicPlayer.setRole(Role.EVEQUE);//set arbitrary role
     }
 

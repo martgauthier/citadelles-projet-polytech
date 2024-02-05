@@ -7,7 +7,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import java.util.*;
 
 /**
- * Enum that represents roles. Each enum overrides the "power" method. You can use ".name()" and ".ordinal()" to get their number
+ * Enum that represents roles. Each enum overrides the 'power' method. You can use '.name()' and '.ordinal()' to get their number
  * and string representations.
  */
 public enum Role {
@@ -147,7 +147,7 @@ public enum Role {
                     condottiere.removeCoins(playerChoice.getValue().getCost() - 1);
                     selectedPlayer.removeDistrictFromCity(playerChoice.getValue());
 
-                    g.getDistrictsJSONReader().addDistrictUnderCardsPile(playerChoice.getValue());
+                    g.getCardDeck().addDistrictUnderCardsPile(playerChoice.getValue());
 
                     summary.setDestroyedDistrict(playerChoice);
 

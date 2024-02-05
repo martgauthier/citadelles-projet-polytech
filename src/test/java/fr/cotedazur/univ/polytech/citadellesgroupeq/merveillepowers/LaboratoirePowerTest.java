@@ -1,7 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.merveillepowers;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.GameOutputManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
@@ -26,20 +25,19 @@ class LaboratoirePowerTest {
     void setup() {
         summary=new RoundSummary();
         game=new GameLogicManager();
-        player= Mockito.spy(new AlwaysSpendPlayer(0, game.getDistrictsJSONReader()));
+        player= Mockito.spy(new AlwaysSpendPlayer(0, game.getCardDeck()));
         game.getPlayersList().set(0, player);
     }
 
     @Test
     void applyPowerLaboratoire(){
         GameLogicManager game = new GameLogicManager();
-        GameOutputManager gameOutputManager = new GameOutputManager();
         List<District> districts2=new ArrayList<>();
         districts2.add(new District("Temple",1,"blue", "null"));
         districts2.add(new District("Eglise",2, "green", "null"));
         districts2.add(new District("Monastere",1, "red", "null"));
         districts2.add(new District("Prison",2,"yellow", "null"));
-        Player player = new RealEstatePlayer(0,0,districts2, game.getDistrictsJSONReader());
+        Player player = new RealEstatePlayer(0,0,districts2, game.getCardDeck());
         player.setRole(Role.ASSASSIN);
         District labo =new District("Laboratoire",6,"Purple","Laboratoire power");
         player.addDistrictToCity(labo);
@@ -50,7 +48,7 @@ class LaboratoirePowerTest {
         List<District> districts=new ArrayList<>();
         districts.add(new District("Temple",1,"blue", "null"));
         districts.add(new District("Eglise",2, "green", "null"));
-        Player player2 = new RealEstatePlayer(0,0,districts, game.getDistrictsJSONReader());
+        Player player2 = new RealEstatePlayer(0,0,districts, game.getCardDeck());
         player2.setRole(Role.ASSASSIN);
         District labo2 =new District("Laboratoire",6,"Purple","Laboratoire power");
         player2.addDistrictToCity(labo2);

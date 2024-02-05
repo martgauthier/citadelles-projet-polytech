@@ -13,7 +13,7 @@ import java.util.Optional;
  * This strategy:
  * -Tries to pick role Voleur if available
  * -pick coins at start of round (no cards)
- * -Doesn't buy anything
+ * -Doesn't buy anything.
  */
 public class AimForMoneyStrategy extends DefaultStrategy {
     public AimForMoneyStrategy(Player player) {
@@ -28,6 +28,10 @@ public class AimForMoneyStrategy extends DefaultStrategy {
             player.setRole(availableRoles.get(voleurIndex));
             return voleurIndex;
         }
+        else if(availableRoles.contains(Role.MARCHAND)){
+            player.setRole(Role.MARCHAND);
+            return availableRoles.indexOf(Role.MARCHAND);
+        }
         else {
             player.setRole(availableRoles.get(0));
             return 0;//first role available otherwise
@@ -35,10 +39,9 @@ public class AimForMoneyStrategy extends DefaultStrategy {
     }
 
     /**
-     * Tries to steal architecte, first role stealable if architecte is not present
-     * @param availableRoles
-     * @param unstealableRoles
-     * @return
+     * Tries to steal architecte, first role stealable if architecte is not present.
+     * @param availableRoles roles disponible
+     * @param unstealableRoles roles qui ne peuvent pas être volé
      */
     @Override
     public Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles) {
@@ -51,16 +54,20 @@ public class AimForMoneyStrategy extends DefaultStrategy {
 
     @Override
     public Optional<District> getChoosenDistrictToBuy() {
-        return Optional.empty();//to save money
+        return Optional.empty();//don't buy for first rounds
     }
 
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
-        player.getCoinsFromColorCards(summary);
-        player.getRole().power(game, player, summary);
+        if(player.getCash() < 4) {
+            player.getCoinsFromColorCards(summary);
+            player.getRole().power(game, player, summary);
 
-        player.draw2Coins(summary);
-
-        player.buyDistrictsDuringTurn(summary);
+            player.draw2Coins(summary);
+        }
+        else {
+            player.setStrategy(new DefaultStrategy(player));
+            player.playTurn(summary, game);
+        }
     }
 }

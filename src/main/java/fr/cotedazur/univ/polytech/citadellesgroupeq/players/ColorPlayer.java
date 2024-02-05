@@ -35,15 +35,15 @@ public class ColorPlayer extends Player {
      * Il essaye toujours de choisir un rôle qui a une couleur (si aucun n'est dispo, il prend le premier qui vient)
      * Il pioche des cartes citadelles si son nombre de cartes en main est inférieur à 4
      * Sinon, il pioche des pièces
-     * A tous les tours, il essaye de poser la carte qui a une couleur. Si il y en a plusieurs, il tente avec la moins chère. SI il n'y en pas, il essaye d'acheter la première carte qu'il a
-     * @param summary
-     * @param game
+     * À tous les tours, il essaye de poser la carte qui a une couleur. S'il y en a plusieurs, il tente avec la moins chère. S'il n'y en pas, il essaye d'acheter la première carte qu'il a
+     * @param summary summary
+     * @param game game
      */
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
         getCoinsFromColorCards(summary);
 
-        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
+        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power.
 
         if(getCardsInHand().size() < 4) {
             if(!haveObservatoryInCity()){
@@ -79,7 +79,7 @@ public class ColorPlayer extends Player {
         if(minCardWithColor.isPresent() && minCardWithColor.get().getCost() <= getCash()) {
             return minCardWithColor;
         }
-        else if(!getBuyableCards().isEmpty()){//no card with color are buyable, but some cards are present in hand. Let's try to buy the cheapest
+        else if(!getBuyableCards().isEmpty()){//No card with color are buyable, but some cards are present in hand. Let's try to buy the cheapest.
             District minCard=Collections.min(getBuyableCards());
             if(minCard.getCost() <= getCash()){
                 return Optional.of(minCard);

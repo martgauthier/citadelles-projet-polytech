@@ -36,7 +36,7 @@ class AimForMoneyTest {
         otherPlayer=new ColorPlayer(1, pioche);
         otherPlayer.setRole(Role.CONDOTTIERE);
         game=new GameLogicManager(List.of(mainPlayer, otherPlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
         summary=new RoundSummary();
     }
 
@@ -48,7 +48,7 @@ class AimForMoneyTest {
         game.makeAllPlayersSelectRole(rolesAvailable);
         assertEquals(Role.VOLEUR, mainPlayer.getRole());
 
-        rolesAvailable=List.of(Role.CONDOTTIERE, Role.MARCHAND, Role.MAGICIEN);//doesn't contain voleur
+        rolesAvailable=List.of(Role.CONDOTTIERE, Role.EVEQUE, Role.MAGICIEN);//doesn't contain voleur
         game.setMasterOfTheGameIndex(0);
         game.makeAllPlayersSelectRole(rolesAvailable);
         assertEquals(rolesAvailable.get(0), mainPlayer.getRole());
@@ -71,7 +71,7 @@ class AimForMoneyTest {
     @Test
     void testAimForMoneyNeverBuys() {
         mainPlayer.addCardToHand(new District("temple", 1, Color.RED, "null"));//really cheap card
-        mainPlayer.setCash(10000);//make him rich
+        mainPlayer.setCash(3);
         summary=game.playPlayerTurn(mainPlayer);
         assertFalse(summary.hasBoughtDistricts());
 
@@ -88,7 +88,7 @@ class AimForMoneyTest {
 
         List<Role> availableRoles=List.of(Role.CONDOTTIERE, Role.EVEQUE, Role.ARCHITECTE);
 
-        doReturn(Optional.of(availableRoles.get(0))).when(mainPlayer).selectRoleToSteal(anyList(), anyList());//si il n'y avait pas de stratégie, renvoyer par défaut le premier role
+        doReturn(Optional.of(availableRoles.get(0))).when(mainPlayer).selectRoleToSteal(anyList(), anyList());//s'il n'y avait pas de stratégie, renvoyer par défaut le premier role
 
         assertEquals(Optional.of(Role.ARCHITECTE), mainPlayer.getStrategy().selectRoleToSteal(availableRoles, List.of()));//c'est bien le retour de AimForMoney
 

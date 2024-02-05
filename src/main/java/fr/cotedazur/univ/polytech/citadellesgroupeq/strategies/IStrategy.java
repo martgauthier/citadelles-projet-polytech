@@ -15,9 +15,9 @@ public interface IStrategy {
     /**
      * Le choix du district à détruire si le rôle est condottiere. Ne contient qu'UN couple IdPlayer/District au maximum.
      * Le district choisi doit coûter au maximum cashdujoueur+1.
-     * L'Optional est empty si le condottiere ne veut/peut rien détruire.
+     * L'Optional est empty si le condottiere ne veut/ne peut rien détruire.
      * @param players liste des joueurs.
-     * @return un optional rempli avec un seul couple idjoueur/district. Optional est empty si le condottiere ne veut/peut rien détruire
+     * @return un optional rempli avec un seul couple idjoueur/district. Optional est empty si le condottiere ne veut/ne peut rien détruire
      */
     Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players);
     int[] selectCardsToExchangeWithPileAsMagicien();
@@ -25,7 +25,7 @@ public interface IStrategy {
 
     /**
      *
-     * @return true si il échange avec un joueur, false si il veut échanger certaines de ses cartes avec des cartes de la pile (d'après règle du jeu)
+     * @return true s'il échange avec un joueur, false s'il veut échanger certaines de ses cartes avec des cartes de la pile (d'après règle du jeu)
      */
     boolean choosesToExchangeCardWithPlayer();
 
@@ -41,7 +41,7 @@ public interface IStrategy {
      * Sélectionne un rôle aléatoirement dans la liste availableRoles pour le joueur
      *
      * @param availableRoles les rôles disponibles
-     * @param playerList
+     * @param playerList liste des joueurs
      * @return l'id dans la liste fournie du rôle sélectionné
      */
     int selectAndSetRole(List<Role> availableRoles, List<Player> playerList);
@@ -50,7 +50,7 @@ public interface IStrategy {
 
     /**
      * Choisi un rôle à Assasiner
-     * @param availableRoles les rôles disponible
+     * @param availableRoles les rôles disponibles
      * @return un rôle
      */
     Role selectRoleToKillAsAssassin(List<Role> availableRoles);

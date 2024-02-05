@@ -43,7 +43,13 @@ public class GameOutputManager {
             game.resuscitateAllPlayers();
             System.out.println("--------------");
         }
-        System.out.println("Le joueur "+game.whoIsTheWinner().getBotLogicName()+game.whoIsTheWinner().getStrategyName()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
+        System.out.println("Voici le score des joueurs qui n'ont pas gagné:");
+        for(Player player : game.getPlayersList()){
+            if(player!=game.whoIsTheWinner()){
+                System.out.println("Le joueur "+player.getBotLogicName()+player.getStrategyName()+" a un score de "+game.getScoreOfEnd().get(player));
+            }
+        }
+        System.out.println("Et enfin!! Le joueur "+game.whoIsTheWinner().getBotLogicName()+game.whoIsTheWinner().getStrategyName()+" a gagné avec un score de "+game.getScoreOfEnd().get(game.whoIsTheWinner()));
         System.out.println("A noter pour le décompte des points, qu'il possédait ces merveilles: (rien si pas de cartes violettes)");
         for(District district: game.whoIsTheWinner().getCity()) {
             if(district.getColor() == Color.PURPLE) {
@@ -162,8 +168,8 @@ public class GameOutputManager {
 
 
     /**
-     * décrit l'état actuel d'un joueur avant son tour: son rôle, ses cartes en main, et celles dans sa cité, et son cash
-     * @param player
+     * Décrit l'état actuel d'un joueur avant son tour : son rôle, ses cartes en main, et celles dans sa cité, et son cash
+     * @param player joueur
      */
     public void describePlayerState(Player player) {
         System.out.print("Joueur " + player.getBotLogicName()+player.getStrategyName());

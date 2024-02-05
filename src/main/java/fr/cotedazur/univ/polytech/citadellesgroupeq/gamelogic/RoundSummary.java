@@ -6,7 +6,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import java.util.*;
 
 /**
- * Classe représentant le bilan d'un tour: pièces tirées, cartes tirées, citadelles achetées
+ * Classe représentant le bilan d'un tour : pièces tirées, cartes tirées, citadelles achetées
  */
 public class RoundSummary {
 

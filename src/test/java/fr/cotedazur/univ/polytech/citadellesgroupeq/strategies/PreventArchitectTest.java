@@ -32,7 +32,7 @@ class PreventArchitectTest {
         otherPlayer=Mockito.spy(new AlwaysSpendPlayer(1, pioche));//arbitrary choice of players
         otherPlayer.setStrategy(new DefaultStrategy(otherPlayer));
         game=new GameLogicManager(List.of(player, otherPlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
         summary=new RoundSummary();
     }
 
@@ -41,7 +41,7 @@ class PreventArchitectTest {
         List<Role> availableRoles=List.of(Role.ARCHITECTE, Role.CONDOTTIERE, Role.EVEQUE);
         doReturn(2).when(player).selectAndSetRole(availableRoles, game.getPlayersList());
 
-        assertEquals(2, player.getStrategy().selectAndSetRole(availableRoles, game.getPlayersList()));//no players are close to win, so player uses default selectRole
+        assertEquals(2, player.getStrategy().selectAndSetRole(availableRoles, game.getPlayersList()));//no players are close to win, so player uses default selectRole.
 
 
         otherPlayer.setCash(10);
@@ -56,7 +56,7 @@ class PreventArchitectTest {
         ));
 
         int roleSelectedIndex=player.getStrategy().selectAndSetRole(availableRoles, game.getPlayersList());
-        assertEquals(1, roleSelectedIndex);//a player is close to win, player uses PreventArchitect strategy and chooses condottiere
+        assertEquals(1, roleSelectedIndex);//a player is close to win, player uses PreventArchitect strategy and chooses the condottiere.
     }
 
     @Test

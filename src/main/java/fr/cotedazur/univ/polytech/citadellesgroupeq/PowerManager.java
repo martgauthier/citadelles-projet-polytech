@@ -29,50 +29,51 @@ public class PowerManager {
     }
 
 
-    public void applyCityPowers(District district, Player player, RoundSummary summary){
+    public void applyCityPowers(District district, Player joueur, RoundSummary summary){
         String pouvoir = district.getPower();
         switch (pouvoir) {
             case "Ecole de magie power":
-                ecoleMagiePower(player);
+                ecoleMagiePower(joueur);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Bibliotheque power":
-                bibliothequePower(player,summary);
+                bibliothequePower(joueur,summary);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Laboratoire power":
-                laboratoirePower(player);
+                laboratoirePower(joueur);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Manufacture power":
-                manufacturePower(player);
+                manufacturePower(joueur);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Observatoire power":
-                observatoirePower(player,summary);
+                observatoirePower(joueur,summary);
                 summary.setHasUsedMerveillesPower();
                 summary.getUsedMerveilles().add(district.getName());
                 break;
             case "Cimetiere power":
-                cimetierePower(player,summary, district);
+                cimetierePower(joueur,summary, district);
                 break;
             default:
                 break;
         }
     }
 
-    private void ecoleMagiePower(Player player) {
-        if(player.getRole().getColor()!=Color.GRAY){
-            player.addCoins(1);//si il a une couleur, il va gagner une pièce car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
+
+    private void ecoleMagiePower(Player joueur) {
+        if(joueur.getRole().getColor()!=Color.GRAY){
+            joueur.addCoins(1);//s'il a une couleur, il va gagner une pièce, car c'est comme si le district "prenait" sa couleur de rôle, et lui faisait donc gagner une pièce
         }
     }
-    private void bibliothequePower(Player player, RoundSummary summary){
+    private void bibliothequePower(Player joueur, RoundSummary summary){
         if(summary.hasPickedCards()){
-            player.pickCard(summary);
+            joueur.pickCard(summary);
         }
     }
     private void laboratoirePower(Player player){

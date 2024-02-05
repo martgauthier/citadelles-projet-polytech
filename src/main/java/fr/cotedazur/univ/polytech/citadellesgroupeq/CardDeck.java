@@ -73,7 +73,7 @@ public class CardDeck {
 
 
     /**
-     * Récupère le nom et le cout de chaque district présentes dans la liste de districts
+     * Récupère le nom et le cout de chaque district présents dans la liste de districts
      *
      * @return Une chaîne de caractères décrivant les districts avec leur nom et coût.
      * @throws BadlyInitializedReader Si une erreur se produit lors de la lecture du fichier ou si le format du fichier est incorrect.
@@ -102,10 +102,14 @@ public class CardDeck {
     }
 
     public District pickTopCard() throws BadlyInitializedReader {
-        if (districtQueue.isEmpty()) {
-            throw new BadlyInitializedReader("District list is empty");
+        District returnedDistrict=districtQueue.poll();
+        if(returnedDistrict==null) {
+            districtQueue=new LinkedList<>(districtsList);
+            return districtQueue.poll();
         }
-        return districtQueue.remove();
+        else {
+            return returnedDistrict;
+        }
     }
 
     public void addDistrictUnderCardsPile(District district) {

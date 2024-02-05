@@ -20,7 +20,7 @@ class ColorTest {
 
     @Test
     void testGrayDoesntWinCoins() {
-        firstP.setRole(Role.ASSASSIN);//arbitrary role with GRAY color
+        firstP.setRole(Role.ASSASSIN);//an arbitrary role with GRAY color
         firstP.addDistrictToCity(new District("temple", 8, Color.GRAY, "null"));
         firstP.addDistrictToCity(new District("autre", 9, Color.GRAY, "null"));
         firstP.addDistrictToCity(new District("autreencore", 9, Color.RED, "null"));//added another color to check
@@ -36,7 +36,7 @@ class ColorTest {
         firstP.addDistrictToCity(new District("temple1", 8, Color.RED, "null"));
         firstP.addDistrictToCity(new District("temple2", 8, Color.BLUE, "null"));
         firstP.addDistrictToCity(new District("anotherTemple", 8, Color.RED, "null"));
-        firstP.addDistrictToCity(new District("temple3", 8, Color.PURPLE, "null"));//added some other colors to check it doesn't count other colors
+        firstP.addDistrictToCity(new District("temple3", 8, Color.PURPLE, "null"));//added some other colors to check it doesn't count other colors.
 
         RoundSummary summary=game.playPlayerTurn(firstP);
         assertEquals(2, summary.getCoinsWonByColorCards());

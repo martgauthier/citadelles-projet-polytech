@@ -24,7 +24,7 @@ class ColorPlayerTest {
         secondPlayer=new ColorPlayer(1, pioche);
 
         game=new GameLogicManager(List.of(firstPlayer, secondPlayer));
-        game.setDistrictsJSONReader(pioche);
+        game.setCardDeck(pioche);
 
         highPriceRedDistrict =new District("temple", 80, Color.RED, "null");
         lowPriceRedDistrict =new District("temple", 1, Color.RED, "null");

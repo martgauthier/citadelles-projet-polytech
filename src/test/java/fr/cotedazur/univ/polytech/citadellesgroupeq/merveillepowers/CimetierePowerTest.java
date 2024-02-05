@@ -45,7 +45,7 @@ class CimetierePowerTest {
 
     @Test
     void dontApplyPowerWhenColorized() {
-        player = Mockito.spy(new RealEstatePlayer(0,20,new ArrayList<>(), game.getDistrictsJSONReader()));
+        player = Mockito.spy(new RealEstatePlayer(0,20,new ArrayList<>(), game.getCardDeck()));
         player.setStrategy(new DefaultStrategy(player));
         player.setCity(city);
         player.setRole(Role.MARCHAND);
@@ -68,7 +68,7 @@ class CimetierePowerTest {
     }
     @Test
     void ApplyPowerWhenNotColorized() {
-        player = Mockito.spy(new RealEstatePlayer(0,20,new ArrayList<>(), game.getDistrictsJSONReader()));
+        player = Mockito.spy(new RealEstatePlayer(0,20,new ArrayList<>(), game.getCardDeck()));
         player.setStrategy(new DefaultStrategy(player));
         player.setCity(city);
         player.setRole(Role.MARCHAND);

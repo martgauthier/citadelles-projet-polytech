@@ -10,6 +10,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ class SecurePointsForEndGameTest {
     @Test
     void testGetChoosenDistrictToBuy() {
         secureLastPlayer.setCash(200);
+        secureLastPlayer.setCardsInHand(new ArrayList<>());//removes card from his hand
         District district1 = new District("avion", 5, Color.BLUE, "null");
         District district2 = new District("Université", 10, Color.YELLOW, "null");
         District district3 = new District("Donjon", 5, Color.YELLOW, "null");
@@ -53,12 +55,12 @@ class SecurePointsForEndGameTest {
         secureLastPlayer.addCardToHand(district6);
         secureLastPlayer.addCardToHand(district7);
 
-        // On peut pas compléter la couleur donc on prend la plus chère
+        // On ne peut pas compléter la couleur donc on prend la plus chère
         assertEquals(secureLastStrat.getChoosenDistrictToBuy(), Optional.of(district4));
         secureLastPlayer.addDistrictToCity(district4);
         secureLastPlayer.removeCardFromHand(district4);
 
-        // On peut compléter la couleur mais il est toujours préférable de prendre la carte la plus haute
+        // On peut compléter la couleur, mais il est toujours préférable de prendre la carte la plus haute
         assertEquals(secureLastStrat.getChoosenDistrictToBuy(), Optional.of(district7));
         secureLastPlayer.addDistrictToCity(district7);
         secureLastPlayer.removeCardFromHand(district7);

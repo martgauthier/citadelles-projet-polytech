@@ -37,7 +37,7 @@ public class RandomPlayer extends Player {
     public void playTurn(RoundSummary summary, GameLogicManager game) {
         super.getCoinsFromColorCards(summary);
 
-        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power
+        getRole().power(game, this, summary);//it is no duplicate, as another Player logic could decide not to use its power.
 
         int randomChoice = getRandomGenerator().nextInt(2);
 

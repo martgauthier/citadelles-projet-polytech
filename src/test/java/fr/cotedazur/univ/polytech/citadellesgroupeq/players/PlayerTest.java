@@ -53,7 +53,7 @@ class PlayerTest {
 
         bot.dealCardsOrCash(new RoundSummary());
 
-        // Vérifie que le joueur a soit 2 pièces de plus, soit 1 cartes de plus
+        // Vérifie que le joueur a soit 2 pièces de plus, soit 1 carte de plus
         assertTrue(bot.getCash() == 2 || bot.getCardsInHand().size() == 3);
     }
     @Test
@@ -69,7 +69,7 @@ class PlayerTest {
     void testAssassinate(){
         bot.dieForThisTurn();
         assertTrue(bot.isDeadForThisTurn());
-        bot.rescucitate();
+        bot.resuscitate();
         assertFalse(bot.isDeadForThisTurn());
     }
     @Test
