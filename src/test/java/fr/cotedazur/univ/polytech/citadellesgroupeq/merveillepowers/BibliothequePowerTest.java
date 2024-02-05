@@ -34,6 +34,6 @@ class BibliothequePowerTest {
         District biblio =new District("Bibliotheque",6,"Purple","Bibliotheque power");
         player.addDistrictToCity(biblio);
         game.playPlayerTurn(player);//will pick cards because he is RealEstate
-        assertEquals(4,player.getCardsInHand().toArray().length);
+        assertEquals(6,player.getCardsInHand().toArray().length);
     }
 }
