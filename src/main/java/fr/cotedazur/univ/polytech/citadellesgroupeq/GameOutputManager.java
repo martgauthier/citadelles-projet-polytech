@@ -2,7 +2,7 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.loggerformat.SimpleFormatterWithoutDate;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.logger.EasyLogger;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.util.AbstractMap;
@@ -11,11 +11,12 @@ import java.util.Optional;
 import java.util.logging.*;
 
 
+@SuppressWarnings("java:S3655")
 public class GameOutputManager {
     private GameLogicManager game;
     private int rounds;
     private int playersNumber;
-    private static final Logger GAMEPLAY_LOGGER = Logger.getLogger("Gameplay_Logger");
+    private static final Logger GAMEPLAY_LOGGER = EasyLogger.getLogger("gameplay");
 
     public GameOutputManager() {
         game=new GameLogicManager();
@@ -29,13 +30,7 @@ public class GameOutputManager {
         playersNumber=playerList.size();
     }
 
-    public void setupLogger(Level newLevel){
-        GAMEPLAY_LOGGER.setLevel(newLevel);
-        GAMEPLAY_LOGGER.getParent().getHandlers()[0].setFormatter(new SimpleFormatterWithoutDate());
-    }
-
     public void startMainOutputLoop() {
-        setupLogger(Level.INFO);
         while(!game.isFinished()) {//pour chaque manche
             GAMEPLAY_LOGGER.log(Level.INFO, "Tour : {}\n--------------\n", rounds++);
             List<Role> availableRoles = game.generateAvailableRoles(playersNumber);
@@ -122,14 +117,14 @@ public class GameOutputManager {
                 else if(player.getRole().equals(Role.MAGICIEN)){
                     if(summary.hasExchangedCardsWithPileAsMagician()) {
                         GAMEPLAY_LOGGER.log(Level.INFO,
-                                "et décide d'échanger ses cartes avec la pioche et il a échangé {} cartes.",
+                                "et décide d échanger ses cartes avec la pioche et il a échangé {} cartes.",
                                 summary.getExchangedCardsWithPileIndex().length
                         );
                     }
                     else {
                         Player exchangedWith = game.getPlayersList().get(summary.getExchangedCardsPlayerId());
                         GAMEPLAY_LOGGER.log(Level.INFO,
-                                "et décide d'échanger ses cartes avec le joueur {} qui est le joueur {} {}",
+                                "et décide d échanger ses cartes avec le joueur {} qui est le joueur {} {}",
                                 new Object[]{exchangedWith.getRole(),exchangedWith.getBotLogicName(), exchangedWith.getStrategyName()}
                         );
                     }
@@ -142,7 +137,7 @@ public class GameOutputManager {
                 }
                 else if (player.getRole() == Role.CONDOTTIERE && summary.getOptionalDestroyedDistrict().isPresent()) {
                     AbstractMap.SimpleEntry<Integer, District> districtDestroyed=summary.getOptionalDestroyedDistrict().get();
-                    GAMEPLAY_LOGGER.log(Level.INFO, " et a détruit le district {} du joueur d'id {}",
+                    GAMEPLAY_LOGGER.log(Level.INFO, " et a détruit le district {} du joueur d id {}",
                             new Object[]{districtDestroyed.getValue().getName(), districtDestroyed.getKey()}
                     );
                 }
@@ -164,6 +159,7 @@ public class GameOutputManager {
                 }
             }
 
+
             Optional<District> optionalCimetiere = player.getDistrictInCity("Cimetiere");
             if (optionalCimetiere.isPresent() && summary.getOptionalDestroyedDistrict().isPresent()){
                 District cimetiere = optionalCimetiere.get();
@@ -179,7 +175,7 @@ public class GameOutputManager {
                 );
             } else if (!player.isDeadForThisTurn()) {
                 GAMEPLAY_LOGGER.log(Level.INFO,
-                        "Il a choisi de prendre 2 pieces, ce qui l'amene a: {} pièces. (après achat de la citadelle si il y a eu)",
+                        "Il a choisi de prendre 2 pieces, ce qui l amene a: {} pièces. (après achat de la citadelle si il y a eu)",
                         player.getCash());
             }
         }
