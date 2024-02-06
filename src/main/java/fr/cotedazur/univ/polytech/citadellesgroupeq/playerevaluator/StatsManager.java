@@ -8,7 +8,6 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -59,8 +58,8 @@ public class StatsManager {
 
     public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate){
         csvToUpdate.createCsvFile();
-        setResumeWin(csvToUpdate.getReaderOfResumeStatsCsv(), stats); // La on, récupère le petit csv à modif
-        csvToUpdate.writeInCsvFile(stats);
+        List<String[]> data=getUpdatedStatsLine(csvToUpdate.getReaderOfResumeStatsCsv(), stats); // La on, récupère le petit csv à modif
+        csvToUpdate.writeInCsvFile(data);
     }
     /**
      * Le but de cette méthode est d'ajouter la stat du nombre de morts à la ligne associée à la partie d'un joueur.
@@ -103,8 +102,8 @@ public class StatsManager {
         }
         List<RoundSummary> playerSummary = playerSummaries.get(player);
         for (RoundSummary summary : playerSummary) {
-            int counter = roleCounts.get(summary.role);
-            roleCounts.put(summary.role, counter + 1);
+            int counter = roleCounts.get(summary.getPlayerRole());
+            roleCounts.put(summary.getPlayerRole(), counter + 1);
         }
         Role favoriteRole = Collections.max(roleCounts.entrySet(), Map.Entry.comparingByValue()).getKey();
         stats[3] = "" + favoriteRole;
@@ -117,7 +116,7 @@ public class StatsManager {
         int numberOfKills = 0;
         List<RoundSummary> playerSummary = playerSummaries.get(player);
         for (RoundSummary summary : playerSummary) {
-            if(summary.role == Role.ASSASSIN && summary.hasUsedPower()) {
+            if(summary.getPlayerRole() == Role.ASSASSIN && summary.hasUsedPower()) {
                 numberOfKills++;
             }
         }
@@ -139,19 +138,25 @@ public class StatsManager {
             }
         }
     }
-    public void setResumeWin(CSVReader csvReader,String[] stats){
+
+    public List<String[]> getUpdatedStatsLine(CSVReader csvReader, String[] stats){
+        List<String[]> data=new ArrayList<>();
         try {
-            String[] nextLine;
-            String[] phrase=csvReader.readNext();
+            String[] nextLine;//will skip header line
+
             while ((nextLine = csvReader.readNext()) != null) {
-                if(nextLine[0].equals(stats[0])){
-                    stats[1] = nextLine[1]+stats[1];
+                if(nextLine[0].equals(stats[1]) && stats[7].equalsIgnoreCase("Oui")){
+                    nextLine[1]=Integer.toString(Integer.valueOf(nextLine[1])+1);
                 }
+
+                data.add(nextLine);
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
             // Gérer l'exception selon la logique métier
         }
+
+        return data;
     }
 }
     

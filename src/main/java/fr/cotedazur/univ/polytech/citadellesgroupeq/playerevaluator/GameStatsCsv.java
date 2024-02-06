@@ -3,7 +3,6 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator;
 import com.opencsv.*;
 import com.opencsv.exceptions.CsvException;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameStatsCsv {
+
+    public GameStatsCsv() {
+        //do nothing
+    }
     private final Path detailsCsvPath = Paths.get("stats", "gamestatdetail.csv");
     private final Path csvPath = Paths.get("stats", "gamestat.csv");
 
@@ -29,13 +32,27 @@ public class GameStatsCsv {
     }
 
     public void createCsvFile(){
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toFile()))) {
+        try {
             String[] header = {"Nom du joueur", "Nombre de parties gagnées", "Nombre de parties perdues",
                     "Nombre de parties jouées"
             };
 
-            if (!Files.exists(detailsCsvPath) || Files.size(detailsCsvPath) == 0) {
+
+
+            if (!Files.exists(csvPath.toAbsolutePath()) || Files.size(csvPath.toAbsolutePath()) == 0) {
+                CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString()));
                 writer.writeNext(header);
+                String[][] playerData = {
+
+                        {"MattPlayer", "0", "0", "0"},
+                        {"ThomasPlayer", "0", "0", "0"},
+                        {"AlwaysSpendPlayer", "0", "0", "0"},
+                        {"RandomPlayer", "0", "0", "0"}
+                };
+                for (String[] data : playerData) {
+                    writer.writeNext(data);
+                }
+                writer.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,22 +70,20 @@ public class GameStatsCsv {
         }
     }
 
-    public void writeInCsvFile(String[] data) {
+    public void writeInCsvFile(List<String[]> data) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), false))) {
-            if (!Files.exists(csvPath) || Files.size(csvPath) == 0) {
-                createCsvFile();
+            if (!Files.exists(csvPath)) {
+                System.out.println("impossible");
             }
-            List<String[]> updatedStatsLines = getUpdatedStatsLines(data);
-            writer.writeAll(updatedStatsLines);
+
+            writer.writeAll(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public CSVReader getReaderOfResumeStatsCsv(){
         try {
-            FileReader file=new FileReader(csvPath.toFile());
-            int character=file.read();
-            return new CSVReader(file);
+            return new CSVReader(new FileReader(csvPath.toString()));
         } catch (IOException e) {
             e.printStackTrace();
             return null;

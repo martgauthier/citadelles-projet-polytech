@@ -36,7 +36,6 @@ public class Main {
             outputManager.startMainOutputLoop();
         }
         else if (main.twoThousands) {
-            //TODO: write data in CSV
             LOGGER.info("MATTPLAYER VS THOMASPLAYER ---");
 
             int[][] dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(playersAgainstThomas);

@@ -9,7 +9,7 @@ import java.util.*;
  * Classe représentant le bilan d'un tour : pièces tirées, cartes tirées, citadelles achetées
  */
 public class RoundSummary {
-    public Role role;
+    private Role playerRole;
     public static final int DEFAULT_DRAWN_COINS=0;
 
     protected static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
@@ -66,7 +66,7 @@ public class RoundSummary {
         this.hasUsedPower = hasUsedPower;
         this.hasBeenKilledDuringTurn=hasBeenKilledDuringTurn;
         this.stealedRole = stealedRole;
-        this.role = role;
+        this.playerRole = role;
     }
 
     public RoundSummary() {
@@ -214,6 +214,9 @@ public class RoundSummary {
     }
 
     public void setRole(Role role) {
-        this.role = role;
+        this.playerRole = role;
+    }
+    public Role getPlayerRole() {
+        return playerRole;
     }
 }
