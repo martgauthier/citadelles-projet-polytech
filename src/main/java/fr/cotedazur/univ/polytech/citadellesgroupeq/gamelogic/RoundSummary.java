@@ -9,7 +9,7 @@ import java.util.*;
  * Classe représentant le bilan d'un tour : pièces tirées, cartes tirées, citadelles achetées
  */
 public class RoundSummary {
-
+    public Role role;
     public static final int DEFAULT_DRAWN_COINS=0;
 
     protected static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
@@ -57,7 +57,7 @@ public class RoundSummary {
 
     private List<District> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasFinishDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn, Role stealedRole) {
+    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasFinishDuringTurn, int coinsWonByColorCards, boolean hasUsedPower, boolean hasBeenKilledDuringTurn, Role stealedRole, Role role) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtDistricts =new ArrayList<>(boughtDistricts);
@@ -66,10 +66,11 @@ public class RoundSummary {
         this.hasUsedPower = hasUsedPower;
         this.hasBeenKilledDuringTurn=hasBeenKilledDuringTurn;
         this.stealedRole = stealedRole;
+        this.role = role;
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_DISTRICT_LIST, EMPTY_DISTRICT_LIST, false, 0, false, false, Role.EMPTY_ROLE);
+        this(DEFAULT_DRAWN_COINS, EMPTY_DISTRICT_LIST, EMPTY_DISTRICT_LIST, false, 0, false, false, Role.EMPTY_ROLE, Role.EMPTY_ROLE);
     }
 
     public List<District> getBoughtDistricts() { return boughtDistricts; }
@@ -210,5 +211,9 @@ public class RoundSummary {
             }
         }
         return false;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

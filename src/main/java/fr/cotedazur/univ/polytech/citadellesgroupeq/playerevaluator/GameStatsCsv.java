@@ -1,18 +1,12 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator;
 
 import com.opencsv.*;
-import com.opencsv.exceptions.CsvValidationException;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class GameStatsCsv {
     private final Path csvPath = Paths.get("stats", "gamestat.csv");
@@ -30,9 +24,11 @@ public class GameStatsCsv {
 
 
     public void writeInCsvFile(String[] data) {
-        if (!Files.exists(csvPath)) {
-            createCsvFile();
-        }        try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), true))) {
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), true))) {
+            if (!Files.exists(csvPath) || Files.size(csvPath) == 0) {
+                createCsvFile();
+            }
             writer.writeNext(data);
         } catch (IOException e) {
             e.printStackTrace();

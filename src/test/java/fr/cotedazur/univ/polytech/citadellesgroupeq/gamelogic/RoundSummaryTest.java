@@ -16,8 +16,8 @@ class RoundSummaryTest {
 
     @BeforeEach
     void setup() {
-        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE);
-        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false,Role.EMPTY_ROLE);
+        firstBasicRound=new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE, Role.EMPTY_ROLE);
+        secondBasicRound=new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false,Role.EMPTY_ROLE, Role.EMPTY_ROLE);
     }
 
     @Test
@@ -27,10 +27,10 @@ class RoundSummaryTest {
 
     @Test
     void testHasBought() {
-        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, reader.getDistrictsList(), false, 0,false,false, Role.EMPTY_ROLE).hasBoughtDistricts());
+        assertTrue(new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, reader.getDistrictsList(), false, 0,false,false, Role.EMPTY_ROLE, Role.EMPTY_ROLE).hasBoughtDistricts());
 
-        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE).hasBoughtDistricts());
-        assertFalse(new RoundSummary(0, reader.getDistrictsList(), RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE).hasBoughtDistricts());
+        assertFalse(new RoundSummary(2, RoundSummary.EMPTY_DISTRICT_LIST, RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE, Role.EMPTY_ROLE).hasBoughtDistricts());
+        assertFalse(new RoundSummary(0, reader.getDistrictsList(), RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE, Role.EMPTY_ROLE).hasBoughtDistricts());
     }
 
     @Test
@@ -38,7 +38,7 @@ class RoundSummaryTest {
         assertTrue(firstBasicRound.hasPickedCash());
         assertFalse(firstBasicRound.hasPickedCards());
 
-        RoundSummary bothChoices = new RoundSummary(2, reader.getDistrictsList(), RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE);
+        RoundSummary bothChoices = new RoundSummary(2, reader.getDistrictsList(), RoundSummary.EMPTY_DISTRICT_LIST, false, 0,false,false, Role.EMPTY_ROLE, Role.EMPTY_ROLE);
         assertTrue(bothChoices.hasPickedCash());
         assertTrue(bothChoices.hasPickedCards());
     }
