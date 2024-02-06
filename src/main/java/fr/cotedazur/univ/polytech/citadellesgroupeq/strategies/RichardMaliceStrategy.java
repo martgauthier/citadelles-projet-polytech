@@ -35,4 +35,23 @@ public class RichardMaliceStrategy extends DefaultStrategy{
         }
         return Optional.empty();
     }
+    @Override
+    public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
+        if (availableRoles.contains(Role.ROI)) {
+            player.setRole(Role.ROI);
+            return availableRoles.indexOf(Role.ROI);
+        } else if (availableRoles.contains(Role.ASSASSIN)) {
+            player.setRole(Role.ASSASSIN);
+            return availableRoles.indexOf(Role.ASSASSIN);
+        } else if (availableRoles.contains(Role.CONDOTTIERE)){
+            player.setRole(Role.CONDOTTIERE);
+            return availableRoles.indexOf(Role.CONDOTTIERE);
+        } else if (availableRoles.contains(Role.EVEQUE)) {
+            player.setRole(Role.EVEQUE);
+            return availableRoles.indexOf(Role.EVEQUE);
+        } else {
+            player.setRole(availableRoles.get(0));
+            return 0;
+        }
+    }
 }

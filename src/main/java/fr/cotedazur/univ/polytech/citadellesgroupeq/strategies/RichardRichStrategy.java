@@ -16,4 +16,17 @@ public class RichardRichStrategy extends DefaultStrategy{
     /**
      * Il utilise cette stratégie quand il est riche
      */
+    @Override
+    public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
+        if(availableRoles.contains(Role.ARCHITECTE)){
+            player.setRole(Role.ARCHITECTE);
+            return availableRoles.indexOf(Role.ARCHITECTE);
+        } else if(availableRoles.contains(Role.MAGICIEN)){
+            player.setRole(Role.MAGICIEN);
+            return availableRoles.indexOf((Role.MAGICIEN));
+        }else {
+            player.setRole(availableRoles.get(0));
+            return 0;
+        }
+    }
 }

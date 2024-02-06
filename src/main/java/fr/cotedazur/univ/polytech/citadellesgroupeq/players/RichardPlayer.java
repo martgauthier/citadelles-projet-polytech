@@ -108,9 +108,16 @@ public class RichardPlayer extends Player{
             return availableRoles.get(0);
         }
     }
+
+    /**
+     * par défaut il préfère au début prendre voleur et ensuite il va préféré condottiere et eveque
+     * @param availableRoles les rôles disponibles
+     * @param playerList liste des joueurs
+     * @return
+     */
     @Override
     public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
-        if(getStrategy().getClass() == DefaultStrategy.class && this.getCity().size()<=4){
+        if(this.getCity().size()<=4){
             if (availableRoles.contains(Role.VOLEUR)) {
                 setRole(Role.VOLEUR);
                 return availableRoles.indexOf(Role.VOLEUR);
@@ -124,7 +131,7 @@ public class RichardPlayer extends Player{
                 setRole(availableRoles.get(0));
                 return 0;
             }
-        }else if(getStrategy().getClass() == DefaultStrategy.class && this.getCity().size()>4){
+        }else {
             if (availableRoles.contains(Role.CONDOTTIERE)) {
                 setRole(Role.CONDOTTIERE);
                 return availableRoles.indexOf(Role.CONDOTTIERE);
@@ -135,38 +142,6 @@ public class RichardPlayer extends Player{
                 setRole(availableRoles.get(0));
                 return 0;
             }
-        }else if(getStrategy().getClass() == RichardMaliceStrategy.class){
-            if (availableRoles.contains(Role.ROI)) {
-                setRole(Role.ROI);
-                return availableRoles.indexOf(Role.ROI);
-            } else if (availableRoles.contains(Role.ASSASSIN)) {
-                setRole(Role.ASSASSIN);
-                return availableRoles.indexOf(Role.ASSASSIN);
-            } else if (availableRoles.contains(Role.CONDOTTIERE)){
-                setRole(Role.CONDOTTIERE);
-                return availableRoles.indexOf(Role.CONDOTTIERE);
-            } else if (availableRoles.contains(Role.EVEQUE)) {
-                setRole(Role.EVEQUE);
-                return availableRoles.indexOf(Role.EVEQUE);
-            } else {
-                setRole(availableRoles.get(0));
-                return 0;
-            }
-        } else if (getStrategy().getClass() == RichardRichStrategy.class){
-            if(availableRoles.contains(Role.ARCHITECTE)){
-                setRole(Role.ARCHITECTE);
-                return availableRoles.indexOf(Role.ARCHITECTE);
-            } else if(availableRoles.contains(Role.MAGICIEN)){
-                setRole(Role.MAGICIEN);
-                return availableRoles.indexOf((Role.MAGICIEN));
-            }else {
-                setRole(availableRoles.get(0));
-                return 0;
-            }
-        } else {
-            setRole(availableRoles.get(0));
-            return 0;
         }
-        
     }
 }
