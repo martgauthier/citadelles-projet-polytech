@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -187,5 +189,23 @@ class GameLogicManagerTest {
         )));
 
         assertEquals(5+3, game.makeScoreOfPlayer(scorePlayer, new RoundSummary()));//5 points avec le coût de la cité + 3 points, car la cour des miracles remplace la couleur jaune manquante
+    }
+
+
+    @Test
+    void testTieGame() {
+        game.makeAllPlayersSelectRole();
+        Map<Player, Integer> customScores=new HashMap<>();
+        for(Player joueur: game.getPlayerTreeSet()) {
+            customScores.put(joueur, 50);//put equality for all of them
+        }
+        game.setScoreOfEnd(customScores);
+        assertFalse(game.whoIsTheWinner().isPresent());
+
+        customScores.put(game.getPlayerTreeSet().first(), 60);//makes one overpass the others
+        assertTrue(game.whoIsTheWinner().isPresent());
+
+        customScores.put(game.getPlayerTreeSet().last(), 60);//makes a tie between only two of them
+        assertFalse(game.whoIsTheWinner().isPresent());
     }
 }
