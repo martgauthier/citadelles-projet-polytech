@@ -44,6 +44,7 @@ public class Main {
             for(int playerid=0; playerid < playersAgainstThomas.size(); playerid++) {
                 LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a le pourcentage: {}%", new Object[] {playerid, playersAgainstThomas.get(playerid).getSimpleName(), winPercentages[playerid]});
             }
+            LOGGER.log(Level.INFO, "Et il y a eu : {}% d egalites.", winPercentages[winPercentages.length-1]);
 
 
             LOGGER.info("THOMASPLAYER VS HIMSELF:");
@@ -52,6 +53,7 @@ public class Main {
             for(int playerid=0; playerid < fullThomasPlayerList.size(); playerid++) {
                 LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a le pourcentage: {}%", new Object[] {playerid, fullThomasPlayerList.get(playerid).getSimpleName(), winPercentages[playerid]});
             }
+            LOGGER.log(Level.INFO, "Et il y a eu : {}% d egalites.", winPercentages[winPercentages.length-1]);
         }
         else{
             //faire un truc par défault

@@ -7,6 +7,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BestScoreCalculator {
 
@@ -15,7 +16,8 @@ public class BestScoreCalculator {
     }
 
     public static int[] getWinPercentagePerPlayer(List<Class<? extends Player>> playerClasses) {
-        int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
+        //array is 1 index larger, to support tie games
+        int[] winPerPlayerIdArray=new int[playerClasses.size()+1];//initialized at 0 by default
 
         for(int i=0; i < 1000; i++) {
             int ids=0;
@@ -41,11 +43,12 @@ public class BestScoreCalculator {
                 }
                 game.resuscitateAllPlayers();
             }
-            winPerPlayerIdArray[game.whoIsTheWinner().getId()]++;
+            Optional<Player> optionalWinner = game.whoIsTheWinner();
+            optionalWinner.ifPresentOrElse(player -> winPerPlayerIdArray[player.getId()]++, () -> winPerPlayerIdArray[winPerPlayerIdArray.length-1]++);//compte la victoire seulement si présent
         }
 
         for(int i=0; i < winPerPlayerIdArray.length; i++) {
-            winPerPlayerIdArray[i]/=10;
+            winPerPlayerIdArray[i]/=10;//passage aux pourcents
         }
 
         return winPerPlayerIdArray;
