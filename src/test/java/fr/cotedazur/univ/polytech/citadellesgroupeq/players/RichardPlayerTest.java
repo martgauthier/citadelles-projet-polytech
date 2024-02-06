@@ -5,19 +5,15 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.MattMoreThan5CitiesStrategy;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.SecurePointsForEndGame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-public class RichardPlayerTest {
+class RichardPlayerTest {
     Player richardPlayer;
     Player otherPlayer;
     Player otherPlayer2;
@@ -97,9 +93,18 @@ public class RichardPlayerTest {
     void testSelectRoleDefault(){
         richardPlayer.selectAndSetRole(List.of(Role.ROI, Role.EVEQUE, Role.ASSASSIN, Role.MARCHAND, Role.MAGICIEN), List.of());
         assertEquals(Role.EVEQUE,richardPlayer.getRole());
+        richardPlayer.selectAndSetRole(List.of(Role.ROI, Role.EVEQUE, Role.ASSASSIN, Role.VOLEUR, Role.MAGICIEN), List.of());
+        assertEquals(Role.VOLEUR,richardPlayer.getRole());
         richardPlayer.clearHand();
         richardPlayer.selectAndSetRole(List.of(Role.ROI, Role.EVEQUE, Role.ASSASSIN, Role.MARCHAND, Role.MAGICIEN), List.of());
         assertEquals(Role.MAGICIEN,richardPlayer.getRole());
+        richardPlayer.addDistrictToCity(new District("maison",4,Color.BLUE));
+        richardPlayer.addDistrictToCity(new District("maison2",4,Color.BLUE));
+        richardPlayer.addDistrictToCity(new District("maison3",4,Color.BLUE));
+        richardPlayer.addDistrictToCity(new District("maison4",4,Color.BLUE));
+        richardPlayer.addDistrictToCity(new District("maison5",4,Color.BLUE));
+        richardPlayer.selectAndSetRole(List.of(Role.ROI, Role.EVEQUE, Role.ASSASSIN, Role.MARCHAND, Role.VOLEUR), List.of());
+        assertEquals(Role.EVEQUE,richardPlayer.getRole());
 
     }
 }

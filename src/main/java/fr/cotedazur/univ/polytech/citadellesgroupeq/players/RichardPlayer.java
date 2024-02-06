@@ -29,6 +29,7 @@ public class RichardPlayer extends Player{
         for (Player joueur:game.getPlayersList()){
             if(joueur!=this && joueur.getCity().size()==6){
                 actMalice=true;
+                break;
             }
         }
 
@@ -121,9 +122,6 @@ public class RichardPlayer extends Player{
 
     /**
      * par défaut il préfère au début prendre voleur et ensuite il va préféré condottiere et eveque
-     * @param availableRoles les rôles disponibles
-     * @param playerList liste des joueurs
-     * @return
      */
     @Override
     public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
