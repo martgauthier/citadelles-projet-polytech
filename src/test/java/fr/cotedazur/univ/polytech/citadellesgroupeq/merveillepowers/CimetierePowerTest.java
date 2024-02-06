@@ -1,5 +1,6 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.merveillepowers;
 
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.PowerManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
@@ -9,6 +10,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RealEstatePlayer;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -50,6 +52,9 @@ class CimetierePowerTest {
         player.setCity(city);
         player.setRole(Role.MARCHAND);
         doNothing().when(player).draw2Coins(any());
+
+        doReturn(new District("test", 2, Color.GRAY)).when(player).pickCard(any());
+
         doReturn(Optional.empty()).when(player).getChoosenDistrictToBuy();
         District cimetiereDistrict = new District("Cimetiere", 5,
                 "Purple", "Cimetiere power");
