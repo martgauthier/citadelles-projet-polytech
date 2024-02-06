@@ -7,6 +7,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BestScoreCalculator {
 
@@ -41,7 +42,8 @@ public class BestScoreCalculator {
                 }
                 game.resuscitateAllPlayers();
             }
-            winPerPlayerIdArray[game.whoIsTheWinner().getId()]++;
+            Optional<Player> optionalWinner = game.whoIsTheWinner();
+            optionalWinner.ifPresent(player -> winPerPlayerIdArray[player.getId()]++);//compte la victoire seulement si présent
         }
 
         for(int i=0; i < winPerPlayerIdArray.length; i++) {

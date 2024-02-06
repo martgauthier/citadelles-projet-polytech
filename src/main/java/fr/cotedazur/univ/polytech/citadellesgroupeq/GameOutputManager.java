@@ -47,24 +47,37 @@ public class GameOutputManager {
             game.resuscitateAllPlayers();
             GAMEPLAY_LOGGER.info("--------------");
         }
-        GAMEPLAY_LOGGER.info("Voici le score des joueurs qui n'ont pas gagné:");
-        for(Player player : game.getPlayersList()){
-            if(player!=game.whoIsTheWinner()){
+        Optional<Player> optionalWinner=game.whoIsTheWinner();
+        if(optionalWinner.isPresent()) {//pas d'égalité
+            Player winner= optionalWinner.get();
+            GAMEPLAY_LOGGER.info("Voici le score des joueurs qui n'ont pas gagné:");
+            for (Player player : game.getPlayersList()) {
+                if (player != winner) {
+                    GAMEPLAY_LOGGER.log(Level.INFO,
+                            "Le joueur {} {}  a un score de {}",
+                            new Object[]{player.getBotLogicName(), player.getStrategyName(), game.getScoreOfEnd().get(player)}
+                    );
+                }
+            }
+            GAMEPLAY_LOGGER.log(
+                    Level.INFO, "{} {} a gagné avec un score de {} ",
+                    new Object[]{winner.getBotLogicName(), winner.getStrategyName(), game.getScoreOfEnd().get(winner)}
+            );
+
+            GAMEPLAY_LOGGER.info("A noter pour le décompte des points, qu'il possédait ces merveilles: (rien si pas de cartes violettes)");
+            for (District district : winner.getCity()) {
+                if (district.getColor() == Color.PURPLE) {
+                    GAMEPLAY_LOGGER.info("* " + district.getName());
+                }
+            }
+        }
+        else {
+            GAMEPLAY_LOGGER.info("Il y a égalité. Voici la liste des scores:");
+            for (Player player : game.getPlayersList()) {
                 GAMEPLAY_LOGGER.log(Level.INFO,
                         "Le joueur {} {}  a un score de {}",
                         new Object[]{player.getBotLogicName(), player.getStrategyName(), game.getScoreOfEnd().get(player)}
                 );
-            }
-        }
-        GAMEPLAY_LOGGER.log(
-                Level.INFO, "{} {} a gagné avec un score de {} ",
-                new Object[]{game.whoIsTheWinner().getBotLogicName(),game.whoIsTheWinner().getStrategyName(),game.getScoreOfEnd().get(game.whoIsTheWinner())}
-        );
-
-        GAMEPLAY_LOGGER.info("A noter pour le décompte des points, qu'il possédait ces merveilles: (rien si pas de cartes violettes)");
-        for(District district: game.whoIsTheWinner().getCity()) {
-            if(district.getColor() == Color.PURPLE) {
-                GAMEPLAY_LOGGER.info("* " + district.getName());
             }
         }
         GAMEPLAY_LOGGER.info("Jeu fini !");

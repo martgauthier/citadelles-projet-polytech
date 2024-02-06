@@ -269,22 +269,37 @@ public class GameLogicManager {
         scoreOfEnd.put(player,score);
         return score;
     }
-    public Player whoIsTheWinner(){
+
+    /**
+     *
+     * @return empty si il y a égalité, le joueur gagnant sinon
+     */
+    public Optional<Player> whoIsTheWinner(){
         int higherScore=0;
+        boolean onePlayerHasTheSameScore=false;
         Player winner=playerTreeSet.last();//en cas d'égalité, le joueur qui gagne est celui qui a le plus haut rôle au dernier tour
         for (Map.Entry<Player, Integer> entry : scoreOfEnd.entrySet()) {
             if(higherScore<entry.getValue()){
                 higherScore=entry.getValue();
                 winner=entry.getKey();
+                onePlayerHasTheSameScore=false;
+            }
+            else if (higherScore==entry.getValue()) {
+                winner=entry.getKey();
+                onePlayerHasTheSameScore=true;
             }
         }
-        return winner;
+        return (onePlayerHasTheSameScore) ? Optional.empty() : Optional.of(winner);
     }
 
     public void resuscitateAllPlayers() {
         for(Player player: playersList) {
             player.resuscitate();
         }
+    }
+
+    public void setScoreOfEnd(Map<Player, Integer> scores) {
+        scoreOfEnd=scores;
     }
 }
 
