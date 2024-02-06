@@ -18,7 +18,6 @@ public class Main {
 
 
     private static final List<Class<? extends Player>> playersAgainstThomas=List.of(MattPlayer.class, ThomasPlayer.class, RichardPlayer.class, AlwaysSpendPlayer.class);
-    //private static final List<Class<? extends Player>> playersAgainstThomas=List.of(AlwaysSpendPlayer.class, RealEstatePlayer.class, RichardPlayer.class, RandomPlayer.class);
     private static final List<Class<? extends Player>> fullThomasPlayerList=List.of(ThomasPlayer.class, ThomasPlayer.class, ThomasPlayer.class, ThomasPlayer.class);
     private static final EasyLogger LOGGER= EasyLogger.getLogger("main");
 

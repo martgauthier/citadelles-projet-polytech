@@ -6,10 +6,12 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.*;
 
 import java.util.*;
+
+/**
+ * Classe implémentant les stratégies du forum.
+ */
 public class RichardPlayer extends Player{
-
-
-    private boolean isInGameBeginning;//"Richard ne veut plus prendre le voleur après le début de partie"
+    private boolean isInGameBeginning;//utile pour vérifier que "Richard ne veut plus prendre le voleur après le début de partie"
 
     public RichardPlayer(int id,CardDeck pioche){
         super(id,pioche);
@@ -29,10 +31,12 @@ public class RichardPlayer extends Player{
         for (Player joueur:game.getPlayersList()){
             if(joueur!=this && joueur.getCity().size()==6){
                 actMalice=true;
+                break;
             }
         }
 
-        if(game.isFinished()) {
+
+        if(game.isFinished()) {//par ordre de priorité, défini en testant à la main
             setStrategy(new SecurePointsForEndGame(this));
         }
         else if(getCash() >= 6) {
@@ -41,6 +45,7 @@ public class RichardPlayer extends Player{
         else if(actMalice){
             setStrategy(new RichardMaliceStrategy(this));
         }
+
         getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);
