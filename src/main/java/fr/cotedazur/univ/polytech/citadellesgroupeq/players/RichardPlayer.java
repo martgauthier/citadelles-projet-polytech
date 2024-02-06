@@ -42,7 +42,6 @@ public class RichardPlayer extends Player{
         powerManager.applyCityPowers(this, summary);
 
         buyDistrictsDuringTurn(summary);
-        setStrategy(new DefaultStrategy(this));
     }
 
     @Override
