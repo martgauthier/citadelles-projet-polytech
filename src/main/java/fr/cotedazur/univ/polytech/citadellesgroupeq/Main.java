@@ -40,42 +40,49 @@ public class Main {
 
             int[][] dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(playersAgainstThomas);
 
-            int tieGames=dataPerPlayer[dataPerPlayer.length-1][0];
-            int tieGamesPercentage=tieGames/10;
             for(int playerid=0; playerid < playersAgainstThomas.size(); playerid++) {
+                int tieGames=dataPerPlayer[playerid][2];
+
                 int wonGames=dataPerPlayer[playerid][0];
-                int wonPercentage=wonGames/10;
                 int lostGames=1000-wonGames-tieGames;
-                int lostGamesPercentage=lostGames/10;
                 int meanScore=dataPerPlayer[playerid][1];
+
+                int tieGamesPercentage=tieGames/10;
+                int wonPercentage=wonGames/10;
+                int lostGamesPercentage=lostGames/10;
 
                 LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[] {playerid, playersAgainstThomas.get(playerid).getSimpleName(), wonGames, wonPercentage});
                 LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
-                LOGGER.log(Level.INFO, "Son score moyen est: {}", meanScore);
+                LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[] {tieGames, tieGamesPercentage});
+                LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
             }
-            LOGGER.log(Level.INFO, "Et il y a eu : {} ({} %) egalites.", new Object[] {tieGames, tieGamesPercentage});
 
 
 
 
 
             dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(fullThomasPlayerList);
+
+            LOGGER.info("\n\n");//clear visual space a little
+
             LOGGER.info("THOMASPLAYER VS HIMSELF:");
-            tieGames=dataPerPlayer[dataPerPlayer.length-1][0];
-            tieGamesPercentage=tieGames/10;
 
             for(int playerid=0; playerid < fullThomasPlayerList.size(); playerid++) {
+                int tieGames=dataPerPlayer[playerid][2];
+
                 int wonGames=dataPerPlayer[playerid][0];
-                int wonPercentage=wonGames/10;
                 int lostGames=1000-wonGames-tieGames;
-                int lostGamesPercentage=lostGames/10;
                 int meanScore=dataPerPlayer[playerid][1];
+
+                int tieGamesPercentage=tieGames/10;
+                int wonPercentage=wonGames/10;
+                int lostGamesPercentage=lostGames/10;
 
                 LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[] {playerid, fullThomasPlayerList.get(playerid).getSimpleName(), wonGames, wonPercentage});
                 LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
-                LOGGER.log(Level.INFO, "Son score moyen est: {}", meanScore);
+                LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[] {tieGames, tieGamesPercentage});
+                LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
             }
-            LOGGER.log(Level.INFO, "Et il y a eu : {} ({} %) egalites.", new Object[] {tieGames, tieGamesPercentage});
         }
         else{
             LOGGER.info("No arguments supplied. Launching demo mode.");

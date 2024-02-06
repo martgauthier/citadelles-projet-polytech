@@ -17,14 +17,16 @@ public class BestScoreCalculator {
     /**
      *
      * @param playerClasses
-     * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: winPercentage, 1: meanScore
+     * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: win number, 1: meanScore, 2: tie number
      */
     public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses) {
         //array is 1 index larger, to support tie games
-        int[] winPerPlayerIdArray=new int[playerClasses.size()+1];//initialized at 0 by default
+        int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
+        int[] tiePerPlayerIdArray=new int[playerClasses.size()];
+
         Map<Player, List<Integer>> scorePerPlayerPerGame=new HashMap<>();
 
-        int[][] returnedData=new int[5][2];
+        int[][] returnedData=new int[4][3];
 
         for(int i=0; i < 1000; i++) {
             int ids=0;
@@ -54,12 +56,28 @@ public class BestScoreCalculator {
                 game.resuscitateAllPlayers();
             }
 
-            for(Map.Entry<Player, Integer> score: game.getScoreOfEnd().entrySet()) {
-                scorePerPlayerPerGame.get(score.getKey()).add(score.getValue());//ajoute le score du joueur, à la liste des scores du joueur
+
+
+            boolean shouldCountAsTieGame=false;
+            int bestScore = Collections.max(game.getScoreOfEnd().values());
+            Optional<Player> optionalWinner = game.whoIsTheWinner();
+
+            if(optionalWinner.isPresent()) {
+                winPerPlayerIdArray[optionalWinner.get().getId()]++;
+            }
+            else {//égalité
+                shouldCountAsTieGame=true;
             }
 
-            Optional<Player> optionalWinner = game.whoIsTheWinner();
-            optionalWinner.ifPresentOrElse(player -> winPerPlayerIdArray[player.getId()]++, () -> winPerPlayerIdArray[winPerPlayerIdArray.length-1]++);//compte la victoire seulement si présent
+            for(Map.Entry<Player, Integer> score: game.getScoreOfEnd().entrySet()) {
+                scorePerPlayerPerGame.get(score.getKey()).add(score.getValue());//ajoute le score du joueur, à la liste des scores du joueur
+
+                if(shouldCountAsTieGame && score.getValue()==bestScore) {//si il y a une égalité, et que le joueur en question fait partie des meilleurs joueurs à égalité
+                    tiePerPlayerIdArray[score.getKey().getId()]++;//on augmente son nombre d'égalité
+                }
+            }
+
+
         }
 
 
@@ -71,10 +89,9 @@ public class BestScoreCalculator {
 
             //ajoute le nombre de victoires au tableau returnedData
             returnedData[joueur.getId()][0]=winPerPlayerIdArray[joueur.getId()];
-        }
 
-        //pour les égalités
-        returnedData[4][0]=winPerPlayerIdArray[4];//car la case qui stocke le nombre d'égalité est à l'index 4
+            returnedData[joueur.getId()][2]=tiePerPlayerIdArray[joueur.getId()];
+        }
 
         return returnedData;
     }
