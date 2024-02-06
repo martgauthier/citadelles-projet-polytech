@@ -16,7 +16,8 @@ public class BestScoreCalculator {
     }
 
     public static int[] getWinPercentagePerPlayer(List<Class<? extends Player>> playerClasses) {
-        int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
+        //array is 1 index larger, to support tie games
+        int[] winPerPlayerIdArray=new int[playerClasses.size()+1];//initialized at 0 by default
 
         for(int i=0; i < 1000; i++) {
             int ids=0;
@@ -43,11 +44,11 @@ public class BestScoreCalculator {
                 game.resuscitateAllPlayers();
             }
             Optional<Player> optionalWinner = game.whoIsTheWinner();
-            optionalWinner.ifPresent(player -> winPerPlayerIdArray[player.getId()]++);//compte la victoire seulement si présent
+            optionalWinner.ifPresentOrElse(player -> winPerPlayerIdArray[player.getId()]++, () -> winPerPlayerIdArray[winPerPlayerIdArray.length-1]++);//compte la victoire seulement si présent
         }
 
         for(int i=0; i < winPerPlayerIdArray.length; i++) {
-            winPerPlayerIdArray[i]/=10;
+            winPerPlayerIdArray[i]/=10;//passage aux pourcents
         }
 
         return winPerPlayerIdArray;
