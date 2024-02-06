@@ -68,7 +68,8 @@ public class BestScoreCalculator {
             }
             Optional<Player> optionalWinner = game.whoIsTheWinner();
             optionalWinner.ifPresentOrElse(player -> winPerPlayerIdArray[player.getId()]++, () -> winPerPlayerIdArray[winPerPlayerIdArray.length-1]++);//compte la victoire seulement si présent
-            statsManager.writePlayersStatInCsv(csv,i);
+            statsManager.writePlayersDetailsStatInCsv(csv,game,i);
+            statsManager.updatePlayerStatInCsv(csv);
         }
 
 

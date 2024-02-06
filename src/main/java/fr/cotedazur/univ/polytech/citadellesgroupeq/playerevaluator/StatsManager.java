@@ -1,10 +1,15 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -18,7 +23,7 @@ public class StatsManager {
         for (Player player : playersList) {
             playerSummaries.put (player, new ArrayList<>());
         }
-        stats= new String[6];
+        stats= new String[8];
         Arrays.fill(stats,"");
     }
 
@@ -27,34 +32,36 @@ public class StatsManager {
         playerSummary.add(summary);
     }
 
-    public Map<Player, List<RoundSummary>> getPlayerSummaries() {
-        return playerSummaries;
-    }
-
     /**
      * Cette méthode permet de fournir la ligne de stat d'un joueur
      * @param player le joueur concerné
      * @return un String[] des différentes stats de la partie
      */
-    public String[] getStatForAPlayer(Player player, int round){
+    public String[] getStatForAPlayer(Player player,GameLogicManager game ,int round){
         stats[0] = "" + (round + 1);
         stats[1] = player.getBotLogicName();
         setStatOfNumberOfDeath(player);
         setStatOfAverageDistrictPrice(player);
         setStatOfFavoriteRole(player);
         setStatOfNumberOfKills(player);
+        setStatOfScore(player, game);
+        setWinOrNot(player);
         return stats;
     }
 
-    public void writePlayersStatInCsv(GameStatsCsv csv, int round){
+    public void writePlayersDetailsStatInCsv(GameStatsCsv csv, GameLogicManager game ,int round){
         for(Player player : playerSummaries.keySet()){
             // On récupère la stat de chaque joueur pour une partie
-            String[] statForOnePlayer = getStatForAPlayer(player, round);
-            // On les écrit dans le csv
-            csv.writeInCsvFile(statForOnePlayer);
+            String[] statForOnePlayer = getStatForAPlayer(player,game, round);
+            csv.writeInCsvDetailsFile(statForOnePlayer);
         }
     }
 
+    public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate){
+        csvToUpdate.createCsvFile();
+        setResumeWin(csvToUpdate.getReaderOfResumeStatsCsv(), stats); // La on, récupère le petit csv à modif
+        csvToUpdate.writeInCsvFile(stats);
+    }
     /**
      * Le but de cette méthode est d'ajouter la stat du nombre de morts à la ligne associée à la partie d'un joueur.
      */
@@ -115,6 +122,36 @@ public class StatsManager {
             }
         }
         stats[4] = "" + numberOfKills;
+    }
+    public void setStatOfScore(Player player, GameLogicManager game){
+        int score = game.getScoreOfEnd().get(player);
+        stats[6] = "" + score;
+    }
+
+    public void setWinOrNot(Player player){
+        List<RoundSummary> playerSummary = playerSummaries.get(player);
+        for (RoundSummary summary : playerSummary) {
+            if(summary.hasFinishDuringTurn()) {
+                stats[7] = "Oui";
+            }
+            else{
+                stats[7] = "Non";
+            }
+        }
+    }
+    public void setResumeWin(CSVReader csvReader,String[] stats){
+        try {
+            String[] nextLine;
+            String[] phrase=csvReader.readNext();
+            while ((nextLine = csvReader.readNext()) != null) {
+                if(nextLine[0].equals(stats[0])){
+                    stats[1] = nextLine[1]+stats[1];
+                }
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Gérer l'exception selon la logique métier
+        }
     }
 }
     
