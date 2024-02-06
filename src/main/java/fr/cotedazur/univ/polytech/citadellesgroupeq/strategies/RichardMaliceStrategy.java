@@ -19,18 +19,18 @@ public class RichardMaliceStrategy extends DefaultStrategy{
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles) {
         return player.selectRoleToKillAsAssassin(availableRoles);
     }
+
     @Override
     public Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players) {
         for(Player testedPlayer: players) {
-            if(testedPlayer!=player && testedPlayer.getCity().size()==6){
-                if(testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn())){
+            if(testedPlayer!=player && testedPlayer.getCity().size()==6 && (testedPlayer.getRole() != Role.CONDOTTIERE && (testedPlayer.getRole() != Role.EVEQUE || testedPlayer.isDeadForThisTurn()))){
                     //un eveque peut se faire détruire un district s'il est mort.
                     for(District district: testedPlayer.getCity()) {
                         if(district.getCost() - 1 <= player.getCash() && !(district.getColor() == Color.PURPLE && district.getName().equalsIgnoreCase("donjon"))) {
                             return Optional.of(new AbstractMap.SimpleEntry<>(testedPlayer.getId(), district));
                         }
                     }
-                }
+
             }
         }
         return Optional.empty();

@@ -7,9 +7,14 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.*;
 
 import java.util.*;
 public class RichardPlayer extends Player{
+
+
+    private boolean isInGameBeginning;//"Richard ne veut plus prendre le voleur après le début de partie"
+
     public RichardPlayer(int id,CardDeck pioche){
         super(id,pioche);
         setStrategy(new DefaultStrategy(this));
+        isInGameBeginning=true;
     }
 
     @Override
@@ -25,11 +30,14 @@ public class RichardPlayer extends Player{
                 actMalice=true;
             }
         }
+
         if(game.isFinished()) {
             setStrategy(new SecurePointsForEndGame(this));
-        }else if(getCash() >= 5) {
+        }
+        else if(getCash() >= 5) {
             setStrategy(new RichardRichStrategy(this));
-        }else if(actMalice){
+        }
+        else if(actMalice){
             setStrategy(new RichardMaliceStrategy(this));
         }
         getCoinsFromColorCards(summary);
@@ -38,10 +46,11 @@ public class RichardPlayer extends Player{
         if(getCash() < 4) draw2Coins(summary);
         else if(!haveObservatoryInCity()) pickCard(summary);
 
+        buyDistrictsDuringTurn(summary);
+
         PowerManager powerManager = new PowerManager(game);
         powerManager.applyCityPowers(this, summary);
 
-        buyDistrictsDuringTurn(summary);
         setStrategy(new DefaultStrategy(this));
     }
 
@@ -117,7 +126,11 @@ public class RichardPlayer extends Player{
      */
     @Override
     public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
-        if(this.getCity().size()<=4){
+        if(getCardsInHand().size()<=3 && availableRoles.contains(Role.MAGICIEN)) {//Richard aime prendre magicien quand il a plus de carte en main
+            setRole(Role.MAGICIEN);
+            return availableRoles.indexOf(Role.MAGICIEN);
+        }
+        if(isInGameBeginning && this.getCity().size()<=4){
             if (availableRoles.contains(Role.VOLEUR)) {
                 setRole(Role.VOLEUR);
                 return availableRoles.indexOf(Role.VOLEUR);
@@ -131,7 +144,9 @@ public class RichardPlayer extends Player{
                 setRole(availableRoles.get(0));
                 return 0;
             }
-        }else {
+        }
+        else {
+            isInGameBeginning=false;//on sort du début de partie
             if (availableRoles.contains(Role.CONDOTTIERE)) {
                 setRole(Role.CONDOTTIERE);
                 return availableRoles.indexOf(Role.CONDOTTIERE);

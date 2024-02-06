@@ -17,7 +17,8 @@ public class Main {
     private boolean csv = false;
 
 
-    private static final List<Class<? extends Player>> playersAgainstThomas=List.of(MattPlayer.class, ThomasPlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
+    private static final List<Class<? extends Player>> playersAgainstThomas=List.of(MattPlayer.class, ThomasPlayer.class, RichardPlayer.class, RandomPlayer.class);
+    //private static final List<Class<? extends Player>> playersAgainstThomas=List.of(AlwaysSpendPlayer.class, RealEstatePlayer.class, RichardPlayer.class, RandomPlayer.class);
     private static final List<Class<? extends Player>> fullThomasPlayerList=List.of(ThomasPlayer.class, ThomasPlayer.class, ThomasPlayer.class, ThomasPlayer.class);
     private static final EasyLogger LOGGER= EasyLogger.getLogger("main");
 
@@ -36,7 +37,6 @@ public class Main {
             outputManager.startMainOutputLoop();
         }
         else if (main.twoThousands) {
-            //TODO: write data in CSV
             LOGGER.info("MATTPLAYER VS THOMASPLAYER ---");
 
             int[][] dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(playersAgainstThomas);
@@ -79,8 +79,11 @@ public class Main {
             LOGGER.log(Level.INFO, "Et il y a eu : {} ({} %) egalites.", new Object[] {tieGames, tieGamesPercentage});
         }
         else{
-            //faire un truc par défault
-            System.out.println("Pas d'arguments.");
+            LOGGER.info("No arguments supplied. Launching demo mode.");
+
+            GameOutputManager outputManager = new GameOutputManager();
+
+            outputManager.startMainOutputLoop();
         }
     }
 }
