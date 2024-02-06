@@ -19,22 +19,82 @@ public class RichardPlayer extends Player{
 
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
+        boolean actMalice=false;
+        for (Player joueur:game.getPlayersList()){
+            if(joueur!=this && joueur.getCity().size()==6){
+                actMalice=true;
+            }
+        }
+        if(game.isFinished()) {
+            setStrategy(new SecurePointsForEndGame(this));
+        }else if(getCash() >= 5) {
+            setStrategy(new RichardRichStrategy(this));
+        }else if(actMalice){
+            setStrategy(new RichardMaliceStrategy(this));
+        }
+        getCoinsFromColorCards(summary);
 
+        getRole().power(game, this, summary);
+        if(getCash() < 4) draw2Coins(summary);
+        else if(!haveObservatoryInCity()) pickCard(summary);
+
+        PowerManager powerManager = new PowerManager(game);
+        powerManager.applyCityPowers(this, summary);
+
+        buyDistrictsDuringTurn(summary);
+        setStrategy(new DefaultStrategy(this));
     }
 
     @Override
     public boolean choosesToExchangeCardWithPlayer() {
-        return false;
+        return getCardsInHand().isEmpty();
     }
 
     @Override
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playerList) {
-        return null;
+        if(playerList.get(0)!=this){
+            Player joueurMainPleine=playerList.get(0);
+            for(Player joueur :playerList){
+                if(joueur.getCardsInHand().size()>joueurMainPleine.getCardsInHand().size() && joueur!=this){
+                    joueurMainPleine=joueur;
+                }
+            }
+            return joueurMainPleine;
+        }else {
+            Player joueurMainPleine=playerList.get(1);
+            for(Player joueur :playerList){
+                if(joueur.getCardsInHand().size()>joueurMainPleine.getCardsInHand().size() && joueur!=this){
+                    joueurMainPleine=joueur;
+                }
+            }
+            return joueurMainPleine;
+        }
     }
 
+    /**
+     * Les préférences d'achats n'étant pas précisé, j'ai décidé arbitrairement qu'il
+     * Choisit le district selon ces règles :
+     * -Achetable
+     * -De la couleur Bleu (eveque) ou Rouge (condottiere) si possible
+     * La carte dont le prix est le plus proche de la valeur 3
+     */
     @Override
     public Optional<District> getChoosenDistrictToBuy() {
-        return Optional.empty();
+        Optional<District> boughtCard=Optional.empty();
+        for(District card: getBuyableCards()) {
+            if(boughtCard.isEmpty()) {
+                boughtCard=Optional.of(card);
+            }
+            else if(card.getColor()==Color.BLUE || card.getColor()==Color.RED) {
+                if(boughtCard.get().getColor()!=Color.BLUE || boughtCard.get().getColor()!=Color.RED || Math.abs(3-boughtCard.get().getCost()) >= Math.abs(3-card.getCost())) {//le prix le plus proche de 3
+                    boughtCard=Optional.of(card);
+                }
+            }
+            else if(boughtCard.get().getColor()!=Color.BLUE && boughtCard.get().getColor()!=Color.RED && (Math.abs(3-boughtCard.get().getCost()) >= Math.abs(3-card.getCost()))) {
+                boughtCard=Optional.of(card);
+            }
+        }
+        return boughtCard;
     }
     @Override
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
@@ -92,8 +152,17 @@ public class RichardPlayer extends Player{
                 setRole(availableRoles.get(0));
                 return 0;
             }
-        } else if (false){ //TODO rajouter la strat Luxe
-            return 0;
+        } else if (getStrategy().getClass() == RichardRichStrategy.class){
+            if(availableRoles.contains(Role.ARCHITECTE)){
+                setRole(Role.ARCHITECTE);
+                return availableRoles.indexOf(Role.ARCHITECTE);
+            } else if(availableRoles.contains(Role.MAGICIEN)){
+                setRole(Role.MAGICIEN);
+                return availableRoles.indexOf((Role.MAGICIEN));
+            }else {
+                setRole(availableRoles.get(0));
+                return 0;
+            }
         } else {
             setRole(availableRoles.get(0));
             return 0;
