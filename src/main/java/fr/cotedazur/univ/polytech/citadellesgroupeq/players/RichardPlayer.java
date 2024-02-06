@@ -24,6 +24,7 @@ public class RichardPlayer extends Player{
 
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {
+        setStrategy(new DefaultStrategy(this));
         boolean actMalice=false;
         for (Player joueur:game.getPlayersList()){
             if(joueur!=this && joueur.getCity().size()==6){
@@ -50,8 +51,6 @@ public class RichardPlayer extends Player{
 
         PowerManager powerManager = new PowerManager(game);
         powerManager.applyCityPowers(this, summary);
-
-        setStrategy(new DefaultStrategy(this));
     }
 
     @Override

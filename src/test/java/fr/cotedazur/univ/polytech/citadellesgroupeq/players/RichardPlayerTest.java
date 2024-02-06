@@ -82,6 +82,24 @@ public class RichardPlayerTest {
     }
     @Test
     void testSelectRoleToKill(){
-        //TODO
+        List<Role> availableRole=new ArrayList<>();
+        availableRole.add(Role.ROI);
+        availableRole.add(Role.MARCHAND);
+        availableRole.add(Role.ARCHITECTE);
+        assertEquals(Role.ROI,richardPlayer.selectRoleToKillAsAssassin(availableRole));
+        List<Role> availableRole2=new ArrayList<>();
+        availableRole2.add(Role.CONDOTTIERE);
+        availableRole2.add(Role.VOLEUR);
+        availableRole2.add(Role.ASSASSIN);
+        assertEquals(Role.CONDOTTIERE,richardPlayer.selectRoleToKillAsAssassin(availableRole2));
+    }
+    @Test
+    void testSelectRoleDefault(){
+        richardPlayer.selectAndSetRole(List.of(Role.ROI, Role.EVEQUE, Role.ASSASSIN, Role.MARCHAND, Role.MAGICIEN), List.of());
+        assertEquals(Role.EVEQUE,richardPlayer.getRole());
+        richardPlayer.clearHand();
+        richardPlayer.selectAndSetRole(List.of(Role.ROI, Role.EVEQUE, Role.ASSASSIN, Role.MARCHAND, Role.MAGICIEN), List.of());
+        assertEquals(Role.MAGICIEN,richardPlayer.getRole());
+
     }
 }
