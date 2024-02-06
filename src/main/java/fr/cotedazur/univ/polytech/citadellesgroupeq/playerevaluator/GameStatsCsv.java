@@ -9,13 +9,13 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 public class GameStatsCsv {
     private final Path csvPath = Paths.get("stats", "gamestat.csv");
-
 
     public void createCsvFile(){
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toFile()))) {
@@ -30,7 +30,9 @@ public class GameStatsCsv {
 
 
     public void writeInCsvFile(String[] data) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), true))) {
+        if (!Files.exists(csvPath)) {
+            createCsvFile();
+        }        try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), true))) {
             writer.writeNext(data);
         } catch (IOException e) {
             e.printStackTrace();

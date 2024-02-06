@@ -49,7 +49,7 @@ public class StatsManager {
      * @return un String[] des différentes stats de la partie
      */
     public String[] getStatForAPlayer(Player player, int round){
-        stats[0] = "" + round + 1;
+        stats[0] = "" + (round + 1);
         stats[1] = player.getBotLogicName();
         setStatOfNumberOfDeath(player);
         return stats;
