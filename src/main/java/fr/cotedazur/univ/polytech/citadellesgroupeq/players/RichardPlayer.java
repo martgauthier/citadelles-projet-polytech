@@ -34,7 +34,7 @@ public class RichardPlayer extends Player{
         if(game.isFinished()) {
             setStrategy(new SecurePointsForEndGame(this));
         }
-        else if(getCash() >= 5) {
+        else if(getCash() >= 6) {
             setStrategy(new RichardRichStrategy(this));
         }
         else if(actMalice){
@@ -43,7 +43,8 @@ public class RichardPlayer extends Player{
         getCoinsFromColorCards(summary);
 
         getRole().power(game, this, summary);
-        if(getCash() < 4) draw2Coins(summary);
+
+        if(getCash() < 8) draw2Coins(summary);//8 est un nombre déterminé manuellement par nos tests, qui produit le meilleur taux de réussite
         else if(!haveObservatoryInCity()) pickCard(summary);
 
         buyDistrictsDuringTurn(summary);
@@ -63,7 +64,7 @@ public class RichardPlayer extends Player{
     public Player selectPlayerToExchangeCardsWithAsMagicien(List<Player> playerList) {
         if(playerList.get(0)!=this){
             Player joueurMainPleine=playerList.get(0);
-            for(Player joueur :playerList){
+            for(Player joueur: playerList){
                 if(joueur.getCardsInHand().size()>joueurMainPleine.getCardsInHand().size() && joueur!=this){
                     joueurMainPleine=joueur;
                 }
@@ -105,6 +106,7 @@ public class RichardPlayer extends Player{
         }
         return boughtCard;
     }
+
     @Override
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
         if(availableRoles.contains(Role.ROI)){
