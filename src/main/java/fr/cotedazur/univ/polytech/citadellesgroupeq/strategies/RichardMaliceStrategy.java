@@ -30,11 +30,11 @@ public class RichardMaliceStrategy extends DefaultStrategy{
                             return Optional.of(new AbstractMap.SimpleEntry<>(testedPlayer.getId(), district));
                         }
                     }
-
             }
         }
         return Optional.empty();
     }
+
     @Override
     public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {
         if (availableRoles.contains(Role.ROI)) {

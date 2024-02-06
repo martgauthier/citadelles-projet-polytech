@@ -1,8 +1,10 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.strategies;
 
+import com.beust.ah.A;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.District;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
@@ -11,8 +13,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,5 +64,31 @@ class RichardMaliceStrategyTest {
 
         game.playPlayerTurn(player);//Richard should go back to default
         assertFalse(player.getStrategy() instanceof RichardMaliceStrategy);
+    }
+
+    Optional<AbstractMap.SimpleEntry<Integer, District>> createOptionalEntry(int id, District district) {//useful as Condottiere power needs this type
+        return Optional.of(new AbstractMap.SimpleEntry<>(id, district));
+    }
+
+    @Test
+    void testDestroyDistrict() {
+        player.setRole(Role.CONDOTTIERE);
+        player.setCash(1000);
+        Player otherPlayer=game.getPlayersList().get(1);
+        otherPlayer.setRole(Role.ROI);//arbitrary role that is not eveque
+
+        otherPlayer.setCity(new ArrayList<>(List.of(
+                new District("temple", 6, Color.RED),
+                new District("temple", 6, Color.GREEN),
+                new District("temple", 6, Color.PURPLE),
+                new District("temple", 6, Color.BLUE),
+                new District("temple2", 2, Color.RED),
+                new District("temple3", 3, Color.RED)
+        )));
+
+        District districtThatShouldBeDestroyed=otherPlayer.getCity().get(0);//the first one
+
+        summary=game.playPlayerTurn(player);
+        assertEquals(createOptionalEntry(otherPlayer.getId(), districtThatShouldBeDestroyed), summary.getOptionalDestroyedDistrict());
     }
 }
