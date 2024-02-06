@@ -50,6 +50,7 @@ public class Main {
             winPercentages=BestScoreCalculator.getWinPercentagePerPlayer(fullThomasPlayerList);
 
             for(int playerid=0; playerid < fullThomasPlayerList.size(); playerid++) {
+                // write in cvs (Player player)
                 LOGGER.log(Level.INFO, "Le joueur d`id {0} et de classe {1} a le pourcentage: {2}", new Object[] {playerid, fullThomasPlayerList.get(playerid).getSimpleName(), winPercentages[playerid]});
             }
         }
