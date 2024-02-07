@@ -64,8 +64,6 @@ public class StatsManager {
         }
     }
 
-    private boolean isFirstTime=false;
-
     public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate, GameLogicManager game, int round){
         csvToUpdate.createCsvFile(game.getPlayersList());//works perfectly
         for(Player player : playerSummaries.keySet()){
@@ -73,12 +71,6 @@ public class StatsManager {
             String[] statForOnePlayer = getStatForAPlayer(player,game, round);//works
 
             List<String[]> data=getUpdatedStatsLine(csvToUpdate.getReaderOfResumeStatsCsv(), statForOnePlayer); // La on, récupère le petit csv à modif
-
-            List<String[]> dataWithoutHeader=new ArrayList<>(data);
-            dataWithoutHeader.remove(0);
-
-            boolean containsTieGame=dataWithoutHeader.stream().anyMatch(array -> !array[3].equals("0.0"));
-
 
             csvToUpdate.writeInCsvFile(data);
         }
@@ -171,11 +163,9 @@ public class StatsManager {
                     double winPercentage = Double.parseDouble(nextLine[1]);//chiffre en pourcentage: si 50% de victoire, winPercentage=50
 
                     double tiePercentage = Double.parseDouble(nextLine[3]);
-                    double loosePercentage = 100.0d-winPercentage-tiePercentage;
 
-                    int nombreWin=(int) Math.ceil(((double)winPercentage/100.0d) * totalGames);
-                    int nombreLoose=(int) Math.ceil(((double)loosePercentage/100.0d) * totalGames);
-                    int nombreTie=(int) Math.ceil(((double)tiePercentage/100.0d) * totalGames);
+                    int nombreWin=(int) Math.ceil((winPercentage/100.0d) * totalGames);
+                    int nombreTie=(int) Math.ceil((tiePercentage/100.0d) * totalGames);
 
                     if (stats[7].equals("Oui")) {//victoire
                         if(totalGames==0) {
@@ -199,7 +189,6 @@ public class StatsManager {
                             nextLine[2]=Double.toString(100.0d);
                             nextLine[3]=Double.toString(0.0d);
                         }
-                        nombreLoose++;
                     }
 
 
