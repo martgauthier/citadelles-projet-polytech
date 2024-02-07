@@ -2,14 +2,23 @@
 
 ## 2) Architecture et qualité
 ### A) Architecture du code
-Notre architecture est divisé en 3 parties majeure :
+Notre architecture est divisé en 3 parties majeures :
 *  Le moteur de jeu:
-    * gestion de l’output (GameOutputManager), gestion du déroulement de la partie (GameLogicManager, RoundSummary) et les classes d’éléments du jeu (District, Color, Role, CardDeck).
+    * Gestion de l’output (GameOutputManager), gestion du déroulement de la partie (GameLogicManager, RoundSummary) et les classes d’éléments du jeu (District, Color, Role, CardDeck).
 *  Les bots/Player:
-    * Une classe mère Player avec des classes filles qui extend Player pour chaque type de bot.
-* Les Stratégies:
+    * Une classe mère [Player](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java) avec des classes filles qui extend Player pour chaque type de bot.
+* Les stratégies:
     * On a une interface stratégie qu’on se sert pour crée des classes stratégies qu’on utilise ensuite dans les bots
 * La dernière partie de l’architecture est là uniquement pour les statistiques liées au CSV.
+
+
+#### Les `Player` et les `Strategy`
+Ce que nous appelons `Player` sont les classes représentant des bots, pas des joueurs humains !
+Notre code est structuré ainsi:
+* La classe mère [Player](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java) définit toutes les méthodes utilitaires attribuées à un bot:
+récupérer ses cartes en main [getCardsInHand()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L104)
+
+
 
 #### Le moteur du jeu:
 * Notre classe [GameLogicManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/gamelogic/GameLogicManager.java) 
