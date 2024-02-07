@@ -66,7 +66,7 @@ Si [RandomPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/pla
 mais il va utiliser son comportement codé par défaut pour le reste (par exemple, voler un joueur aléatoire en tant que voleur).
 
 ### B. Documentation du code
-Notre code est documenté via une [java doc](file:///C:/Users/mat7t/Documents/fr/cotedazur/univ/polytech/citadellesgroupeq/players/package-summary.html). Le code est dans sa globalité bien commenté et documenté.
+Notre code est documenté via une [java doc](javadoc/index.html). Le code est dans sa globalité bien commenté et documenté.
 
 
 ### C. Qualité du code

@@ -8,7 +8,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.*;
 import java.util.*;
 
 /**
- * Classe implémentant les stratégies du forum.
+ * Classe implementant les strategies du forum.
  */
 public class RichardPlayer extends Player{
     private boolean isInGameBeginning;//utile pour vérifier que "Richard ne veut plus prendre le voleur après le début de partie"

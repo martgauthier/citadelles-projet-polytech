@@ -12,17 +12,17 @@ public class RoundSummary {
 
 
     /**
-     * Pièces tirées par défaut par un joueur n'ayant pas joué = 0
+     * Pièces tirées par defaut par un joueur n'ayant pas joué = 0
      */
     public static final int DEFAULT_DRAWN_COINS=0;
 
     /**
-     * Liste de districts vide, utilisée pour initialiser la liste des districts achetés par exemple.
+     * Liste de districts vide, utilisee pour initialiser la liste des districts achetes par exemple.
      */
     protected static final List<District> EMPTY_DISTRICT_LIST =new ArrayList<>();
 
     /**
-     * Districts achetés et posés en cité par le joueur durant le tour.
+     * Districts achetés et poses en cite par le joueur durant le tour.
      */
     private List<District> boughtDistricts;
 
@@ -32,7 +32,7 @@ public class RoundSummary {
     private int drawnCoins;
 
     /**
-     * Pièces gagnées à ce tour grâce aux cartes de la cité ayant la même couleur que le rôle du joueur.
+     * Pieces gagnees à ce tour grâce aux cartes de la cite ayant la meme couleur que le rôle du joueur.
      */
     private int coinsWonByColorCards;
 

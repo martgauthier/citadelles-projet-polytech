@@ -13,7 +13,7 @@ public class RichardMaliceStrategy extends DefaultStrategy{
         strategyName="[RichardMaliceStrategy]";
     }
     /**
-     * Il utilise cette stratégie quand un joueur est sur le point de poser son avant-dernier quartier
+     * Il utilise cette strategie quand un joueur est sur le point de poser son avant-dernier quartier
      */
     @Override
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles) {

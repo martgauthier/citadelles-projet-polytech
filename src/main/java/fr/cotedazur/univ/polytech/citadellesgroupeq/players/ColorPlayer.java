@@ -32,10 +32,10 @@ public class ColorPlayer extends Player {
     }
 
     /**
-     * Il essaye toujours de choisir un rôle qui a une couleur (si aucun n'est dispo, il prend le premier qui vient)
-     * Il pioche des cartes citadelles si son nombre de cartes en main est inférieur à 4
+     * Il essaye toujours de choisir un role qui a une couleur (si aucun n'est dispo, il prend le premier qui vient)
+     * Il pioche des cartes citadelles si son nombre de cartes en main est inferieur à 4
      * Sinon, il pioche des pièces
-     * À tous les tours, il essaye de poser la carte qui a une couleur. S'il y en a plusieurs, il tente avec la moins chère. S'il n'y en pas, il essaye d'acheter la première carte qu'il a
+     * À tous les tours, il essaye de poser la carte qui a une couleur. S'il y en a plusieurs, il tente avec la moins chere. S'il n'y en pas, il essaye d'acheter la premiere carte qu'il a
      * @param summary summary
      * @param game game
      */
