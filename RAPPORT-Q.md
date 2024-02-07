@@ -1,2 +1,2 @@
 # Rapport final
-Ce fichier permet pour l'instant de tester les actions Github.
+Ouverture de la branche "rapport final."
