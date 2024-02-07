@@ -2,7 +2,8 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -13,6 +14,11 @@ import java.util.*;
 public class BestScoreCalculator {
 
     private BestScoreCalculator() {}//useless, but removes sonar warning
+
+    public static void main(String[] args) {
+        List<Class<? extends Player>> playersAgainstThomas=List.of(ColorPlayer.class, ThomasPlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
+        getDataFor1000GamesPerPlayer(playersAgainstThomas);
+    }
 
 
     /**
@@ -28,6 +34,8 @@ public class BestScoreCalculator {
         Map<Player, List<Integer>> scorePerPlayerPerGame=new HashMap<>();
 
         int[][] returnedData=new int[4][3];
+
+        GameStatsCsv csv = new GameStatsCsv();
 
         for(int i=0; i < 1000; i++) {
             int ids=0;
@@ -47,12 +55,14 @@ public class BestScoreCalculator {
             }
 
             GameLogicManager game = new GameLogicManager(players);
+            StatsManager statsManager = new StatsManager(game.getPlayersList());
             game.setCardDeck(deck);
 
             while (!game.isFinished()) {
                 game.makeAllPlayersSelectRole();
                 for (Player joueur : game.getPlayerTreeSet()) {
-                    game.playPlayerTurn(joueur);
+                    RoundSummary summary = game.playPlayerTurn(joueur);
+                    statsManager.addSummary(joueur, summary); // on ajoute le RoundSummary a liste des RoundSummary du joueur
                 }
                 game.resuscitateAllPlayers();
             }
@@ -65,6 +75,7 @@ public class BestScoreCalculator {
 
             if(optionalWinner.isPresent()) {
                 winPerPlayerIdArray[optionalWinner.get().getId()]++;
+                statsManager.setWinForPlayer(optionalWinner.get());
             }
             else {//égalité
                 shouldCountAsTieGame=true;
@@ -75,10 +86,12 @@ public class BestScoreCalculator {
 
                 if(shouldCountAsTieGame && score.getValue()==bestScore) {//si il y a une égalité, et que le joueur en question fait partie des meilleurs joueurs à égalité
                     tiePerPlayerIdArray[score.getKey().getId()]++;//on augmente son nombre d'égalité
+                    statsManager.setTieForPlayer(score.getKey());
                 }
             }
 
-
+            statsManager.writePlayersDetailsStatInCsv(csv,game,i);
+            statsManager.updatePlayerStatInCsv(csv,game,i);
         }
 
 

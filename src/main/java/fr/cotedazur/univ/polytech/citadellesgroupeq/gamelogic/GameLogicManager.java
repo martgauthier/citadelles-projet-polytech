@@ -152,6 +152,7 @@ public class GameLogicManager {
      */
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
+        summary.setRole(player.getRole());
         if(player.isDeadForThisTurn()){
             summary.setHasBeenKilledDuringTurn();
         }

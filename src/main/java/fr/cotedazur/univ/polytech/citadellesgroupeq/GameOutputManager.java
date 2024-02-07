@@ -178,7 +178,7 @@ public class GameOutputManager {
                 District cimetiere = optionalCimetiere.get();
                 District destroyedDistrict = summary.getOptionalDestroyedDistrict().get().getValue();
                 if(summary.getUsedMerveilles().contains(cimetiere.getName())){
-                    System.out.println("Grace au cimetiere le joueur recupere dans sa main pour une piece la carte :" + destroyedDistrict.getName());
+                    GAMEPLAY_LOGGER.log(Level.INFO, "Grace au cimetiere le joueur recupere dans sa main pour une piece la carte : {}", destroyedDistrict.getName());
                 }
             }
 

@@ -22,7 +22,6 @@ public class Main {
     private static final EasyLogger LOGGER= EasyLogger.getLogger("main");
 
     public static void main(String... args) {
-
         Main main=new Main();
         JCommander jCommander = JCommander.newBuilder().addObject(main).build();
         jCommander.parse(args);
