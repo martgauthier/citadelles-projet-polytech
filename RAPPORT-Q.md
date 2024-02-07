@@ -34,8 +34,7 @@ Il est important de noter que ces différents points ne sont pas présent dans n
 - Nous ne gérons pas la **limite de pièces** sur une partie, qui est fixée à un maximum de 30.
 - Les bots n'ont **pas de mémoires** et donc ne peuvent pas retenir les rôles.
 - Lorsqu'un joueur récupère des pièces à l'aide de la couleur de son rôle et de ses cités, il **ne peut pas choisir**
-de les obtenir **avant d'effectuer son tour** ou **à la fin de celui-ci** (pour potentiellement en obtenir plus suite 
-- à l'achat d'une carte pendant le tour)
+de les obtenir **avant d'effectuer son tour** ou **à la fin de celui-ci** (pour potentiellement en obtenir plus suite à l'achat d'une carte pendant le tour)
 
 
 #### c. Nos choix d'affichage
