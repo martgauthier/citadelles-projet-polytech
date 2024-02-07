@@ -12,10 +12,21 @@ import java.util.*;
  * d'argent (@cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
  */
 public abstract class Player implements Comparable<Player>, IStrategy {
-
     private Random randomGenerator=new Random();
+
+    /**
+     * Argent du joueur
+     */
     private int cash;
+
+    /**
+     * true si le joueur a été tué par l'assassin, false sinon
+     */
     private boolean deadForThisTurn;
+
+    /**
+     * Cash à donner au début du jeu au joueur.
+     */
     public static final int DEFAULT_CASH=2;
 
     /**
@@ -28,8 +39,14 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      */
     private List<District> cardsInHand;
 
-    private List<District> city;//la cité, où le joueur pose ses cartes
+    /**
+     * La cité où le joueur pose ses cartes achetées
+     */
+    private List<District> city;
 
+    /**
+     * Role du joueur pour le tour
+     */
     private Role role;
 
 
@@ -38,8 +55,16 @@ public abstract class Player implements Comparable<Player>, IStrategy {
      */
     private IStrategy strategy;
 
-    private CardDeck pioche;
+    /**
+     * Pioche commune au jeu et à tous les joueurs.
+     */
+    private final CardDeck pioche;
 
+    /**
+     * Crée un joueur possédant 4 cartes et 2 pièces, comme précisé dans la règle du jeu.
+     * @param id id du joueur dans la game
+     * @param pioche pioche, commune à tous les joueurs et à la game
+     */
     protected Player(int id, CardDeck pioche) {
         this(id, DEFAULT_CASH, new ArrayList<>(),false, pioche);
         pickCard(new RoundSummary());
@@ -47,6 +72,15 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         pickCard(new RoundSummary());//no need to get summary
         pickCard(new RoundSummary());//no need to get summary
     }
+
+    /**
+     * Crée un joueur avec une situation de départ donnée
+     * @param id id du joueur dans la game
+     * @param cash cash de départ du joueur
+     * @param cards cartes en main par défaut du joueur
+     * @param deadForThisTurn définit si le joueur est actuellement tué par l'assassin
+     * @param pioche pioche, commune à tous les joueurs et au jeu
+     */
 
     protected Player(int id, int cash, List<District> cards, boolean deadForThisTurn, CardDeck pioche) {
         this.cash=cash;
@@ -103,7 +137,6 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
 
-
     @Override
     public Role selectRoleToKillAsAssassin(List<Role> availableRoles){
         Role assassinatedRole;
@@ -126,7 +159,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     /**
-     * Ajoute 2 au @cash du joueur. Utile pour chaque début de tour
+     * Ajoute 2 au {@link Player#cash} du joueur. Utile pour chaque début de tour
      */
     public void draw2Coins(RoundSummary summary) {
         this.cash+=2;
@@ -221,6 +254,12 @@ public abstract class Player implements Comparable<Player>, IStrategy {
 
         return choosenCard;
     }
+
+    /**
+     * Pioche les cartes, si le joueur décide de piocher, dans la situation où il possède la merveille "Observatoire".
+     * @param summary
+     * @return
+     */
     public District pickCardForObservatory(RoundSummary summary){
         District d1=pioche.pickTopCard();
         District d2=pioche.pickTopCard();
@@ -244,6 +283,11 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         summary.addDrawnCard(choosenCard);
         return choosenCard;
     }
+
+    /**
+     *
+     * @return true si le joueur a posé la merveille "Observatoire", false sinon
+     */
     public boolean haveObservatoryInCity(){
         for(District d : this.city){
             if(d.getName().equals("Observatoire")){
@@ -265,6 +309,11 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
 
+    /**
+     *
+     * @param o the object to be compared.
+     * @return une comparaison par ROLE: un joueur assassin est inférieur à un joueur voleur, un joueur roi est égal à un joueur roi
+     */
     @Override
     public int compareTo(Player o) {
         return role.compareTo(o.getRole());
@@ -317,14 +366,22 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         return sum;
     }
 
+    /**
+     *
+     * @return true si le joueur possède toutes les couleurs dans sa cité. Utile pour le décompte de fin de partie
+     */
     public boolean hasAllColorsInCity(){
-        return numberOfColorsInCity()==5;
+        return getNumberOfColorsInCity()==5;
     }
 
     public boolean hasEmptyCity() {
         return this.city.isEmpty();
     }
 
+    /**
+     * Ajoute au joueur les pièces obtenues grâce aux cartes de la même couleur que son rôle
+     * @param summary
+     */
     public void getCoinsFromColorCards(RoundSummary summary) {
         for(District cartePosee: city) {
             if(cartePosee.getColor() == role.getColor() && role.getColor()!= Color.GRAY) {
@@ -444,7 +501,7 @@ public abstract class Player implements Comparable<Player>, IStrategy {
         return colorsContainedMap;
     }
 
-    public int numberOfColorsInCity() {
+    public int getNumberOfColorsInCity() {
         int colorsInCity=0;
         for(Boolean value: getColorsContainedInCityMap().values()) {
             if(Boolean.TRUE.equals(value)) {

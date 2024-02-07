@@ -15,7 +15,7 @@ public enum Role {
     ASSASSIN(Color.GRAY) {
         @Override
         public void power (GameLogicManager g, Player assassin, RoundSummary summary) {
-            summary.setHasUsedPower();
+            summary.setHasUsedRolePower();
             Role assassinatedRole=assassin.getStrategy().selectRoleToKillAsAssassin(g.generateAvailableRoles(g.getPlayersList().size()));
             for(Player player : g.getPlayersList()){
                 if(player.getRole().equals(assassinatedRole)){
@@ -47,7 +47,7 @@ public enum Role {
                         voleur.addCoins(totalCash);
                         summary.setDrawnCoins(totalCash);
                         summary.setStealedRole(stealedRole.get());
-                        summary.setHasUsedPower();
+                        summary.setHasUsedRolePower();
                     }
                 }
             }
@@ -56,7 +56,7 @@ public enum Role {
     MAGICIEN(Color.GRAY) {
         @Override
         public void power(GameLogicManager g, Player magicien, RoundSummary summary) {
-            summary.setHasUsedPower();
+            summary.setHasUsedRolePower();
 
             if(magicien.choosesToExchangeCardWithPlayer()) {
                 Player selectedPlayerToExchangeWith = magicien.getStrategy().selectPlayerToExchangeCardsWithAsMagicien(g.getPlayersList());
@@ -85,26 +85,26 @@ public enum Role {
         @Override
         public void power(GameLogicManager g, Player roi, RoundSummary summary) {
             g.setMasterOfTheGameIndex(roi.getId());
-            summary.setHasUsedPower();
+            summary.setHasUsedRolePower();
         }
     },
     EVEQUE(Color.BLUE) {
         @Override
         public void power(GameLogicManager g, Player eveque, RoundSummary summary) {
-            summary.setHasUsedPower();
+            summary.setHasUsedRolePower();
         }
     },
     MARCHAND (Color.GREEN) {
         @Override
         public void power(GameLogicManager g, Player marchand, RoundSummary summary) {
             marchand.addCoins(1);
-            summary.setHasUsedPower();
+            summary.setHasUsedRolePower();
         }
     },
     ARCHITECTE (Color.GRAY) {
         @Override
         public void power(GameLogicManager g, Player architecte, RoundSummary summary) {
-            summary.setHasUsedPower();
+            summary.setHasUsedRolePower();
             architecte.pickCard(summary);
             architecte.pickCard(summary);//"l'architecte pioche d'office 2 cartes de plus"
 
@@ -151,13 +151,19 @@ public enum Role {
 
                     summary.setDestroyedDistrict(playerChoice);
 
-                    summary.setHasUsedPower();
+                    summary.setHasUsedRolePower();
                 }
             }
         }
     };
 
 
+    /**
+     * Pouvoir associé au rôle
+     * @param g
+     * @param player
+     * @param summary
+     */
     public void power(GameLogicManager g, Player player, RoundSummary summary) {
         throw new UnsupportedOperationException();
     }

@@ -73,7 +73,7 @@ class AssassinTest {
         assassinPlayer.playTurn(summary, game);
         verify(assassinPlayer, times(1)).selectRoleToKillAsAssassin(anyList());
         verify(assassinPlayer.getRole(), times(1)).power(game, assassinPlayer, summary);
-        assertTrue(summary.hasUsedPower());
+        assertTrue(summary.hasUsedRolePower());
         assertTrue(otherRolePlayer.isDeadForThisTurn());
     }
 
@@ -91,7 +91,7 @@ class AssassinTest {
         assassinPlayer.playTurn(summary, game);
         verify(assassinPlayer, times(1)).selectRoleToKillAsAssassin(anyList());
         verify(assassinPlayer.getRole(), times(1)).power(game, assassinPlayer, summary);
-        assertTrue(summary.hasUsedPower());
+        assertTrue(summary.hasUsedRolePower());
         assertFalse(otherRolePlayer.isDeadForThisTurn());
     }
 }
