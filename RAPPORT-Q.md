@@ -1,4 +1,85 @@
+<h1 align="center">
+  <br>
+  <img src="https://gusandco.net/wp-content/uploads/2013/06/citadelles_edition3_front.png?w=234" 
+  width="200">
+  <br>
+  Citadelles : Groupe Q
+  <br>
+</h1>
+
+<h5 align="center">Citadelle, un jeu de société mêlant stratégie et bluff dans un décor médiéval fantastique. Les joueurs incarnent des personnages ambitieux construisant leur cité tout en contrant les plans de leurs adversaires.</h5>
+
+<p align="center">
+  <a href="#notre-avancement">Notre avancement</a> •
+  <a href="#architecture-et-qualité">Architecture et qualité</a> •
+  <a href="#notre-processus-de-développement">Notre processus de développement</a> 
+</p>
+
 # Rapport final
+
+
+## 1. Notre avancement
+
+
+
+### Avancement du jeu
+#### Ce qui a été fait
+La plupart des fonctionnalités ont été intégrées dans le jeu,
+garantissant ainsi une **couverture globale de ses fonctionnalités**. De même pour ce qui est des différents **pouvoirs des**
+**cartes** ou des **rôles**. 
+
+#### Ce qui n'a pas été fait
+Il est important de noter que ces différents points ne sont pas présent dans notre implémentation :
+
+- Nous ne gérons pas la **limite de pièces** sur une partie, qui est fixée à un maximum de 30.
+- Les bots n'ont **pas de mémoires** et donc ne peuvent pas retenir les rôles.
+- Lorsqu'un joueur récupère des pièces à l'aide de la couleur de son rôle et de ses cités, il **ne peut pas choisir**
+de les obtenir **avant d'effectuer son tour** ou **à la fin de celui-ci** (pour potentiellement en obtenir plus suite 
+- à l'achat d'une carte pendant le tour)
+
+
+#### Nos choix d'affichage
+Nous avons opté pour une approche simple en affichant les informations uniquement sur l'entrée standard. Lors de 
+l'exécution d'une partie différentes informations sont affichées. Tel que :
+- Le **numéro de tour**
+- Le **type de bot** qui joue
+- Les différentes **actions** et **choix du bot**
+- La **stratégie** du bot
+- Tous les événements liés à l'utilisation des **pouvoirs**
+- Les **pièces** et les **cartes** en main et les cartes posées d'un joueur
+- L'annonce du **vainqueur**
+
+*Voici l'exemple de l'affichage lors d'un tour :*
+<div class="container">
+<img src="assetsrapport/output.png" width="500" height=auto>
+</div>
+
+
+### Avancement des statistiques et du CSV
+Nous avons réalisé deux csv.
+
+- [gamestatsdetails](gamestatsdetails.csv) a pour objectif de stocker en détails différentes statistiques important sur la partie d'un bot. Tel que :
+  - Nom du joueur
+  - Prix moyen des citadelles achetées
+  - Rôle préféré
+  - ...
+
+    Il permet donc d'analyser précisément le comportment de nos bots sur plusieurs parties pour améliorer ses 
+stratégies.
+
+- [gamestats](gamestats.csv) a pour objectif de présenter de manière claire les performances de nos bots. En affichant le pourcentage 
+de victoire, de défaite et de match nul.
+
+### Avancement du bot demandé : “RichardPlayer”
+
+Pour le bot Richard nous nous sommes basés sur les conseils de [Richard](https://forum.trictrac.net/t/citadelles-charte-citadelles-de-base/509) en implémentant les comportements qu’il aime prendre
+au cours de la partie comme par exemple sa **stratégie offensive** quand un adversaire est sur le point de poser son avant-dernier 
+quartier. Nous lui avons donné également un **comportement par défaut** qui correspond à la description de **« l’OPTIMISTE »** selon le 
+deuxième utilisateur du forum car c’est selon lui le meilleur comportement. Nous avons choisis arbitrairement ses choix entre piocher 
+des cartes ou prendre des pièces (car cela n’était pas indiqué).
+
+### Nos meilleurs bots: “Matt” et “Thomas”
+
 
 ## 3. Notre processus de développement
 ### A. Branching strategy: *Github Flow*
