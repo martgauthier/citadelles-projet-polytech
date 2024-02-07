@@ -79,7 +79,13 @@ des cartes ou prendre des pièces (car cela n’était pas indiqué).
 
 ### D. Nos meilleurs bots: “Matt” et “Thomas”
 
-**TODO**
+#### Pour le bot "Thomas":
+* Il préfère les rôles Architecte/Marchand/Condottiere.
+* Il choisit de prendre des pièces tant qu'il a des cartes en main.
+* Il achète à chaque fois sa citadelle en main la moins chère.
+* Quand il est Condottiere il cible en priorité les joueurs proche de gagner.
+* Quand il est voleur il cible en priorité l'architecte et le marchand.
+* Lorsque la partie arrive à son dernier tour il active la stratégie [SecurePointForEndGame](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/SecurePointsForEndGame.java).
 
 ## 2. Architecture et qualité
 ### A. Architecture du code
