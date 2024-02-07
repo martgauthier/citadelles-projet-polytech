@@ -62,9 +62,9 @@ class RoundSummaryTest {
     }
     @Test
     void testUsePower(){
-        assertFalse(firstBasicRound.hasUsedPower());
-        firstBasicRound.toggleUsePower();
-        assertTrue(firstBasicRound.hasUsedPower());
+        assertFalse(firstBasicRound.hasUsedRolePower());
+        firstBasicRound.toggleUsedRolePower();
+        assertTrue(firstBasicRound.hasUsedRolePower());
     }
     @Test
     void testAssassinateSummary(){

@@ -120,7 +120,7 @@ public class StatsManager {
         int numberOfKills = 0;
         List<RoundSummary> playerSummary = playerSummaries.get(player);
         for (RoundSummary summary : playerSummary) {
-            if(summary.getPlayerRole() == Role.ASSASSIN && summary.hasUsedPower()) {
+            if(summary.getPlayerRole() == Role.ASSASSIN && summary.hasUsedRolePower()) {
                 numberOfKills++;
             }
         }

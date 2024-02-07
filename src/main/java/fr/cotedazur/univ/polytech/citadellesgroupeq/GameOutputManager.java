@@ -115,7 +115,7 @@ public class GameOutputManager {
             GAMEPLAY_LOGGER.info("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
         }
         else {
-            if (summary.hasUsedPower()) {
+            if (summary.hasUsedRolePower()) {
                 GAMEPLAY_LOGGER.info("Ce joueur utilise son pouvoir de " + player.getRole().name());
                 if(player.getRole().equals(Role.ASSASSIN)) {
                     for (Player p : game.getPlayersList()) {

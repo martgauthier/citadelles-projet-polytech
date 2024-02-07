@@ -8,11 +8,12 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
+/**
+ * Classe permettant de faire tourner 1000 parties et d'obtenir les données agrégées pendant ces parties.
+ */
 public class BestScoreCalculator {
 
-    private BestScoreCalculator() {
-        //useless, but removes sonar warning
-    }
+    private BestScoreCalculator() {}//useless, but removes sonar warning
 
     public static void main(String[] args) {
         List<Class<? extends Player>> playersAgainstThomas=List.of(MattPlayer.class, ThomasPlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
@@ -22,19 +23,21 @@ public class BestScoreCalculator {
 
     /**
      *
-     * @param playerClasses
-     * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: winPercentage, 1: meanScore
+     * @param playerClasses Liste des joueurs à faire jouer. Nécessite la liste des classes à instancier, et non pas les instances, pour éviter des problèmes de deep copy. (voir issue #53)
+     * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: win number, 1: meanScore, 2: tie games number
      */
     public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses) {
         //array is 1 index larger, to support tie games
-        int[] winPerPlayerIdArray=new int[playerClasses.size()+1];//initialized at 0 by default
+        int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
+        int[] tiePerPlayerIdArray=new int[playerClasses.size()];
+
         Map<Player, List<Integer>> scorePerPlayerPerGame=new HashMap<>();
 
-        int[][] returnedData=new int[5][2];
+        int[][] returnedData=new int[4][3];
 
         GameStatsCsv csv = new GameStatsCsv();
 
-        for(int i=0; i < 50; i++) {
+        for(int i=0; i < 1000; i++) {
             int ids=0;
             CardDeck deck=new CardDeck();
             List<Player> players=new ArrayList<>();
@@ -64,14 +67,29 @@ public class BestScoreCalculator {
                 game.resuscitateAllPlayers();
             }
 
+
+
+            boolean shouldCountAsTieGame=false;
+            int bestScore = Collections.max(game.getScoreOfEnd().values());
+            Optional<Player> optionalWinner = game.whoIsTheWinner();
+
+            if(optionalWinner.isPresent()) {
+                winPerPlayerIdArray[optionalWinner.get().getId()]++;
+            }
+            else {//égalité
+                shouldCountAsTieGame=true;
+            }
+
             for(Map.Entry<Player, Integer> score: game.getScoreOfEnd().entrySet()) {
                 scorePerPlayerPerGame.get(score.getKey()).add(score.getValue());//ajoute le score du joueur, à la liste des scores du joueur
-            }
-            Optional<Player> optionalWinner = game.whoIsTheWinner();
-            optionalWinner.ifPresentOrElse(player -> winPerPlayerIdArray[player.getId()]++, () -> winPerPlayerIdArray[winPerPlayerIdArray.length-1]++);//compte la victoire seulement si présent
 
-            statsManager.writePlayersDetailsStatInCsv(csv,game,i);
-            statsManager.updatePlayerStatInCsv(csv,game,i);
+                if(shouldCountAsTieGame && score.getValue()==bestScore) {//si il y a une égalité, et que le joueur en question fait partie des meilleurs joueurs à égalité
+                    tiePerPlayerIdArray[score.getKey().getId()]++;//on augmente son nombre d'égalité
+                }
+            }
+
+            /*statsManager.writePlayersDetailsStatInCsv(csv,game,i);
+            statsManager.updatePlayerStatInCsv(csv,game,i);*/
         }
 
 
@@ -83,10 +101,9 @@ public class BestScoreCalculator {
 
             //ajoute le nombre de victoires au tableau returnedData
             returnedData[joueur.getId()][0]=winPerPlayerIdArray[joueur.getId()];
-        }
 
-        //pour les égalités
-        returnedData[4][0]=winPerPlayerIdArray[4];//car la case qui stocke le nombre d'égalité est à l'index 4
+            returnedData[joueur.getId()][2]=tiePerPlayerIdArray[joueur.getId()];
+        }
 
         return returnedData;
     }

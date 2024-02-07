@@ -44,7 +44,7 @@ class MattStartGameStrategyTest {
         otherPlayer.setRole(Role.ARCHITECTE);
         assertEquals(Role.ASSASSIN, mainPlayer.getRole());
         mainPlayer.getStrategy().playTurn(summary, game);
-        assertTrue(summary.hasUsedPower());
+        assertTrue(summary.hasUsedRolePower());
     }
 
     @Test

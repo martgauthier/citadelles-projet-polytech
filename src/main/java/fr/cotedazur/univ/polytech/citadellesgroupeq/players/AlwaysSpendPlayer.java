@@ -16,11 +16,9 @@ import java.util.Optional;
  * Cette classe hérite de la classe abstraite {@link Player}.
  */
 public class AlwaysSpendPlayer extends Player {
-
     public AlwaysSpendPlayer(int id, CardDeck pioche) {
         super(id, pioche);
     }
-
     public AlwaysSpendPlayer(int id, int cash, List<District> cards, CardDeck pioche) {
         super(id, cash, cards, false, pioche);
     }
