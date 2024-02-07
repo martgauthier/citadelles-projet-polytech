@@ -152,9 +152,16 @@ Notre code est documenté via une [java doc](javadoc/index.html). Le code est da
 
 ### C. Qualité du code
 #### a. Parties en confiance
+* Nous sommes plutôt en confiance sur notre logique de jeu notamment avec `GameLogicManager` et `RoundSummary`.`Elle fait son travail sans erreur.
+* Les méthodes de `Player` fonctionnent et sont testées.
+* Quant aux `Roles` ils ne peuvent pas contenir d'erreur notamment avec les pouvoirs car ils contiennent des exceptions en cas d'action impossible.
+* Les `Strategy` sont bien implémentées chaque méthode est bien testée.
 
 #### b. Parties à améliorer
-
+* La partie sur le `CSV` est encore trop brouillon et il manque beaucoup d'exception.
+* À certains endroit du code la complexité pourrait etre diminuée car inutilement haute. (notamment dans des méthodes qui contiennent pas mal de condition avec des _if_ et des _else if_)
+* On peut relever aussi certaines duplication de code.
+* On aurait aussi dû implémenter les stratégies par défaut des `Player` dans des classes `Strategy`, au lieu de les implémenter dans les classes des `Player` afin de les alléger.
 #### c. Analyse de SonnarQube
 
 
