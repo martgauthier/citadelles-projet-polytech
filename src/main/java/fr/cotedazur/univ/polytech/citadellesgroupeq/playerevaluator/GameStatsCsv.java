@@ -48,7 +48,6 @@ public class GameStatsCsv {
 
                 writer.writeAll(playerData);
                 writer.close();
-                System.out.println("test");
             }
         } catch (IOException e) {
             e.printStackTrace();
