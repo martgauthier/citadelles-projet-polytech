@@ -20,6 +20,11 @@ public interface IStrategy {
      * @return un optional rempli avec un seul couple idjoueur/district. Optional est empty si le condottiere ne veut/ne peut rien détruire
      */
     Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players);
+
+    /**
+     *
+     * @return un tableau avec les index dans la main du joueur des cartes qu'il veut échanger
+     */
     int[] selectCardsToExchangeWithPileAsMagicien();
     void playTurn(RoundSummary summary, GameLogicManager game);
 
@@ -46,6 +51,12 @@ public interface IStrategy {
      */
     int selectAndSetRole(List<Role> availableRoles, List<Player> playerList);
 
+    /**
+     *
+     * @param availableRoles rôles disponibles à voler
+     * @param unstealableRoles rôles involables (assassin et lui-même)
+     * @return un rôle choisi dans la liste availableRoles, rien si il ne veut pas voler
+     */
     Optional<Role> selectRoleToSteal(List<Role> availableRoles, List<Role> unstealableRoles);
 
     /**
@@ -59,10 +70,14 @@ public interface IStrategy {
 
     String getStrategyName();
 
+    /**
+     *
+     * @return true si le joueur veut utiliser le pouvoir de la merveille "Manufacture"
+     */
     boolean wantsToUseManufacturePower();
 
     /**
-     * Choix de racheter ou npn quand on a le pouvoir du cimetière
+     * Choix de racheter ou non quand on a le pouvoir du cimetière
      */
     Optional<District> chooseToUseCimetierePower(District destroyedDistrict);
 }

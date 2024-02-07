@@ -20,9 +20,14 @@ public class CardDeck {
     /** La liste des districts lue à partir du fichier JSON. */
     private List<District> districtsList;
 
+    /**
+     * Implémentation LIFO de la liste de cartes, pour modéliser une vraie pioche
+     */
     private Queue<District> districtQueue;
 
-
+    /**
+     * Chemin vers le fichier JSON contenant les informations des districts
+     */
     public static final String DEFAULT_PATH= "districts.json";
 
     /**
@@ -101,6 +106,11 @@ public class CardDeck {
         }
     }
 
+    /**
+     * Prend une carte en haut du {@link CardDeck#districtQueue}, et l'enlève. (comme une vraie pioche)
+     * @return
+     * @throws BadlyInitializedReader
+     */
     public District pickTopCard() throws BadlyInitializedReader {
         District returnedDistrict=districtQueue.poll();
         if(returnedDistrict==null) {
@@ -112,6 +122,10 @@ public class CardDeck {
         }
     }
 
+    /**
+     * Ajoute une carte en dessous de la pioche (lorsque le condottière la détruit par exemple)
+     * @param district
+     */
     public void addDistrictUnderCardsPile(District district) {
         districtQueue.add(district);
     }

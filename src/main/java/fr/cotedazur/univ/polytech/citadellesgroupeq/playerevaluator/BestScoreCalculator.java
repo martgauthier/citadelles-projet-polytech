@@ -7,17 +7,18 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
+/**
+ * Classe permettant de faire tourner 1000 parties et d'obtenir les données agrégées pendant ces parties.
+ */
 public class BestScoreCalculator {
 
-    private BestScoreCalculator() {
-        //useless, but removes sonar warning
-    }
+    private BestScoreCalculator() {}//useless, but removes sonar warning
 
 
     /**
      *
-     * @param playerClasses
-     * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: win number, 1: meanScore, 2: tie number
+     * @param playerClasses Liste des joueurs à faire jouer. Nécessite la liste des classes à instancier, et non pas les instances, pour éviter des problèmes de deep copy. (voir issue #53)
+     * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: win number, 1: meanScore, 2: tie games number
      */
     public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses) {
         //array is 1 index larger, to support tie games

@@ -57,7 +57,7 @@ class MattPlayerTest {
         assertInstanceOf(DefaultStrategy.class, mattPlayer.getStrategy());
         assertEquals(Role.MAGICIEN, mattPlayer.getRole());
         summary=game.playPlayerTurn(mattPlayer);
-        assertTrue(summary.hasUsedPower());
+        assertTrue(summary.hasUsedRolePower());
     }
 
     @Test

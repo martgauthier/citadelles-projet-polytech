@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 
 /**
- * Class that easily creates a logger, that will not display unnecessary infos.
+ * Class that easily creates a logger, that will not display unnecessary infos like date and class from where it is called.
  */
 public class EasyLogger extends Logger {
 
