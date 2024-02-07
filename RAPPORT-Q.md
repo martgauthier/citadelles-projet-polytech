@@ -1,27 +1,62 @@
 # Rapport final
 
-## 2) Architecture et qualité
-### A) Architecture du code
-Notre architecture est divisé en 3 parties majeures :
-*  Le moteur de jeu:
-    * Gestion de l’output (GameOutputManager), gestion du déroulement de la partie (GameLogicManager, RoundSummary) et les classes d’éléments du jeu (District, Color, Role, CardDeck).
-*  Les bots/Player:
-    * Une classe mère [Player](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java) avec des classes filles qui extend Player pour chaque type de bot.
-* Les stratégies:
-    * On a une interface stratégie qu’on se sert pour crée des classes stratégies qu’on utilise ensuite dans les bots
-* La dernière partie de l’architecture est là uniquement pour les statistiques liées au CSV.
+## 2. Architecture et qualité
+### A. Architecture du code
+*(Nous parlerons parfois de "joueur" dans cette partie, mais nous voulons bien dire par cela "logique de robot".)*
 
+Notre architecture est divisée en plusieurs parties :
+*  Le moteur de jeu:
+    * Gestion de l’output ([GameOutputManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java)), gestion du déroulement de la partie ([GameLogicManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/gamelogic/GameLogicManager.java), [RoundSummary](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/gamelogic/RoundSummary.java))
+   et les classes d’éléments du jeu ([District](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/District.java), [Color](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/Color.java),
+   [Role](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/Role.java), [CardDeck](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/CardDeck.java)).
+*  Les bots/Player:
+    * Une classe mère [Player](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java) avec des classes filles qui extend Player
+   pour chaque type de bot ([ThomasPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/ThomasPlayer.java), [MattPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/MattPlayer.java)...).
+* Les stratégies:
+    * On a une interface `IStrategy` dont on se sert pour créer des classes stratégies qu’on utilise ensuite dans les bots.
+* La dernière partie de l’architecture est là uniquement pour les calculs de statistiques ([BestScoreCalculator](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/playerevaluator/BestScoreCalculator.java), et les classes de CSV).
+
+#### Les `District` et les `Role`
+Les `District` sont modélisés dans une classe. Ils possèdent un nom, un prix, une couleur, et optionnellement un nom de pouvoir (si ce sont des merveilles).
+Nos rôles sont stockés dans un `Enum`, et possèdent une couleur ([Color](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/Color.java)), un nom, et un [pouvoir de rôle](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/Role.java#L167).
 
 #### Les `Player` et les `Strategy`
-Ce que nous appelons `Player` sont les classes représentant des bots, pas des joueurs humains !
+
+Ce que nous appelons `Player` sont les classes représentant des bots !
 Notre code est structuré ainsi:
-* La classe mère [Player](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java) définit toutes les méthodes utilitaires attribuées à un bot:
-récupérer ses cartes en main [getCardsInHand()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L104)
+* La classe abstraite mère [Player](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java) définit toutes les méthodes utilitaires attribuées à un bot:
+récupérer ses cartes en main [(getCardsInHand())](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L104), connaitre sa fortune [(getCash())](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L100), etc...
+Le `Player` possède un rôle, un accès à la pioche (classe [CardDeck](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/CardDeck.java)), son argent (`Player.Cash`), des cartes en main (`Player.cardsInHand`), et une cité (`Player.city`).
+Elle possède également une instanciation de stratégie. Détaillons:
+* L'interface [IStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/IStrategy.java) liste les méthodes à Override pour changer le comportement d'un joueur. Entre autres:
+  * [getChoosenCitadelToBuy()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/IStrategy.java#L43) renvoie un Optional, contenant si désiré le district à acheter.
+  * [selectAndSetRole()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/IStrategy.java#L52), qui choisit parmi la liste des rôles disponibles le rôle que le bot choisira.
+  * [selectDistrictToDestroyAsCondottiere()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/IStrategy.java#L22), qui choisit le district à détruire si le bot est Condottière.
 
+Le `Player` possède un attribut de type `IStrategy`, et peut le changer en milieu de partie. Nous avons donc plusieurs implémentations de stratégie, pouvant être modifiées en plein milieu de partie.
+C'est un début modeste de *Strategy Pattern* (https://en.wikipedia.org/wiki/Strategy_pattern).
 
-### B) Documentation du code
+Précisons le fonctionnement de ce *Strategy Pattern*: 
+
+La classe `Player` (et donc toutes ses classes filles) implémentent l'interface `IStrategy`. Un `Player` possède donc une implémentation par défaut de `getChoosenCitadelToBuy()`, `selectRoleToSteal()`...
+
+Mais les `Player` possèdent aussi un attribut privé `strategy` de type `IStrategy`. Nous avons fait en sorte que toutes les instances de `IStrategy` appelent par défaut les comportements codés dans la classe `Player`,
+**sauf si leur comportement est redéfini dans cette stratégie** !
+
+Nos joueurs possèdent donc:
+* Une stratégie prioritaire, définissant les comportements à adopter, échangeable en pleine partie, grâce à l'attribut `strategy`
+* Une stratégie par défaut si la stratégie prioritaire ne redéfinit pas tout, codée dans l'implémentation du `Player`
+
+Exemple:
+La stratégie [AimForMoneyStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/AimForMoneyStrategy.java) fait juste en sorte de ne rien acheter, et de choisir en priorité le rôle Voleur.
+Elle n'implémente donc pas tous les comportements à prévoir (qui voler en tant que voleur ? qui tuer en tant qu'assassin ?).
+
+Si [RandomPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/RandomPlayer.java) utilise une instance d'`AimForMoneyStrategy` en tant que `strategy`, il va utiliser en priorité les comportements décrits par cette stratégie (donc essayer de choisir le rôle voleur, et ne rien acheter),
+mais il va utiliser son comportement codé par défaut pour le reste (par exemple, voler un joueur aléatoire en tant que voleur).
+
+### B. Documentation du code
 Notre code est documenté via une [java doc](file:///C:/Users/mat7t/Documents/fr/cotedazur/univ/polytech/citadellesgroupeq/players/package-summary.html). Le code est dans sa globalité bien commenté et documenté.
-### C) Qualité du code
+### C. Qualité du code
 #### a. Parties en confiance
 
 #### b. Parties à améliorer
