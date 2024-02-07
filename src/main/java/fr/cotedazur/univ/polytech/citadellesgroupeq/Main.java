@@ -31,7 +31,7 @@ public class Main {
             System.exit(1);
         }
 
-        if (main.twoThousands || main.csv) {
+        if (main.twoThousands || (main.csv && !main.demo)) {
             LOGGER.info("MATTPLAYER VS THOMASPLAYER ---");
 
             int[][] dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(playersAgainstThomas, main.csv);
@@ -54,7 +54,6 @@ public class Main {
                     LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
                 }
             }
-            //TODO: if csv, write in gamestat.csv summary
 
             if(main.twoThousands) {
                 dataPerPlayer = BestScoreCalculator.getDataFor1000GamesPerPlayer(fullThomasPlayerList, main.csv);
@@ -80,13 +79,11 @@ public class Main {
                     LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
                 }
             }
-            //TODO: if csv, write in gamestat the summary
         }
         else {// having no args, or only "--demo" arg, do the same thing
             GameOutputManager outputManager = new GameOutputManager(main.csv);
 
             outputManager.startMainOutputLoop();
-            //TODO: if csv, write in gamestat the summary
         }
     }
 }

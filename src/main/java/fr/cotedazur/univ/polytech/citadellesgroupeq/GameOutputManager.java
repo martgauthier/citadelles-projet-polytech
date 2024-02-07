@@ -64,7 +64,7 @@ public class GameOutputManager {
                 }
             }
             GAMEPLAY_LOGGER.log(
-                    Level.INFO, "{} {} a gagné avec un score de {} ",
+                    Level.INFO, "Eeeeeet bravo ! {} {} a gagné avec un score de {} ",
                     new Object[]{winner.getBotLogicName(), winner.getStrategyName(), game.getScoreOfEnd().get(winner)}
             );
 

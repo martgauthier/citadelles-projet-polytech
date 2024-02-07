@@ -90,8 +90,10 @@ public class BestScoreCalculator {
                 }
             }
 
-            statsManager.writePlayersDetailsStatInCsv(csv,game,i);
-            statsManager.updatePlayerStatInCsv(csv,game,i);
+            if(writeInCsv) {
+                statsManager.writePlayersDetailsStatInCsv(csv, game, i);
+                statsManager.updatePlayerStatInCsv(csv, game, i);
+            }
         }
 
 
