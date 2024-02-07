@@ -119,7 +119,7 @@ public class GameOutputManager {
             GAMEPLAY_LOGGER.info("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
         }
         else {
-            if (summary.hasUsedPower()) {
+            if (summary.hasUsedRolePower()) {
                 GAMEPLAY_LOGGER.info("Ce joueur utilise son pouvoir de " + player.getRole().name());
                 if(player.getRole().equals(Role.ASSASSIN)) {
                     for (Player p : game.getPlayersList()) {
@@ -182,7 +182,7 @@ public class GameOutputManager {
                 District cimetiere = optionalCimetiere.get();
                 District destroyedDistrict = summary.getOptionalDestroyedDistrict().get().getValue();
                 if(summary.getUsedMerveilles().contains(cimetiere.getName())){
-                    System.out.println("Grace au cimetiere le joueur recupere dans sa main pour une piece la carte :" + destroyedDistrict.getName());
+                    GAMEPLAY_LOGGER.log(Level.INFO, "Grace au cimetiere le joueur recupere dans sa main pour une piece la carte : {}", destroyedDistrict.getName());
                 }
             }
 

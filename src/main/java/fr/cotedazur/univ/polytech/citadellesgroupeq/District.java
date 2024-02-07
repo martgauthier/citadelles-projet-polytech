@@ -49,6 +49,11 @@ public class District implements Comparable<District> {
         return color;
     }
 
+    /**
+     * Compare les districts par leur prix.
+     * @param districtToCompare the object to be compared.
+     * @return
+     */
     @Override
     public int compareTo(District districtToCompare) {
         int otherCost= districtToCompare.getCost();

@@ -116,7 +116,7 @@ public class PowerManager {
                 if(buyChoice.isPresent()) {
                     player.addCardToHand(buyChoice.get());
                     player.removeCoins(1);
-                    summary.setHasUsedPower();
+                    summary.setHasUsedRolePower();
                     summary.getUsedMerveilles().add(cimetiere.getName());
                 }
             }

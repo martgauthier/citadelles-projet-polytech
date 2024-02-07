@@ -77,7 +77,7 @@ class VoleurTest {
 
         assertEquals(7, summary.getDrawnCoins()); // Le voleur doit avoir volé 5 pièces et tiré 2 pièces
         assertEquals(0, otherRolePlayer.getCash()); // Le joueur volé doit être à sec
-        assertTrue(summary.hasUsedPower());
+        assertTrue(summary.hasUsedRolePower());
     }
     @Test
     void testVoleurCannotStealFromAssassinOrAssassinated() {
@@ -103,6 +103,6 @@ class VoleurTest {
         assertEquals(voleurPlayer.getCash(), 2 - summary.getBoughtDistricts().stream().mapToInt(District::getCost).sum()); // Le voleur ne devrait pas avoir volé de pièces, il en a seulement pioché 2
         assertEquals(5, otherRolePlayer.getCash()); // Les autres devraient avoir le même nombre de pièces
         assertEquals(6, assassinPlayer.getCash());
-        assertFalse(summary.hasUsedPower());
+        assertFalse(summary.hasUsedRolePower());
     }
 }

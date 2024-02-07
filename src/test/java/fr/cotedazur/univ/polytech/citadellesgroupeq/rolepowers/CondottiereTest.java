@@ -135,7 +135,7 @@ class CondottiereTest {
         assertTrue(summary.getOptionalDestroyedDistrict().isPresent());
         assertEquals(0, summary.getOptionalDestroyedDistrict().get().getKey());
         assertEquals(basicDistrict, summary.getOptionalDestroyedDistrict().get().getValue());
-        assertTrue(summary.hasUsedPower());
+        assertTrue(summary.hasUsedRolePower());
     }
 
     @Test
@@ -144,7 +144,7 @@ class CondottiereTest {
         doReturn(Optional.empty()).when(condottierePlayer).selectDistrictToDestroyAsCondottiere(anyList());
         condottierePlayer.playTurn(summary, game);
 
-        assertFalse(summary.hasUsedPower());
+        assertFalse(summary.hasUsedRolePower());
         assertTrue(summary.getOptionalDestroyedDistrict().isEmpty());
     }
     @Test

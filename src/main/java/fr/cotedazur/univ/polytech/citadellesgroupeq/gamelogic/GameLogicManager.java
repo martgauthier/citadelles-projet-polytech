@@ -26,6 +26,10 @@ public class GameLogicManager {
      */
     private final List<Player> playersList;
 
+
+    /**
+     * Nombre de districts nécessaires pour gagner. ! A adapter en fonction du nombre de joueurs d'après les règles du jeu !
+     */
     public static final int NUMBER_OF_DISTRICTS_TO_WIN =8;
 
     /**
@@ -33,12 +37,19 @@ public class GameLogicManager {
      */
     private boolean isFinished;
 
+    /**
+     * Pioche de carte (implémentée en LIFO), commune au jeu et à chacun des joueurs.
+     */
     private CardDeck cardDeck;
 
     /**
      * Contient les joueurs dans leur ordre de passage (en fonction de leur rôle). Les {@link TreeSet} sont automatiquement triés dans l'ordre
      */
     private final SortedSet<Player> playerTreeSet;
+
+    /**
+     * Contient les scores de fin de partie de chaque joueur. Uniquement remplie après le dernier tour du dernier joueur, à la toute fin de partie.
+     */
     private Map<Player, Integer> scoreOfEnd =new HashMap<>();
 
 
@@ -47,6 +58,9 @@ public class GameLogicManager {
 
 
     //nécessaire pour régler l'issue #53 sur github : voir la doc de public GameManager()
+    /**
+     * Liste des joueurs à utiliser par défaut pour une partie. Contient les classes à instancier, et non pas des instances, pour ne pas avoir à effectuer des Deep copy. (voir issue #53)
+     */
     protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ThomasPlayer.class, RichardPlayer.class, AlwaysSpendPlayer.class, MattPlayer.class);
 
     public GameLogicManager(boolean writeInCsv) {
@@ -153,6 +167,7 @@ public class GameLogicManager {
      */
     public RoundSummary playPlayerTurn(Player player) {
         RoundSummary summary=new RoundSummary();
+        summary.setRole(player.getRole());
         if(player.isDeadForThisTurn()){
             summary.setHasBeenKilledDuringTurn();
         }
@@ -182,6 +197,9 @@ public class GameLogicManager {
         }
     }
 
+    /**
+     * Définit un master of the game aléatoire, dans l'intervalle du nombre de joueurs.
+     */
     public void setRandomMasterOfGame() {
         setMasterOfTheGameIndex(randomGenerator.nextInt(playersList.size()));
     }
@@ -190,10 +208,19 @@ public class GameLogicManager {
         return masterOfTheGameIndex;
     }
 
+    /**
+     * "Finit le jeu" -> dit au {@link GameLogicManager} qu'il ne faudra pas relancer de round à la fin de celui en cours.
+     * Cela ne coupe pas instantanément la partie: les joueurs n'ayant pas encore joué leur round à ce tour
+     * vont encore jouer.
+     */
     public void finishGame() {
         isFinished=true;
     }
 
+    /**
+     *
+     * @return true si la partie est finie, false sinon. Voir {@link GameLogicManager#finishGame()}
+     */
     public boolean isFinished() {
         return isFinished;
     }
@@ -269,7 +296,7 @@ public class GameLogicManager {
         if(player.hasAllColorsInCity()){
             score+=3;
         }
-        else if(player.numberOfColorsInCity() == 4 && player.getDistrictInCity(coursDesMiraclesName).isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
+        else if(player.getNumberOfColorsInCity() == 4 && player.getDistrictInCity(coursDesMiraclesName).isPresent() && !summary.containsCourDesMiracles()) {//il lui en manque une
             player.removeDistrictFromCity(player.getDistrictInCity(coursDesMiraclesName).get());//remove it from colorMap, to check if there is another purple card.
             Map<Color, Boolean> colorMap=player.getColorsContainedInCityMap();
             if(Boolean.TRUE.equals(colorMap.get(Color.PURPLE))) {//s'il y a une autre carte violette que la cour des miracles, cela veut dire qu'on peut
@@ -307,6 +334,9 @@ public class GameLogicManager {
         return (onePlayerHasTheSameScore) ? Optional.empty() : Optional.of(winner);
     }
 
+    /**
+     * Rend tous les joueurs vivants (qu'ils aient été tué précédemment ou non).
+     */
     public void resuscitateAllPlayers() {
         for(Player player: playersList) {
             player.resuscitate();
