@@ -16,6 +16,17 @@ Notre architecture est divisée en plusieurs parties :
     * On a une interface `IStrategy` dont on se sert pour créer des classes stratégies qu’on utilise ensuite dans les bots.
 * La dernière partie de l’architecture est là uniquement pour les calculs de statistiques ([BestScoreCalculator](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/playerevaluator/BestScoreCalculator.java), et les classes de CSV).
 
+#### Le moteur du jeu:
+* Notre classe [GameLogicManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/gamelogic/GameLogicManager.java)
+  fonctionne dans cet ordre:
+1. Elle génère une liste de joueurs, ou en prend une en paramètre, et crée une pioche partagée ([CardDeck](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/CardDeck.java)).
+2. À chaque tour, elle génère une liste de rôles aléatoires, fait choisir à chaque joueur (à partir du maître du jeu) son rôle.
+3. Elle fait jouer le tour de chaque joueur, par ordre de rôle.
+4. Elle arrête la partie lorsqu'un joueur a atteint 8 citadelles.
+* [RoundSummary](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/gamelogic/RoundSummary.java) est une classe qui va stocker et enregistrer tous les événements durant le tour du joueur.
+* Cette classe est utilisée dans la classe [GameOutputManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java). Grace à un `RoundSummary` la méthode [describePlayerRound()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java#L109) de `GameOutputManager` va pouvoir vérifier les évènements qui se sont déroulés et activer les bons logs.
+  `GameOutputManager` contient d'autre méthode de description comme une description de la cité d'un joueur ou encore la description des roles disponibles au début du tour. La principale methode [startMainOutputLoop()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java#L33) déroule l'affichage de la partie du début à la fin.
+
 #### Les `District` et les `Role`
 Les `District` sont modélisés dans une classe. Ils possèdent un nom, un prix, une couleur, et optionnellement un nom de pouvoir (si ce sont des merveilles).
 Nos rôles sont stockés dans un `Enum`, et possèdent une couleur ([Color](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/Color.java)), un nom, et un [pouvoir de rôle](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/Role.java#L167).
@@ -56,6 +67,8 @@ mais il va utiliser son comportement codé par défaut pour le reste (par exempl
 
 ### B. Documentation du code
 Notre code est documenté via une [java doc](file:///C:/Users/mat7t/Documents/fr/cotedazur/univ/polytech/citadellesgroupeq/players/package-summary.html). Le code est dans sa globalité bien commenté et documenté.
+
+
 ### C. Qualité du code
 #### a. Parties en confiance
 
