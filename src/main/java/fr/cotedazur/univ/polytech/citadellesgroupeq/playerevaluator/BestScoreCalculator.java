@@ -19,7 +19,7 @@ public class BestScoreCalculator {
      * @param playerClasses
      * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: win number, 1: meanScore, 2: tie number
      */
-    public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses) {
+    public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses, boolean writeInCsv) {
         //array is 1 index larger, to support tie games
         int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
         int[] tiePerPlayerIdArray=new int[playerClasses.size()];
@@ -45,7 +45,7 @@ public class BestScoreCalculator {
                 }
             }
 
-            GameLogicManager game = new GameLogicManager(players);
+            GameLogicManager game = new GameLogicManager(players, writeInCsv);
             game.setCardDeck(deck);
 
             while (!game.isFinished()) {

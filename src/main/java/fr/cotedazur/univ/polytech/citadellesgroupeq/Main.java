@@ -32,20 +32,10 @@ public class Main {
             System.exit(1);
         }
 
-
-
-        if(main.csv){
-            System.out.println("Argument CSV");
-        }
-        else if (main.demo) {
-            GameOutputManager outputManager = new GameOutputManager();
-
-            outputManager.startMainOutputLoop();
-        }
-        else if (main.twoThousands) {
+        if (main.twoThousands || main.csv) {
             LOGGER.info("MATTPLAYER VS THOMASPLAYER ---");
 
-            int[][] dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(playersAgainstThomas);
+            int[][] dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(playersAgainstThomas, main.csv);
 
             for(int playerid=0; playerid < playersAgainstThomas.size(); playerid++) {
                 int tieGames=dataPerPlayer[playerid][2];
@@ -58,45 +48,46 @@ public class Main {
                 int wonPercentage=wonGames/10;
                 int lostGamesPercentage=lostGames/10;
 
-                LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[] {playerid, playersAgainstThomas.get(playerid).getSimpleName(), wonGames, wonPercentage});
-                LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
-                LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[] {tieGames, tieGamesPercentage});
-                LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
+                if(main.twoThousands) {//on n'affiche pas ca si on n'a a appelé le programme qu'avec --csv
+                    LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[]{playerid, playersAgainstThomas.get(playerid).getSimpleName(), wonGames, wonPercentage});
+                    LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
+                    LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[]{tieGames, tieGamesPercentage});
+                    LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
+                }
             }
+            //TODO: if csv, write in gamestat.csv summary
 
+            if(main.twoThousands) {
+                dataPerPlayer = BestScoreCalculator.getDataFor1000GamesPerPlayer(fullThomasPlayerList, main.csv);
 
+                LOGGER.info("\n\n");//clear visual space a little
 
+                LOGGER.info("THOMASPLAYER VS HIMSELF:");
 
+                for (int playerid = 0; playerid < fullThomasPlayerList.size(); playerid++) {
+                    int tieGames = dataPerPlayer[playerid][2];
 
-            dataPerPlayer= BestScoreCalculator.getDataFor1000GamesPerPlayer(fullThomasPlayerList);
+                    int wonGames = dataPerPlayer[playerid][0];
+                    int lostGames = 1000 - wonGames - tieGames;
+                    int meanScore = dataPerPlayer[playerid][1];
 
-            LOGGER.info("\n\n");//clear visual space a little
+                    int tieGamesPercentage = tieGames / 10;
+                    int wonPercentage = wonGames / 10;
+                    int lostGamesPercentage = lostGames / 10;
 
-            LOGGER.info("THOMASPLAYER VS HIMSELF:");
-
-            for(int playerid=0; playerid < fullThomasPlayerList.size(); playerid++) {
-                int tieGames=dataPerPlayer[playerid][2];
-
-                int wonGames=dataPerPlayer[playerid][0];
-                int lostGames=1000-wonGames-tieGames;
-                int meanScore=dataPerPlayer[playerid][1];
-
-                int tieGamesPercentage=tieGames/10;
-                int wonPercentage=wonGames/10;
-                int lostGamesPercentage=lostGames/10;
-
-                LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[] {playerid, fullThomasPlayerList.get(playerid).getSimpleName(), wonGames, wonPercentage});
-                LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
-                LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[] {tieGames, tieGamesPercentage});
-                LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
+                    LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[]{playerid, fullThomasPlayerList.get(playerid).getSimpleName(), wonGames, wonPercentage});
+                    LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
+                    LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[]{tieGames, tieGamesPercentage});
+                    LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
+                }
             }
+            //TODO: if csv, write in gamestat the summary
         }
-        else{
-            LOGGER.info("No arguments supplied. Launching demo mode.");
-
-            GameOutputManager outputManager = new GameOutputManager();
+        else {// having no args, or only "--demo" arg, do the same thing
+            GameOutputManager outputManager = new GameOutputManager(main.csv);
 
             outputManager.startMainOutputLoop();
+            //TODO: if csv, write in gamestat the summary
         }
     }
 }
