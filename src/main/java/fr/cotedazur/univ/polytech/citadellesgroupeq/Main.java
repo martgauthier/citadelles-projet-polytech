@@ -26,8 +26,15 @@ public class Main {
         Main main=new Main();
         JCommander jCommander = JCommander.newBuilder().addObject(main).build();
         jCommander.parse(args);
+
+        if(main.demo && main.twoThousands) {
+            LOGGER.severe("Impossible de lancer le programme avec cette combinaison d'arguments !");
+            System.exit(1);
+        }
+
+
+
         if(main.csv){
-            //faire le truc pour csv
             System.out.println("Argument CSV");
         }
         else if (main.demo) {
