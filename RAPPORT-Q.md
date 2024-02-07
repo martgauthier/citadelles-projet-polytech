@@ -22,13 +22,13 @@
 
 
 
-### Avancement du jeu
-#### Ce qui a été fait
+### A. Avancement du jeu
+#### a. Ce qui a été fait
 La plupart des fonctionnalités ont été intégrées dans le jeu,
 garantissant ainsi une **couverture globale de ses fonctionnalités**. De même pour ce qui est des différents **pouvoirs des**
 **cartes** ou des **rôles**. 
 
-#### Ce qui n'a pas été fait
+#### b. Ce qui n'a pas été fait
 Il est important de noter que ces différents points ne sont pas présent dans notre implémentation :
 
 - Nous ne gérons pas la **limite de pièces** sur une partie, qui est fixée à un maximum de 30.
@@ -38,7 +38,7 @@ de les obtenir **avant d'effectuer son tour** ou **à la fin de celui-ci** (pour
 - à l'achat d'une carte pendant le tour)
 
 
-#### Nos choix d'affichage
+#### c. Nos choix d'affichage
 Nous avons opté pour une approche simple en affichant les informations uniquement sur l'entrée standard. Lors de 
 l'exécution d'une partie différentes informations sont affichées. Tel que :
 - Le **numéro de tour**
@@ -55,7 +55,7 @@ l'exécution d'une partie différentes informations sont affichées. Tel que :
 </div>
 
 
-### Avancement des statistiques et du CSV
+### B. Avancement des statistiques et du CSV
 Nous avons réalisé deux csv.
 
 - [gamestatsdetails](gamestatsdetails.csv) a pour objectif de stocker en détails différentes statistiques important sur la partie d'un bot. Tel que :
@@ -70,7 +70,7 @@ stratégies.
 - [gamestats](gamestats.csv) a pour objectif de présenter de manière claire les performances de nos bots. En affichant le pourcentage 
 de victoire, de défaite et de match nul.
 
-### Avancement du bot demandé : “RichardPlayer”
+### C. Avancement du bot demandé : “RichardPlayer”
 
 Pour le bot Richard nous nous sommes basés sur les conseils de [Richard](https://forum.trictrac.net/t/citadelles-charte-citadelles-de-base/509) en implémentant les comportements qu’il aime prendre
 au cours de la partie comme par exemple sa **stratégie offensive** quand un adversaire est sur le point de poser son avant-dernier 
@@ -78,8 +78,9 @@ quartier. Nous lui avons donné également un **comportement par défaut** qui c
 deuxième utilisateur du forum car c’est selon lui le meilleur comportement. Nous avons choisis arbitrairement ses choix entre piocher 
 des cartes ou prendre des pièces (car cela n’était pas indiqué).
 
-### Nos meilleurs bots: “Matt” et “Thomas”
+### D. Nos meilleurs bots: “Matt” et “Thomas”
 
+**TODO**
 
 ## 2. Architecture et qualité
 ### A. Architecture du code
