@@ -3,6 +3,7 @@
 ## 3. Notre processus de développement
 ### A. Branching strategy: *Github Flow*
 Nous avons décidé d'implémenter la branching strategy *Github flow*:
+
 ![Schema de la stratégie *Github flow*](assetsrapport/branching.jpeg)
 
 Avec cette stratégie, pour ajouter ou modifier une fonctionnalité, on crée une seule branche,
