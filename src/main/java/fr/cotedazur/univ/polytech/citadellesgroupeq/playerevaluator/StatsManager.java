@@ -67,7 +67,7 @@ public class StatsManager {
     private boolean isFirstTime=false;
 
     public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate, GameLogicManager game, int round){
-        csvToUpdate.createCsvFile();//works perfectly
+        csvToUpdate.createCsvFile(game.getPlayersList());//works perfectly
         for(Player player : playerSummaries.keySet()){
             // On récupère la stat de chaque joueur pour une partie
             String[] statForOnePlayer = getStatForAPlayer(player,game, round);//works
@@ -161,8 +161,11 @@ public class StatsManager {
 
             String[] nextLine;
 
+            boolean playerHasBeenAdded=false;
+
             while ((nextLine = csvReader.readNext()) != null) {
                 if (nextLine[0].equals(stats[1])) {
+                    playerHasBeenAdded=true;
                     int totalGames = Integer.parseInt(nextLine[4]);
 
                     double winPercentage = Double.parseDouble(nextLine[1]);//chiffre en pourcentage: si 50% de victoire, winPercentage=50
@@ -215,6 +218,13 @@ public class StatsManager {
                 }
 
                 data.add(nextLine);
+            }
+
+            if(!playerHasBeenAdded) {
+                String winPercentage=(stats[7].equals("Oui")) ? "100.0" : "0.0";
+                String tiePercentage=(stats[8].equals("Oui")) ? "100.0" : "0.0";
+                String loosePercentage=(!stats[7].equals("Oui") && !stats[8].equals("Oui")) ? "100.0" : "0.0";
+                data.add(new String[] {stats[1], winPercentage, loosePercentage, tiePercentage, "1"});//totalGames=1 game because this could happen at first game
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();

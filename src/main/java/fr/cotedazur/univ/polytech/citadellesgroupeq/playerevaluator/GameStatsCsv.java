@@ -1,7 +1,7 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator;
 
 import com.opencsv.*;
-import com.opencsv.exceptions.CsvException;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -31,7 +31,7 @@ public class GameStatsCsv {
         }
     }
 
-    public void createCsvFile(){
+    public void createCsvFile(List<Player> playerList){
         try {
             String[] header = {"Nom du joueur", "Pourcentage de parties gagnées", "Pourcentage de parties perdues", "Pourcentage d'égalité",
                     "Nombre de parties jouées"
@@ -39,12 +39,11 @@ public class GameStatsCsv {
 
             if (!Files.exists(csvPath.toAbsolutePath()) || Files.size(csvPath.toAbsolutePath()) == 0) {
                 CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString()));
-                List<String[]> playerData = List.of(
-                        header,
-                        new String[]{"MattPlayer", "0", "0", "0", "0"},
-                        new String[]{"ThomasPlayer", "0", "0","0", "0"},
-                        new String[]{"AlwaysSpendPlayer", "0", "0","0", "0"},
-                        new String[]{"RandomPlayer", "0", "0","0", "0"});
+                List<String[]> playerData = new ArrayList<>();
+                playerData.add(header);
+                for(Player joueur: playerList) {
+                    playerData.add(new String[]{ joueur.getBotLogicName(), "0", "0", "0", "0"});
+                }
 
                 writer.writeAll(playerData);
                 writer.close();
