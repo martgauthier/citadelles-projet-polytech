@@ -33,7 +33,13 @@ public class GameStatsCsv {
 
     public void createCsvFile(List<Player> playerList){
         try {
-            String[] header = {"Nom du joueur", "Pourcentage de parties gagnées", "Pourcentage de parties perdues", "Pourcentage d'égalité",
+            String[] header = {"Nom du joueur",
+                    "Nombre de parties gagnées",
+                    "Pourcentage de parties gagnées",
+                    "Nombre de parties perdues",
+                    "Pourcentage de parties perdues",
+                    "Nombre de parties égalité",
+                    "Pourcentage d'égalité",
                     "Nombre de parties jouées"
             };
 
@@ -42,7 +48,7 @@ public class GameStatsCsv {
                 List<String[]> playerData = new ArrayList<>();
                 playerData.add(header);
                 for(Player joueur: playerList) {
-                    playerData.add(new String[]{ joueur.getBotLogicName(), "0", "0", "0", "0"});
+                    playerData.add(new String[]{ joueur.getBotLogicName(), "0", "0", "0", "0", "0", "0", "0"});
                 }
 
                 writer.writeAll(playerData);

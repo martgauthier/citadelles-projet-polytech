@@ -11,6 +11,8 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import java.io.IOException;
 import java.util.*;
 
+import static java.util.Map.entry;
+
 /**
  * Cette classe s'occupe de stocker par joueur une liste de summary.
  */
@@ -20,12 +22,27 @@ public class StatsManager {
 
     private final boolean[] playerHasTieGameArray;
 
+
+    /**
+     * Map regroupant les index dans les lignes de stat du CSV détaillé. Permet d'éviter d'utiliser des magic numbers
+     */
+    public static final Map<String, Integer> CSV_INDEXES=Map.ofEntries(
+            entry("PLAYER_NAME", 0),
+            entry("WIN_NUMBER", 1),
+            entry("WIN_PERCENTAGE", 2),
+            entry("LOOSE_NUMBER", 3),
+            entry("LOOSE_PERCENTAGE", 4),
+            entry("TIE_NUMBER", 5),
+            entry("TIE_PERCENTAGE", 6),
+            entry("GAME_NUMBER", 7)
+    );
+
     private Optional<Player> playerWinning;
 
     public StatsManager(List<Player> playersList) {
         playerSummaries = new HashMap<>();
         for (Player player : playersList) {
-            playerSummaries.put (player, new ArrayList<>());
+            playerSummaries.put(player, new ArrayList<>());
         }
         stats= new String[9];
         Arrays.fill(stats,"");
@@ -156,64 +173,56 @@ public class StatsManager {
             boolean playerHasBeenAdded=false;
 
             while ((nextLine = csvReader.readNext()) != null) {
-                if (nextLine[0].equals(stats[1])) {
+                if (nextLine[CSV_INDEXES.get("PLAYER_NAME")].equals(stats[1])) {
                     playerHasBeenAdded=true;
-                    int totalGames = Integer.parseInt(nextLine[4]);
+                    int totalGames = Integer.parseInt(nextLine[CSV_INDEXES.get("GAME_NUMBER")]);
 
-                    double winPercentage = Double.parseDouble(nextLine[1]);//chiffre en pourcentage: si 50% de victoire, winPercentage=50
-
-                    double tiePercentage = Double.parseDouble(nextLine[3]);
-
-                    int nombreWin=(int) Math.ceil((winPercentage/100.0d) * totalGames);
-                    int nombreTie=(int) Math.ceil((tiePercentage/100.0d) * totalGames);
+                    int nombreWin=Integer.parseInt(nextLine[CSV_INDEXES.get("WIN_NUMBER")]);
+                    int nombreTie=Integer.parseInt(nextLine[CSV_INDEXES.get("TIE_NUMBER")]);
+                    int nombreLoose=Integer.parseInt(nextLine[CSV_INDEXES.get("LOOSE_NUMBER")]);
 
                     if (stats[7].equals("Oui")) {//victoire
-                        if(totalGames==0) {
-                            nextLine[1] = Double.toString(100.0d);
-                            nextLine[2] = Double.toString(0.0d);
-                            nextLine[3] = Double.toString(0.0d);
-                        }
                         nombreWin++;
                     }
                     else if (stats[8].equalsIgnoreCase("Oui")){//égalité
-                        if(totalGames==0) {
-                            nextLine[1] = Double.toString(0.0d);
-                            nextLine[2] = Double.toString(0.0d);
-                            nextLine[3] = Double.toString(100.0d);
-                        }
                         nombreTie++;
                     }
                     else {//loose
-                        if(totalGames==0) {
-                            nextLine[1]=Double.toString(0.0d);
-                            nextLine[2]=Double.toString(100.0d);
-                            nextLine[3]=Double.toString(0.0d);
-                        }
+                        nombreLoose++;
                     }
 
 
 
                     double newWinPercentage = (((double) nombreWin) /(totalGames+1)) * 100;
-                    nextLine[1] = Double.toString(newWinPercentage);
+                    nextLine[CSV_INDEXES.get("WIN_PERCENTAGE")] = Double.toString(newWinPercentage);
+                    nextLine[CSV_INDEXES.get("WIN_NUMBER")]=Integer.toString(nombreWin);
 
                     double newTiePercentage = (((double) nombreTie) / (totalGames+1)) * 100;
-                    nextLine[3] = Double.toString(newTiePercentage);
+                    nextLine[CSV_INDEXES.get("TIE_PERCENTAGE")] = Double.toString(newTiePercentage);
+                    nextLine[CSV_INDEXES.get("TIE_NUMBER")]=Integer.toString(nombreTie);
 
-                    double newLoosePercentage = 100.0d - newWinPercentage - newTiePercentage;
-                    nextLine[2] = Double.toString(newLoosePercentage);
+                    double newLoosePercentage = (((double) nombreLoose) / (totalGames+1)) * 100;
+                    nextLine[CSV_INDEXES.get("LOOSE_PERCENTAGE")] = Double.toString(newLoosePercentage);
+                    nextLine[CSV_INDEXES.get("LOOSE_NUMBER")]=Integer.toString(nombreLoose);
 
 
-                    nextLine[4] = Integer.toString(totalGames+1);
+                    nextLine[CSV_INDEXES.get("GAME_NUMBER")] = Integer.toString(totalGames+1);
                 }
 
                 data.add(nextLine);
             }
 
             if(!playerHasBeenAdded) {
-                String winPercentage=(stats[7].equals("Oui")) ? "100.0" : "0.0";
-                String tiePercentage=(stats[8].equals("Oui")) ? "100.0" : "0.0";
-                String loosePercentage=(!stats[7].equals("Oui") && !stats[8].equals("Oui")) ? "100.0" : "0.0";
-                data.add(new String[] {stats[1], winPercentage, loosePercentage, tiePercentage, "1"});//totalGames=1 game because this could happen at first game
+                if(stats[CSV_INDEXES.get("WIN_PERCENTAGE")].equals("Oui")) {//win
+                    data.add(new String[] {stats[1], "1", "100.0", "0", "0.0", "0", "0.0", "1"});//totalGames=1 game because this could happen at first game
+                }
+                else if(stats[CSV_INDEXES.get("TIE_PERCENTAGE")].equals("Oui")) {//tie
+                    data.add(new String[] {stats[1], "0", "0.0", "1", "100.0", "0", "0.0", "1"});//totalGames=1 game because this could happen at first game
+                }
+                else {//loose
+                    data.add(new String[] {stats[1], "0", "0.0", "0", "0.0", "1", "100.0", "1"});//totalGames=1 game because this could happen at first game
+                }
+
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();

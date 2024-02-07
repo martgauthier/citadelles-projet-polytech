@@ -37,6 +37,8 @@ public class BestScoreCalculator {
 
         GameStatsCsv csv = new GameStatsCsv();
 
+
+
         for(int i=0; i < 1000; i++) {
             int ids=0;
             CardDeck deck=new CardDeck();
@@ -54,7 +56,7 @@ public class BestScoreCalculator {
                 }
             }
 
-            GameLogicManager game = new GameLogicManager(players, writeInCsv);
+            GameLogicManager game = new GameLogicManager(players, false);
             StatsManager statsManager = new StatsManager(game.getPlayersList());
             game.setCardDeck(deck);
 
@@ -95,6 +97,7 @@ public class BestScoreCalculator {
                 statsManager.updatePlayerStatInCsv(csv, game, i);
             }
         }
+
 
 
         for(Map.Entry<Player, List<Integer>> scoreEntry: scorePerPlayerPerGame.entrySet()) {
