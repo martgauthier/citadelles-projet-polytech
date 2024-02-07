@@ -17,7 +17,7 @@ public class BestScoreCalculator {
 
     public static void main(String[] args) {
         List<Class<? extends Player>> playersAgainstThomas=List.of(ColorPlayer.class, ThomasPlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
-        getDataFor1000GamesPerPlayer(playersAgainstThomas);
+        getDataFor1000GamesPerPlayer(playersAgainstThomas, true);
     }
 
 
@@ -26,7 +26,7 @@ public class BestScoreCalculator {
      * @param playerClasses Liste des joueurs à faire jouer. Nécessite la liste des classes à instancier, et non pas les instances, pour éviter des problèmes de deep copy. (voir issue #53)
      * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: win number, 1: meanScore, 2: tie games number
      */
-    public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses) {
+    public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses, boolean writeInCsv) {
         //array is 1 index larger, to support tie games
         int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
         int[] tiePerPlayerIdArray=new int[playerClasses.size()];
@@ -54,7 +54,7 @@ public class BestScoreCalculator {
                 }
             }
 
-            GameLogicManager game = new GameLogicManager(players);
+            GameLogicManager game = new GameLogicManager(players, writeInCsv);
             StatsManager statsManager = new StatsManager(game.getPlayersList());
             game.setCardDeck(deck);
 
@@ -90,8 +90,10 @@ public class BestScoreCalculator {
                 }
             }
 
-            statsManager.writePlayersDetailsStatInCsv(csv,game,i);
-            statsManager.updatePlayerStatInCsv(csv,game,i);
+            if(writeInCsv) {
+                statsManager.writePlayersDetailsStatInCsv(csv, game, i);
+                statsManager.updatePlayerStatInCsv(csv, game, i);
+            }
         }
 
 

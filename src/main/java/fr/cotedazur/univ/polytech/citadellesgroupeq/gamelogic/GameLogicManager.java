@@ -53,14 +53,18 @@ public class GameLogicManager {
     private Map<Player, Integer> scoreOfEnd =new HashMap<>();
 
 
+
+    private boolean shouldWriteInCsv;
+
+
     //nécessaire pour régler l'issue #53 sur github : voir la doc de public GameManager()
     /**
      * Liste des joueurs à utiliser par défaut pour une partie. Contient les classes à instancier, et non pas des instances, pour ne pas avoir à effectuer des Deep copy. (voir issue #53)
      */
     protected static final List<Class<? extends Player>> DEFAULT_PLAYER_CLASS_LIST = Arrays.asList(ThomasPlayer.class, RichardPlayer.class, AlwaysSpendPlayer.class, MattPlayer.class);
 
-    public GameLogicManager() {
-        this(List.of());//liste de joueurs vide
+    public GameLogicManager(boolean writeInCsv) {
+        this(List.of(), writeInCsv);//liste de joueurs vide
 
 
         //nécessaire pour régler l'issue #53 sur github :
@@ -78,19 +82,22 @@ public class GameLogicManager {
         }
     }
 
-    public CardDeck getCardDeck() { return cardDeck; }
-
-    public void setCardDeck(CardDeck cardDeck) {
-        this.cardDeck = cardDeck;
-    }
-
-    public GameLogicManager(List<Player> playersList) {
+    public GameLogicManager(List<Player> playersList, boolean writeInCsv) {
         randomGenerator=new Random();
         this.playersList=new ArrayList<>(playersList);//pour ne pas modifier le tableau de base
         this.masterOfTheGameIndex=0;
         playerTreeSet=new TreeSet<>();
         isFinished=false;
         cardDeck =new CardDeck();
+        shouldWriteInCsv=writeInCsv;
+    }
+
+    public GameLogicManager() {//for backward compatibility
+        this(false);
+    }
+
+    public GameLogicManager(List<Player> playersList) {//for backward compatibility
+        this(playersList, false);
     }
 
     public List<Player> getPlayersList() {
@@ -107,6 +114,14 @@ public class GameLogicManager {
     public List<Player> makeAllPlayersSelectRole() {
         int nombreDeJoueurs = getPlayersList().size();
         return makeAllPlayersSelectRole(generateAvailableRoles(nombreDeJoueurs));
+    }
+
+
+
+    public CardDeck getCardDeck() { return cardDeck; }
+
+    public void setCardDeck(CardDeck cardDeck) {
+        this.cardDeck = cardDeck;
     }
 
     /**
@@ -330,6 +345,14 @@ public class GameLogicManager {
 
     public void setScoreOfEnd(Map<Player, Integer> scores) {
         scoreOfEnd=scores;
+    }
+
+
+
+    public boolean shouldWriteInCsv() { return shouldWriteInCsv; }
+
+    public void setShouldWriteInCsv(boolean shouldWriteInCsv) {
+        this.shouldWriteInCsv = shouldWriteInCsv;
     }
 }
 

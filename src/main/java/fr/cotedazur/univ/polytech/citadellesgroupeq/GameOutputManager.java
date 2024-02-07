@@ -18,10 +18,14 @@ public class GameOutputManager {
     private int playersNumber;
     private static final Logger GAMEPLAY_LOGGER = EasyLogger.getLogger("gameplay");
 
-    public GameOutputManager() {
-        game=new GameLogicManager();
+    public GameOutputManager(boolean writeInCsv) {
+        game=new GameLogicManager(writeInCsv);
         rounds=1;
         playersNumber=4;
+    }
+
+    public GameOutputManager() {
+        this(false);
     }
 
     public GameOutputManager(List<Player> playerList) {
@@ -60,7 +64,7 @@ public class GameOutputManager {
                 }
             }
             GAMEPLAY_LOGGER.log(
-                    Level.INFO, "{} {} a gagné avec un score de {} ",
+                    Level.INFO, "Eeeeeet bravo ! {} {} a gagné avec un score de {} ",
                     new Object[]{winner.getBotLogicName(), winner.getStrategyName(), game.getScoreOfEnd().get(winner)}
             );
 
