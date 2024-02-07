@@ -75,6 +75,7 @@ public class BestScoreCalculator {
 
             if(optionalWinner.isPresent()) {
                 winPerPlayerIdArray[optionalWinner.get().getId()]++;
+                statsManager.setWinForPlayer(optionalWinner.get());
             }
             else {//égalité
                 shouldCountAsTieGame=true;
@@ -85,11 +86,12 @@ public class BestScoreCalculator {
 
                 if(shouldCountAsTieGame && score.getValue()==bestScore) {//si il y a une égalité, et que le joueur en question fait partie des meilleurs joueurs à égalité
                     tiePerPlayerIdArray[score.getKey().getId()]++;//on augmente son nombre d'égalité
+                    statsManager.setTieForPlayer(score.getKey());
                 }
             }
 
-            /*statsManager.writePlayersDetailsStatInCsv(csv,game,i);
-            statsManager.updatePlayerStatInCsv(csv,game,i);*/
+            statsManager.writePlayersDetailsStatInCsv(csv,game,i);
+            statsManager.updatePlayerStatInCsv(csv,game,i);
         }
 
 

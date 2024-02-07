@@ -23,7 +23,7 @@ public class GameStatsCsv {
     public void createCsvDetailsFile(){
         try (CSVWriter writer = new CSVWriter(new FileWriter(detailsCsvPath.toFile()))) {
             String[] header = {"Id partie", "Nom du joueur","Prix moyen des citadelles achetées", "Rôle préféré",
-                    "Nombre de fois où il assassine", "Nombre de fois où il s'est fait assassiner", "Score", "Victoire"
+                    "Nombre de fois où il assassine", "Nombre de fois où il s'est fait assassiner", "Score", "Victoire", "Egalite"
             };
             writer.writeNext(header);
         } catch (IOException e) {
@@ -33,24 +33,22 @@ public class GameStatsCsv {
 
     public void createCsvFile(){
         try {
-            String[] header = {"Nom du joueur", "Pourcentage de parties gagnées", "Pourcentage de parties perdues",
+            String[] header = {"Nom du joueur", "Pourcentage de parties gagnées", "Pourcentage de parties perdues", "Pourcentage d'égalité",
                     "Nombre de parties jouées"
             };
 
             if (!Files.exists(csvPath.toAbsolutePath()) || Files.size(csvPath.toAbsolutePath()) == 0) {
                 CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString()));
-                writer.writeNext(header);
-                String[][] playerData = {
+                List<String[]> playerData = List.of(
+                        header,
+                        new String[]{"MattPlayer", "0", "0", "0", "0"},
+                        new String[]{"ThomasPlayer", "0", "0","0", "0"},
+                        new String[]{"AlwaysSpendPlayer", "0", "0","0", "0"},
+                        new String[]{"RandomPlayer", "0", "0","0", "0"});
 
-                        {"MattPlayer", "0", "0", "0"},
-                        {"ThomasPlayer", "0", "0","0"},
-                        {"AlwaysSpendPlayer", "0", "0","0"},
-                        {"RandomPlayer", "0", "0","0"}
-                };
-                for (String[] data : playerData) {
-                    writer.writeNext(data);
-                }
+                writer.writeAll(playerData);
                 writer.close();
+                System.out.println("test");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,12 +67,13 @@ public class GameStatsCsv {
     }
 
     public void writeInCsvFile(List<String[]> data) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), false))) {
+        try {
             if (!Files.exists(csvPath)) {
                 System.out.println("impossible");
             }
-
+            CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), false));
             writer.writeAll(data);
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -15,15 +15,22 @@ import java.util.*;
  * Cette classe s'occupe de stocker par joueur une liste de summary.
  */
 public class StatsManager {
-    private Map<Player, List<RoundSummary>> playerSummaries;
-    private String[] stats;
+    private final Map<Player, List<RoundSummary>> playerSummaries;
+    private final String[] stats;
+
+    private final boolean[] playerHasTieGameArray;
+
+    private Optional<Player> playerWinning;
+
     public StatsManager(List<Player> playersList) {
         playerSummaries = new HashMap<>();
         for (Player player : playersList) {
             playerSummaries.put (player, new ArrayList<>());
         }
-        stats= new String[8];
+        stats= new String[9];
         Arrays.fill(stats,"");
+        playerHasTieGameArray=new boolean[4];
+        playerWinning=Optional.empty();
     }
 
     public void addSummary(Player playerName, RoundSummary summary) {
@@ -39,12 +46,13 @@ public class StatsManager {
     public String[] getStatForAPlayer(Player player,GameLogicManager game ,int round){
         stats[0] = "" + (round + 1);
         stats[1] = player.getBotLogicName();
-        setStatOfNumberOfDeath(player);
         setStatOfAverageDistrictPrice(player);
         setStatOfFavoriteRole(player);
         setStatOfNumberOfKills(player);
+        setStatOfNumberOfDeath(player);
         setStatOfScore(player, game);
-        setWinOrNot(player);
+        stats[7]=(playerWinning.isPresent() && playerWinning.get().equals(player)) ? "Oui" : "Non";
+        stats[8]=(playerHasTieGameArray[player.getId()]) ? "Oui" : "Non";
         return stats;
     }
 
@@ -56,13 +64,18 @@ public class StatsManager {
         }
     }
 
+    private boolean isFirstTime=false;
+
     public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate, GameLogicManager game, int round){
         csvToUpdate.createCsvFile();
         for(Player player : playerSummaries.keySet()){
             // On récupère la stat de chaque joueur pour une partie
             String[] statForOnePlayer = getStatForAPlayer(player,game, round);
-            List<String[]> data=getUpdatedStatsLine(csvToUpdate.getReaderOfResumeStatsCsv(), statForOnePlayer); // La on, récupère le petit csv à modif
-            csvToUpdate.writeInCsvFile(data);
+            if(!isFirstTime) {
+                isFirstTime=true;
+                List<String[]> data=getUpdatedStatsLine(csvToUpdate.getReaderOfResumeStatsCsv(), statForOnePlayer); // La on, récupère le petit csv à modif
+                csvToUpdate.writeInCsvFile(data);
+            }
         }
     }
     /**
@@ -131,67 +144,73 @@ public class StatsManager {
         stats[6] = "" + score;
     }
 
-    public void setWinOrNot(Player player){
-        List<RoundSummary> playerSummary = playerSummaries.get(player);
-        for (RoundSummary summary : playerSummary) {
-            if(summary.hasFinishDuringTurn()) {
-                stats[7] = "Oui";
-            }
-            else{
-                stats[7] = "Non";
-            }
-        }
+    public void setWinForPlayer(Player player) {
+        playerWinning=Optional.of(player);
     }
 
     public List<String[]> getUpdatedStatsLine(CSVReader csvReader, String[] stats) {
         List<String[]> data = new ArrayList<>();
         try {
-            data.add(csvReader.readNext());
+            data.add(csvReader.readNext());//add header to data
+
             String[] nextLine;
 
             while ((nextLine = csvReader.readNext()) != null) {
-                int totalGames = Integer.parseInt(nextLine[3]);
-
                 if (nextLine[0].equals(stats[1])) {
-                    double winPercentage = Double.parseDouble(nextLine[1]);//chiffre en pourcentage: si 50% de victoire, winPercentage=50
-                    double loosePercentage = Double.parseDouble(nextLine[2]);
+                    int totalGames = Integer.parseInt(nextLine[4]);
 
-                    /*if (stats[7].equalsIgnoreCase("Oui")) {
-                        int win = ((int) Math.ceil(winPercentage * totalGames)) + 1;//nombre effectif de parties gagnées
-                        nextLine[1] = Integer.toString(win * 100 / (totalGames + 1));
-                    } else {
-                        int loose = ((int) Math.ceil(loosePercentage * totalGames)) + 1;
-                        nextLine[2] = Integer.toString(loose * 100 / (totalGames + 1));
-                    }*/
+                    double winPercentage = Double.parseDouble(nextLine[1]);//chiffre en pourcentage: si 50% de victoire, winPercentage=50
+
+                    double loosePercentage = Double.parseDouble(nextLine[2]);
+                    double tiePercentage = Double.parseDouble(nextLine[3]);
+
                     int nombreWin=(int) ((winPercentage/100.0d) * totalGames);
                     int nombreLoose=(int) ((loosePercentage/100.0d) * totalGames);
+                    int nombreTie=(int) ((tiePercentage/100.0d) * totalGames);
 
-                    if (stats[7].equalsIgnoreCase("Oui")) {
+                    if (stats[7].equalsIgnoreCase("Oui")) {//victoire
                         if(totalGames==0) {
                             nextLine[1] = Double.toString(100.0d);
                             nextLine[2] = Double.toString(0.0d);
+                            nextLine[3] = Double.toString(0.0d);
                         }
                         nombreWin++;
                     }
-                    else {
+                    else if (stats[8].equalsIgnoreCase("Oui")){//égalité
                         if(totalGames==0) {
-                            nextLine[2] = Double.toString(100.0d);
                             nextLine[1] = Double.toString(0.0d);
+                            nextLine[2] = Double.toString(0.0d);
+                            nextLine[3] = Double.toString(100.0d);
+                        }
+                        nombreTie++;
+                    }
+                    else {//loose
+                        if(totalGames==0) {
+                            nextLine[1]=Double.toString(0.0d);
+                            nextLine[2]=Double.toString(100.0d);
+                            nextLine[3]=Double.toString(0.0d);
                         }
                         nombreLoose++;
                     }
 
 
 
-                    double newWinPercentage = ((double) nombreWin /(totalGames+1)) * 100;
+                    double newWinPercentage = (((double) nombreWin) /(totalGames+1)) * 100;
                     nextLine[1] = Double.toString(newWinPercentage);
 
-                    double newLoosePercentage = ((double) nombreLoose /(totalGames+1)) * 100;
+                    double newLoosePercentage = (((double) nombreLoose) /(totalGames+1)) * 100;
                     nextLine[2] = Double.toString(newLoosePercentage);
 
-                    nextLine[3] = Integer.toString(totalGames+1);
+                    double newTiePercentage = (((double) nombreTie) / (totalGames+1)) * 100;
+                    nextLine[3] = Double.toString(newTiePercentage);
+
+                    nextLine[4] = Integer.toString(totalGames+1);
+                    data.add(nextLine);
+                    break;
                 }
-                data.add(nextLine);
+                else {
+                    data.add(nextLine);
+                }
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -199,6 +218,9 @@ public class StatsManager {
         }
 
         return data;
+    }
+    public void setTieForPlayer(Player joueur) {
+        playerHasTieGameArray[joueur.getId()]=true;
     }
 }
     
