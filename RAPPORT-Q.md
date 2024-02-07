@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h5 align="center">Citadelle, un jeu de société mêlant stratégie et bluff dans un décor médiéval fantastique. Les joueurs incarnent des personnages ambitieux construisant leur cité tout en contrant les plans de leurs adversaires.</h5>
+<h5 align="center">Citadelles, un jeu de société mêlant stratégie et bluff dans un décor médiéval fantastique. Les joueurs incarnent des personnages ambitieux construisant leur cité tout en contrant les plans de leurs adversaires.</h5>
 
 <p align="center">
   <a href="#notre-avancement">Notre avancement</a> •
