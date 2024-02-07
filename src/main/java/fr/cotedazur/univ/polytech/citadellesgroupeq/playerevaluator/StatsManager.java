@@ -56,10 +56,14 @@ public class StatsManager {
         }
     }
 
-    public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate){
+    public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate, GameLogicManager game, int round){
         csvToUpdate.createCsvFile();
-        List<String[]> data=getUpdatedStatsLine(csvToUpdate.getReaderOfResumeStatsCsv(), stats); // La on, récupère le petit csv à modif
-        csvToUpdate.writeInCsvFile(data);
+        for(Player player : playerSummaries.keySet()){
+            // On récupère la stat de chaque joueur pour une partie
+            String[] statForOnePlayer = getStatForAPlayer(player,game, round);
+            List<String[]> data=getUpdatedStatsLine(csvToUpdate.getReaderOfResumeStatsCsv(), statForOnePlayer); // La on, récupère le petit csv à modif
+            csvToUpdate.writeInCsvFile(data);
+        }
     }
     /**
      * Le but de cette méthode est d'ajouter la stat du nombre de morts à la ligne associée à la partie d'un joueur.
@@ -139,16 +143,54 @@ public class StatsManager {
         }
     }
 
-    public List<String[]> getUpdatedStatsLine(CSVReader csvReader, String[] stats){
-        List<String[]> data=new ArrayList<>();
+    public List<String[]> getUpdatedStatsLine(CSVReader csvReader, String[] stats) {
+        List<String[]> data = new ArrayList<>();
         try {
-            String[] nextLine;//will skip header line
+            data.add(csvReader.readNext());
+            String[] nextLine;
 
             while ((nextLine = csvReader.readNext()) != null) {
-                if(nextLine[0].equals(stats[1]) && stats[7].equalsIgnoreCase("Oui")){
-                    nextLine[1]=Integer.toString(Integer.valueOf(nextLine[1])+1);
-                }
+                int totalGames = Integer.parseInt(nextLine[3]);
 
+                if (nextLine[0].equals(stats[1])) {
+                    double winPercentage = Double.parseDouble(nextLine[1]);//chiffre en pourcentage: si 50% de victoire, winPercentage=50
+                    double loosePercentage = Double.parseDouble(nextLine[2]);
+
+                    /*if (stats[7].equalsIgnoreCase("Oui")) {
+                        int win = ((int) Math.ceil(winPercentage * totalGames)) + 1;//nombre effectif de parties gagnées
+                        nextLine[1] = Integer.toString(win * 100 / (totalGames + 1));
+                    } else {
+                        int loose = ((int) Math.ceil(loosePercentage * totalGames)) + 1;
+                        nextLine[2] = Integer.toString(loose * 100 / (totalGames + 1));
+                    }*/
+                    int nombreWin=(int) ((winPercentage/100.0d) * totalGames);
+                    int nombreLoose=(int) ((loosePercentage/100.0d) * totalGames);
+
+                    if (stats[7].equalsIgnoreCase("Oui")) {
+                        if(totalGames==0) {
+                            nextLine[1] = Double.toString(100.0d);
+                            nextLine[2] = Double.toString(0.0d);
+                        }
+                        nombreWin++;
+                    }
+                    else {
+                        if(totalGames==0) {
+                            nextLine[2] = Double.toString(100.0d);
+                            nextLine[1] = Double.toString(0.0d);
+                        }
+                        nombreLoose++;
+                    }
+
+
+
+                    double newWinPercentage = ((double) nombreWin /(totalGames+1)) * 100;
+                    nextLine[1] = Double.toString(newWinPercentage);
+
+                    double newLoosePercentage = ((double) nombreLoose /(totalGames+1)) * 100;
+                    nextLine[2] = Double.toString(newLoosePercentage);
+
+                    nextLine[3] = Integer.toString(totalGames+1);
+                }
                 data.add(nextLine);
             }
         } catch (IOException | CsvValidationException e) {

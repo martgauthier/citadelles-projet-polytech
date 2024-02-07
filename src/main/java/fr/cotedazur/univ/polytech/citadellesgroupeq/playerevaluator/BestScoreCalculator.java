@@ -34,7 +34,7 @@ public class BestScoreCalculator {
 
         GameStatsCsv csv = new GameStatsCsv();
 
-        for(int i=0; i < 1000; i++) {
+        for(int i=0; i < 50; i++) {
             int ids=0;
             CardDeck deck=new CardDeck();
             List<Player> players=new ArrayList<>();
@@ -71,7 +71,7 @@ public class BestScoreCalculator {
             optionalWinner.ifPresentOrElse(player -> winPerPlayerIdArray[player.getId()]++, () -> winPerPlayerIdArray[winPerPlayerIdArray.length-1]++);//compte la victoire seulement si présent
 
             statsManager.writePlayersDetailsStatInCsv(csv,game,i);
-            statsManager.updatePlayerStatInCsv(csv);
+            statsManager.updatePlayerStatInCsv(csv,game,i);
         }
 
 
