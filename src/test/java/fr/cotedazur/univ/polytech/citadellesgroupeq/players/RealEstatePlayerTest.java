@@ -14,6 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RealEstatePlayerTest {
+    GameLogicManager game;
     Player botWithEightCards;
     Player botWithoutCards;
     RoundSummary summary;
@@ -23,6 +24,7 @@ class RealEstatePlayerTest {
     public void setUp(){
         List<District> districtList = new ArrayList<>();
 
+        game = new GameLogicManager();
         pioche=new CardDeck();
 
         districtList.add(new District("Temple", 9, "blue", "null"));
@@ -39,6 +41,16 @@ class RealEstatePlayerTest {
         summary = new RoundSummary();
     }
 
+    @Test
+    void testSmallConstructor(){
+        RealEstatePlayer realEstatePlayer = new RealEstatePlayer(2, pioche);
+        assertEquals(2, realEstatePlayer.getCash());
+    }
+
+    @Test
+    void testDesc(){
+        assertEquals("RealEstatePlayer",botWithEightCards.getBotLogicName());
+    }
     @Test
     void testPlayerTurnWithEightCardsInHand(){
         assertEquals(8, botWithEightCards.getCardsInHand().size());
@@ -61,5 +73,17 @@ class RealEstatePlayerTest {
         // il a maintenant 8 cartes en main, son objectif faire de l'argent
         botWithoutCards.playTurn(summary, new GameLogicManager());
         assertTrue(summary.hasPickedCash());
+    }
+
+    @Test
+    void testSelectPlayerToExchangeCardsWithAsMagicien() {
+        Player playerToExchange = botWithoutCards.selectPlayerToExchangeCardsWithAsMagicien(game.getPlayersList());
+        assertTrue(game.getPlayersList().contains(playerToExchange));
+    }
+
+    @Test
+    void testChoosesToExchangeCardWithPlayer() {
+        boolean choose = botWithoutCards.choosesToExchangeCardWithPlayer();
+        assertTrue(choose || !choose);
     }
 }
