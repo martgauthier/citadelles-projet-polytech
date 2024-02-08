@@ -91,6 +91,7 @@ public class GameStatsCsv {
             throw new IllegalStateException("Can't write in file !");
         }
     }
+
     public CSVReader getReaderOfResumeStatsCsv(){
         try {
             return new CSVReader(new FileReader(CSV_PATH.toString()));

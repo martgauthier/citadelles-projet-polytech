@@ -46,6 +46,7 @@ class ThomasPlayerTest {
         List<Role> availablesRoles2=List.of(Role.ARCHITECTE, Role.VOLEUR, Role.CONDOTTIERE, Role.MARCHAND);
         assertEquals(0, player2.selectAndSetRole(availablesRoles2, List.of()));
     }
+
     @Test
     void testChoosesBetweenCoinsAndCards(){
         player1.clearHand();
