@@ -16,6 +16,8 @@ import java.util.*;
  */
 public class StatsManager {
     private final Map<Player, List<RoundSummary>> playerSummaries;
+
+
     private final String[] stats;
 
     private final boolean[] playerHasTieGameArray;
@@ -63,6 +65,7 @@ public class StatsManager {
             csv.writeInCsvDetailsFile(statForOnePlayer);
         }
     }
+    public Map<Player, List<RoundSummary>> getPlayerSummaries() { return playerSummaries; }
 
     public void updatePlayerStatInCsv(GameStatsCsv csvToUpdate, GameLogicManager game, int round){
         csvToUpdate.createCsvFile(game.getPlayersList());//works perfectly
@@ -70,9 +73,17 @@ public class StatsManager {
             // On récupère la stat de chaque joueur pour une partie
             String[] statForOnePlayer = getStatForAPlayer(player,game, round);//works
 
-            List<String[]> data=getUpdatedStatsLine(csvToUpdate.getReaderOfResumeStatsCsv(), statForOnePlayer); // La on, récupère le petit csv à modif
+            try {
+                CSVReader reader = csvToUpdate.getReaderOfResumeStatsCsv();
 
-            csvToUpdate.writeInCsvFile(data);
+                List<String[]> data = getUpdatedStatsLine(reader, statForOnePlayer); // La on, récupère le petit csv à modif
+
+                reader.close();
+                csvToUpdate.writeInCsvFile(data);
+            }
+            catch(IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
 
     }
@@ -216,5 +227,9 @@ public class StatsManager {
     public void setTieForPlayer(Player joueur) {
         playerHasTieGameArray[joueur.getId()]=true;
     }
+
+    public Optional<Player> getPlayerWinning() { return playerWinning; }
+
+    public boolean[] getPlayerHasTieGameArray() { return playerHasTieGameArray; }
 }
     

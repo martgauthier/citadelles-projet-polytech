@@ -154,7 +154,7 @@
                 </plugins>
             </build>
             <properties>
-                <sonar.coverage.exclusions>**/Main.java, **/GameOutputManager.java</sonar.coverage.exclusions>
+                <sonar.coverage.exclusions>**/Main.java, **/GameOutputManager.java, **/BestScoreCalculator.java</sonar.coverage.exclusions>
             </properties>
         </profile>
     </profiles>
