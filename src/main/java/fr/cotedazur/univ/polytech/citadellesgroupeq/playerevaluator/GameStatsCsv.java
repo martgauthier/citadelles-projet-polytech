@@ -27,7 +27,7 @@ public class GameStatsCsv {
             };
             writer.writeNext(header);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Can't write in this file !");
         }
     }
 
@@ -55,7 +55,7 @@ public class GameStatsCsv {
                 writer.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Can't write in file !");
         }
     }
 
@@ -66,28 +66,27 @@ public class GameStatsCsv {
             }
             writer.writeNext(data);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Can't write in file !");
         }
     }
 
     public void writeInCsvFile(List<String[]> data) {
         try {
             if (!Files.exists(csvPath)) {
-                System.out.println("impossible");
+                throw new IllegalStateException("File should exist at this state !");
             }
             CSVWriter writer = new CSVWriter(new FileWriter(csvPath.toString(), false));
             writer.writeAll(data);
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Can't write in file !");
         }
     }
     public CSVReader getReaderOfResumeStatsCsv(){
         try {
             return new CSVReader(new FileReader(csvPath.toString()));
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new IllegalStateException("Can't read file !");
         }
     }
 }
