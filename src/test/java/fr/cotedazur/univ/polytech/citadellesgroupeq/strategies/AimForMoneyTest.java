@@ -95,4 +95,10 @@ class AimForMoneyTest {
         mainPlayer.setStrategy(new DefaultStrategy(mainPlayer));
         assertEquals(Optional.of(availableRoles.get(0)), mainPlayer.getStrategy().selectRoleToSteal(availableRoles, List.of()));//c'est bien le retour par défaut
     }
+
+    @Test
+    void testReturnsEmptyDistrict() {
+        IStrategy aimStrategy=new AimForMoneyStrategy(mainPlayer);
+        assertTrue(aimStrategy.getChoosenDistrictToBuy().isEmpty());
+    }
 }
