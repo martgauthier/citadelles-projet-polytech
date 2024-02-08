@@ -8,8 +8,8 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.IStrategy;
 import java.util.*;
 
 /**
- * La classe Player représente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantité
- * d'argent (@cash), des cartes dans sa main (non posées dans sa cité), un rôle attribué
+ * La classe Player represente un joueur dans le jeu Citadelles. Chaque joueur a un identifiant unique, une quantite
+ * d'argent (@cash), des cartes dans sa main (non posees dans sa cite), un role attribue
  */
 public abstract class Player implements Comparable<Player>, IStrategy {
     private Random randomGenerator=new Random();
@@ -20,27 +20,27 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     private int cash;
 
     /**
-     * true si le joueur a été tué par l'assassin, false sinon
+     * true si le joueur a ete tue par l'assassin, false sinon
      */
     private boolean deadForThisTurn;
 
     /**
-     * Cash à donner au début du jeu au joueur.
+     * Cash à donner au debut du jeu au joueur.
      */
     public static final int DEFAULT_CASH=2;
 
     /**
-     * Identification du bot: bot numéro 0 -> id=0, bot numéro 1 -> id=1...
+     * Identification du bot: bot numero 0 -> id=0, bot numero 1 -> id=1...
      */
     private final int id;
 
     /**
-     * Cartes que le joueur contient dans sa main. PAS LES CARTES POSÉES DANS SA CITÉ
+     * Cartes que le joueur contient dans sa main. PAS LES CARTES POSEES DANS SA CITE
      */
     private List<District> cardsInHand;
 
     /**
-     * La cité où le joueur pose ses cartes achetées
+     * La cite ou le joueur pose ses cartes achetees
      */
     private List<District> city;
 
@@ -56,14 +56,14 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     private IStrategy strategy;
 
     /**
-     * Pioche commune au jeu et à tous les joueurs.
+     * Pioche commune au jeu et a tous les joueurs.
      */
     private final CardDeck pioche;
 
     /**
-     * Crée un joueur possédant 4 cartes et 2 pièces, comme précisé dans la règle du jeu.
+     * Cree un joueur possedant 4 cartes et 2 pieces, comme precise dans la regle du jeu.
      * @param id id du joueur dans la game
-     * @param pioche pioche, commune à tous les joueurs et à la game
+     * @param pioche pioche, commune a tous les joueurs et à la game
      */
     protected Player(int id, CardDeck pioche) {
         this(id, DEFAULT_CASH, new ArrayList<>(),false, pioche);
@@ -74,11 +74,11 @@ public abstract class Player implements Comparable<Player>, IStrategy {
     }
 
     /**
-     * Crée un joueur avec une situation de départ donnée
+     * Cree un joueur avec une situation de depart donnee
      * @param id id du joueur dans la game
-     * @param cash cash de départ du joueur
+     * @param cash cash de depart du joueur
      * @param cards cartes en main par défaut du joueur
-     * @param deadForThisTurn définit si le joueur est actuellement tué par l'assassin
+     * @param deadForThisTurn definit si le joueur est actuellement tue par l'assassin
      * @param pioche pioche, commune à tous les joueurs et au jeu
      */
 

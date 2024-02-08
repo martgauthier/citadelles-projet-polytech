@@ -29,9 +29,9 @@ public class RandomPlayer extends Player {
     }
 
     /**
-     * Méthode qui définit la logique du tour d'un joueur alwaysSpendPlayer.
+     * Methode qui definit la logique du tour d'un joueur alwaysSpendPlayer.
      *
-     * @param summary Résumé du tour actuel.
+     * @param summary Resume du tour actuel.
      */
     @Override
     public void playTurn(RoundSummary summary, GameLogicManager game) {

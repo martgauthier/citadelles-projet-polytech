@@ -8,7 +8,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.SecurePointsForEn
 import java.util.*;
 
 /**
- * Stratégie proposée par notre collège Thomas
+ * Strategie proposee par notre collège Thomas
  */
 public class ThomasPlayer extends Player {
     protected static final List<Role> ROLES_TO_PICK_IN_ORDER=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.CONDOTTIERE));

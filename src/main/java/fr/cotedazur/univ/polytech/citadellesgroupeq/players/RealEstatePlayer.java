@@ -26,9 +26,9 @@ public class RealEstatePlayer extends Player {
     }
 
     /**
-     * Méthode qui définit la logique du tour d'un joueur alwaysSpendPlayer.
+     * Methode qui définit la logique du tour d'un joueur AlwaysSpendPlayer.
      *
-     * @param summary Résumé du tour actuel.
+     * @param summary Resume du tour actuel.
      * @param game game
      */
     @Override

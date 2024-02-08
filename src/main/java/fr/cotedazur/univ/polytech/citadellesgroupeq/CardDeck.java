@@ -10,18 +10,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 
 /**
- * La classe DistrictsJSONReader lit les données d'un fichier JSON contenant des informations sur les districts.
- * Elle convertit ces données en une liste d'objets District.
+ * La classe DistrictsJSONReader lit les donnees d'un fichier JSON contenant des informations sur les districts.
+ * Elle convertit ces donnees en une liste d'objets District.
  */
 public class CardDeck {
 
-    /** Le tableau JSON contenant les données des districts. */
+    /** Le tableau JSON contenant les donnees des districts. */
     private JSONArray jsonArray;
-    /** La liste des districts lue à partir du fichier JSON. */
+    /** La liste des districts lue a partir du fichier JSON. */
     private List<District> districtsList;
 
     /**
-     * Implémentation LIFO de la liste de cartes, pour modéliser une vraie pioche
+     * Implementation LIFO de la liste de cartes, pour modeliser une vraie pioche
      */
     private Queue<District> districtQueue;
 
@@ -31,7 +31,7 @@ public class CardDeck {
     public static final String DEFAULT_PATH= "districts.json";
 
     /**
-     * Construit un objet DistrictsJSONReader en lisant les données du fichier JSON contenant la liste des districts
+     * Construit un objet DistrictsJSONReader en lisant les donnees du fichier JSON contenant la liste des districts
      *
      * @throws BadlyInitializedReader Si une erreur se produit lors de la lecture du fichier ou si le format du fichier est incorrect.
      */

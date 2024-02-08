@@ -9,7 +9,7 @@ public class RichardRichStrategy extends DefaultStrategy{
         strategyName="[RichardRichStrategy]";
     }
     /**
-     * Il utilise cette stratégie quand il est riche
+     * Il utilise cette strategie quand il est riche
      */
     @Override
     public int selectAndSetRole(List<Role> availableRoles, List<Player> playerList) {

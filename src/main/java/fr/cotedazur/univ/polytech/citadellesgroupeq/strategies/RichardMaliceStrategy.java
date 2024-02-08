@@ -12,6 +12,14 @@ public class RichardMaliceStrategy extends DefaultStrategy{
         super(player);
         strategyName="[RichardMaliceStrategy]";
     }
+  
+    /**
+     * Il utilise cette strategie quand un joueur est sur le point de poser son avant-dernier quartier
+     */
+    @Override
+    public Role selectRoleToKillAsAssassin(List<Role> availableRoles) {
+        return player.selectRoleToKillAsAssassin(availableRoles);
+    }
 
     @Override
     public Optional<AbstractMap.SimpleEntry<Integer, District>> selectDistrictToDestroyAsCondottiere(List<Player> players) {
