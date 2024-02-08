@@ -1,10 +1,13 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq.evaluator;
 
+import com.opencsv.CSVReader;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator.GameStatsCsv;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +26,24 @@ class GameStatsCsvTest {
     void deleteFileIfPresent() {
         File file = new File(GameStatsCsv.CSV_PATH.toString());
         if (file.exists()) {
-            file.delete();
+            try {
+                Files.delete(GameStatsCsv.CSV_PATH);
+            }
+            catch(IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 
     void deleteDetailsFileIfPresent() {
         File file = new File(GameStatsCsv.DETAILS_CSV_PATH.toString());
         if (file.exists()) {
-            file.delete();
+            try {
+                Files.delete(GameStatsCsv.DETAILS_CSV_PATH);
+            }
+            catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 
@@ -89,5 +102,31 @@ class GameStatsCsvTest {
         csv.writeInCsvFile(data);//assert that it doesn't throw
 
         deleteFileIfPresent();
+    }
+
+    @Test
+    void testGetReaderOfResumeStatsThrows() {
+        deleteFileIfPresent();
+        assertThrows(IllegalStateException.class, () -> csv.getReaderOfResumeStatsCsv());
+
+        csv.createCsvFile(List.of());
+
+        try {
+            CSVReader reader = csv.getReaderOfResumeStatsCsv();//assert it doesn't throw
+
+            reader.close();
+        }
+        catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+
+        deleteFileIfPresent();
+    }
+
+    @AfterAll
+    static void deleteAfterAll() {
+        GameStatsCsvTest test=new GameStatsCsvTest();
+        test.deleteFileIfPresent();
+        test.deleteDetailsFileIfPresent();
     }
 }
