@@ -79,6 +79,7 @@ des cartes ou prendre des pièces (car cela n’était pas indiqué).
 
 ### D. Nos meilleurs bots: `MattPlayer` et `ThomasPlayer`
 
+#### Le bot `MattPlayer`
 [Mattplayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/MattPlayer.java) est le bot le plus fort
 du projet. Il adopte une stratégie de base [MattStartGameStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattStartGameStrategy.java)
 pendant le début de partie. Puis il modifie son comportement en utilisant [MattMoreThan5CitiesStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattMoreThan5CitiesStrategy.java). Son comportement se base sur les points suivants :
@@ -102,6 +103,14 @@ et qu'il possède peu de cartes :
 - Si un joueur pose sa **8ᵉ carte** :
   - Il utilise la stratégie [SecurePointsForEndGame](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/SecurePointsForEndGame.java)
 qui lui permet de faire le choix le plus optimal
+
+#### Le bot `ThomasPlayer`
+* Il préfère les rôles Architecte/Marchand/Condottiere.
+* Il choisit de prendre des pièces tant qu'il a des cartes en main.
+* Il achète à chaque fois sa citadelle en main la moins chère.
+* Quand il est Condottiere il cible en priorité les joueurs proche de gagner.
+* Quand il est voleur il cible en priorité l'architecte et le marchand.
+* Lorsque la partie arrive à son dernier tour il active la stratégie [SecurePointForEndGame](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/SecurePointsForEndGame.java).
 
 ## 2. Architecture et qualité
 ### A. Architecture du code
