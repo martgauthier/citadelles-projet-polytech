@@ -10,6 +10,7 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.RichardPlayer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -73,7 +74,7 @@ class RichardMaliceStrategyTest {
     @Test
     void testDestroyDistrict() {
         player.setRole(Role.CONDOTTIERE);
-        player.setCash(1000);
+        player.setCash(5);
         Player otherPlayer=game.getPlayersList().get(1);
         otherPlayer.setRole(Role.ROI);//arbitrary role that is not eveque
 
@@ -86,9 +87,36 @@ class RichardMaliceStrategyTest {
                 new District("temple3", 3, Color.RED)
         )));
 
+        player.setStrategy(new RichardMaliceStrategy(player));
+
         District districtThatShouldBeDestroyed=otherPlayer.getCity().get(0);//the first one
 
+        IStrategy maliceStrategy=player.getStrategy();
+
+        assertEquals(createOptionalEntry(otherPlayer.getId(), districtThatShouldBeDestroyed), maliceStrategy.selectDistrictToDestroyAsCondottiere(game.getPlayersList()));
         summary=game.playPlayerTurn(player);
         assertEquals(createOptionalEntry(otherPlayer.getId(), districtThatShouldBeDestroyed), summary.getOptionalDestroyedDistrict());
+    }
+
+    @Test
+    void testSelectRole() {
+        IStrategy maliceStrategy=new RichardMaliceStrategy(player);
+
+        List<Role> listeRoles=new ArrayList<>(List.of(Role.ARCHITECTE, Role.MARCHAND, Role.MAGICIEN));
+
+        assertEquals(Role.ARCHITECTE, listeRoles.get(maliceStrategy.selectAndSetRole(listeRoles, game.getPlayersList())));
+
+
+        listeRoles.add(Role.EVEQUE);
+        assertEquals(Role.EVEQUE, listeRoles.get(maliceStrategy.selectAndSetRole(listeRoles, game.getPlayersList())));
+
+        listeRoles.add(Role.CONDOTTIERE);
+        assertEquals(Role.CONDOTTIERE, listeRoles.get(maliceStrategy.selectAndSetRole(listeRoles, game.getPlayersList())));
+
+        listeRoles.add(Role.ASSASSIN);
+        assertEquals(Role.ASSASSIN, listeRoles.get(maliceStrategy.selectAndSetRole(listeRoles, game.getPlayersList())));
+
+        listeRoles.add(Role.ROI);
+        assertEquals(Role.ROI, listeRoles.get(maliceStrategy.selectAndSetRole(listeRoles, game.getPlayersList())));
     }
 }
