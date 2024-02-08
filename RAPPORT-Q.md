@@ -208,7 +208,9 @@ Notre code est documenté via une [java doc](javadoc/index.html). Le code est da
 * On aurait aussi dû implémenter les stratégies par défaut des `Player` dans des classes `Strategy`, au lieu de les implémenter dans les classes des `Player` afin de les alléger.
 #### c. Analyse de SonnarQube
 
-
+<div align="center">
+<img src="assetsrapport/sonar.png" width="700" height=auto>
+</div>
 
 ## Notre processus de développement
 
