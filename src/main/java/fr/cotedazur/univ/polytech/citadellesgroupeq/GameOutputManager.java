@@ -16,9 +16,9 @@ import java.util.logging.*;
 
 @SuppressWarnings("java:S3655")
 public class GameOutputManager {
-    private GameLogicManager game;
+    private final GameLogicManager game;
     private int rounds;
-    private int playersNumber;
+    private final int playersNumber;
     private static final Logger GAMEPLAY_LOGGER = EasyLogger.getLogger("gameplay");
 
     private boolean shouldWriteInCsv;
@@ -64,28 +64,7 @@ public class GameOutputManager {
         }
         Optional<Player> optionalWinner=game.whoIsTheWinner();
         if(optionalWinner.isPresent()) {//pas d'égalité
-            statsManager.setWinForPlayer(optionalWinner.get());
-            Player winner= optionalWinner.get();
-            GAMEPLAY_LOGGER.info("Voici le score des joueurs qui n'ont pas gagné:");
-            for (Player player : game.getPlayersList()) {
-                if (player != winner) {
-                    GAMEPLAY_LOGGER.log(Level.INFO,
-                            "Le joueur {} {}  a un score de {}",
-                            new Object[]{player.getBotLogicName(), player.getStrategyName(), game.getScoreOfEnd().get(player)}
-                    );
-                }
-            }
-            GAMEPLAY_LOGGER.log(
-                    Level.INFO, "Eeeeeet bravo ! {} {} a gagné avec un score de {} ",
-                    new Object[]{winner.getBotLogicName(), winner.getStrategyName(), game.getScoreOfEnd().get(winner)}
-            );
-
-            GAMEPLAY_LOGGER.info("A noter pour le décompte des points, qu'il possédait ces merveilles: (rien si pas de cartes violettes)");
-            for (District district : winner.getCity()) {
-                if (district.getColor() == Color.PURPLE) {
-                    GAMEPLAY_LOGGER.info("* " + district.getName());
-                }
-            }
+            describeWinnerState(optionalWinner.get());
         }
         else {
             int maxScore= Collections.max(game.getScoreOfEnd().values());
@@ -131,6 +110,31 @@ public class GameOutputManager {
         }
     }
 
+
+    public void describeWinnerState(Player winner) {
+        statsManager.setWinForPlayer(winner);
+        GAMEPLAY_LOGGER.info("Voici le score des joueurs qui n'ont pas gagné:");
+        for (Player player : game.getPlayersList()) {
+            if (player != winner) {
+                GAMEPLAY_LOGGER.log(Level.INFO,
+                        "Le joueur {} {}  a un score de {}",
+                        new Object[]{player.getBotLogicName(), player.getStrategyName(), game.getScoreOfEnd().get(player)}
+                );
+            }
+        }
+        GAMEPLAY_LOGGER.log(
+                Level.INFO, "Eeeeeet bravo ! {} {} a gagné avec un score de {} ",
+                new Object[]{winner.getBotLogicName(), winner.getStrategyName(), game.getScoreOfEnd().get(winner)}
+        );
+
+        GAMEPLAY_LOGGER.info("A noter pour le décompte des points, qu'il possédait ces merveilles: (rien si pas de cartes violettes)");
+        for (District district : winner.getCity()) {
+            if (district.getColor() == Color.PURPLE) {
+                GAMEPLAY_LOGGER.info("* " + district.getName());
+            }
+        }
+    }
+
     public void describePlayerRound(Player player, GameLogicManager game) {
         describePlayerState(player);
 
@@ -142,47 +146,7 @@ public class GameOutputManager {
         }
         else {
             if (summary.hasUsedRolePower()) {
-                GAMEPLAY_LOGGER.info("Ce joueur utilise son pouvoir de " + player.getRole().name());
-                if(player.getRole().equals(Role.ASSASSIN)) {
-                    for (Player p : game.getPlayersList()) {
-                        if (p.isDeadForThisTurn()) {
-                            GAMEPLAY_LOGGER.log(Level.INFO, "et a tué le joueur {} de nom {} {}",
-                                    new Object[]{p.getRole(), p.getBotLogicName(), p.getStrategyName()}
-                            );
-                            break;
-                        }
-                    }
-                }
-                else if(player.getRole().equals(Role.MAGICIEN)){
-                    if(summary.hasExchangedCardsWithPileAsMagician()) {
-                        GAMEPLAY_LOGGER.log(Level.INFO,
-                                "et décide d échanger ses cartes avec la pioche et il a échangé {} cartes.",
-                                summary.getExchangedCardsWithPileIndex().length
-                        );
-                    }
-                    else {
-                        Player exchangedWith = game.getPlayersList().get(summary.getExchangedCardsPlayerId());
-                        GAMEPLAY_LOGGER.log(Level.INFO,
-                                "et décide d échanger ses cartes avec le joueur {} qui est le joueur {} {}",
-                                new Object[]{exchangedWith.getRole(),exchangedWith.getBotLogicName(), exchangedWith.getStrategyName()}
-                        );
-                    }
-                }
-                else if(player.getRole().equals(Role.MARCHAND)){
-                    GAMEPLAY_LOGGER.info("et gagne une pièce bonus");
-                }
-                else if(player.getRole().equals(Role.VOLEUR)){
-                    GAMEPLAY_LOGGER.info("et a volé le joueur " + summary.getStealedRole());
-                }
-                else if (player.getRole() == Role.CONDOTTIERE && summary.getOptionalDestroyedDistrict().isPresent()) {
-                    AbstractMap.SimpleEntry<Integer, District> districtDestroyed=summary.getOptionalDestroyedDistrict().get();
-                    GAMEPLAY_LOGGER.log(Level.INFO, " et a détruit le district {} du joueur d id {}",
-                            new Object[]{districtDestroyed.getValue().getName(), districtDestroyed.getKey()}
-                    );
-                }
-                else if(player.getRole() == Role.ARCHITECTE) {
-                    GAMEPLAY_LOGGER.info("Il a donc automatiquement gagné 2 cartes de plus.");
-                }
+                describeRolePowerUsage(player, summary);
             }
 
             if (summary.hasWonCoinsByColorCards()) {
@@ -190,23 +154,8 @@ public class GameOutputManager {
                         summary.getCoinsWonByColorCards()
                 );
             }
-            Optional<District> optionalEcoleDeMagie = player.getDistrictInCity("Ecole de magie");
-            if (optionalEcoleDeMagie.isPresent()){
-                District ecoleDeMagie = optionalEcoleDeMagie.get();
-                if(ecoleDeMagie.getColor() == player.getRole().getColor()){
-                    GAMEPLAY_LOGGER.info("Dont une pièce grâce à l'Ecole de magie");
-                }
-            }
 
-
-            Optional<District> optionalCimetiere = player.getDistrictInCity("Cimetiere");
-            if (optionalCimetiere.isPresent() && summary.getOptionalDestroyedDistrict().isPresent()){
-                District cimetiere = optionalCimetiere.get();
-                District destroyedDistrict = summary.getOptionalDestroyedDistrict().get().getValue();
-                if(summary.getUsedMerveilles().contains(cimetiere.getName())){
-                    GAMEPLAY_LOGGER.log(Level.INFO, "Grace au cimetiere le joueur recupere dans sa main pour une piece la carte : {}", destroyedDistrict.getName());
-                }
-            }
+            describeMerveillesUsage(player, summary);
 
             if (summary.hasPickedCards()) {
                 GAMEPLAY_LOGGER.log(Level.INFO,"Il a choisi de piocher 1 carte: {}",
@@ -237,6 +186,80 @@ public class GameOutputManager {
             }
         }
         GAMEPLAY_LOGGER.info("\n");
+    }
+
+    /**
+     * Décrit l'utilisation des pouvoirs des rôles
+     * @param player
+     * @param summary
+     */
+    public void describeRolePowerUsage(Player player, RoundSummary summary) {
+        GAMEPLAY_LOGGER.info("Ce joueur utilise son pouvoir de " + player.getRole().name());
+        if(player.getRole().equals(Role.ASSASSIN)) {
+            for (Player p : game.getPlayersList()) {
+                if (p.isDeadForThisTurn()) {
+                    GAMEPLAY_LOGGER.log(Level.INFO, "et a tué le joueur {} de nom {} {}",
+                            new Object[]{p.getRole(), p.getBotLogicName(), p.getStrategyName()}
+                    );
+                    break;
+                }
+            }
+        }
+        else if(player.getRole().equals(Role.MAGICIEN)){
+            if(summary.hasExchangedCardsWithPileAsMagician()) {
+                GAMEPLAY_LOGGER.log(Level.INFO,
+                        "et décide d échanger ses cartes avec la pioche et il a échangé {} cartes.",
+                        summary.getExchangedCardsWithPileIndex().length
+                );
+            }
+            else {
+                Player exchangedWith = game.getPlayersList().get(summary.getExchangedCardsPlayerId());
+                GAMEPLAY_LOGGER.log(Level.INFO,
+                        "et décide d échanger ses cartes avec le joueur {} qui est le joueur {} {}",
+                        new Object[]{exchangedWith.getRole(),exchangedWith.getBotLogicName(), exchangedWith.getStrategyName()}
+                );
+            }
+        }
+        else if(player.getRole().equals(Role.MARCHAND)){
+            GAMEPLAY_LOGGER.info("et gagne une pièce bonus");
+        }
+        else if(player.getRole().equals(Role.VOLEUR)){
+            GAMEPLAY_LOGGER.info("et a volé le joueur " + summary.getStealedRole());
+        }
+        else if (player.getRole() == Role.CONDOTTIERE && summary.getOptionalDestroyedDistrict().isPresent()) {
+            AbstractMap.SimpleEntry<Integer, District> districtDestroyed=summary.getOptionalDestroyedDistrict().get();
+            GAMEPLAY_LOGGER.log(Level.INFO, " et a détruit le district {} du joueur d id {}",
+                    new Object[]{districtDestroyed.getValue().getName(), districtDestroyed.getKey()}
+            );
+        }
+        else if(player.getRole() == Role.ARCHITECTE) {
+            GAMEPLAY_LOGGER.info("Il a donc automatiquement gagné 2 cartes de plus.");
+        }
+    }
+
+    /**
+     * Décrit l'utilisation des merveilles pendant le tour
+     * @param player
+     * @param summary
+     */
+    public void describeMerveillesUsage(Player player, RoundSummary summary) {
+        Optional<District> optionalEcoleDeMagie = player.getDistrictInCity("Ecole de magie");
+        if (optionalEcoleDeMagie.isPresent()){
+            District ecoleDeMagie = optionalEcoleDeMagie.get();
+            if(ecoleDeMagie.getColor() == player.getRole().getColor()){
+                GAMEPLAY_LOGGER.info("Dont une pièce grâce à l'Ecole de magie");
+            }
+        }
+
+
+        Optional<District> optionalCimetiere = player.getDistrictInCity("Cimetiere");
+        if (optionalCimetiere.isPresent() && summary.getOptionalDestroyedDistrict().isPresent()){
+            District cimetiere = optionalCimetiere.get();
+            District destroyedDistrict = summary.getOptionalDestroyedDistrict().get().getValue();
+            if(summary.getUsedMerveilles().contains(cimetiere.getName())){
+                GAMEPLAY_LOGGER.log(Level.INFO, "Grace au cimetiere le joueur recupere dans sa main pour une piece la carte : {}", destroyedDistrict.getName());
+            }
+        }
     }
 
 

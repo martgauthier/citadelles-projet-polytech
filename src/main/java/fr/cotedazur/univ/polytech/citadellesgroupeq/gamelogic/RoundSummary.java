@@ -116,7 +116,7 @@ public class RoundSummary {
      */
     private List<District> drawnCards;
 
-    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasFinishDuringTurn, int coinsWonByColorCards, boolean hasUsedRolePower, boolean hasBeenKilledDuringTurn, Role stealedRole, Role role) {
+    public RoundSummary(int drawnCoins, List<District> drawnCards, List<District> boughtDistricts, boolean hasFinishDuringTurn, int coinsWonByColorCards, boolean hasUsedRolePower, boolean hasBeenKilledDuringTurn) {
         this.drawnCoins=drawnCoins;
         this.drawnCards=new ArrayList<>(drawnCards);
         this.boughtDistricts =new ArrayList<>(boughtDistricts);
@@ -124,12 +124,12 @@ public class RoundSummary {
         this.coinsWonByColorCards=coinsWonByColorCards;
         this.hasUsedRolePower = hasUsedRolePower;
         this.hasBeenKilledDuringTurn=hasBeenKilledDuringTurn;
-        this.stealedRole = stealedRole;
-        this.playerRole = role;
+        this.stealedRole = Role.EMPTY_ROLE;
+        this.playerRole = Role.EMPTY_ROLE;
     }
 
     public RoundSummary() {
-        this(DEFAULT_DRAWN_COINS, EMPTY_DISTRICT_LIST, EMPTY_DISTRICT_LIST, false, 0, false, false, Role.EMPTY_ROLE, Role.EMPTY_ROLE);
+        this(DEFAULT_DRAWN_COINS, EMPTY_DISTRICT_LIST, EMPTY_DISTRICT_LIST, false, 0, false, false);
     }
 
     public List<District> getBoughtDistricts() { return boughtDistricts; }

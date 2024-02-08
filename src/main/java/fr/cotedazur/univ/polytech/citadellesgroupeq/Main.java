@@ -56,33 +56,37 @@ public class Main {
             }
 
             if(main.twoThousands) {
-                dataPerPlayer = BestScoreCalculator.getDataFor1000GamesPerPlayer(fullThomasPlayerList, main.csv);
-
-                LOGGER.info("\n\n");//clear visual space a little
-
-                LOGGER.info("THOMASPLAYER VS HIMSELF:");
-
-                for (int playerid = 0; playerid < fullThomasPlayerList.size(); playerid++) {
-                    int tieGames = dataPerPlayer[playerid][2];
-
-                    int wonGames = dataPerPlayer[playerid][0];
-                    int lostGames = 1000 - wonGames - tieGames;
-                    int meanScore = dataPerPlayer[playerid][1];
-
-                    int tieGamesPercentage = tieGames / 10;
-                    int wonPercentage = wonGames / 10;
-                    int lostGamesPercentage = lostGames / 10;
-
-                    LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[]{playerid, fullThomasPlayerList.get(playerid).getSimpleName(), wonGames, wonPercentage});
-                    LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
-                    LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[]{tieGames, tieGamesPercentage});
-                    LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
-                }
+                displayDataForLast1000Games(main.csv);
             }
         }
         else {// having no args, or only "--demo" arg, do the same thing
             GameOutputManager outputManager = new GameOutputManager(main.csv);
             outputManager.startMainOutputLoop();
+        }
+    }
+
+    public static void displayDataForLast1000Games(boolean shouldWriteInCsv) {
+        int[][] dataPerPlayer = BestScoreCalculator.getDataFor1000GamesPerPlayer(fullThomasPlayerList, shouldWriteInCsv);
+
+        LOGGER.info("\n\n");//clear visual space a little
+
+        LOGGER.info("THOMASPLAYER VS HIMSELF:");
+
+        for (int playerid = 0; playerid < fullThomasPlayerList.size(); playerid++) {
+            int tieGames = dataPerPlayer[playerid][2];
+
+            int wonGames = dataPerPlayer[playerid][0];
+            int lostGames = 1000 - wonGames - tieGames;
+            int meanScore = dataPerPlayer[playerid][1];
+
+            int tieGamesPercentage = tieGames / 10;
+            int wonPercentage = wonGames / 10;
+            int lostGamesPercentage = lostGames / 10;
+
+            LOGGER.log(Level.INFO, "Le joueur d`id {} et de classe {} a gagne: {} parties ({}%)", new Object[]{playerid, fullThomasPlayerList.get(playerid).getSimpleName(), wonGames, wonPercentage});
+            LOGGER.log(Level.INFO, "Et il a perdu: {} parties ({} %)", new Object[]{lostGames, lostGamesPercentage});
+            LOGGER.log(Level.INFO, "Il a eu : {} ({} %) egalites.", new Object[]{tieGames, tieGamesPercentage});
+            LOGGER.log(Level.INFO, "Son score moyen est: {}\n", meanScore);
         }
     }
 }

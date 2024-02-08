@@ -35,34 +35,20 @@ public class BestScoreCalculator {
 
 
         for(int i=0; i < 1000; i++) {
-            int ids=0;
             CardDeck deck=new CardDeck();
-            List<Player> players=new ArrayList<>();
-            scorePerPlayerPerGame=new HashMap<>();
-            for(Class<? extends Player> playerStrategy: playerClasses) {
-                try {
-                    Constructor<? extends Player> constructor = playerStrategy.getDeclaredConstructor(int.class, CardDeck.class);
-                    Player newPlayer=constructor.newInstance(ids++, deck);
-                    players.add(newPlayer);
-                    scorePerPlayerPerGame.put(newPlayer, new ArrayList<>());
-                }
-                catch(Exception e) {
-                    throw new IllegalArgumentException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "!");
-                }
+            List<Player> players=createPlayerListFromClasses(playerClasses, deck);
+
+            scorePerPlayerPerGame=new HashMap<>();//resets it
+            for(Player joueur: players) {
+                scorePerPlayerPerGame.put(joueur, new ArrayList<>());
             }
+
 
             GameLogicManager game = new GameLogicManager(players, false);
             StatsManager statsManager = new StatsManager(game.getPlayersList());
             game.setCardDeck(deck);
 
-            while (!game.isFinished()) {
-                game.makeAllPlayersSelectRole();
-                for (Player joueur : game.getPlayerTreeSet()) {
-                    RoundSummary summary = game.playPlayerTurn(joueur);
-                    statsManager.addSummary(joueur, summary); // on ajoute le RoundSummary a liste des RoundSummary du joueur
-                }
-                game.resuscitateAllPlayers();
-            }
+            runFullGame(game, statsManager);
 
 
 
@@ -93,8 +79,6 @@ public class BestScoreCalculator {
             }
         }
 
-
-
         for(Map.Entry<Player, List<Integer>> scoreEntry: scorePerPlayerPerGame.entrySet()) {
             //Calcule la moyenne des scores
             Player joueur= scoreEntry.getKey();
@@ -108,5 +92,33 @@ public class BestScoreCalculator {
         }
 
         return returnedData;
+    }
+
+    public static List<Player> createPlayerListFromClasses(List<Class<? extends Player>> playerClasses, CardDeck deck) {
+        int ids=0;
+        List<Player> playerList=new ArrayList<>();
+        for(Class<? extends Player> playerStrategy: playerClasses) {
+            try {
+                Constructor<? extends Player> constructor = playerStrategy.getDeclaredConstructor(int.class, CardDeck.class);
+                Player newPlayer=constructor.newInstance(ids++, deck);
+                playerList.add(newPlayer);
+            }
+            catch(Exception e) {
+                throw new IllegalArgumentException("pas de constructeur prenant un int et un DistrictJSONReader en paramètre trouvé pour la classe " + playerStrategy.getName() + "!");
+            }
+        }
+
+        return playerList;
+    }
+
+    public static void runFullGame(GameLogicManager game, StatsManager statsManager) {
+        while (!game.isFinished()) {
+            game.makeAllPlayersSelectRole();
+            for (Player joueur : game.getPlayerTreeSet()) {
+                RoundSummary summary = game.playPlayerTurn(joueur);
+                statsManager.addSummary(joueur, summary); // on ajoute le RoundSummary a liste des RoundSummary du joueur
+            }
+            game.resuscitateAllPlayers();
+        }
     }
 }

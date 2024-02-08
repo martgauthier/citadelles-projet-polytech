@@ -22,6 +22,8 @@ public class StatsManager {
 
     private final boolean[] playerHasTieGameArray;
 
+    public static final String WIN_STRING="100.0";
+
     private Optional<Player> playerWinning;
 
     public StatsManager(List<Player> playersList) {
@@ -208,13 +210,13 @@ public class StatsManager {
 
             if(!playerHasBeenAdded) {
                 if(stats[7].equals("Oui")) {//win
-                    data.add(new String[] {stats[1], "1", "100.0", "0", "0.0", "0", "0.0", "1"});//totalGames=1 game because this could happen at first game
+                    data.add(new String[] {stats[1], "1", WIN_STRING, "0", "0.0", "0", "0.0", "1"});//totalGames=1 game because this could happen at first game
                 }
                 else if(stats[8].equals("Oui")) {//tie
-                    data.add(new String[] {stats[1], "0", "0.0", "1", "100.0", "0", "0.0", "1"});//totalGames=1 game because this could happen at first game
+                    data.add(new String[] {stats[1], "0", "0.0", "1", WIN_STRING, "0", "0.0", "1"});//totalGames=1 game because this could happen at first game
                 }
                 else {//loose
-                    data.add(new String[] {stats[1], "0", "0.0", "0", "0.0", "1", "100.0", "1"});//totalGames=1 game because this could happen at first game
+                    data.add(new String[] {stats[1], "0", "0.0", "0", "0.0", "1", WIN_STRING, "1"});//totalGames=1 game because this could happen at first game
                 }
 
             }
