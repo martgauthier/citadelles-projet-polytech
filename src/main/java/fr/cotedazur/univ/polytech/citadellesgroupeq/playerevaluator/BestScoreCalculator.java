@@ -15,11 +15,6 @@ public class BestScoreCalculator {
 
     private BestScoreCalculator() {}//useless, but removes sonar warning
 
-    public static void main(String[] args) {
-        List<Class<? extends Player>> playersAgainstThomas=List.of(ColorPlayer.class, ThomasPlayer.class, AlwaysSpendPlayer.class, RandomPlayer.class);
-        getDataFor1000GamesPerPlayer(playersAgainstThomas, true);
-    }
-
 
     /**
      *

@@ -1,10 +1,8 @@
 package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.logger.EasyLogger;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator.BestScoreCalculator;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator.StatsManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
 import java.util.List;
