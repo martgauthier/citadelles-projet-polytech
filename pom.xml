@@ -65,6 +65,11 @@
             <artifactId>jcommander</artifactId>
             <version>1.82</version>
         </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.7.0</version>
+        </dependency>
 
 
     </dependencies>

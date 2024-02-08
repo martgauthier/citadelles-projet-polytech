@@ -12,6 +12,7 @@ public class RichardMaliceStrategy extends DefaultStrategy{
         super(player);
         strategyName="[RichardMaliceStrategy]";
     }
+  
     /**
      * Il utilise cette strategie quand un joueur est sur le point de poser son avant-dernier quartier
      */

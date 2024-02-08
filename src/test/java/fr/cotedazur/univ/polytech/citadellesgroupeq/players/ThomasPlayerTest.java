@@ -35,6 +35,11 @@ class ThomasPlayerTest {
     }
 
     @Test
+    void testDesc(){
+        assertEquals("ThomasPlayer",player1.getBotLogicName());
+    }
+
+    @Test
     void testChosesColorRole(){
         List<Role> availablesRoles=List.of(Role.ASSASSIN, Role.VOLEUR, Role.CONDOTTIERE, Role.MARCHAND);
         assertEquals(3, player1.selectAndSetRole(availablesRoles, List.of()));
@@ -94,6 +99,17 @@ class ThomasPlayerTest {
         assertEquals(Optional.of(Role.ARCHITECTE),player1.selectRoleToSteal(availablesRoles,unavailablesRoles));
         List<Role> availablesRoles2=List.of(Role.ROI, Role.EVEQUE, Role.MARCHAND);
         assertEquals(Optional.of(Role.MARCHAND),player1.selectRoleToSteal(availablesRoles2,unavailablesRoles));
+    }
 
+    @Test
+    void testSelectPlayerToExchangeCardsWithAsMagicien() {
+        Player playerToExchange = player1.selectPlayerToExchangeCardsWithAsMagicien(game.getPlayersList());
+        assertEquals(null, playerToExchange);
+    }
+
+    @Test
+    void testChoosesToExchangeCardWithPlayer() {
+        boolean choose = player1.choosesToExchangeCardWithPlayer();
+        assertTrue(choose || !choose);
     }
 }

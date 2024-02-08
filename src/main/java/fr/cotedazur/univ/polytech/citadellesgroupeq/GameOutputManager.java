@@ -3,9 +3,12 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.logger.EasyLogger;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator.GameStatsCsv;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator.StatsManager;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
 
 import java.util.AbstractMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.*;
@@ -18,10 +21,22 @@ public class GameOutputManager {
     private int playersNumber;
     private static final Logger GAMEPLAY_LOGGER = EasyLogger.getLogger("gameplay");
 
-    public GameOutputManager() {
-        game=new GameLogicManager();
+    private boolean shouldWriteInCsv;
+
+    private StatsManager statsManager;
+    private GameStatsCsv csv;
+
+    public GameOutputManager(boolean writeInCsv) {
+        game=new GameLogicManager(writeInCsv);
         rounds=1;
         playersNumber=4;
+        shouldWriteInCsv=writeInCsv;
+        statsManager=new StatsManager(game.getPlayersList());
+        csv = new GameStatsCsv();
+    }
+
+    public GameOutputManager() {
+        this(false);
     }
 
     public GameOutputManager(List<Player> playerList) {
@@ -49,6 +64,7 @@ public class GameOutputManager {
         }
         Optional<Player> optionalWinner=game.whoIsTheWinner();
         if(optionalWinner.isPresent()) {//pas d'égalité
+            statsManager.setWinForPlayer(optionalWinner.get());
             Player winner= optionalWinner.get();
             GAMEPLAY_LOGGER.info("Voici le score des joueurs qui n'ont pas gagné:");
             for (Player player : game.getPlayersList()) {
@@ -60,7 +76,7 @@ public class GameOutputManager {
                 }
             }
             GAMEPLAY_LOGGER.log(
-                    Level.INFO, "{} {} a gagné avec un score de {} ",
+                    Level.INFO, "Eeeeeet bravo ! {} {} a gagné avec un score de {} ",
                     new Object[]{winner.getBotLogicName(), winner.getStrategyName(), game.getScoreOfEnd().get(winner)}
             );
 
@@ -72,15 +88,24 @@ public class GameOutputManager {
             }
         }
         else {
+            int maxScore= Collections.max(game.getScoreOfEnd().values());
+
             GAMEPLAY_LOGGER.info("Il y a égalité. Voici la liste des scores:");
             for (Player player : game.getPlayersList()) {
                 GAMEPLAY_LOGGER.log(Level.INFO,
                         "Le joueur {} {}  a un score de {}",
                         new Object[]{player.getBotLogicName(), player.getStrategyName(), game.getScoreOfEnd().get(player)}
                 );
+                if(game.getScoreOfEnd().get(player) == maxScore) {
+                    statsManager.setTieForPlayer(player);
+                }
             }
         }
         GAMEPLAY_LOGGER.info("Jeu fini !");
+        if(shouldWriteInCsv) {
+            statsManager.writePlayersDetailsStatInCsv(csv, game, 0);
+            statsManager.updatePlayerStatInCsv(csv, game, 0);
+        }
     }
 
 
@@ -110,6 +135,7 @@ public class GameOutputManager {
         describePlayerState(player);
 
         RoundSummary summary = game.playPlayerTurn(player);
+        if(shouldWriteInCsv) statsManager.addSummary(player, summary);
 
         if(summary.hasBeenKilled()){
             GAMEPLAY_LOGGER.info("Ce joueur a été tué par l'assassin, il ne peut donc pas effectuer son tour");
@@ -178,7 +204,7 @@ public class GameOutputManager {
                 District cimetiere = optionalCimetiere.get();
                 District destroyedDistrict = summary.getOptionalDestroyedDistrict().get().getValue();
                 if(summary.getUsedMerveilles().contains(cimetiere.getName())){
-                    System.out.println("Grace au cimetiere le joueur recupere dans sa main pour une piece la carte :" + destroyedDistrict.getName());
+                    GAMEPLAY_LOGGER.log(Level.INFO, "Grace au cimetiere le joueur recupere dans sa main pour une piece la carte : {}", destroyedDistrict.getName());
                 }
             }
 
@@ -256,6 +282,10 @@ public class GameOutputManager {
         else {
             return "";
         }
+    }
+
+    public GameLogicManager getGameLogicManager() {
+        return game;
     }
 
 }

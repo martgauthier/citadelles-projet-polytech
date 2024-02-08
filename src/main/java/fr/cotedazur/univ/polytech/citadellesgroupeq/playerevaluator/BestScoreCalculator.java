@@ -2,7 +2,8 @@ package fr.cotedazur.univ.polytech.citadellesgroupeq.playerevaluator;
 
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
-import fr.cotedazur.univ.polytech.citadellesgroupeq.players.Player;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.RoundSummary;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.players.*;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -20,7 +21,7 @@ public class BestScoreCalculator {
      * @param playerClasses Liste des joueurs à faire jouer. Nécessite la liste des classes à instancier, et non pas les instances, pour éviter des problèmes de deep copy. (voir issue #53)
      * @return a 2d int array, 1st dimension = player, 2nd dimension = 0: win number, 1: meanScore, 2: tie games number
      */
-    public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses) {
+    public static int[][] getDataFor1000GamesPerPlayer(List<Class<? extends Player>> playerClasses, boolean writeInCsv) {
         //array is 1 index larger, to support tie games
         int[] winPerPlayerIdArray=new int[playerClasses.size()];//initialized at 0 by default
         int[] tiePerPlayerIdArray=new int[playerClasses.size()];
@@ -28,6 +29,10 @@ public class BestScoreCalculator {
         Map<Player, List<Integer>> scorePerPlayerPerGame=new HashMap<>();
 
         int[][] returnedData=new int[4][3];
+
+        GameStatsCsv csv = new GameStatsCsv();
+
+
 
         for(int i=0; i < 1000; i++) {
             int ids=0;
@@ -46,13 +51,15 @@ public class BestScoreCalculator {
                 }
             }
 
-            GameLogicManager game = new GameLogicManager(players);
+            GameLogicManager game = new GameLogicManager(players, false);
+            StatsManager statsManager = new StatsManager(game.getPlayersList());
             game.setCardDeck(deck);
 
             while (!game.isFinished()) {
                 game.makeAllPlayersSelectRole();
                 for (Player joueur : game.getPlayerTreeSet()) {
-                    game.playPlayerTurn(joueur);
+                    RoundSummary summary = game.playPlayerTurn(joueur);
+                    statsManager.addSummary(joueur, summary); // on ajoute le RoundSummary a liste des RoundSummary du joueur
                 }
                 game.resuscitateAllPlayers();
             }
@@ -65,6 +72,7 @@ public class BestScoreCalculator {
 
             if(optionalWinner.isPresent()) {
                 winPerPlayerIdArray[optionalWinner.get().getId()]++;
+                statsManager.setWinForPlayer(optionalWinner.get());
             }
             else {//égalité
                 shouldCountAsTieGame=true;
@@ -75,11 +83,16 @@ public class BestScoreCalculator {
 
                 if(shouldCountAsTieGame && score.getValue()==bestScore) {//si il y a une égalité, et que le joueur en question fait partie des meilleurs joueurs à égalité
                     tiePerPlayerIdArray[score.getKey().getId()]++;//on augmente son nombre d'égalité
+                    statsManager.setTieForPlayer(score.getKey());
                 }
             }
 
-
+            if(writeInCsv) {
+                statsManager.writePlayersDetailsStatInCsv(csv, game, i);
+                statsManager.updatePlayerStatInCsv(csv, game, i);
+            }
         }
+
 
 
         for(Map.Entry<Player, List<Integer>> scoreEntry: scorePerPlayerPerGame.entrySet()) {
