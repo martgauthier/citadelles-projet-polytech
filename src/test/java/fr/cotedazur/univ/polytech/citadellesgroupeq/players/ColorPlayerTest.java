@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -42,6 +43,12 @@ class ColorPlayerTest {
 
         firstPlayer.clearHand();
         secondPlayer.clearHand();
+
+        List<District> cards = new ArrayList<>();
+        cards.add(highPriceRedDistrict);
+
+        ColorPlayer colorPlayer = new ColorPlayer(2, 0,cards, pioche);
+        assertFalse(colorPlayer.isDeadForThisTurn());
     }
 
     @Test
@@ -106,4 +113,5 @@ class ColorPlayerTest {
     void testBotLogicName() {
         assertEquals("ColorPlayer", firstPlayer.getBotLogicName());
     }
+
 }
