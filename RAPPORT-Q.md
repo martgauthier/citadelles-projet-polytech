@@ -69,7 +69,7 @@ stratégies.
 - [gamestats](gamestats.csv) a pour objectif de présenter de manière claire les performances de nos bots. En affichant le pourcentage 
 de victoire, de défaite et de match nul.
 
-### C. Avancement du bot demandé : “RichardPlayer”
+### C. Avancement du bot demandé : `RichardPlayer`
 
 Pour le bot Richard nous nous sommes basés sur les conseils de [Richard](https://forum.trictrac.net/t/citadelles-charte-citadelles-de-base/509) en implémentant les comportements qu’il aime prendre
 au cours de la partie comme par exemple sa **stratégie offensive** quand un adversaire est sur le point de poser son avant-dernier 
@@ -77,9 +77,31 @@ quartier. Nous lui avons donné également un **comportement par défaut** qui c
 deuxième utilisateur du forum car c’est selon lui le meilleur comportement. Nous avons choisis arbitrairement ses choix entre piocher 
 des cartes ou prendre des pièces (car cela n’était pas indiqué).
 
-### D. Nos meilleurs bots: “Matt” et “Thomas”
+### D. Nos meilleurs bots: `MattPlayer` et `ThomasPlayer`
 
-**TODO**
+[Mattplayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/MattPlayer.java) est le bot le plus fort
+du projet. Il adopte une stratégie de base [MattStartGameStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattStartGameStrategy.java)
+pendant le début de partie. Puis il modifie son comportement en utilisant [MattMoreThan5CitiesStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattMoreThan5CitiesStrategy.java). Son comportement se base sur les points suivants :
+- Pendant le **début de partie** pour son choix de **rôle** :
+  - Son objectif est de prendre le **marchand** dès qu'il le peut et de piocher avec celui-ci
+  - Sinon, il prend l'**architecte** et pioche des pièces
+  - Sinon l'**assassin** (pour ne pas se faire assassiner)
+- Pendant le **début de partie** pour son choix entre piocher des pièces ou des cartes :
+  - S'il a moins de 4 pièces il en pioche 
+  - Sinon, il pioche des cartes
+- Pendant le **début de partie** pour son choix d'**achat** :
+  - Il essaye de toujours acheter des cartes **vertes** et prend **la plus proche de 3 pièces**  
+- Quand il a **bientôt fini** la partie **(Plus de 4 cartes et plus de 5 pièces)** :
+    - Il change de stratégie et utilise [MattMoreThan5CitiesStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattMoreThan5CitiesStrategy.java)
+    - Il essaye d'acheter la carte la **moins chère** parmis les **couleurs manquantes** à sa cité
+    - S'il a déjà toutes les couleurs, il prend la **moins chère**
+    - Sinon il prend la **plus proche de trois** et de sa **couleur** s'il le peut 
+ - Si un joueur est **proche de la victoire** ([closeToWin](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L479)) 
+et qu'il possède peu de cartes :
+   - Il prend le magicien et échange ces cartes avec les siennes 
+- Si un joueur pose sa **8ᵉ carte** :
+  - Il utilise la stratégie [SecurePointsForEndGame](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/SecurePointsForEndGame.java)
+qui lui permet de faire le choix le plus optimal
 
 ## 2. Architecture et qualité
 ### A. Architecture du code
