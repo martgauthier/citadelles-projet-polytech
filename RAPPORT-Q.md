@@ -80,8 +80,7 @@ des cartes ou prendre des pièces (car cela n’était pas indiqué).
 ### D. Nos meilleurs bots: `MattPlayer` et `ThomasPlayer`
 
 #### Le bot `MattPlayer`
-[Mattplayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/MattPlayer.java) est le bot le plus fort
-du projet. Il adopte une stratégie de base [MattStartGameStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattStartGameStrategy.java)
+[Mattplayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/MattPlayer.java) adopte une stratégie de base [MattStartGameStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattStartGameStrategy.java)
 pendant le début de partie. Puis il modifie son comportement en utilisant [MattMoreThan5CitiesStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattMoreThan5CitiesStrategy.java). Son comportement se base sur les points suivants :
 - Pendant le **début de partie** pour son choix de **rôle** :
   - Son objectif est de prendre le **marchand** dès qu'il le peut et de piocher avec celui-ci
@@ -99,18 +98,20 @@ pendant le début de partie. Puis il modifie son comportement en utilisant [Matt
     - Sinon il prend la **plus proche de trois** et de sa **couleur** s'il le peut 
  - Si un joueur est **proche de la victoire** ([closeToWin](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L479)) 
 et qu'il possède peu de cartes :
-   - Il prend le magicien et échange ces cartes avec les siennes 
+   - Il prend le **Magicien** et échange ces cartes avec les siennes 
 - Si un joueur pose sa **8ᵉ carte** :
   - Il utilise la stratégie [SecurePointsForEndGame](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/SecurePointsForEndGame.java)
-qui lui permet de faire le choix le plus optimal
+qui lui permet de faire le **choix optimal**
 
 #### Le bot `ThomasPlayer`
-* Il préfère les rôles Architecte/Marchand/Condottiere.
+
+[ThomasPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/ThomasPlayer.java) adopte une stratégie basée sur les points suivants :
+* Il préfère les rôles **Architecte/Marchand/Condottiere.**
 * Il choisit de prendre des pièces tant qu'il a des cartes en main.
-* Il achète à chaque fois sa citadelle en main la moins chère.
-* Quand il est Condottiere il cible en priorité les joueurs proche de gagner.
-* Quand il est voleur il cible en priorité l'architecte et le marchand.
-* Lorsque la partie arrive à son dernier tour il active la stratégie [SecurePointForEndGame](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/SecurePointsForEndGame.java).
+* Il achète à chaque fois sa citadelle en main **la moins chère**.
+* Quand il est **Condottiere** il **cible** en priorité les joueurs **proche de gagner**.
+* Quand il est **voleur** il **cible** en priorité l'**architecte** et le **marchand**.
+* Lorsque la partie arrive à son **dernier tour** il active la stratégie [SecurePointForEndGame](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/SecurePointsForEndGame.java).
 
 ## 2. Architecture et qualité
 ### A. Architecture du code
