@@ -41,19 +41,24 @@ public class MattMoreThan5CitiesStrategy extends DefaultStrategy {
 
             if(choosenDistrict.isPresent() && Boolean.TRUE.equals(!colorsContained.get(choosenDistrict.get().getColor()))) return choosenDistrict;
             else {//can't buy card from missing colors.
-                List<District> cardsColoredLikePlayer=player.getBuyableCards().stream().filter(card -> card.getColor()==player.getRole().getColor()).toList();
-                if(!cardsColoredLikePlayer.isEmpty()) {
-                    return Optional.of(Collections.min(cardsColoredLikePlayer));
-                }
-                else {//has no cards from missing color and no card from his own color.
-                    for(District card: player.getBuyableCards()) {
-                        if(choosenDistrict.isEmpty() || Math.abs(3-card.getCost()) < Math.abs(3-choosenDistrict.get().getCost())) {
-                            choosenDistrict=Optional.of(card);
-                        }
-                    }
-                    return choosenDistrict;
+                return getCitadelToBuyIfCantBuyMissingColors();
+            }
+        }
+    }
+
+    private Optional<District> getCitadelToBuyIfCantBuyMissingColors() {
+        Optional<District> choosenDistrict=Optional.empty();
+        List<District> cardsColoredLikePlayer=player.getBuyableCards().stream().filter(card -> card.getColor()==player.getRole().getColor()).toList();
+        if(!cardsColoredLikePlayer.isEmpty()) {
+            return Optional.of(Collections.min(cardsColoredLikePlayer));
+        }
+        else {//has no cards from missing color and no card from his own color.
+            for(District card: player.getBuyableCards()) {
+                if(choosenDistrict.isEmpty() || Math.abs(3-card.getCost()) < Math.abs(3-choosenDistrict.get().getCost())) {
+                    choosenDistrict=Optional.of(card);
                 }
             }
+            return choosenDistrict;
         }
     }
 }

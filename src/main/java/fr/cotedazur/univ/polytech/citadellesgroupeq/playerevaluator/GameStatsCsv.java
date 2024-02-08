@@ -20,6 +20,8 @@ public class GameStatsCsv {
     public static final Path DETAILS_CSV_PATH = Paths.get("stats", "gamestatdetail.csv");
     public static final Path CSV_PATH = Paths.get("stats", "gamestat.csv");
 
+    public static final String ILLEGAL_STATE_STRING="Can't write in file !";
+
     public void createCsvDetailsFile(){
         try (CSVWriter writer = new CSVWriter(new FileWriter(DETAILS_CSV_PATH.toFile()))) {
             String[] header = {"Id partie", "Nom du joueur","Prix moyen des citadelles achetées", "Rôle préféré",
@@ -27,7 +29,7 @@ public class GameStatsCsv {
             };
             writer.writeNext(header);
         } catch (IOException e) {
-            throw new IllegalStateException("Can't write in this file !");
+            throw new IllegalStateException(ILLEGAL_STATE_STRING);
         }
     }
 
@@ -55,7 +57,7 @@ public class GameStatsCsv {
                 writer.close();
             }
         } catch (IOException e) {
-            throw new IllegalStateException("Can't write in file !");
+            throw new IllegalStateException(ILLEGAL_STATE_STRING);
         }
     }
 
@@ -70,7 +72,7 @@ public class GameStatsCsv {
             }
             writer.writeNext(data);
         } catch (IOException e) {
-            throw new IllegalStateException("Can't write in file !");
+            throw new IllegalStateException(ILLEGAL_STATE_STRING);
         }
     }
 
@@ -88,7 +90,7 @@ public class GameStatsCsv {
             writer.writeAll(data);
             writer.close();
         } catch (IOException e) {
-            throw new IllegalStateException("Can't write in file !");
+            throw new IllegalStateException(ILLEGAL_STATE_STRING);
         }
     }
 
