@@ -5,12 +5,19 @@ import fr.cotedazur.univ.polytech.citadellesgroupeq.Color;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.CardDeck;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.Role;
 import fr.cotedazur.univ.polytech.citadellesgroupeq.gamelogic.GameLogicManager;
+import fr.cotedazur.univ.polytech.citadellesgroupeq.strategies.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 class ColorPlayerTest {
     GameLogicManager game;
@@ -20,8 +27,12 @@ class ColorPlayerTest {
     @BeforeEach
     void setup() {
         pioche=new CardDeck();
-        firstPlayer=new ColorPlayer(0, pioche);
-        secondPlayer=new ColorPlayer(1, pioche);
+        firstPlayer= Mockito.spy(new ColorPlayer(0, pioche));
+        firstPlayer.setStrategy(new DefaultStrategy(firstPlayer));
+        firstPlayer.setRandomGenerator(Mockito.spy(firstPlayer.getRandomGenerator()));
+
+        secondPlayer=Mockito.spy(new ColorPlayer(1, pioche));
+        secondPlayer.setStrategy(new DefaultStrategy(secondPlayer));
 
         game=new GameLogicManager(List.of(firstPlayer, secondPlayer));
         game.setCardDeck(pioche);
@@ -78,5 +89,21 @@ class ColorPlayerTest {
         District highPriceGrayDistrict =new District("temple", 50, Color.GRAY, "null");
         firstPlayer.addAllCardsToHand(highPriceGrayDistrict, highPriceRedDistrict);
         assertFalse(firstPlayer.getChoosenDistrictToBuy().isPresent());
+    }
+
+    @Test
+    void testUsesRandomGeneratorToChooseExchangeCards() {
+        Random mockedRandom=firstPlayer.getRandomGenerator();
+        doReturn(false).when(mockedRandom).nextBoolean();
+
+        assertFalse(firstPlayer.choosesToExchangeCardWithPlayer());
+
+        doReturn(true).when(mockedRandom).nextBoolean();
+        assertTrue(firstPlayer.choosesToExchangeCardWithPlayer());
+    }
+
+    @Test
+    void testBotLogicName() {
+        assertEquals("ColorPlayer", firstPlayer.getBotLogicName());
     }
 }
