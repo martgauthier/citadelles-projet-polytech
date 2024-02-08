@@ -71,6 +71,10 @@ de victoire, de défaite et de match nul.
 
 ### C. Avancement du bot demandé : `RichardPlayer`
 
+<div align="center">
+<img src="assetsrapport/richardplayer.png" width="100" height=auto>
+</div>
+
 Pour le bot Richard nous nous sommes basés sur les conseils de [Richard](https://forum.trictrac.net/t/citadelles-charte-citadelles-de-base/509) en implémentant les comportements qu’il aime prendre
 au cours de la partie comme par exemple sa **stratégie offensive** quand un adversaire est sur le point de poser son avant-dernier 
 quartier. Nous lui avons donné également un **comportement par défaut** qui correspond à la description de **« l’OPTIMISTE »** selon le 
@@ -80,6 +84,10 @@ des cartes ou prendre des pièces (car cela n’était pas indiqué).
 ### D. Nos meilleurs bots: `MattPlayer` et `ThomasPlayer`
 
 #### Le bot `MattPlayer`
+<div align="center">
+<img src="assetsrapport/mattplayer.png" width="100" height=auto>
+</div>
+
 [Mattplayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/MattPlayer.java) adopte une stratégie de base [MattStartGameStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattStartGameStrategy.java)
 pendant le début de partie. Puis il modifie son comportement en utilisant [MattMoreThan5CitiesStrategy](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/strategies/MattMoreThan5CitiesStrategy.java). Son comportement se base sur les points suivants :
 - Pendant le **début de partie** pour son choix de **rôle** :
@@ -104,6 +112,10 @@ et qu'il possède peu de cartes :
 qui lui permet de faire le **choix optimal**
 
 #### Le bot `ThomasPlayer`
+
+<div align="center">
+<img src="assetsrapport/thomasplayer.png" width="100" height=auto>
+</div>
 
 [ThomasPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/ThomasPlayer.java) adopte une stratégie basée sur les points suivants :
 * Il préfère les rôles **Architecte/Marchand/Condottiere.**
@@ -234,6 +246,12 @@ Toutes nos branches ont été *merge* par des *pull-requests*. Nous nous sommes 
 ou que nous nous étions mis d'accord pour le faire.
 
 ### C. Répartition du travail
+<div align="center" style="display: flex; justify-content: space-evenly;">
+<img style="margin: 20px; border-radius: 20px" src="assetsrapport/mathias.png" width="100" height=auto>
+<img style="margin: 20px; border-radius: 20px" src="assetsrapport/gauthier.png" width="100" height=auto>
+<img style="margin: 20px; border-radius: 20px" src="assetsrapport/romain.jpg" width="100" height=auto>
+</div>
+
 Tout le monde a participé aux fonctionnalités. Chaque membre a fait au moins un peu de tests, de codages de merveilles, de rôles...
 
 Mathias et Romain, en plus du code, sont principalement responsables de la réflexion autour des stratégies: quelles stratégies implémenter pour gagner ?
