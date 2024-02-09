@@ -25,11 +25,11 @@ class FormatterTest {
 
     @Test
     void testBasicString() {
-        assertEquals(SimpleFormatterWithoutDate.ANSI_BLACK + "le test de log.\n", simpleFormatter.format(record));
+        assertEquals(SimpleFormatterWithoutDate.ANSI_WHITE + "le test de log.\n", simpleFormatter.format(record));
     }
 
     @Test
     void testParams() {
-        assertEquals(SimpleFormatterWithoutDate.ANSI_BLACK + "test param 1 hehe\n", simpleFormatter.format(recordWithParams));
+        assertEquals(SimpleFormatterWithoutDate.ANSI_WHITE + "test param 1 hehe\n", simpleFormatter.format(recordWithParams));
     }
 }
