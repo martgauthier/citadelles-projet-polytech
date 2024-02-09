@@ -17,8 +17,8 @@ public class GameStatsCsv {
     public GameStatsCsv() {
         //do nothing
     }
-    public static final Path DETAILS_CSV_PATH = Paths.get("stats", "gamestatdetail.csv");
-    public static final Path CSV_PATH = Paths.get("stats", "gamestat.csv");
+    public static final Path DETAILS_CSV_PATH = Paths.get("stats", "gamestatsdetail.csv");
+    public static final Path CSV_PATH = Paths.get("stats", "gamestats.csv");
 
     public static final String ILLEGAL_STATE_STRING="Can't write in file !";
 
