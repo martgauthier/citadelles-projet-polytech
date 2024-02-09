@@ -8,7 +8,7 @@ import java.util.logging.*;
  * et qui supporte l'ajout de variables dans le texte avec "{}", à la manière de "format" en python
  */
 public class SimpleFormatterWithoutDate extends Formatter {
-    public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_BLACK = "\033[0;30m";
     @Override
     public String format(LogRecord rec) {
         String message = rec.getMessage();
@@ -20,6 +20,6 @@ public class SimpleFormatterWithoutDate extends Formatter {
             }
         }
 
-        return ANSI_WHITE + message + "\n";
+        return ANSI_BLACK + message + "\n";
     }
 }
