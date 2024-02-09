@@ -139,7 +139,7 @@ Notre architecture est divisée en plusieurs parties :
       pour chaque type de bot ([ThomasPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/ThomasPlayer.java), [MattPlayer](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/MattPlayer.java)...).
 * Les stratégies :
     * On a une interface `IStrategy` dont on se sert pour créer des classes stratégies qu’on utilise ensuite dans les bots.
-* La dernière partie de l’architecture est là uniquement pour les calculs de statistiques ([BestScoreCalculator](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/playerevaluator/BestScoreCalculator.java), et les classes de CSV).
+* La dernière partie de l’architecture est là uniquement pour les calculs de statistiques ([BestScoreCalculator](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/playerevaluator/BestScoreCalculator.java), [GameStatsCsv](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/playerevaluator/GameStatsCsv.java), [StatsManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/playerevaluator/StatsManager.java)).
 
 #### Le moteur du jeu :
 * Notre classe [GameLogicManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/gamelogic/GameLogicManager.java)
@@ -150,7 +150,7 @@ Notre architecture est divisée en plusieurs parties :
 4. Elle arrête la partie lorsqu'un joueur a atteint 8 citadelles.
 * [RoundSummary](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/gamelogic/RoundSummary.java) est une classe qui va stocker et enregistrer tous les événements durant le tour du joueur.
 * Cette classe est utilisée dans la classe [GameOutputManager](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java). Grâce à un `RoundSummary` la méthode [describePlayerRound()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java#L109) de `GameOutputManager` va pouvoir vérifier les évènements qui se sont déroulés et activer les bons logs.
-  `GameOutputManager` contient d'autre méthode de description comme une description de la cité d'un joueur ou encore la description des roles disponibles au début du tour. La principale methode [startMainOutputLoop()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java#L33) déroule l'affichage de la partie du début à la fin.
+  `GameOutputManager` contient d'autres méthodes de description comme une description de la cité d'un joueur ou encore la description des roles disponibles au début du tour. La principale methode [startMainOutputLoop()](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/GameOutputManager.java#L33) déroule l'affichage de la partie du début à la fin.
 
 #### Les `District` et les `Role`
 Les `District` sont modélisés dans une classe. Ils possèdent un nom, un prix, une couleur, et optionnellement un nom de pouvoir (si ce sont des merveilles).
@@ -158,7 +158,7 @@ Nos rôles sont stockés dans un `Enum`, et possèdent une couleur ([Color](src/
 
 #### Les `Player` et les `Strategy`
 
-Ce que nous appelons `Player` sont les classes représentant des bots !
+Ce que nous appelons `Player` sont les classes représentant des bots.
 Notre code est structuré ainsi :
 * La classe abstraite mère [Player](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java) définit toutes les méthodes utilitaires attribuées à un bot :
   récupérer ses cartes en main [(getCardsInHand())](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L104), connaitre sa fortune [(getCash())](src/main/java/fr/cotedazur/univ/polytech/citadellesgroupeq/players/Player.java#L100), etc...
@@ -196,28 +196,26 @@ Notre code est documenté via une [java doc](javadoc/index.html). Le code est da
 
 ### C. Qualité du code
 #### a. Parties en confiance
-* Nous sommes plutôt en confiance sur notre logique de jeu notamment avec `GameLogicManager` et `RoundSummary`.`Elle fait son travail sans erreurs.
+* Nous sommes plutôt en confiance sur notre logique de jeu notamment avec `GameLogicManager` et `RoundSummary`. Elle fait son travail sans erreur.
 * Les méthodes de `Player` fonctionnent et sont testées.
-* Quant aux `Roles` ils ne peuvent pas contenir d'erreur notamment avec les pouvoirs, car ils contiennent des exceptions en cas d'action impossible.
-* Les `Strategy` sont bien implémentées chaque méthode est bien testée.
+* Quant aux `Roles` ils ne peuvent pas contenir d'erreur notamment avec les pouvoirs, car ils contiennent des exceptions en cas d'action impossible (et nous avons testé l'appel de ces exceptions).
+* Les `Strategy` sont bien implémentées et chaque méthode est bien testée.
 
 #### b. Parties à améliorer
-* La partie sur le `CSV` est encore trop brouillon et il manque beaucoup d'exception.
+* La partie sur le `CSV` est encore trop brouillon et il manque beaucoup d'exceptions. Même si elle est testée, le code pourrait être plus propre et modulaire.
 * À certains endroits du code la complexité pourrait être diminuée, car inutilement haute. (notamment dans des méthodes qui contiennent pas mal de condition avec des _if_ et des _else if_)
 * On peut relever aussi certaines duplications de code.
 * On aurait aussi dû implémenter les stratégies par défaut des `Player` dans des classes `Strategy`, au lieu de les implémenter dans les classes des `Player` afin de les alléger.
-#### c. Analyse de SonnarQube
+#### c. Analyse de SonarQube
 
 <div align="center">
 <img src="assetsrapport/sonar.png" width="700" height=auto>
 </div>
 
-Le **coverage** n'est pas totalement significatif, car certaines parties du code présentent un manque significatif 
-de tests. Les classes **GameOutputManager, Main et StatsManager**, qui ne bénéficient que de **très peu de test**. 
-En revanche, toutes les autres classes affichent un taux de couverture supérieur à **85%**.
+Le **coverage** est plutôt bon, avec 83.2% sur la globalité du projet. Nous n'avons pas de *bugs*, de *code smells*, de *vulnerabilities*, ni
+de *security hotspots*. Nous avons cependant quelques *duplications*.
 
-En résumé, l'analyse SonarQube révèle, un **nombre négligeable de bugs**, un **faible nombre de duplications** et 
-**quelques améliorations potentielles** à apporter au code pour l'améliorer.
+Notez que nous avons passé le ***Quality Gate*** !
 ## Notre processus de développement
 
 ## 3. Notre processus de développement
